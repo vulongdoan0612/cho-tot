@@ -1,0 +1,25 @@
+.custom-button {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  color: #fff;
+  background-color: #f80;
+  border-color: #f80;
+  border: 1px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.25;
+  padding: 9px 19px;
+  border-width: 1px;
+}
+.custom-button:hover {
+  color: #fff;
+  background-color: #ffb057;
+  border-color: #ffb057;
+}
+.custom-button:active {
+  color: #fff;
+  background-color: #e56700;
+  border-color: #e56700;
+}

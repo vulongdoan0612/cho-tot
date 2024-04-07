@@ -1,0 +1,90 @@
+@import "antd/dist/reset.css";
+
+@import "./pages/index.scss";
+@import "./components/index.scss";
+@import "react-toastify/dist/ReactToastify.css";
+body {
+  margin: 0px;
+}
+::-webkit-scrollbar {
+  width: 0.125rem;
+  height: 0.125rem;
+  border-radius: 0.25rem;
+
+  // display: none;
+}
+
+::-webkit-scrollbar-track {
+  background: #e7e7e7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #a3a2a2;
+  border-radius: 0.25rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a3a2a2;
+}
+.Mui-focused {
+  background-color: white !important;
+  color: #8c8c8c !important;
+}
+
+.MuiFormLabel-root {
+  background-color: white !important;
+  color: #8c8c8c;
+  line-height: normal !important;
+}
+.css-phksla-MuiInputBase-root-MuiFilledInput-root::after {
+  border-bottom: transparent !important;
+}
+.input-need-to-custom .MuiInputBase-root {
+  height: 48px;
+  white-space: nowrap;
+}
+.MuiInputBase-root {
+  border-radius: 4px;
+  border: 1px solid silver;
+  background-color: white !important;
+}
+.css-phksla-MuiInputBase-root-MuiFilledInput-root::before {
+  border-bottom: none !important;
+}
+.input-need-to-custom .MuiInputBase-input {
+  overflow-wrap: normal !important;
+  height: 20.5px !important;
+  white-space: nowrap !important;
+}
+.MuiInputBase-input {
+  color: black !important;
+}
+.css-7209ej-MuiInputBase-input-MuiFilledInput-input.Mui-disabled {
+  color: black !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 1) !important;
+}
+.MuiPaper-root {
+  ul {
+    max-height: 200px !important;
+  }
+  max-height: 200px !important;
+}
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+  .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+  }
+}
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  top: 20px !important;
+}
+
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+  transform: translate(14px, 7px) scale(0.75) !important;
+}
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  text-align: left;
+  padding-top: 18px;
+  padding-bottom: 0px;
+}

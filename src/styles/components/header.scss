@@ -1,0 +1,90 @@
+header {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 100%;
+  height: 80px;
+  background-color: #ffba00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  .left {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    .dropdown-category .ant-dropdown-trigger {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      gap: 0.5rem;
+      .ant-space-item {
+        white-space: nowrap;
+      }
+    }
+    // width: 25%;
+  }
+  .mid {
+    // width: 48%;
+    width: 100%;
+  }
+  .right {
+    align-items: center;
+    gap: 1rem;
+    display: flex;
+    .dropdown-cart {
+      cursor: pointer;
+    }
+    .avatar {
+      max-height: 55px;
+      width: 100%;
+      height: 55px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      // .ant-skeleton-avatar {
+      //   width: 55px;
+      //   height: 55px;
+      // }
+      .avatar-dropdown {
+        .ant-dropdown-trigger {
+          display: flex;
+          align-items: center;
+          .text {
+            margin-left: 0.25rem;
+          }
+          .fullname {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 0.875rem;
+            max-width: 130px;
+          }
+        }
+      }
+    }
+    .mangeShop {
+      max-width: 110px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      .text {
+        white-space: nowrap;
+      }
+    }
+    button {
+      height: 100%;
+      color: #ffffff !important;
+      background-color: #ff8800 !important;
+      border: #ff8800 !important;
+      border-radius: 4px;
+      padding: 8px 16px;
+      .text {
+        color: #ffffff;
+        font-size: 0.875rem;
+        line-height: 1;
+        font-weight: bold;
+      }
+    }
+    // width: 25%;
+  }
+}

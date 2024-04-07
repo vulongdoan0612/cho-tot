@@ -1,0 +1,21 @@
+export const defaultCommonState = {
+  modalConfirmSwitchFav: false,
+  modalConfirmSwitch: false,
+  modalConfirmSwitchCCCD: false,
+  date: "",
+  cccd: "",
+  location: "",
+  cityValue: "",
+  districtValue: "",
+  wardValue: "",
+  cityConcat: "",
+  districtConcat: "",
+  detailAddress: "",
+  fullCCCD: "",
+  fullFav: [],
+  fullAddress: "",
+  cities: [],
+  districts: [],
+  wards: [],
+  activeIndices: []
+};

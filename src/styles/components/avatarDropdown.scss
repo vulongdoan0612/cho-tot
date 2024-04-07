@@ -1,0 +1,224 @@
+.ant-dropdown-menu {
+  padding: 0px !important;
+  .avatar-dropdown-header-wrapper {
+    padding: 0px !important;
+    .avatar-dropdown-header {
+      height: 500px;
+      width: 298px;
+      overflow-y: scroll;
+      // gap: 1rem;
+      .user-info {
+        gap: 12px;
+        padding: 12px;
+        display: flex;
+        .avatar {
+          width: 50px;
+          height: 50px;
+          .ant-avatar {
+            width: 50px;
+            height: 50px;
+          }
+          img {
+            object-fit: cover;
+            border-radius: 100%;
+            border: 1px solid #8c8c8c;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .right {
+          .follower {
+            .line {
+              height: 16px;
+              border-left: 1px solid #e8e8e8;
+              margin: 0 8px;
+            }
+            font-size: 0.75rem;
+          }
+          .name {
+            color: #222222 !important;
+            font-weight: 700;
+            text-decoration: none;
+            line-height: 20px;
+            white-space: nowrap;
+            font-size: 0.875rem;
+            margin-bottom: 10px;
+          }
+          .rate {
+            gap: 0.25rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .rate-number {
+              font-weight: 700;
+              font-size: 0.75rem;
+              line-height: 16px;
+            }
+            .ant-rate-star {
+              margin-right: 0;
+              .anticon {
+                vertical-align: 0.125rem;
+              }
+            }
+            .text {
+              color: #777777;
+              font-size: 0.625rem;
+              line-height: 16px;
+              font-weight: 400;
+            }
+          }
+        }
+      }
+      .manage-bill {
+        display: flex;
+        flex-direction: column;
+        .header {
+          background-color: #f5f5f5;
+          padding: 10px 0 10px 12px;
+          height: 38px;
+          span {
+            color: #777777;
+            line-height: 18px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            display: block;
+          }
+        }
+        .container {
+          display: flex;
+          flex-direction: column;
+          .buy {
+            padding: 8px 12px;
+            span {
+              color: #222222;
+              line-height: 24px;
+              margin-left: 12px;
+              font-size: inherit;
+            }
+          }
+          .sell {
+            padding: 8px 12px;
+            span {
+              color: #222222;
+              line-height: 24px;
+              margin-left: 12px;
+              font-size: inherit;
+            }
+          }
+        }
+      }
+      .sign-in {
+        padding: 12px;
+        .avatar {
+          display: block;
+          background-image: url("https://static.chotot.com/storage/marketplace/common/png/default_user.png");
+          background-size: 100% 100%;
+          height: 48px;
+          width: 48px;
+          border-radius: 100%;
+          float: left;
+          position: relative;
+  
+        }
+        .text {
+          float: left;
+          margin-left: 8px;
+          margin-top: 14px;
+          width: calc(100% - 100px);
+          line-height: 20px;
+          color: #222222 !important;
+          font-size: 1rem;
+          font-weight: 700;
+          -webkit-text-decoration: none;
+          text-decoration: none;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+      .extension {
+        display: flex;
+        flex-direction: column;
+        .header {
+          background-color: #f5f5f5;
+          padding: 10px 0 10px 12px;
+          height: 38px;
+          span {
+            color: #777777;
+            line-height: 18px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            display: block;
+          }
+        }
+        .container {
+          display: flex;
+          flex-direction: column;
+          .post-save {
+            padding: 8px 12px;
+            span {
+              color: #222222;
+              line-height: 24px;
+              margin-left: 12px;
+              font-size: inherit;
+            }
+          }
+          .search-save {
+            padding: 8px 12px;
+            span {
+              color: #222222;
+              line-height: 24px;
+              margin-left: 12px;
+              font-size: inherit;
+            }
+          }
+        }
+      }
+      .service-fee {
+        display: flex;
+        flex-direction: column;
+        .header {
+          background-color: #f5f5f5;
+          padding: 10px 0 10px 12px;
+          height: 38px;
+          span {
+            color: #777777;
+            line-height: 18px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            display: block;
+          }
+        }
+        .container {
+          display: flex;
+          flex-direction: column;
+          .dongtot {
+            padding: 8px 12px;
+            span {
+              color: #222222;
+              line-height: 24px;
+              margin-left: 12px;
+              font-size: inherit;
+            }
+          }
+          .history {
+            padding: 8px 12px;
+            span {
+              color: #222222;
+              line-height: 24px;
+              margin-left: 12px;
+              font-size: inherit;
+            }
+          }
+        }
+      }
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+.avatar-dropdown-header-wrapper,
+.ant-dropdown-menu-item-active,
+.ant-dropdown-menu-item:hover {
+  background-color: rgba(0, 0, 0, 0) !important;
+}

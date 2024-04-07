@@ -1,0 +1,162 @@
+.login-wrapper {
+  position: relative;
+  z-index: 0;
+  background: url("https://static.chotot.com/storage/marketplace/login-background.webp")
+    no-repeat;
+  background-size: contain;
+  justify-content: center;
+  background-position-y: 60%;
+  align-items: center;
+  min-height: 100svh;
+  padding: 16px;
+  display: flex;
+  .modal-login {
+    width: 440px;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 32px 40px;
+    box-shadow: 0 0 8px rgba(30, 40, 60, 0.1);
+    z-index: 1;
+    position: absolute;
+    .logo {
+      display: flex;
+      justify-content: center;
+    }
+    h3 {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #222;
+      margin-bottom: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .line {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      hr {
+        width: 100%;
+        margin: 8px 0;
+        background-color: currentColor;
+        border: 0;
+        opacity: 1;
+        color: #8c8c8c;
+        height: 1px;
+      }
+      span {
+        white-space: nowrap;
+        color: #595959;
+        margin: 0 12px;
+      }
+    }
+    .login-form {
+      button {
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        color: #fff;
+        background-color: #f80;
+        border-color: #f80;
+        border: 1px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 1rem;
+        line-height: 1.25;
+        padding: 9px 19px;
+        border-width: 1px;
+      }
+      button:hover {
+        color: #fff;
+        background-color: #ffb057;
+        border-color: #ffb057;
+      }
+      button:active {
+        color: #fff;
+        background-color: #e56700;
+        border-color: #e56700;
+      }
+      .submit {
+        margin-bottom: 16px !important;
+      }
+      .password {
+        margin-bottom: 24px !important;
+        .ant-input-affix-wrapper {
+          min-height: 46px;
+        }
+      }
+      .phone {
+        input {
+          min-height: 46px;
+        }
+      }
+      .check-agreement {
+        .ant-col {
+          margin-left: 0;
+          max-width: 100% !important;
+          .ant-checkbox-wrapper {
+            align-items: flex-start;
+          }
+        }
+      }
+      .fullname {
+        input {
+          min-height: 46px;
+        }
+      }
+      .forgot-password {
+        margin-bottom: 16px;
+      }
+    }
+    .login-method {
+      display: flex;
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.5;
+      justify-content: space-between;
+      gap: 2rem;
+      .google,
+      .facebook {
+        gap: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid silver;
+        background: #fff;
+        font-weight: 700;
+        color: #222;
+        span {
+          height: 20px;
+        }
+      }
+    }
+    .register-account {
+      text-align: center;
+      color: #595959;
+      margin-top: 24px;
+      margin-bottom: 0;
+      a {
+        color: #306bd9;
+        font-weight: 700;
+        text-decoration: none;
+      }
+    }
+  }
+  .produce-by {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 2rem;
+    left: 3rem;
+    font-weight: 700;
+    font-size: 12px;
+    color: #8c8c8c;
+    .logo {
+      display: flex;
+      gap: 20px;
+    }
+  }
+}
