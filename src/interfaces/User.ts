@@ -54,17 +54,22 @@ export interface IGetRaffleTicket {
 }
 
 export interface ICommonState {
+  selectedItemFav: any;
   modalConfirmSwitchFav: boolean;
   modalConfirmSwitch: boolean;
   modalConfirmSwitchCCCD: boolean;
-  date: any;
+  dateCCCD: any;
+  fullName: string;
   cccd: string;
   location: string;
+  rememberName: string;
   cityValue: string;
   districtValue: string;
+  birth: string;
+  introducing: string;
+  numberFax: string;
+  sex: string;
   wardValue: string;
-  cityConcat: string;
-  districtConcat: string;
   detailAddress: string;
   fullCCCD: string;
   fullAddress: string;

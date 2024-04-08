@@ -7,6 +7,9 @@ import {
 } from "@mui/material";
 import CustomModal from "../CustomModal";
 import CustomButton from "../CustomButton";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useEffect, useState } from "react";
 
 const ModalAddressUser = ({
   modalConfirmSwitch,
@@ -24,7 +27,7 @@ const ModalAddressUser = ({
   detailAddress,
   onFinish,
 }: any) => {
-  console.log(districtValue);
+  const { account } = useSelector((state: RootState) => state.auth);
   return (
     <CustomModal
       title="Địa chỉ"
@@ -46,9 +49,13 @@ const ModalAddressUser = ({
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={cityValue}
+          value={
+            cityValue 
+          }
           label="Tỉnh, Thành phố"
-          onChange={handleCityChange}
+          onChange={(event) => {
+            handleCityChange(event);
+          }}
         >
           {cities.map((item: any) => (
             <MenuItem key={item.Id} value={item.Id === 0 ? "" : item.Id}>
@@ -72,7 +79,9 @@ const ModalAddressUser = ({
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={districtValue}
+          value={
+            districtValue 
+          }
           label="Quận, Huyện, Thị xã"
           onChange={handleDistrictChange}
         >
@@ -117,10 +126,12 @@ const ModalAddressUser = ({
           id="filled-multiline-flexible"
           label="Địa chỉ cụ thể"
           multiline
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          onChange={(event: any) => {
             handleChangeDetailAddress(event);
           }}
-          value={detailAddress}
+          value={
+            detailAddress
+          }
           maxRows={4}
           variant="filled"
         />

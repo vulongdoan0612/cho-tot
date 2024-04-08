@@ -4,8 +4,8 @@ import CustomButton from "../CustomButton";
 const ModalFav = ({
   modalConfirmSwitchFav,
   handleCancleModalFav,
-  activeIndices,
   handleAddFav,
+  selectedItemFav,
   dataFav,
   onFinishFav,
 }: any) => {
@@ -20,16 +20,11 @@ const ModalFav = ({
     >
       <div className="fav-wrapper">
         {dataFav.map((item: string, index: number) => {
-          console.log(item, index);
           return (
             <button
               key={index}
               onClick={() => handleAddFav(index, item)}
-              className={
-                activeIndices.some((activeItem: any) => activeItem.id === index)
-                  ? "active"
-                  : ""
-              }
+              className={selectedItemFav.includes(item) ? "active" : ""}
             >
               {item}
             </button>

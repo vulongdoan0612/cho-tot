@@ -3,7 +3,6 @@
 import { Modal, ModalProps } from "antd";
 import { omit } from "lodash";
 import React from "react";
-import Image from "next/image";
 
 type ICustomModalProps = ModalProps;
 

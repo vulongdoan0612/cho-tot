@@ -231,7 +231,7 @@ const DropdownList = () => {
         <div className="container">
           <span className="dongtot">
             {" "}
-            <a href="/user">
+            <a href="/user/settings/profile">
               <Image
                 src="https://static.chotot.com/storage/icons/svg/setting.svg"
                 alt=""

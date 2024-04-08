@@ -1,7 +1,10 @@
 import { TextField } from "@mui/material";
 import CustomModal from "../CustomModal";
 import CustomButton from "../CustomButton";
-import { DatePicker } from "antd";
+import { DatePicker, Skeleton } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import dayjs from "dayjs";
 const ModalCCCCD = ({
   modalConfirmSwitchCCCD,
   handleCancleModalCCCD,
@@ -9,7 +12,15 @@ const ModalCCCCD = ({
   onChangeDate,
   handleLocation,
   onFinishCCCD,
+  location,
+  date,
+  cccd,
 }: any) => {
+  const { account } = useSelector((state: RootState) => state.auth);
+  const { countdownDuration, loading } = useSelector(
+    (state: RootState) => state.countDownLoading
+  );
+  console.log(date);
   return (
     <CustomModal
       title="CMND/ CCCD/ HỘ CHIẾU"
@@ -19,19 +30,28 @@ const ModalCCCCD = ({
       centered
       className="modal-cccd"
     >
-      <div className="cccd input-need-to-custom">
-        <TextField
-          className="fullname"
-          id="filled-multiline-flexible"
-          label="CMND/ CCCD/ Hộ Chiếu"
-          multiline
-          onChange={handleCCCD}
-          maxRows={4}
-          variant="filled"
-        />
-      </div>
+      {loading ? (
+        <Skeleton.Input block={true} active size="large"></Skeleton.Input>
+      ) : (
+        <div className="cccd input-need-to-custom">
+          <TextField
+            className="fullname"
+            id="filled-multiline-flexible"
+            label="CMND/ CCCD/ Hộ Chiếu"
+            multiline
+            value={cccd}
+            onChange={handleCCCD}
+            maxRows={4}
+            variant="filled"
+          />
+        </div>
+      )}
       <div className="date input-need-to-custom">
-        <DatePicker onChange={onChangeDate} placeholder={"Ngày cấp"} />
+        <DatePicker
+          onChange={onChangeDate}
+          placeholder={"Ngày cấp"}
+          value={dayjs(date)}
+        />
       </div>{" "}
       <div className="date-release input-need-to-custom">
         <TextField
@@ -39,6 +59,7 @@ const ModalCCCCD = ({
           id="filled-multiline-flexible"
           label="Nơi cấp"
           multiline
+          value={location}
           onChange={handleLocation}
           maxRows={4}
           variant="filled"

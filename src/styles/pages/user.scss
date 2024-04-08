@@ -34,9 +34,22 @@
     }
     .right {
       .right-content {
+        margin-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
         background-color: white;
         padding: 16px;
         border-radius: 4px;
+        .input-arrow {
+          .MuiInputBase-root {
+            padding-top: 23px;
+            padding-bottom: 2px;
+            .MuiInputBase-input {
+              // max-height: 13px;
+            }
+          }
+        }
         .second-line {
           cursor: pointer;
           position: relative;
@@ -49,6 +62,41 @@
             transform: translate(-50%, -50%);
             position: absolute;
             right: 10px;
+          }
+        }
+        ::-webkit-input-placeholder {
+          color: #8c8c8c !important;
+        }
+        .sex {
+          width: 100%;
+        }
+        .birth-date {
+          width: 100%;
+          cursor: pointer;
+
+          .ant-picker {
+            cursor: pointer;
+            border-radius: 4px;
+            height: 48px;
+            width: 100%;
+          }
+          .ant-picker-outlined {
+            border-color: silver !important;
+          }
+          .ant-picker-input {
+            input {
+              font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+              color: black !important;
+              font-size: 1rem;
+              font-weight: 400;
+              letter-spacing: 0.00938em;
+            }
+          }
+          .ant-picker-outlined:focus-within,
+          .ant-picker-outlined:focus,
+          .ant-picker-outlined:hover {
+            border-color: silver;
+            box-shadow: none;
           }
         }
         .information {
@@ -125,6 +173,10 @@
             color: rgb(34 34 34);
           }
         }
+        .save-change {
+          margin-top: 2rem;
+          width: fit-content;
+        }
         .email {
           .MuiFormControl-root {
             width: 100%;
@@ -169,6 +221,10 @@
                 width: 100%;
               }
             }
+            .bottom {
+              display: flex;
+              gap: 0.75rem;
+            }
           }
           .title {
             margin-bottom: 0;
@@ -186,6 +242,13 @@
         }
       }
     }
+  }
+  .ant-picker-clear {
+    display: none;
+  }
+  .ant-picker-suffix{
+    display: block !important;
+    opacity: 1 !important;
   }
 }
 .breadcrumb-user-page {
@@ -233,6 +296,9 @@
       }
     }
     .date {
+      ::-webkit-input-placeholder {
+        color: #8c8c8c !important;
+      }
       .ant-picker {
         border-color: silver !important;
         cursor: pointer;
@@ -242,7 +308,7 @@
         .ant-picker-input {
           input {
             font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-            color: #8c8c8c !important;
+            color: black !important;
             font-size: 1rem;
             font-weight: 400;
             letter-spacing: 0.00938em;

@@ -11,3 +11,4 @@ export const changeProfile = async (accessToken: string, data: any) => {
   };
   return axios(config);
 };
+
