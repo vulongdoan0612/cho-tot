@@ -25,7 +25,7 @@ const AvatarDropdown = () => {
         <a onClick={(e) => e.preventDefault()}>
           <UserAvatarIcon></UserAvatarIcon>
           {isAuthenticated ? (
-            <span className="fullname">{account?.user?.fullname}</span>
+            <span className="fullname">{account?.fullname}</span>
           ) : (
             <span className="fullname">Tài khoản</span>
           )}

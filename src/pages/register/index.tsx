@@ -1,13 +1,15 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, Spin } from "antd";
 import Image from "next/image";
 import { FacebookIcon, GoogleIcon } from "@/components/CustomIcons";
 import { useRouter } from "next/router";
 import { requestLogin, requestSignUp } from "@/services/authentication";
 import { ToastContainer, toast } from "react-toastify";
 import CustomButton from "@/components/CustomButton";
+import { useState } from "react";
 
 const Register = () => {
   const router = useRouter();
+  const [spin, setSpin] = useState(false);
 
   const onFinish = async (values: any) => {
     try {
@@ -17,16 +19,23 @@ const Register = () => {
         password: values.password,
       };
       const response = await requestSignUp(dataSignUp);
-      if (response.status === 201) {
-        try {
-          toast(response.data.message);
-        } finally {
+      if (response?.status === 201) {
+        if (response?.data?.status) {
+          setSpin(true);
           setTimeout(() => {
-            router.push("/login");
+            setSpin(false);
           }, 1000);
+          setTimeout(() => {
+            toast(response?.data?.message, { autoClose: 500 });
+          }, 1001);
+
+          if (response?.data?.status === "SUCCESS") {
+            localStorage.setItem("access_token", response?.data?.token);
+            setTimeout(() => {
+              router.push("/login");
+            }, 1000);
+          }
         }
-      } else if (response.status === 404) {
-        console.log("Vui lòng đăng ký lại sau.");
       }
     } catch (error: any) {
       console.log("Vui lòng đăng ký lại sau.", error);
@@ -179,6 +188,7 @@ const Register = () => {
           </a>
         </div>
       </div>
+      <Spin spinning={spin} />
     </div>
   );
 };

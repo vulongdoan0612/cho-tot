@@ -1,4 +1,4 @@
-import { ILogin, ISignUp } from "@/interfaces/Authentication";
+import { IChangePassword, ILogin, ISignUp } from "@/interfaces/Authentication";
 import { setAuthenticate } from "@/redux/reducers/auth";
 import { axios } from "@/utils/axios";
 
@@ -15,6 +15,21 @@ export const requestSignUp = async (data: ISignUp) => {
   const config = {
     method: "POST",
     url: `/register`,
+    data: data,
+  };
+
+  return axios(config);
+};
+export const changePassword = async (
+  accessToken: string,
+  data: IChangePassword
+) => {
+  const config = {
+    method: "PUT",
+    url: `/change-password`,
+    headers: {
+      Authorization: accessToken,
+    },
     data: data,
   };
 

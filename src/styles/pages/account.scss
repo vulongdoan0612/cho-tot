@@ -1,0 +1,33 @@
+.right-content {
+  .currentPassword,
+  .newPassword,
+  .confirmPassword {
+    .MuiFormControl-root {
+      width: 100%;
+    }
+  }
+  .change-password {
+    margin-top: 0px !important;
+  }
+}
+.modal-change-password {
+  .contain {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    color: black;
+    margin-top: 24px;
+    .ant-image {
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin-bottom: 12px;
+      font-size: 30px;
+      text-align: center;
+      font-weight: 700 !important;
+    }
+  }
+  .button-finish {
+    margin-top: 24px !important;
+  }
+}

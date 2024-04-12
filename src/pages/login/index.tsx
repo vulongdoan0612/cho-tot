@@ -1,13 +1,15 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Spin } from "antd";
 import Image from "next/image";
 import { FacebookIcon, GoogleIcon } from "@/components/CustomIcons";
 import { useRouter } from "next/router";
 import { requestLogin } from "@/services/authentication";
 import CustomButton from "@/components/CustomButton";
+import { ToastContainer, toast } from "react-toastify";
+import { useState } from "react";
 
 const Login = () => {
   const router = useRouter();
-
+  const [spin, setSpin] = useState(false);
   const onFinish = async (values: any) => {
     try {
       const dataLogin = {
@@ -15,21 +17,33 @@ const Login = () => {
         password: values.password,
       };
       const response = await requestLogin(dataLogin);
-      if (response.status === 200 && response?.data?.token) {
-        try {
-          localStorage.setItem("access_token", response?.data?.token);
-        } finally {
-          router.push("/");
+      console.log(response);
+      if (response?.status === 200) {
+        if (response?.data?.status) {
+          setSpin(true);
+          setTimeout(() => {
+            setSpin(false);
+          }, 1000);
+          setTimeout(() => {
+            toast(response?.data?.message, { autoClose: 500 });
+          }, 1001);
+
+          if (response?.data?.status === "SUCCESS") {
+            localStorage.setItem("access_token", response?.data?.token);
+            setTimeout(() => {
+              router.push("/");
+            }, 1000);
+          }
         }
-      } else if (response.status === 404) {
-        console.log("Sai mật khẩu hoặc tài khoản không tồn tại.");
       }
     } catch (error: any) {
       console.log("Sai mật khẩu hoặc tài khoản không tồn tại.", error);
     }
   };
   return (
-    <div className="login-wrapper">
+    <div className={`login-wrapper ${spin ? "spinning" : ""}`}>
+      <ToastContainer></ToastContainer>
+
       <div className="modal-login">
         <div className="logo">
           <Image
@@ -120,6 +134,7 @@ const Login = () => {
           </a>
         </div>
       </div>
+      <Spin spinning={spin} />
     </div>
   );
 };

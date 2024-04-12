@@ -38,7 +38,7 @@ const DropdownList = () => {
             />
           </div>
           <div className="right">
-            <div className="name">{account?.user?.fullname}</div>
+            <div className="name">{account?.fullname}</div>
             <div className="rate">
               <span className="rate-number">2</span>
               <Rate

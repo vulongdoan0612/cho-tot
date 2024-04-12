@@ -22,6 +22,9 @@
         background-color: white;
         padding: 16px;
         border-radius: 4px;
+        .bold {
+          font-weight: 700 !important;
+        }
         ul {
           display: flex;
           flex-direction: column;
@@ -74,24 +77,8 @@
           width: 100%;
           cursor: pointer;
 
-          .ant-picker {
-            cursor: pointer;
-            border-radius: 4px;
-            height: 48px;
-            width: 100%;
-          }
-          .ant-picker-outlined {
-            border-color: silver !important;
-          }
-          .ant-picker-input {
-            input {
-              font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-              color: black !important;
-              font-size: 1rem;
-              font-weight: 400;
-              letter-spacing: 0.00938em;
-            }
-          }
+
+         
           .ant-picker-outlined:focus-within,
           .ant-picker-outlined:focus,
           .ant-picker-outlined:hover {
@@ -246,9 +233,24 @@
   .ant-picker-clear {
     display: none;
   }
-  .ant-picker-suffix{
+  .ant-picker-suffix {
     display: block !important;
     opacity: 1 !important;
+  }
+}
+.ant-picker-outlined {
+  border-color: silver !important;
+}
+.ant-picker-input {
+  input {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color: #8c8c8c !important;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.00938em;
+  }
+  input::placeholder {
+    color: #8c8c8c !important;
   }
 }
 .breadcrumb-user-page {
@@ -299,34 +301,26 @@
       ::-webkit-input-placeholder {
         color: #8c8c8c !important;
       }
-      .ant-picker {
-        border-color: silver !important;
-        cursor: pointer;
-        border-radius: 4px;
-        height: 48px;
-        width: 100%;
-        .ant-picker-input {
-          input {
-            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-            color: black !important;
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 0.00938em;
-          }
-        }
-      }
-      .ant-picker-outlined:focus-within {
-        box-shadow: none;
-      }
-      .ant-picker-outlined:hover {
-        border: 1px solid silver !important;
-      }
-      .ant-picker-outlined:focus {
-        box-shadow: none;
-      }
     }
   }
 }
+.ant-picker {
+  border-color: silver !important;
+  cursor: pointer;
+  border-radius: 4px;
+  height: 48px;
+  width: 100%;
+  .ant-picker-input {
+    input {
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      color: black !important;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.00938em;
+    }
+  }
+}
+
 .modal-fav {
   .fav-wrapper {
     row-gap: 1rem;

@@ -20,17 +20,17 @@ import {
 } from "../CustomIcons";
 import AvatarDropdown from "../AvatarDropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthenticate } from "@/redux/reducers/auth";
+import { fetchDataUser, setAuthenticate } from "@/redux/reducers/auth";
 import { getProfile } from "@/services/getProfile";
 import useDidMountEffect from "@/utils/customUseEffect";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import {
   countDownLoading,
   countdownComplete,
 } from "@/redux/reducers/countDownLoading";
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { account } = useSelector((state: RootState) => state.auth);
   const { countdownDuration, loading } = useSelector(
     (state: RootState) => state.countDownLoading
@@ -49,20 +49,7 @@ const Header = () => {
     const token = localStorage.getItem("access_token");
     try {
       if (token) {
-        try {
-          dispatch(setAuthenticate({ loading: true, isAuthenticated: false }));
-        } finally {
-          const response = await getProfile(String(token));
-          if (response.status === 200) {
-            dispatch(
-              setAuthenticate({
-                loading: false,
-                isAuthenticated: true,
-                account: response.data,
-              })
-            );
-          }
-        }
+        dispatch(fetchDataUser());
       }
     } catch {
       console.log("error");
@@ -256,7 +243,9 @@ const Header = () => {
           ) : (
             <Button>
               <UploadNewIcon></UploadNewIcon>
-              <span className="text">ĐĂNG TIN</span>
+              <a href="/dang-tin">
+                <span className="text">ĐĂNG TIN</span>
+              </a>
             </Button>
           )}
         </div>

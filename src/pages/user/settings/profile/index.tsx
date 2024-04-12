@@ -27,6 +27,7 @@ import { setAuthenticate } from "@/redux/reducers/auth";
 import { changeProfile } from "@/services/user";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import Setting from "@/layout/Setting";
 
 const User = () => {
   const dispatch = useDispatch();
@@ -115,8 +116,8 @@ const User = () => {
   };
   useEffect(() => {
     try {
-      if (account?.user?.address?.city !== null) {
-        const selectedCityId = account?.user?.address?.city;
+      if (account?.address?.city !== null) {
+        const selectedCityId = account?.address?.city;
         const selectedCity = stateUser.cities.find(
           (city: any) => city.Id === selectedCityId
         );
@@ -130,11 +131,11 @@ const User = () => {
       }
     } finally {
       if (
-        account?.user?.address?.city !== null &&
-        account?.user?.address?.district !== null &&
+        account?.address?.city !== null &&
+        account?.address?.district !== null &&
         stateUser.districts
       ) {
-        const selectedDistrictId = account?.user?.address?.district;
+        const selectedDistrictId = account?.address?.district;
 
         const selectedDistrict = stateUser.districts.find(
           (district: any) => district.Id === selectedDistrictId
@@ -147,7 +148,7 @@ const User = () => {
         }
       }
     }
-  }, [account?.user?.address, stateUser.cities, stateUser.districts]);
+  }, [account?.address, stateUser.cities, stateUser.districts]);
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
     const selectedCity = stateUser.cities.find(
@@ -230,86 +231,93 @@ const User = () => {
     }));
   };
   useEffect(() => {
-    if (account?.user?.address) {
+    if (account?.address) {
       setStateUser((prevState) => ({
         ...prevState,
-        cityValue: account?.user?.address?.city,
-        districtValue: account?.user?.address?.district,
-        wardValue: account?.user?.address?.ward,
-        detailAddress: account?.user?.address?.detailAddress,
-        fullAddress: account?.user?.address?.fullAddress,
+        cityValue: account?.address?.city,
+        districtValue: account?.address?.district,
+        wardValue: account?.address?.ward,
+        detailAddress: account?.address?.detailAddress,
+        fullAddress: account?.address?.fullAddress,
       }));
     }
-  }, [account?.user?.address]);
+  }, [account?.address]);
   useEffect(() => {
-    if (account?.user?.rememberName) {
+    if (account?.rememberName) {
       setStateUser((prevState) => ({
         ...prevState,
-        rememberName: account?.user?.rememberName,
+        rememberName: account?.rememberName,
       }));
     }
-  }, [account?.user?.rememberName]);
+  }, [account?.rememberName]);
   useEffect(() => {
-    if (account?.user?.birthdate) {
+    if (account?.birthdate) {
       setStateUser((prevState) => ({
         ...prevState,
-        birth: account?.user?.birthdate,
+        birth: account?.birthdate,
       }));
     }
-  }, [account?.user?.birthdate]);
+  }, [account?.birthdate]);
   useEffect(() => {
     if (
-      account?.user?.identifyCard?.CMND ||
-      account?.user?.identifyCard?.date ||
-      account?.user?.identifyCard?.location
+      account?.identifyCard?.CMND ||
+      account?.identifyCard?.date ||
+      account?.identifyCard?.location
     ) {
-      console.log("oke");
       setStateUser((prevState) => ({
         ...prevState,
-        cccd: account?.user?.identifyCard?.CMND,
-        dateCCCD: account?.user?.identifyCard?.date,
-        location: account?.user?.identifyCard?.location,
-        fullCCCD: account?.user?.identifyCard?.fullCMND,
+        cccd: account?.identifyCard?.CMND,
+        dateCCCD: account?.identifyCard?.date,
+        location: account?.identifyCard?.location,
+        fullCCCD: account?.identifyCard?.fullCMND,
       }));
     }
   }, [
-    account?.user?.identifyCard?.CMND,
-    account?.user?.identifyCard?.date,
-    account?.user?.identifyCard?.location,
-    account?.user?.identifyCard?.fullCMND,
+    account?.identifyCard?.CMND,
+    account?.identifyCard?.date,
+    account?.identifyCard?.location,
+    account?.identifyCard?.fullCMND,
   ]);
   useEffect(() => {
-    if (account?.user?.introduction) {
+    if (account?.introduction) {
       setStateUser((prevState) => ({
         ...prevState,
-        introducing: account?.user?.introduction,
+        introducing: account?.introduction,
       }));
     }
-  }, [account?.user?.introduction]);
+  }, [account?.introduction]);
   useEffect(() => {
-    if (account?.user?.faxNumber) {
+    if (account?.fullname) {
       setStateUser((prevState) => ({
         ...prevState,
-        numberFax: account?.user?.faxNumber,
+        fullName: account?.fullname,
       }));
     }
-  }, [account?.user?.faxNumber]);
+  }, [account?.fullname]);
   useEffect(() => {
-    if (account?.user?.sex) {
+    if (account?.faxNumber) {
       setStateUser((prevState) => ({
         ...prevState,
-        sex: account?.user?.sex,
+        numberFax: account?.faxNumber,
       }));
     }
-  }, [account?.user?.sex]);
+  }, [account?.faxNumber]);
   useEffect(() => {
-    if (account?.user?.favouriteList) {
+    if (account?.sex) {
       setStateUser((prevState) => ({
         ...prevState,
-        selectedItemFav: account?.user?.favouriteList,
+        sex: account?.sex,
       }));
     }
-  }, [account?.user?.favouriteList]);
+  }, [account?.sex]);
+  useEffect(() => {
+    if (account?.favouriteList) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        selectedItemFav: account?.favouriteList,
+      }));
+    }
+  }, [account?.favouriteList]);
   const handleModal = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -428,317 +436,254 @@ const User = () => {
   };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
-      <div className="user-wrapper">
+      <Setting title="Thông tin cá nhân" active="1">
         {" "}
-        <Breadcrumb
-          className="breadcrumb-user-page"
-          separator=">"
-          items={[
-            {
-              title: "Chợ tốt",
-            },
-            {
-              title: `Trang cá nhân của ${account?.user?.fullname}`,
-            },
-            {
-              title: "Thông tin cá nhân",
-            },
-          ]}
-        />
-        <span className="title">Thông tin cá nhân</span>
-        <div className="container">
-          <div className="left">
-            <div className="left-content">
-              <ul>
-                <li>Thông tin cá nhân</li>
-                <li>Liên kết mạng xã hội</li>
-                <li>Cài đặt tài khoản</li>
-                <li>Quản lý lịch sử đăng nhập</li>
-              </ul>
-            </div>
-          </div>
-          <div className="right">
-            <div className="right-content">
-              <div className="information">
-                <span className="title">Hồ sơ cá nhân</span>
-                <div className="form-input">
-                  <div className="first-line input-need-to-custom">
-                    {" "}
-                    <div className="fullname">
-                      {loading ? (
-                        <Skeleton.Input
-                          block={true}
-                          active
-                          size="large"
-                        ></Skeleton.Input>
-                      ) : (
-                        <TextField
-                          required
-                          className="fullname"
-                          id="filled-multiline-flexible"
-                          label="Họ và tên"
-                          multiline
-                          onChange={handleChangeFullName}
-                          value={stateUser.fullName || account?.user?.fullname}
-                          maxRows={4}
-                          variant="filled"
-                        />
-                      )}
-                    </div>
-                    <div
-                      className={`phone ${
-                        account?.user?.phone ? "phone-exit" : "phone-not-exit"
-                      }`}
-                    >
-                      {loading ? (
-                        <Skeleton.Input
-                          block={true}
-                          active
-                          size="large"
-                        ></Skeleton.Input>
-                      ) : (
-                        <>
-                          <TextField
-                            required
-                            className="phone"
-                            disabled={true}
-                            id="filled-multiline-flexible"
-                            label="Số điện thoại"
-                            multiline
-                            maxRows={4}
-                            variant="filled"
-                            defaultValue={account?.user?.phone}
-                          />
-                          {account?.user?.phone ? (
-                            <span className="change-phone">Thay đổi</span>
-                          ) : (
-                            <></>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  {loading ? (
-                    <Skeleton.Input
-                      block={true}
-                      active
-                      size="large"
-                    ></Skeleton.Input>
-                  ) : (
-                    <div
-                      className="second-line input-need-to-custom"
-                      onClick={handleModal}
-                    >
-                      <TextField
-                        className="fullname"
-                        id="filled-multiline-flexible"
-                        label="Địa chỉ"
-                        value={stateUser.fullAddress}
-                        multiline
-                        maxRows={4}
-                        variant="filled"
-                      />
-                      <ArrowInputIcon></ArrowInputIcon>
-                    </div>
-                  )}
-                  {loading ? (
-                    <Skeleton.Input
-                      block={true}
-                      active
-                      size="large"
-                      style={{ height: "155px" }}
-                    ></Skeleton.Input>
-                  ) : (
-                    <div className="introducing">
-                      <TextField
-                        className="text-area"
-                        id="filled-multiline-flexible"
-                        label="Giới thiệu"
-                        multiline
-                        value={stateUser.introducing}
-                        onChange={handleChangeIntroducing}
-                        maxRows={4}
-                        variant="filled"
-                      />
-                    </div>
-                  )}
-                  <div className="remember-name input-need-to-custom">
-                    {loading ? (
-                      <Skeleton.Input
-                        block={true}
-                        active
-                        size="large"
-                      ></Skeleton.Input>
-                    ) : (
-                      <TextField
-                        className="rembember"
-                        id="filled-multiline-flexible"
-                        label="Tên gợi nhớ"
-                        value={
-                          stateUser.rememberName || account?.user?.rememberName
-                        }
-                        onChange={handleChangeRemember}
-                        multiline
-                        maxRows={4}
-                        variant="filled"
-                      />
-                    )}
-                    <p className="text">
-                      https://www.chotot.com/user/<span>dsadasdsadasd</span>
-                    </p>
-                    <p className="des">
-                      Tên gợi nhớ sau khi được cập nhật sẽ không thể thay đổi
-                      trong vòng 60 ngày tới.
-                    </p>
-                  </div>
-                </div>
+        <div className="information">
+          <span className="title">Hồ sơ cá nhân</span>
+          <div className="form-input">
+            <div className="first-line input-need-to-custom">
+              {" "}
+              <div className="fullname">
+                {loading ? (
+                  <Skeleton.Input
+                    block={true}
+                    active
+                    size="large"
+                  ></Skeleton.Input>
+                ) : (
+                  <TextField
+                    required
+                    className="fullname"
+                    id="filled-multiline-flexible"
+                    label="Họ và tên"
+                    multiline
+                    onChange={handleChangeFullName}
+                    value={stateUser.fullName}
+                    maxRows={4}
+                    variant="filled"
+                  />
+                )}
               </div>
-              <div className="security">
-                <span className="title">Thông tin bảo mật</span>
-                <p className="des-sec">
-                  Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể
-                  thấy và chỉnh sửa những thông tin này.
-                </p>
-                <div className="form-input">
-                  <div
-                    className={`email input-need-to-custom ${
-                      account?.user?.email !== ""
-                        ? "email-exit"
-                        : "email-not-exit"
-                    }`}
-                  >
+              <div
+                className={`phone ${
+                  account?.phone ? "phone-exit" : "phone-not-exit"
+                }`}
+              >
+                {loading ? (
+                  <Skeleton.Input
+                    block={true}
+                    active
+                    size="large"
+                  ></Skeleton.Input>
+                ) : (
+                  <>
                     <TextField
-                      className="email"
+                      required
+                      className="phone"
+                      disabled={true}
                       id="filled-multiline-flexible"
-                      label={`${
-                        account?.user?.email !== "" ? "Email" : "Thêm email"
-                      }`}
+                      label="Số điện thoại"
                       multiline
                       maxRows={4}
                       variant="filled"
+                      defaultValue={account?.phone}
                     />
-                  </div>
-                  {loading ? (
-                    <Skeleton.Input
-                      block={true}
-                      active
-                      size="large"
-                    ></Skeleton.Input>
-                  ) : (
-                    <div
-                      className="second-line input-arrow"
-                      onClick={handleModalCCCD}
-                    >
-                      <TextField
-                        className="fullname"
-                        id="filled-multiline-flexible"
-                        label="CCCD / CMND / Hộ chiếu"
-                        value={stateUser.fullCCCD}
-                        multiline
-                        maxRows={4}
-                        variant="filled"
-                      />
-                      <ArrowInputIcon></ArrowInputIcon>
-                    </div>
-                  )}
-                  {loading ? (
-                    <Skeleton.Input
-                      block={true}
-                      active
-                      size="large"
-                    ></Skeleton.Input>
-                  ) : (
-                    <div className="fax-number input-need-to-custom">
-                      <TextField
-                        className="fax"
-                        id="filled-multiline-flexible"
-                        label="Mã số thuế"
-                        value={stateUser.numberFax}
-                        onChange={handleChangeNumberFax}
-                        multiline
-                        maxRows={4}
-                        variant="filled"
-                      />
-                    </div>
-                  )}
-                  {loading ? (
-                    <Skeleton.Input
-                      block={true}
-                      active
-                      size="large"
-                    ></Skeleton.Input>
-                  ) : (
-                    <div
-                      className="second-line input-arrow"
-                      onClick={handleModalFav}
-                    >
-                      <TextField
-                        className="fullname"
-                        id="filled-multiline-flexible"
-                        label="Danh mục yêu thích"
-                        value={stateUser.selectedItemFav}
-                        onChange={handleFav}
-                        multiline
-                        maxRows={4}
-                        variant="filled"
-                      />
-                      <ArrowInputIcon></ArrowInputIcon>
-                    </div>
-                  )}
-                  {loading ? (
-                    <Skeleton.Input
-                      block={true}
-                      active
-                      size="large"
-                    ></Skeleton.Input>
-                  ) : (
-                    <div className="bottom">
-                      <div className="sex">
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">
-                            Giới tính
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={stateUser.sex}
-                            label="Giới tính"
-                            onChange={handleChangeSex}
-                          >
-                            <MenuItem value={"Nam"}>Nam</MenuItem>
-                            <MenuItem value={"Nữ"}>Nữ</MenuItem>
-                            <MenuItem value={"Khác"}>Khác</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </div>
-                      <div className="birth-date">
-                        <div className="date input-need-to-custom">
-                          <DatePicker
-                            value={
-                              stateUser.birth !== ""
-                                ? dayjs(stateUser.birth)
-                                : null
-                            }
-                            onChange={onChangeBirth}
-                            placeholder={"Ngày sinh"}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                    {account?.phone ? (
+                      <span className="change-phone">Thay đổi</span>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                )}
               </div>
-              <CustomButton
-                type="submit"
-                className="save-change"
-                onClick={updateProfile}
+            </div>
+            {loading ? (
+              <Skeleton.Input block={true} active size="large"></Skeleton.Input>
+            ) : (
+              <div
+                className="second-line input-need-to-custom"
+                onClick={handleModal}
               >
-                Lưu thay đổi
-              </CustomButton>
+                <TextField
+                  className="fullname"
+                  id="filled-multiline-flexible"
+                  label="Địa chỉ"
+                  value={stateUser.fullAddress}
+                  multiline
+                  maxRows={4}
+                  variant="filled"
+                />
+                <ArrowInputIcon></ArrowInputIcon>
+              </div>
+            )}
+            {loading ? (
+              <Skeleton.Input
+                block={true}
+                active
+                size="large"
+                style={{ height: "155px" }}
+              ></Skeleton.Input>
+            ) : (
+              <div className="introducing">
+                <TextField
+                  className="text-area"
+                  id="filled-multiline-flexible"
+                  label="Giới thiệu"
+                  multiline
+                  value={stateUser.introducing}
+                  onChange={handleChangeIntroducing}
+                  maxRows={4}
+                  variant="filled"
+                />
+              </div>
+            )}
+            <div className="remember-name input-need-to-custom">
+              {loading ? (
+                <Skeleton.Input
+                  block={true}
+                  active
+                  size="large"
+                ></Skeleton.Input>
+              ) : (
+                <TextField
+                  className="rembember"
+                  id="filled-multiline-flexible"
+                  label="Tên gợi nhớ"
+                  value={stateUser.rememberName || account?.rememberName}
+                  onChange={handleChangeRemember}
+                  multiline
+                  maxRows={4}
+                  variant="filled"
+                />
+              )}
+              <p className="text">
+                https://www.chotot.com/user/<span>dsadasdsadasd</span>
+              </p>
+              <p className="des">
+                Tên gợi nhớ sau khi được cập nhật sẽ không thể thay đổi trong
+                vòng 60 ngày tới.
+              </p>
             </div>
           </div>
         </div>
-      </div>
+        <div className="security">
+          <span className="title">Thông tin bảo mật</span>
+          <p className="des-sec">
+            Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể thấy
+            và chỉnh sửa những thông tin này.
+          </p>
+          <div className="form-input">
+            <div
+              className={`email input-need-to-custom ${
+                account?.email !== "" ? "email-exit" : "email-not-exit"
+              }`}
+            >
+              <TextField
+                className="email"
+                id="filled-multiline-flexible"
+                label={`${account?.email !== "" ? "Email" : "Thêm email"}`}
+                multiline
+                maxRows={4}
+                variant="filled"
+              />
+            </div>
+            {loading ? (
+              <Skeleton.Input block={true} active size="large"></Skeleton.Input>
+            ) : (
+              <div
+                className="second-line input-arrow"
+                onClick={handleModalCCCD}
+              >
+                <TextField
+                  className="fullname"
+                  id="filled-multiline-flexible"
+                  label="CCCD / CMND / Hộ chiếu"
+                  value={stateUser.fullCCCD}
+                  multiline
+                  maxRows={4}
+                  variant="filled"
+                />
+                <ArrowInputIcon></ArrowInputIcon>
+              </div>
+            )}
+            {loading ? (
+              <Skeleton.Input block={true} active size="large"></Skeleton.Input>
+            ) : (
+              <div className="fax-number input-need-to-custom">
+                <TextField
+                  className="fax"
+                  id="filled-multiline-flexible"
+                  label="Mã số thuế"
+                  value={stateUser.numberFax}
+                  onChange={handleChangeNumberFax}
+                  multiline
+                  maxRows={4}
+                  variant="filled"
+                />
+              </div>
+            )}
+            {loading ? (
+              <Skeleton.Input block={true} active size="large"></Skeleton.Input>
+            ) : (
+              <div className="second-line input-arrow" onClick={handleModalFav}>
+                <TextField
+                  className="fullname"
+                  id="filled-multiline-flexible"
+                  label="Danh mục yêu thích"
+                  value={stateUser.selectedItemFav}
+                  onChange={handleFav}
+                  multiline
+                  maxRows={4}
+                  variant="filled"
+                />
+                <ArrowInputIcon></ArrowInputIcon>
+              </div>
+            )}
+            {loading ? (
+              <Skeleton.Input block={true} active size="large"></Skeleton.Input>
+            ) : (
+              <div className="bottom">
+                <div className="sex">
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Giới tính
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={stateUser.sex}
+                      label="Giới tính"
+                      onChange={handleChangeSex}
+                    >
+                      <MenuItem value={"Nam"}>Nam</MenuItem>
+                      <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                      <MenuItem value={"Khác"}>Khác</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="birth-date">
+                  <div className="date input-need-to-custom">
+                    <DatePicker
+                      value={
+                        stateUser.birth !== "" ? dayjs(stateUser.birth) : null
+                      }
+                      onChange={onChangeBirth}
+                      placeholder={"Ngày sinh"}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <CustomButton
+          type="submit"
+          className="save-change"
+          onClick={updateProfile}
+        >
+          Lưu thay đổi
+        </CustomButton>
+      </Setting>
       <ModalAddressUser
         cityValue={stateUser.cityValue}
         districtValue={stateUser.districtValue}

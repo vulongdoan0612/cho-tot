@@ -159,4 +159,11 @@
       gap: 20px;
     }
   }
+  .ant-spin {
+    z-index: 2222;
+  }
+}
+.spinning {
+  pointer-events: none;
+  cursor: none;
 }

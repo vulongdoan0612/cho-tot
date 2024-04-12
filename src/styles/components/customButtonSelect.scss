@@ -1,0 +1,27 @@
+.custom-button-select {
+  border: none;
+  color: black;
+  --s55py7u-0: 32px;
+  --s55py7u-1: 0.875rem;
+  --s55py7u-2: initial;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  line-height: 16px;
+  height: var(--s55py7u-0);
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 9999px;
+  background-color: #f4f4f4;
+  font-size: var(--s55py7u-1);
+  cursor: pointer;
+  min-width: var(--s55py7u-2);
+  text-align: center;
+}
+.active-button-select {
+  background-color: #fff4e0;
+  color: #f80;
+}

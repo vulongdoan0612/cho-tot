@@ -1,0 +1,81 @@
+.title-post-sell-wrapper {
+  display: flex;
+  flex-direction: column;
+  .title {
+  }
+  .title-field {
+    margin-bottom: 12px;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    span {
+      font-size: 0.75rem;
+      margin-left: 1rem;
+    }
+  }
+  .introducing {
+    .text-area {
+      width: 100%;
+    }
+    .MuiFormControl-root {
+      width: 100%;
+      height: auto !important;
+      .MuiInputBase-root {
+        height: auto !important;
+        white-space: wrap !important;
+
+        // height: 100px;
+        .MuiInputBase-input {
+          max-height: 200px !important;
+          min-height: 120px !important;
+          height: auto !important;
+        }
+        // overflow-y: scroll;
+      }
+    }
+  }
+  .title-infor {
+    margin-bottom: 16px;
+  }
+  .you-are {
+    display: block;
+    font-size: 0.625rem;
+    color: #8c8c8c;
+    line-height: 1.5;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .display-flex {
+    display: flex;
+    gap: 1rem;
+  }
+  .address {
+    cursor: pointer;
+    position: relative;
+    .MuiFormControl-root {
+      cursor: pointer;
+
+      width: 100%;
+    }
+    .anticon {
+      z-index: 23232;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      right: 10px;
+    }
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  .finish {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .preview {
+    color: #f80 !important;
+    background: transparent !important;
+    border: 1px solid #f80;
+  }
+}
