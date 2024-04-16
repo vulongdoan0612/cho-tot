@@ -81,7 +81,6 @@ export const EditPostFormSellCheck = async (accessToken: string, data: any) => {
     });
   }
 
-
   formData.append(`postId`, data?.postFormEdit?.postId);
   formData.append(`value`, data?.postFormEdit?.value);
   formData.append(`color`, data?.postFormEdit?.color);

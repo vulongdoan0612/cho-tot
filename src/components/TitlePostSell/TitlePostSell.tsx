@@ -12,9 +12,9 @@ import { toast } from "react-toastify";
 import { Spin } from "antd";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
-import convertToSlug from "@/utils/convertToSlug";
 import { ICommonStateFormRenderCarPost } from "@/interfaces/User";
 import { defaultCommonState } from "./_mock";
+import convertToSlug from "@/utils/convertToSlug";
 
 const TitlePostSell = ({
   value,
@@ -285,14 +285,69 @@ const TitlePostSell = ({
   const postSell = async () => {
     const token = localStorage.getItem("access_token");
     const uuid = uuidv4();
-
     try {
       if (token) {
-        try {
-        } finally {
-          const postForm = {
-            postId: uuid,
+        const postForm = {
+          postId: uuid,
+          value,
+          color,
+          carNumber,
+          owner,
+          price,
+          country,
+          model,
+          sit,
+          activeButton,
+          accessories,
+          registry,
+          numberBox,
+          status,
+          dateCar,
+          title: statePost?.title,
+          introducing: statePost?.introducing,
+          km,
+          form,
+          person: statePost?.person,
+          detailAddress: statePost?.detailAddress,
+          fullAddress: statePost?.fullAddress,
+          districtValueName: convertToSlug(statePost?.districtValueName),
+          cityValueName: convertToSlug(statePost?.cityValueName),
+          cityValue: statePost?.cityValue,
+          districtValue: statePost?.districtValue,
+          wardValue: statePost?.wardValue,
+        };
+        console.log(fileList);
+        if (fileList && !id) {
+          const response = await PostFormSellCheck(String(token), {
+            postForm,
+            image: fileList,
+          });
+          console.log(response);
+          if (response?.data?.status) {
+            setStatePost((prevState) => ({
+              ...prevState,
+              spin: true,
+            }));
+            setTimeout(() => {
+              setStatePost((prevState) => ({
+                ...prevState,
+                spin: false,
+              }));
+            }, 1000);
+            setTimeout(() => {
+              toast(response?.data?.message, { autoClose: 500 });
+            }, 1001);
+
+            if (response?.data?.status === "SUCCESS") {
+              setTimeout(() => {
+                router.push(`/dashboard/view-post?id=${uuid}`);
+              }, 2000);
+            }
+          }
+        } else if (fileList && id) {
+          const postFormEdit = {
             value,
+            postId: dataPost?.postId,
             color,
             carNumber,
             owner,
@@ -319,95 +374,37 @@ const TitlePostSell = ({
             districtValue: statePost?.districtValue,
             wardValue: statePost?.wardValue,
           };
-
-          if (fileList && !id) {
-            const response = await PostFormSellCheck(String(token), {
-              postForm,
-              image: fileList,
-            });
-            if (response?.data?.status) {
+          const response = await EditPostFormSellCheck(String(token), {
+            postFormEdit,
+            image: { fileList },
+          });
+          if (response?.data?.status) {
+            setStatePost((prevState) => ({
+              ...prevState,
+              spin: true,
+            }));
+            setTimeout(() => {
               setStatePost((prevState) => ({
                 ...prevState,
-                spin: true,
+                spin: false,
               }));
-              setTimeout(() => {
-                setStatePost((prevState) => ({
-                  ...prevState,
-                  spin: false,
-                }));
-              }, 1000);
-              setTimeout(() => {
-                toast(response?.data?.message, { autoClose: 500 });
-              }, 1001);
+            }, 1000);
+            setTimeout(() => {
+              toast(response?.data?.message, { autoClose: 500 });
+            }, 1001);
 
-              if (response?.data?.status === "SUCCESS") {
-                setTimeout(() => {
-                  router.push(`/dashboard/view-post?id=${uuid}`);
-                }, 2000);
-              }
-            }
-          } else if (fileList && id) {
-            const postFormEdit = {
-              value,
-              postId: dataPost?.postId,
-              color,
-              carNumber,
-              owner,
-              price,
-              country,
-              model,
-              sit,
-              activeButton,
-              accessories,
-              registry,
-              numberBox,
-              status,
-              dateCar,
-              title: statePost?.title,
-              introducing: statePost?.introducing,
-              km,
-              form,
-              person: statePost?.person,
-              detailAddress: statePost?.detailAddress,
-              fullAddress: statePost?.fullAddress,
-              districtValueName: convertToSlug(statePost?.districtValueName),
-              cityValueName: convertToSlug(statePost?.cityValueName),
-              cityValue: statePost?.cityValue,
-              districtValue: statePost?.districtValue,
-              wardValue: statePost?.wardValue,
-            };
-            const response = await EditPostFormSellCheck(String(token), {
-              postFormEdit,
-              image: { fileList },
-            });
-            if (response?.data?.status) {
-              setStatePost((prevState) => ({
-                ...prevState,
-                spin: true,
-              }));
+            if (response?.data?.status === "SUCCESS") {
               setTimeout(() => {
-                setStatePost((prevState) => ({
-                  ...prevState,
-                  spin: false,
-                }));
-              }, 1000);
-              setTimeout(() => {
-                toast(response?.data?.message, { autoClose: 500 });
-              }, 1001);
-
-              if (response?.data?.status === "SUCCESS") {
-                setTimeout(() => {
-                  router.push(
-                    `/dashboard/view-post?id=${dataPost?.postId}&edit=yes`
-                  );
-                }, 2000);
-              }
+                router.push(
+                  `/dashboard/view-post?id=${dataPost?.postId}&edit=yes`
+                );
+              }, 2000);
             }
           }
         }
       }
-    } catch {
-      console.log("error");
+    } catch (err) {
+      console.log("error", err);
     }
   };
   return (
