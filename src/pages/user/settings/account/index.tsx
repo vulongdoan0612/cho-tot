@@ -40,7 +40,6 @@ const Account = () => {
           newPassword: newPassword,
         };
         const response = await changePassword(String(token), updatePassword);
-        console.log(response);
         if (response.status === 200) {
           toast(response.data.message);
           if (response.data.success) {

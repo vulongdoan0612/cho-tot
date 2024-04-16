@@ -38,7 +38,6 @@ const TitlePostSell = ({
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const [statePost, setStatePost] =
     useState<ICommonStateFormRenderCarPost>(defaultCommonState);
-  console.log(fileList, "testttttttt22222222t");
 
   const { account } = useSelector((state: RootState) => state.auth);
 
@@ -377,10 +376,9 @@ const TitlePostSell = ({
               districtValue: statePost?.districtValue,
               wardValue: statePost?.wardValue,
             };
-            console.log(fileList);
             const response = await EditPostFormSellCheck(String(token), {
               postFormEdit,
-              image: fileList,
+              image: { fileList },
             });
             if (response?.data?.status) {
               setStatePost((prevState) => ({

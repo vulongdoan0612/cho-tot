@@ -7,7 +7,6 @@ export const PostFormSellCheck = async (accessToken: string, data: any) => {
     });
   }
   formData.append(`postId`, data?.postForm?.postId);
-
   formData.append(`value`, data?.postForm?.value);
   formData.append(`color`, data?.postForm?.color);
   formData.append(`model`, data?.postForm?.model);
@@ -72,41 +71,16 @@ export const getPostCheckList = async (accessToken: string) => {
 };
 export const EditPostFormSellCheck = async (accessToken: string, data: any) => {
   const formData = new FormData();
-  if (data.image && data.image.length > 0) {
-    data.image.map((item: any) => {
-      if (item.originFileObj instanceof File) {
-        formData.append(`image`, item.originFileObj);
-        return {
-          ...item,
-          originFileObj: item.originFileObj,
-        };
-      } else {
-        formData.append(`image`, item.url);
-        console.log(item.url, item);
-        return {
-          ...item,
-          url: item.url,
-        };
+  if (data?.image?.fileList && data?.image?.fileList?.length > 0) {
+    data.image.fileList.forEach((image: any, index: number) => {
+      {
+        image?.response
+          ? formData.append(`image`, image.originFileObj)
+          : formData.append(`image`, image.url);
       }
     });
   }
 
-  // const formData = new FormData();
-  // let imageUrls: any[] = [];
-
-  // // Duyệt qua mảng data.image
-  // data.image.forEach((image: any) => {
-  //   // Kiểm tra nếu image có thuộc tính originFileObj và nếu có, lấy giá trị của url
-  //   if (image.originFileObj) {
-  //     imageUrls.push(image.originFileObj);
-  //   } else {
-  //     // Nếu không có thuộc tính originFileObj, chỉ lấy giá trị của url
-  //     imageUrls.push(image.url);
-  //   }
-  // });
-  // console.log(imageUrls);
-  // console.log()
-  // formData.append(`image`, imageUrls);
 
   formData.append(`postId`, data?.postFormEdit?.postId);
   formData.append(`value`, data?.postFormEdit?.value);

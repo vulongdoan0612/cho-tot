@@ -17,7 +17,6 @@ const Login = () => {
         password: values.password,
       };
       const response = await requestLogin(dataLogin);
-      console.log(response);
       if (response?.status === 200) {
         if (response?.data?.status) {
           setSpin(true);

@@ -80,7 +80,7 @@ const PostSell = () => {
       );
       setFileList(newFileList);
     }
-  }, [dataPost, dataPost.post.image]);
+  }, [dataPost]);
 
   useEffect(() => {
     if (id) {

@@ -32,7 +32,6 @@ import moment from "moment";
 import { useRouter } from "next/router";
 
 const RenderOto = ({ fileList }: any) => {
-  console.log(fileList, "testtttttttt");
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
   const [stateForm, setStateForm] =
@@ -125,7 +124,6 @@ const RenderOto = ({ fileList }: any) => {
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     const momentDateCCCD = moment(dateString);
     const formattedDateCCCD = momentDateCCCD.format("YYYY");
-    console.log("test");
     setStateForm((prevState) => ({
       ...prevState,
       dateCar: formattedDateCCCD,
@@ -175,7 +173,6 @@ const RenderOto = ({ fileList }: any) => {
     }));
   };
   const handleNumberBox = (NumberBox: any) => {
-    console.log(NumberBox);
     setStateForm((prevState) => ({
       ...prevState,
       numberBox: NumberBox,

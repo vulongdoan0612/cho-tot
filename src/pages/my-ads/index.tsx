@@ -54,7 +54,6 @@ const MyAds = () => {
       children: (
         <div className="tab-on-view">
           {data.map((item: any, key: number) => {
-            console.log(addDay(item.date));
             return (
               <div className="on-view" key={key}>
                 <div className="wrapper-left">
