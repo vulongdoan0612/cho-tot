@@ -20,7 +20,6 @@ const ModalCCCCD = ({
   const { countdownDuration, loading } = useSelector(
     (state: RootState) => state.countDownLoading
   );
-  console.log(date);
   return (
     <CustomModal
       title="CMND/ CCCD/ HỘ CHIẾU"

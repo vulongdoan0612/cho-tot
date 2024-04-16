@@ -7,19 +7,40 @@ import ModalCategorySelect from "@/components/Modal/ModalCategorySelect";
 import Page from "@/layout/Page";
 import getBase64 from "@/utils/getBase64";
 import { MenuItem, Select, TextField } from "@mui/material";
-import { GetProp, Image, Upload, UploadFile, UploadProps } from "antd";
+import {
+  GetProp,
+  Image,
+  Skeleton,
+  Upload,
+  UploadFile,
+  UploadProps,
+} from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import RenderOto from "@/components/RenderFormTraffic/RenderFormTraffic";
+import { getPostCheck } from "@/services/formPost";
+import useDidMountEffect from "@/utils/customUseEffect";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchDataPost } from "@/redux/reducers/postSell";
 
 const PostSell = () => {
+  const { countdownDuration, loading } = useSelector(
+    (state: RootState) => state.countDownLoading
+  );
+  const { dataPost } = useSelector((state: RootState) => state.postSell);
+  const dispatch = useDispatch<AppDispatch>();
+
   const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [render, setRender] = useState<any>("");
+  type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+  const [value, setValue] = useState("");
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { category } = router.query;
-
+  const { id } = router.query;
   useEffect(() => {
     setRender(category);
     if (category === "0") {
@@ -44,16 +65,29 @@ const PostSell = () => {
       setValue("Phụ tùng xe");
     }
   }, [category]);
-  type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-  const [value, setValue] = useState("");
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
+
+  useEffect(() => {
+    if (dataPost && dataPost.post && dataPost.post.image) {
+      const newFileList: UploadFile[] = dataPost.post.image.map(
+        (image: any, index: number) => {
+          return {
+            uid: String(index),
+            name: `image_${index}`,
+            status: "done",
+            url: image,
+          };
+        }
+      );
+      setFileList(newFileList);
+    }
+  }, [dataPost, dataPost.post.image]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchDataPost(String(id)));
+    }
+  }, [id]);
+
   const uploadedCustom = (
     <div className="upload-image-container">
       <UploadImageIcon></UploadImageIcon>
@@ -65,8 +99,7 @@ const PostSell = () => {
       <PlusIcon></PlusIcon>
     </div>
   );
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
-    setFileList(newFileList);
+
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as FileType);
@@ -75,7 +108,6 @@ const PostSell = () => {
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
   };
-
   const [modalCategory, setModalCategory] = useState(false);
   const handleCityChange = (event: any) => {};
   const handleModalCategory = () => {
@@ -89,30 +121,12 @@ const PostSell = () => {
     setModalCategory(false);
     router.push(`/dang-tin?category=${index}`);
   };
-  const renderForm = useMemo(() => {
-    return (
-      <>
-        {" "}
-        {render === "0" ? (
-          <RenderOto></RenderOto>
-        ) : render === "1" ? (
-          <>xe máy</>
-        ) : render === "2" ? (
-          <>xe tải</>
-        ) : render === "3" ? (
-          <> xe điện</>
-        ) : render === "4" ? (
-          <> xe đạp</>
-        ) : render === "5" ? (
-          <>pt khác</>
-        ) : render === "6" ? (
-          <>pt xe</>
-        ) : (
-          <></>
-        )}
-      </>
-    );
-  }, [render]);
+
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
+    if (render !== "") {
+      setFileList(newFileList);
+    }
+  };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="post-sell-wrapper">
@@ -129,14 +143,24 @@ const PostSell = () => {
             </a>
           </p>
           <div className="upload">
-            {" "}
+            <Skeleton.Input
+              block={true}
+              style={{ height: "221px" }}
+              active
+              className={` ${
+                id !== undefined && loading ? "visible-ske" : "disvisible-ske"
+              }`}
+              size="large"
+            ></Skeleton.Input>
             <Upload
-              action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+              name="image"
               listType="picture-card"
               fileList={fileList}
               className={`upload-antd ${
                 fileList.length !== 0 ? "upload-antd-custom" : ""
-              }`}
+              } ${
+                id !== undefined && loading ? "unhidden" : "hidden"
+              } skeleton-custom`}
               onPreview={handlePreview}
               onChange={handleChange}
             >
@@ -164,7 +188,27 @@ const PostSell = () => {
             />
             <ArrowInputIcon></ArrowInputIcon>
           </div>
-          {renderForm}
+          {render === "0" ? (
+            <RenderOto
+              fileList={fileList}
+              id={id}
+              dataPost={dataPost}
+            ></RenderOto>
+          ) : render === "1" ? (
+            <>xe máy</>
+          ) : render === "2" ? (
+            <>xe tải</>
+          ) : render === "3" ? (
+            <> xe điện</>
+          ) : render === "4" ? (
+            <> xe đạp</>
+          ) : render === "5" ? (
+            <>pt khác</>
+          ) : render === "6" ? (
+            <>pt xe</>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
       <ModalCategorySelect

@@ -38,6 +38,32 @@
       padding-top: 1rem;
       gap: 1rem;
       .product {
+        width: 88px;
+        height: 88px;
+        position: relative;
+        .ant-skeleton {
+        }
+        .skeleton-custom {
+          position: absolute;
+          top: 0;
+          transition: all 0.3s ease;
+        }
+        .hidden {
+          opacity: 1;
+        }
+        .unhidden {
+          opacity: 0;
+        }
+        .ant-skeleton {
+          height: 100%;
+          .ant-skeleton-button {
+            height: 100%;
+          }
+        }
+        // .ant-skeleton-image {
+        //   width: 88px;
+        //   height: 88px;
+        // }
         background-size: cover;
         background-position: 50%;
 

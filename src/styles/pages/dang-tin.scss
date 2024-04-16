@@ -33,6 +33,28 @@
       line-height: 20px;
     }
     .upload {
+      .ant-skeleton {
+        transition: all 0.3s ease;
+      }
+      .visible-ske {
+        opacity: 1;
+      }
+      .disvisible-ske {
+        opacity: 0;
+      }
+      .skeleton-custom {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.3s ease;
+      }
+      .hidden {
+        opacity: 1;
+      }
+      .unhidden {
+        opacity: 0;
+      }
+      position: relative;
       .upload-antd {
         .ant-upload-select {
           border-radius: 4px;
@@ -163,14 +185,13 @@
           flex-direction: column;
           gap: 20px;
         }
-        .number-input-form{
+        .number-input-form {
           margin-top: 32px;
         }
       }
     }
   }
 }
-
 .modal-category-select {
   width: 630px !important;
   .ant-modal-body {

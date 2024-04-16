@@ -1,0 +1,215 @@
+import {
+  ChangePostIcon,
+  FasterSellIcon,
+  HiddenEyeIcon,
+  LetterIIcon,
+  PlusIcon,
+  PlusManageIcon,
+} from "@/components/CustomIcons";
+import Page from "@/layout/Page";
+import { getPostCheckList } from "@/services/formPost";
+import addDay from "@/utils/addDay";
+import useDidMountEffect from "@/utils/customUseEffect";
+import getWardDistrict from "@/utils/getWardDistrict";
+import {
+  Breadcrumb,
+  Checkbox,
+  CheckboxProps,
+  Image,
+  InputNumberProps,
+  Slider,
+  Tabs,
+  TabsProps,
+} from "antd";
+import { useEffect, useState } from "react";
+
+const MyAds = () => {
+  const [inputValue, setInputValue] = useState(1);
+
+  const onChange: InputNumberProps["onChange"] = (newValue) => {
+    setInputValue(15);
+  };
+  const [data, setData] = useState<any>([]);
+
+  const onChangeCheckBox: CheckboxProps["onChange"] = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+  const getDataListPost = async () => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      const response = await getPostCheckList(String(token));
+
+      if (response.status === 200 && response.data.status === "SUCCESS") {
+        setData(response?.data?.data);
+      }
+    }
+  };
+  useEffect(() => {
+    getDataListPost();
+  }, []);
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: "Đang hiển thị",
+      children: (
+        <div className="tab-on-view">
+          {data.map((item: any, key: number) => {
+            console.log(addDay(item.date));
+            return (
+              <div className="on-view" key={key}>
+                <div className="wrapper-left">
+                  <div className="left">
+                    <Image
+                      src={item?.post?.image}
+                      alt=""
+                      className="image-car"
+                      width={144}
+                      height={144}
+                    ></Image>
+                    <div className="information">
+                      <span className="title">{item?.post?.title}</span>
+                      <span className="price">{item?.post?.price} $</span>
+                      <span className="address">
+                        {getWardDistrict(item?.post?.fullAddress)}
+                      </span>
+                      <span className="date-post">
+                        Ngày đăng tin: &nbsp;<p> {item?.date}</p>
+                      </span>
+                      <span className="date-expired">
+                        Ngày hết hạn: &nbsp;<p> {addDay(item?.date)}</p>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="buttons-left">
+                    <div>
+                      {" "}
+                      <Checkbox onChange={onChangeCheckBox}>Chọn tin</Checkbox>
+                    </div>
+                    <div className="buttons">
+                      <a href={`dang-tin?category=0&id=${item.postId}`}>
+                        <button>
+                          <ChangePostIcon></ChangePostIcon>Sửa tin
+                        </button>
+                      </a>
+                      <button>
+                        <HiddenEyeIcon></HiddenEyeIcon>Đã bán / Ẩn tin
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="right">
+                  <div className="top">
+                    <div className="flex">
+                      <div className="view">
+                        <div className="flex-view">
+                          <span className="text">Lượt xem</span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                        <div className="number-view">141</div>
+                      </div>
+                      <div className="slider">
+                        <div className="page">
+                          <span className="top">
+                            TRANG 40: &nbsp;<p> Mục Xe máy, Tp Hồ Chí Minh</p>
+                          </span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                        <Slider
+                          min={1}
+                          max={20}
+                          onChange={onChange}
+                          value={
+                            typeof inputValue === "number" ? inputValue : 0
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="service">
+                      <div className="top">
+                        <span className="current">Dịch vụ gần đây</span>
+                        <span className="detail">Xem chi tiết</span>
+                      </div>
+                      <div className="bottom">
+                        <LetterIIcon></LetterIIcon>
+                        <span>Chưa sử dụng dịch vụ nào</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bottom">
+                    <button>
+                      <FasterSellIcon></FasterSellIcon>Bán nhanh hơn
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: "Bị từ chối",
+      children: "Content of Tab Pane 2",
+    },
+    {
+      key: "3",
+      label: "Đã ẩn",
+      children: "Content of Tab Pane 3",
+    },
+  ];
+  return (
+    <Page style={{ backgroundColor: "#f4f4f4" }}>
+      <div>
+        <Breadcrumb
+          className="breadcrumb-my-ads-page"
+          separator=">"
+          items={[
+            {
+              title: "Chợ tốt",
+            },
+            {
+              title: "Quản lý tin",
+            },
+          ]}
+        />
+        <div className="user-manage">
+          <div className="left">
+            <Image
+              src="https://cdn.chotot.com/uac2/26802657"
+              alt=""
+              width={48}
+              height={48}
+            ></Image>
+            <div className="name">
+              <span>Nguyễn Đoàn Thành Long Vu</span>
+            </div>
+          </div>
+          <div className="right-wrapper">
+            <div className="right">
+              <Image
+                src="https://static.chotot.com/storage/react-common/dongTot.svg"
+                alt="alt"
+                width={16}
+                height={16}
+              ></Image>
+              <span className="balance">Số dư: 0</span>
+              <button>
+                <PlusManageIcon></PlusManageIcon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <Tabs
+          defaultActiveKey="1"
+          items={items}
+          onChange={onChange}
+          className="tab-ads"
+        />
+      </div>
+      <div></div>
+    </Page>
+  );
+};
+export default MyAds;

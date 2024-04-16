@@ -18,85 +18,180 @@ import {
   InputNumber,
   InputNumberProps,
 } from "antd";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import carsit from "./carsit.json";
 import CustomButtonSelect from "../CustomButtonSelect";
 import NumberInput from "../NumberInput/NumberInput";
 import NumberInputPrice from "../NumberInputPrice/NumberInputPrice";
 import TitlePostSell from "../TitlePostSell/TitlePostSell";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { defaultCommonState } from "./_mock";
+import { ICommonStateFormRenderCar } from "@/interfaces/User";
+import moment from "moment";
+import { useRouter } from "next/router";
 
-const RenderOto = () => {
-  const [value, setValue] = useState("");
-  const [color, setColor] = useState<any>("");
-  const [carNumber, setCarNumber] = useState<any>("");
-  const [owner, setOwner] = useState<any>("");
-  const [country, setCountry] = useState<any>("");
-  const [sit, setSit] = useState<any>("");
-  const [activeButton, setActiveButton] = useState("");
-  const [accessories, setAccessories] = useState("");
-  const [registry, setRegistry] = useState("");
-  const [numberBox, setNumberBox] = useState("");
-  const [status, setStatus] = useState("");
-  const [models, setModels] = useState<any>([]);
-  const [model, setModel] = useState<any>([]);
-  const [form, setForm] = useState<any>("");
-  const [price, setPrice] = useState<any>("");
-  const [km, setKm] = useState<any>("");
+const RenderOto = ({ fileList }: any) => {
+  console.log(fileList, "testtttttttt");
+  const { dataPost } = useSelector((state: RootState) => state.postSell);
+  const dispatch = useDispatch<AppDispatch>();
+  const [stateForm, setStateForm] =
+    useState<ICommonStateFormRenderCar>(defaultCommonState);
+  const router = useRouter();
+  const { id } = router.query;
+  useEffect(() => {
+    const selectedModels =
+      brandList.find((item: any) => item.brand === dataPost?.post?.value)
+        ?.models || [];
 
+    setStateForm((prevState) => ({
+      ...prevState,
+      models: selectedModels,
+      value: dataPost?.post?.value,
+      color: dataPost?.post?.color,
+      model: dataPost?.post?.model,
+      carNumber: dataPost?.post?.carNumber,
+      owner: dataPost?.post?.owner,
+      country: dataPost?.post?.country,
+      sit: dataPost?.post?.sit,
+      activeButton: dataPost?.post?.activeButton,
+      accessories: dataPost?.post?.accessories,
+      registry: dataPost?.post?.registry,
+      numberBox: dataPost?.post?.numberBox,
+      status: dataPost?.post?.status,
+      form: dataPost?.post?.form,
+      price: dataPost?.post?.price,
+      km: dataPost?.post?.km,
+    }));
+  }, [
+    dataPost?.post?.accessories,
+    dataPost?.post?.activeButton,
+    dataPost?.post?.carNumber,
+    dataPost?.post?.color,
+    dataPost?.post?.country,
+    dataPost?.post?.model,
+    dataPost?.post?.form,
+    dataPost?.post?.km,
+    dataPost?.post?.numberBox,
+    dataPost?.post?.owner,
+    dataPost?.post?.price,
+    dataPost?.post?.registry,
+    dataPost?.post?.sit,
+    dataPost?.post?.status,
+    dataPost?.post?.value,
+  ]);
+  useEffect(() => {
+    if (dataPost?.post?.dateCar) {
+      setStateForm((prevState) => ({
+        ...prevState,
+        dateCar: dataPost?.post?.dateCar,
+      }));
+    }
+  }, [dataPost?.post?.dateCar]);
   const handleChangeCountry = (event: SelectChangeEvent) => {
-    setCountry(event?.target?.value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      country: event?.target?.value,
+    }));
   };
   const handleChangeSit = (event: SelectChangeEvent) => {
-    setSit(event?.target?.value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      sit: event?.target?.value,
+    }));
   };
   const handleChange = (event: SelectChangeEvent) => {
     const selectedModels =
       brandList.find((item: any) => item.brand === event?.target.value)
         ?.models || [];
-    setModels(selectedModels);
-    setValue(event?.target.value as string);
+    setStateForm((prevState) => ({
+      ...prevState,
+      models: selectedModels,
+      value: event?.target.value as string,
+    }));
   };
   const handleChangeModels = (event: SelectChangeEvent) => {
-    setModel(event?.target.value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      model: event?.target?.value,
+    }));
   };
   const handleChangeColor = (event: SelectChangeEvent) => {
-    setColor(event?.target.value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      color: event?.target?.value,
+    }));
   };
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
+    const momentDateCCCD = moment(dateString);
+    const formattedDateCCCD = momentDateCCCD.format("YYYY");
+    console.log("test");
+    setStateForm((prevState) => ({
+      ...prevState,
+      dateCar: formattedDateCCCD,
+    }));
   };
   const handleChangeCarNumber = (event: any) => {
-    setCarNumber(event?.target.value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      carNumber: event?.target?.value,
+    }));
   };
   const handleChangeOwner = (event: SelectChangeEvent) => {
-    setOwner(event?.target?.value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      owner: event?.target?.value,
+    }));
   };
 
   const onChangeNumber: InputNumberProps["onChange"] = (value) => {
-    console.log(value);
-    setKm(value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      km: String(value),
+    }));
   };
   const onChangePrice: InputNumberProps["onChange"] = (value) => {
-    console.log(value);
-    setPrice(value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      price: String(value),
+    }));
   };
   const handleFuel = (fuelType: any) => {
-    setActiveButton(fuelType);
+    setStateForm((prevState) => ({
+      ...prevState,
+      activeButton: fuelType,
+    }));
   };
   const handleAccessories = (accessories: any) => {
-    setAccessories(accessories);
+    setStateForm((prevState) => ({
+      ...prevState,
+      accessories: accessories,
+    }));
   };
   const handleRegistry = (registry: any) => {
-    setRegistry(registry);
+    setStateForm((prevState) => ({
+      ...prevState,
+      registry: registry,
+    }));
   };
   const handleNumberBox = (NumberBox: any) => {
-    setNumberBox(NumberBox);
+    console.log(NumberBox);
+    setStateForm((prevState) => ({
+      ...prevState,
+      numberBox: NumberBox,
+    }));
   };
   const handleChangeForm = (event: SelectChangeEvent) => {
-    setForm(event?.target?.value);
+    setStateForm((prevState) => ({
+      ...prevState,
+      form: event?.target?.value,
+    }));
   };
   const handleStatus = (status: any) => {
-    setStatus(status);
+    setStateForm((prevState) => ({
+      ...prevState,
+      status: status,
+    }));
   };
   return (
     <div className="detail-information-car">
@@ -107,13 +202,13 @@ const RenderOto = () => {
           <div className="buttons">
             <CustomButtonSelect
               handleClick={() => handleStatus("Đã sử dụng")}
-              isActive={status === "Đã sử dụng"}
+              isActive={stateForm.status === "Đã sử dụng"}
             >
               Đã sử dụng
             </CustomButtonSelect>
             <CustomButtonSelect
               handleClick={() => handleStatus("Mới")}
-              isActive={status === "Mới"}
+              isActive={stateForm.status === "Mới"}
             >
               Mới
             </CustomButtonSelect>
@@ -132,7 +227,7 @@ const RenderOto = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={value}
+              value={stateForm?.value}
               label="Hãng xe"
               onChange={handleChange}
             >
@@ -155,12 +250,12 @@ const RenderOto = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={model}
-              disabled={value ? false : true}
+              value={stateForm?.model}
+              disabled={stateForm?.value ? false : true}
               label="Dòng xe"
               onChange={handleChangeModels}
             >
-              {models.map((item: any, index: any) => {
+              {stateForm?.models.map((item: any, index: any) => {
                 return (
                   <MenuItem key={index} value={item}>
                     {item}
@@ -172,6 +267,7 @@ const RenderOto = () => {
           <DatePicker
             onChange={onChange}
             picker="year"
+            value={stateForm.dateCar !== "" ? dayjs(stateForm.dateCar) : null}
             placeholder="Năm sản xuất"
             minDate={dayjs("1990")}
             maxDate={dayjs("2024")}
@@ -182,19 +278,19 @@ const RenderOto = () => {
           <div className="buttons">
             <CustomButtonSelect
               handleClick={() => handleNumberBox("Tự động")}
-              isActive={numberBox === "Tự động"}
+              isActive={stateForm?.numberBox === "Tự động"}
             >
               Tự động
             </CustomButtonSelect>
             <CustomButtonSelect
               handleClick={() => handleNumberBox("Số sàn")}
-              isActive={numberBox === "Số sàn"}
+              isActive={stateForm?.numberBox === "Số sàn"}
             >
               Số sàn
             </CustomButtonSelect>
             <CustomButtonSelect
               handleClick={() => handleNumberBox("Bán tự động")}
-              isActive={numberBox === "Bán tự động"}
+              isActive={stateForm?.numberBox === "Bán tự động"}
             >
               Bán tự động
             </CustomButtonSelect>
@@ -206,25 +302,25 @@ const RenderOto = () => {
           <div className="buttons">
             <CustomButtonSelect
               handleClick={() => handleFuel("Xăng")}
-              isActive={activeButton === "Xăng"}
+              isActive={stateForm?.activeButton === "Xăng"}
             >
               Xăng
             </CustomButtonSelect>
             <CustomButtonSelect
               handleClick={() => handleFuel("Dầu")}
-              isActive={activeButton === "Dầu"}
+              isActive={stateForm?.activeButton === "Dầu"}
             >
               Dầu
             </CustomButtonSelect>
             <CustomButtonSelect
               handleClick={() => handleFuel("Động cơ Hybrid")}
-              isActive={activeButton === "Động cơ Hybrid"}
+              isActive={stateForm?.activeButton === "Động cơ Hybrid"}
             >
               Động cơ Hybrid
             </CustomButtonSelect>
             <CustomButtonSelect
               handleClick={() => handleFuel("Điện")}
-              isActive={activeButton === "Điện"}
+              isActive={stateForm?.activeButton === "Điện"}
             >
               Điện
             </CustomButtonSelect>
@@ -244,7 +340,7 @@ const RenderOto = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={country}
+                value={stateForm?.country}
                 label="Dòng xe"
                 onChange={handleChangeCountry}
               >
@@ -269,7 +365,7 @@ const RenderOto = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={form}
+                value={stateForm?.form}
                 label="Dòng xe"
                 onChange={handleChangeForm}
               >
@@ -296,7 +392,7 @@ const RenderOto = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={sit}
+                value={stateForm?.sit}
                 label="Số chỗ"
                 onChange={handleChangeSit}
               >
@@ -321,7 +417,7 @@ const RenderOto = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={color}
+                value={stateForm?.color}
                 label="Dòng xe"
                 onChange={handleChangeColor}
               >
@@ -343,7 +439,7 @@ const RenderOto = () => {
               label="Biển số xe"
               multiline
               onChange={handleChangeCarNumber}
-              value={carNumber}
+              value={stateForm?.carNumber}
               maxRows={4}
               variant="filled"
             />
@@ -359,7 +455,7 @@ const RenderOto = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={owner}
+                value={stateForm?.owner}
                 label="Số đời chủ"
                 onChange={handleChangeOwner}
               >
@@ -378,13 +474,13 @@ const RenderOto = () => {
               <div className="buttons">
                 <CustomButtonSelect
                   handleClick={() => handleAccessories("Có")}
-                  isActive={accessories === "Có"}
+                  isActive={stateForm?.accessories === "Có"}
                 >
                   Có
                 </CustomButtonSelect>
                 <CustomButtonSelect
                   handleClick={() => handleAccessories("Không")}
-                  isActive={accessories === "Không"}
+                  isActive={stateForm?.accessories === "Không"}
                 >
                   Không
                 </CustomButtonSelect>
@@ -395,13 +491,13 @@ const RenderOto = () => {
               <div className="buttons">
                 <CustomButtonSelect
                   handleClick={() => handleRegistry("Có")}
-                  isActive={registry === "Có"}
+                  isActive={stateForm?.registry === "Có"}
                 >
                   Có
                 </CustomButtonSelect>
                 <CustomButtonSelect
                   handleClick={() => handleRegistry("Không")}
-                  isActive={registry === "Không"}
+                  isActive={stateForm?.registry === "Không"}
                 >
                   Không
                 </CustomButtonSelect>
@@ -411,30 +507,35 @@ const RenderOto = () => {
         </div>
         <div className="gap">
           <NumberInput
+            value={stateForm?.km}
             className="number-input-form"
-            defaultValue={0}
             onChangeNumber={onChangeNumber}
           ></NumberInput>
           <NumberInputPrice
+            value={stateForm?.price}
             onChangePrice={onChangePrice}
             className=""
           ></NumberInputPrice>
         </div>
       </div>
       <TitlePostSell
-        value={value}
-        color={color}
-        price={price}
-        carNumber={carNumber}
-        owner={owner}
-        country={country}
-        sit={sit}
-        activeButton={activeButton}
-        accessories={accessories}
-        registry={registry}
-        km={km}
-        numberBox={numberBox}
-        status={status}
+        value={stateForm?.value}
+        color={stateForm?.color}
+        price={stateForm?.price}
+        dateCar={stateForm?.dateCar}
+        carNumber={stateForm?.carNumber}
+        owner={stateForm?.owner}
+        form={stateForm?.form}
+        model={stateForm?.model}
+        country={stateForm?.country}
+        sit={stateForm?.sit}
+        fileList={fileList}
+        activeButton={stateForm?.activeButton}
+        accessories={stateForm?.accessories}
+        registry={stateForm?.registry}
+        km={stateForm?.km}
+        numberBox={stateForm?.numberBox}
+        status={stateForm?.status}
       ></TitlePostSell>
     </div>
   );

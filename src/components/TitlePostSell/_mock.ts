@@ -1,0 +1,18 @@
+export const defaultCommonState = {
+  spin: false,
+  title: "",
+  introducing: "",
+  person: "",
+  detailAddress: "",
+  modalConfirmSwitch: false,
+  wards: [],
+  districts: [],
+  cities: [],
+  fullAddress: "",
+  cityValue: "",
+  wardValue: "",
+  districtValue: "",
+  cityValueName: "",
+  districtValueName: "",
+  slug: "",
+};

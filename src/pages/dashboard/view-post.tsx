@@ -1,16 +1,23 @@
 import CustomButton from "@/components/CustomButton";
 import Page from "@/layout/Page";
+import { RootState } from "@/redux/store";
 import { getPostCheck } from "@/services/formPost";
 import useDidMountEffect from "@/utils/customUseEffect";
 import numberWithCommas from "@/utils/numberWithCommas";
-import { Image } from "antd";
+import { Image, Skeleton } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const ViewPostCensor = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { edit } = router.query;
+
   const [data, setData] = useState<any>([]);
+  const { countdownDuration, loading } = useSelector(
+    (state: RootState) => state.countDownLoading
+  );
   const getDataPost = async () => {
     if (id) {
       const token = localStorage.getItem("access_token");
@@ -36,25 +43,41 @@ const ViewPostCensor = () => {
               alt=""
             />
             <span>
-              Chúc mừng, bạn được Chợ Tốt tặng tin đăng miễn phí! Tin sẽ được
-              duyệt trong chốc lát.
+              {edit
+                ? "Sửa tin thành công! Chợ Tốt sẽ duyệt nội dung mới trong chốc lát."
+                : " Chúc mừng, bạn được Chợ Tốt tặng tin đăng miễn phí! Tin sẽ được duyệt trong chốc lát."}
             </span>
           </div>
           <div className="detail-info">
             <div className="product">
-              <Image
-                src="/images/vu01.png"
-                width={88}
-                height={88}
-                alt=""
-                preview={false}
-              />
+              <Skeleton.Button block active></Skeleton.Button>
+              <div
+                className={`${loading ? "unhidden" : "hidden"} skeleton-custom`}
+              >
+                <Image
+                  src={data?.post?.image[0]}
+                  width={88}
+                  height={88}
+                  alt=""
+                  preview={false}
+                />
+              </div>
             </div>{" "}
             <div className="title-price">
-              <span className="title">{data && data?.post?.title}</span>
-              <span className="price">
-                {numberWithCommas(String(data?.post?.price))} đ
-              </span>
+              {loading ? (
+                <Skeleton.Button
+                  active
+                  size="large"
+                  shape="square"
+                ></Skeleton.Button>
+              ) : (
+                <>
+                  <span className="title">{data && data?.post?.title}</span>
+                  <span className="price">
+                    {numberWithCommas(String(data?.post?.price))} đ
+                  </span>
+                </>
+              )}
             </div>
           </div>
           <div className="line"></div>
@@ -110,7 +133,9 @@ const ViewPostCensor = () => {
         </div>
         <div className="third-part">
           <CustomButton className="sell-button">Bán</CustomButton>
-          <CustomButton className="manage-button">Quản lý tin</CustomButton>
+          <CustomButton className="manage-button">
+            <a href="/my-ads">Quản lý tin</a>
+          </CustomButton>
         </div>
       </div>
     </Page>

@@ -7,18 +7,23 @@ import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import CustomButton from "../CustomButton";
 import axios from "axios";
-import { PostFormSellCheck } from "@/services/formPost";
+import { EditPostFormSellCheck, PostFormSellCheck } from "@/services/formPost";
 import { toast } from "react-toastify";
 import { Spin } from "antd";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import convertToSlug from "@/utils/convertToSlug";
+import { ICommonStateFormRenderCarPost } from "@/interfaces/User";
+import { defaultCommonState } from "./_mock";
 
 const TitlePostSell = ({
   value,
   color,
   carNumber,
+  fileList,
+  dateCar,
   owner,
+  form,
   country,
   sit,
   activeButton,
@@ -27,27 +32,18 @@ const TitlePostSell = ({
   numberBox,
   price,
   km,
+  model,
   status,
 }: any) => {
-  const { account } = useSelector((state: RootState) => state.auth);
-  const [spin, setSpin] = useState(false);
+  const { dataPost } = useSelector((state: RootState) => state.postSell);
+  const [statePost, setStatePost] =
+    useState<ICommonStateFormRenderCarPost>(defaultCommonState);
+  console.log(fileList, "testttttttt22222222t");
 
-  const [title, setTitle] = useState<any>("");
-  const [introducing, setIntroducing] = useState<any>("");
-  const [person, setPerson] = useState<any>("");
-  const [detailAddress, setDetailAddress] = useState<any>("");
-  const [modalConfirmSwitch, setModalConfirmSwitch] = useState(false);
-  const [wards, setWards] = useState<any>([]);
-  const [districts, setDistricts] = useState<any>([]);
-  const [cities, setCities] = useState<any>([]);
-  const [fullAddress, setFullAddress] = useState("");
-  const [cityValue, setCityValue] = useState<any>("");
-  const [wardValue, setWardValue] = useState("");
-  const [districtValue, setDistrictValue] = useState<any>("");
-  const [cityValueName, setCityValueName] = useState("");
-  const [districtValueName, setDistrictValueName] = useState<any>("");
-  const [slug, setSlug] = useState("");
+  const { account } = useSelector((state: RootState) => state.auth);
+
   const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +51,10 @@ const TitlePostSell = ({
         const response = await axios.get(
           "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
         );
-        setCities(response.data);
+        setStatePost((prevState) => ({
+          ...prevState,
+          cities: response.data,
+        }));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -63,113 +62,226 @@ const TitlePostSell = ({
 
     fetchData();
   }, []);
+
   useEffect(() => {
-    try {
-      if (account?.address?.city !== null) {
+    // if(dataPaost)
+    if (!id) {
+      setStatePost((prevState) => ({
+        ...prevState,
+        cityValue: account?.address?.city,
+        districtValue: account?.address?.district,
+        wardValue: account?.address?.ward,
+        detailAddress: account?.address?.detailAddress,
+        fullAddress: account?.address?.fullAddress,
+      }));
+
+      if (account?.address?.city !== null && statePost?.cities.length > 0) {
         const selectedCityId = account?.address?.city;
-        const selectedCity = cities.find(
+        const selectedCity = statePost?.cities.find(
+          (city: any) => city.Id === selectedCityId
+        );
+        setStatePost((prevState) => ({
+          ...prevState,
+          cityValueName: selectedCity?.Name,
+        }));
+        if (selectedCity) {
+          setStatePost((prevState) => ({
+            ...prevState,
+            districts: selectedCity?.Districts,
+          }));
+        }
+      }
+    }
+  }, [
+    account,
+    account?.address,
+    account?.address?.city,
+    account?.address?.district,
+    account?.address?.ward,
+    statePost?.cities,
+    id,
+  ]);
+  useEffect(() => {
+    if (!id) {
+      if (statePost?.districts.length > 0) {
+        const selectedDistrictId = account?.address?.district;
+        const selectedDistrict = statePost?.districts.find(
+          (district: any) => district.Id === selectedDistrictId
+        );
+        setStatePost((prevState) => ({
+          ...prevState,
+          districtValueName: selectedDistrict?.Name,
+        }));
+
+        if (selectedDistrict) {
+          setStatePost((prevState) => ({
+            ...prevState,
+            wards: selectedDistrict?.Wards,
+          }));
+        }
+      }
+    }
+  }, [statePost?.districts]);
+  ///////////////////////////////////////////////
+  useEffect(() => {
+    if (id) {
+      setStatePost((prevState) => ({
+        ...prevState,
+        cityValue: dataPost?.post?.cityValue,
+        districtValue: dataPost?.post?.districtValue,
+        wardValue: dataPost?.post?.wardValue,
+        detailAddress: dataPost?.post?.detailAddress,
+        fullAddress: dataPost?.post?.fullAddress,
+      }));
+
+      if (dataPost?.post?.cityValue !== null) {
+        const selectedCityId = dataPost?.post?.cityValue;
+        const selectedCity = statePost?.cities.find(
           (city: any) => city.Id === selectedCityId
         );
         if (selectedCity) {
-          setCityValueName(selectedCity?.Name);
-
-          setDistricts(selectedCity.Districts);
-          setWards([]);
+          setStatePost((prevState) => ({
+            ...prevState,
+            districts: selectedCity.Districts,
+          }));
         }
       }
-    } finally {
-      if (
-        account?.address?.city !== null &&
-        account?.address?.district !== null &&
-        districts
-      ) {
-        const selectedDistrictId = account?.address?.district;
-
-        const selectedDistrict = districts.find(
+    }
+  }, [
+    dataPost,
+    dataPost?.post?.cityValue,
+    dataPost?.post?.detailAddress,
+    dataPost?.post?.districtValue,
+    dataPost?.post?.fullAddress,
+    dataPost?.post?.wardValue,
+    statePost?.cities,
+  ]);
+  useEffect(() => {
+    if (id) {
+      if (statePost?.districts.length > 0) {
+        const selectedDistrictId = dataPost?.post?.districtValue;
+        const selectedDistrict = statePost?.districts.find(
           (district: any) => district.Id === selectedDistrictId
         );
         if (selectedDistrict) {
-          setDistrictValueName(selectedDistrict?.Name);
-          setWards(selectedDistrict?.Wards);
+          setStatePost((prevState) => ({
+            ...prevState,
+            wards: selectedDistrict?.Wards,
+          }));
         }
       }
     }
-  }, [account?.address, cities, districts]);
+  }, [statePost?.districts]);
+
   useEffect(() => {
-    if (account?.address) {
-      setCityValue(account?.address?.city);
-      setDistrictValue(account?.address?.district);
-      setWardValue(account?.address?.ward);
-      setDetailAddress(account?.address?.detailAddress);
-      setFullAddress(account?.address?.fullAddress);
+    if (dataPost?.post) {
+      setStatePost((prevState) => ({
+        ...prevState,
+        title: dataPost?.post?.title,
+        introducing: dataPost?.post?.introducing,
+        person: dataPost?.post?.person,
+      }));
     }
-  }, [account?.address]);
+  }, [dataPost?.post, dataPost?.post?.wardValue]);
+
   const handleChangeTitle = (event: any) => {
-    setTitle(event?.target.value);
+    setStatePost((prevState) => ({
+      ...prevState,
+      title: event?.target.value,
+    }));
   };
   const handleChangeIntroducing = (event: any) => {
-    setIntroducing(event?.target?.value);
+    setStatePost((prevState) => ({
+      ...prevState,
+      introducing: event?.target.value,
+    }));
   };
   const handlePerson = (person: any) => {
-    setPerson(person);
+    setStatePost((prevState) => ({
+      ...prevState,
+      person: person,
+    }));
   };
   const handleCancleModal = () => {
-    setModalConfirmSwitch(false);
+    setStatePost((prevState) => ({
+      ...prevState,
+      modalConfirmSwitch: false,
+    }));
   };
   const handleModal = () => {
-    setModalConfirmSwitch(true);
+    setStatePost((prevState) => ({
+      ...prevState,
+      modalConfirmSwitch: true,
+    }));
   };
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
-    const selectedCity = cities.find((city: any) => city.Id === selectedCityId);
+    const selectedCity = statePost?.cities.find(
+      (city: any) => city.Id === selectedCityId
+    );
     if (selectedCity) {
-      setCityValue(event.target.value);
-      setDistricts(selectedCity.Districts || []);
-      setWards([]);
-      setDistrictValue("");
-      setWardValue("");
+      setStatePost((prevState) => ({
+        ...prevState,
+        cityValue: event.target.value,
+        districts: selectedCity.Districts || [],
+        wards: [],
+        districtValue: "",
+        wardValue: "",
+      }));
     }
   };
   const handleDistrictChange = (event: any) => {
     const selectedDistrictId = event.target.value;
-    const selectedDistrict = districts.find(
+    const selectedDistrict = statePost?.districts.find(
       (district: any) => district?.Id === selectedDistrictId
     );
 
     if (selectedDistrict) {
-      setDistrictValue(event.target.value);
-      setWards(selectedDistrict?.Wards);
+      setStatePost((prevState) => ({
+        ...prevState,
+        districtValue: event.target.value,
+        wards: selectedDistrict?.Wards,
+      }));
     }
   };
   const handleChangeWard = (event: SelectChangeEvent) => {
-    setWardValue(event.target.value);
+    setStatePost((prevState) => ({
+      ...prevState,
+      wardValue: event.target.value,
+    }));
   };
   const handleChangeDetailAddress = (event: any) => {
-    setDetailAddress(event.target.value as string);
+    setStatePost((prevState) => ({
+      ...prevState,
+      detailAddress: event.target.value as string,
+    }));
   };
   const onFinish = () => {
     let wardName = "";
     let city = "";
     let district = "";
 
-    wards.forEach((item: any) => {
-      if (item.Id === wardValue) {
+    statePost?.wards.forEach((item: any) => {
+      if (item.Id === statePost?.wardValue) {
         wardName = item.Name;
       }
     });
-    districts.forEach((item: any) => {
-      if (item.Id === districtValue) {
+    statePost?.districts.forEach((item: any) => {
+      if (item.Id === statePost?.districtValue) {
         district = item.Name;
       }
     });
-    cities.forEach((item: any) => {
-      if (item.Id === cityValue) {
+    statePost?.cities.forEach((item: any) => {
+      if (item.Id === statePost?.cityValue) {
         city = item.Name;
       }
     });
-    const concatenatedAddress = `${detailAddress} ,${wardName}, ${district}, ${city}`;
-    setFullAddress(concatenatedAddress);
-    setModalConfirmSwitch(false);
+    const concatenatedAddress = `${statePost?.detailAddress} ,${wardName}, ${district}, ${city}`;
+    setStatePost((prevState) => ({
+      ...prevState,
+      fullAddress: concatenatedAddress,
+      modalConfirmSwitch: false,
+    }));
   };
   const postSell = async () => {
     const token = localStorage.getItem("access_token");
@@ -187,34 +299,111 @@ const TitlePostSell = ({
             owner,
             price,
             country,
+            model,
             sit,
             activeButton,
             accessories,
             registry,
             numberBox,
             status,
-            title,
-            introducing,
+            dateCar,
+            title: statePost?.title,
+            introducing: statePost?.introducing,
             km,
-            person,
-            fullAddress,
-            districtValueName: convertToSlug(districtValueName),
-            cityValueName: convertToSlug(cityValueName),
+            form,
+            person: statePost?.person,
+            detailAddress: statePost?.detailAddress,
+            fullAddress: statePost?.fullAddress,
+            districtValueName: convertToSlug(statePost?.districtValueName),
+            cityValueName: convertToSlug(statePost?.cityValueName),
+            cityValue: statePost?.cityValue,
+            districtValue: statePost?.districtValue,
+            wardValue: statePost?.wardValue,
           };
-          const response = await PostFormSellCheck(String(token), postForm);
-          if (response?.data?.status) {
-            setSpin(true);
-            setTimeout(() => {
-              setSpin(false);
-            }, 1000);
-            setTimeout(() => {
-              toast(response?.data?.message, { autoClose: 500 });
-            }, 1001);
 
-            if (response?.data?.status === "SUCCESS") {
+          if (fileList && !id) {
+            const response = await PostFormSellCheck(String(token), {
+              postForm,
+              image: fileList,
+            });
+            if (response?.data?.status) {
+              setStatePost((prevState) => ({
+                ...prevState,
+                spin: true,
+              }));
               setTimeout(() => {
-                router.push(`/dashboard/view-post?id=${uuid}`);
-              }, 2000);
+                setStatePost((prevState) => ({
+                  ...prevState,
+                  spin: false,
+                }));
+              }, 1000);
+              setTimeout(() => {
+                toast(response?.data?.message, { autoClose: 500 });
+              }, 1001);
+
+              if (response?.data?.status === "SUCCESS") {
+                setTimeout(() => {
+                  router.push(`/dashboard/view-post?id=${uuid}`);
+                }, 2000);
+              }
+            }
+          } else if (fileList && id) {
+            const postFormEdit = {
+              value,
+              postId: dataPost?.postId,
+              color,
+              carNumber,
+              owner,
+              price,
+              country,
+              model,
+              sit,
+              activeButton,
+              accessories,
+              registry,
+              numberBox,
+              status,
+              dateCar,
+              title: statePost?.title,
+              introducing: statePost?.introducing,
+              km,
+              form,
+              person: statePost?.person,
+              detailAddress: statePost?.detailAddress,
+              fullAddress: statePost?.fullAddress,
+              districtValueName: convertToSlug(statePost?.districtValueName),
+              cityValueName: convertToSlug(statePost?.cityValueName),
+              cityValue: statePost?.cityValue,
+              districtValue: statePost?.districtValue,
+              wardValue: statePost?.wardValue,
+            };
+            console.log(fileList);
+            const response = await EditPostFormSellCheck(String(token), {
+              postFormEdit,
+              image: fileList,
+            });
+            if (response?.data?.status) {
+              setStatePost((prevState) => ({
+                ...prevState,
+                spin: true,
+              }));
+              setTimeout(() => {
+                setStatePost((prevState) => ({
+                  ...prevState,
+                  spin: false,
+                }));
+              }, 1000);
+              setTimeout(() => {
+                toast(response?.data?.message, { autoClose: 500 });
+              }, 1001);
+
+              if (response?.data?.status === "SUCCESS") {
+                setTimeout(() => {
+                  router.push(
+                    `/dashboard/view-post?id=${dataPost?.postId}&edit=yes`
+                  );
+                }, 2000);
+              }
             }
           }
         }
@@ -223,7 +412,6 @@ const TitlePostSell = ({
       console.log("error");
     }
   };
-
   return (
     <div className="title-post-sell-wrapper">
       <span className="title">Tiêu đề tin đăng và Mô tả chi tiết</span>
@@ -235,7 +423,7 @@ const TitlePostSell = ({
           label="Tiêu đề tin đăng"
           multiline
           onChange={handleChangeTitle}
-          value={title}
+          value={statePost?.title}
           maxRows={4}
           variant="filled"
         />
@@ -247,7 +435,7 @@ const TitlePostSell = ({
           id="filled-multiline-flexible"
           label="Giới thiệu"
           multiline
-          value={introducing}
+          value={statePost?.introducing}
           onChange={handleChangeIntroducing}
           maxRows={4}
           variant="filled"
@@ -258,13 +446,13 @@ const TitlePostSell = ({
       <div className="display-flex">
         <CustomButtonSelect
           handleClick={() => handlePerson("Cá nhân")}
-          isActive={person === "Cá nhân"}
+          isActive={statePost?.person === "Cá nhân"}
         >
           Cá nhân
         </CustomButtonSelect>
         <CustomButtonSelect
           handleClick={() => handlePerson("Bán chuyên")}
-          isActive={person === "Bán chuyên"}
+          isActive={statePost?.person === "Bán chuyên"}
         >
           Bán chuyên
         </CustomButtonSelect>
@@ -275,7 +463,7 @@ const TitlePostSell = ({
           className="fullname"
           id="filled-multiline-flexible"
           label="Địa chỉ"
-          value={fullAddress}
+          value={statePost?.fullAddress}
           multiline
           maxRows={4}
           variant="filled"
@@ -290,22 +478,22 @@ const TitlePostSell = ({
       </div>
 
       <ModalAddressUser
-        cityValue={cityValue}
-        districtValue={districtValue}
-        wardValue={wardValue}
-        detailAddress={detailAddress}
-        modalConfirmSwitch={modalConfirmSwitch}
+        cityValue={statePost?.cityValue}
+        districtValue={statePost?.districtValue}
+        wardValue={statePost?.wardValue}
+        detailAddress={statePost?.detailAddress}
+        modalConfirmSwitch={statePost?.modalConfirmSwitch}
         handleCancleModal={handleCancleModal}
         handleCityChange={handleCityChange}
-        cities={cities}
-        districts={districts}
-        wards={wards}
+        cities={statePost?.cities}
+        districts={statePost?.districts}
+        wards={statePost?.wards}
         handleDistrictChange={handleDistrictChange}
         handleChangeWard={handleChangeWard}
         handleChangeDetailAddress={handleChangeDetailAddress}
         onFinish={onFinish}
       ></ModalAddressUser>
-      <Spin spinning={spin} fullscreen />
+      <Spin spinning={statePost?.spin} fullscreen />
     </div>
   );
 };

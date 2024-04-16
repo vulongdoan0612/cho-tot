@@ -28,6 +28,7 @@ import { changeProfile } from "@/services/user";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Setting from "@/layout/Setting";
+import useDidMountEffect from "@/utils/customUseEffect";
 
 const User = () => {
   const dispatch = useDispatch();
@@ -112,54 +113,65 @@ const User = () => {
       ...prevState,
       birth: formattedDateBirth,
     }));
-    console.log(stateUser.birth, "test");
   };
   useEffect(() => {
-    try {
-      if (account?.address?.city !== null) {
-        const selectedCityId = account?.address?.city;
-        const selectedCity = stateUser.cities.find(
-          (city: any) => city.Id === selectedCityId
-        );
-        if (selectedCity) {
-          setStateUser((prevState) => ({
-            ...prevState,
-            districts: selectedCity.Districts,
-            wards: [],
-          }));
-        }
-      }
-    } finally {
-      if (
-        account?.address?.city !== null &&
-        account?.address?.district !== null &&
-        stateUser.districts
-      ) {
-        const selectedDistrictId = account?.address?.district;
-
-        const selectedDistrict = stateUser.districts.find(
-          (district: any) => district.Id === selectedDistrictId
-        );
-        if (selectedDistrict) {
-          setStateUser((prevState) => ({
-            ...prevState,
-            wards: selectedDistrict?.Wards,
-          }));
-        }
+    if (account) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        cityValue: account?.address?.city,
+        districtValue: account?.address?.district,
+        wardValue: account?.address?.ward,
+        detailAddress: account?.address?.detailAddress,
+        fullAddress: account?.address?.fullAddress,
+      }));
+    }
+  }, [account]);
+  useEffect(() => {
+    if (account?.address?.city !== null) {
+      const selectedCityId = account?.address?.city;
+      const selectedCity = stateUser.cities.find(
+        (city: any) => city.Id === selectedCityId
+      );
+      if (selectedCity) {
+        setStateUser((prevState) => ({
+          ...prevState,
+          districts: selectedCity.Districts,
+        }));
       }
     }
-  }, [account?.address, stateUser.cities, stateUser.districts]);
+  }, [
+    account,
+    account?.address,
+    account?.address?.city,
+    account?.address?.district,
+    account?.address?.ward,
+  ]);
+  useEffect(() => {
+    if (stateUser.districts.length > 0) {
+      const selectedDistrictId = account?.address?.district;
+      const selectedDistrict = stateUser?.districts?.find(
+        (district: any) => district.Id === selectedDistrictId
+      );
+
+      if (selectedDistrict) {
+        setStateUser((prevState) => ({
+          ...prevState,
+          wards: selectedDistrict?.Wards,
+        }));
+      }
+    }
+  }, [stateUser.districts]);
+
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
     const selectedCity = stateUser.cities.find(
       (city: any) => city.Id === selectedCityId
     );
-
     if (selectedCity) {
       setStateUser((prevState) => ({
         ...prevState,
         cityValue: event.target.value,
-        districts: selectedCity.Districts || [],
+        districts: selectedCity.Districts,
         wards: [],
         districtValue: "",
         wardValue: "",
@@ -182,7 +194,6 @@ const User = () => {
   };
 
   const handleChangeDetailAddress = (event: any) => {
-    console.log(event.target.value);
     setStateUser((prevState) => ({
       ...prevState,
       detailAddress: event.target.value as string,
@@ -230,18 +241,7 @@ const User = () => {
       modalConfirmSwitchCCCD: false,
     }));
   };
-  useEffect(() => {
-    if (account?.address) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        cityValue: account?.address?.city,
-        districtValue: account?.address?.district,
-        wardValue: account?.address?.ward,
-        detailAddress: account?.address?.detailAddress,
-        fullAddress: account?.address?.fullAddress,
-      }));
-    }
-  }, [account?.address]);
+
   useEffect(() => {
     if (account?.rememberName) {
       setStateUser((prevState) => ({
@@ -372,7 +372,6 @@ const User = () => {
     const formattedDateCCCD = momentDateCCCD.format("YYYY-MM-DD");
     const concatenatedCCCD = `${stateUser.cccd}, ${formattedDateCCCD}, ${stateUser.location}`;
 
-    console.log(concatenatedCCCD);
     setStateUser((prevState: any) => ({
       ...prevState,
       fullCCCD: concatenatedCCCD,
@@ -400,7 +399,6 @@ const User = () => {
         selectedItemFav: [...stateUser.selectedItemFav, item],
       }));
     }
-    console.log(stateUser.selectedItemFav);
   };
   const handleChangeFullName = (event: any) => {
     setStateUser((prevState: any) => ({
@@ -428,7 +426,6 @@ const User = () => {
     }));
   };
   const handleChangeSex = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
     setStateUser((prevState: any) => ({
       ...prevState,
       sex: event.target.value,

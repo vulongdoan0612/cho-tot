@@ -215,7 +215,7 @@ const Header = () => {
             </div>
             <div className="mangeShop">
               <MangeShopIcon />
-              <span className="text">Quản lý tin</span>
+              <a href="/my-ads"><span className="text">Quản lý tin</span></a>
             </div>
           </>
         )}

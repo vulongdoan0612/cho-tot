@@ -79,6 +79,43 @@ export interface ICommonState {
   wards: any;
   activeIndices: any;
 }
+export interface ICommonStateFormRenderCar {
+  value: string;
+  color: string;
+  carNumber: string;
+  dateCar: string;
+  owner: string;
+  country: string;
+  sit: string;
+  activeButton: string;
+  accessories: string;
+  registry: string;
+  numberBox: string;
+  status: string;
+  form: string;
+  price: string;
+  km: string;
+  models: any;
+  model: string;
+}
+export interface ICommonStateFormRenderCarPost {
+  spin: boolean;
+  title: string;
+  introducing: string;
+  person: string;
+  detailAddress: string;
+  modalConfirmSwitch: boolean;
+  wards: any;
+  districts: any;
+  cities: any;
+  fullAddress: string;
+  cityValue: string;
+  wardValue: string;
+  districtValue: string;
+  cityValueName: string;
+  districtValueName: string;
+  slug: string;
+}
 export interface IListBoxItem {
   name: string;
   gameAvatar: string;

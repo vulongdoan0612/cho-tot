@@ -6,12 +6,14 @@ const NumberInput = ({
   max,
   defaultValue,
   className,
+  value,
 }: any) => {
   return (
     <InputNumber
       className={`number-input ${className}`}
       min={min}
       max={max}
+      value={value}
       defaultValue={defaultValue}
       onChange={onChangeNumber}
     />
