@@ -20,7 +20,6 @@ const DropdownList = () => {
     router.push("/");
     logout(dispatch);
   };
-  console.log(isAuthenticated);
   return (
     <div className="avatar-dropdown-header">
       {isAuthenticated ? (

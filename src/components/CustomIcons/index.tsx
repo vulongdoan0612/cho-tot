@@ -15,6 +15,48 @@ const Arrow = () => (
     ></path>
   </svg>
 );
+const Warning = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    // xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 20 17"
+    data-type="monochrome"
+    width="1em"
+    height="1em"
+    fill="none"
+    className="t1c2rggp error"
+  >
+    <defs>
+      <path id="warning_svg__a" d="M0 20h20V0H0z"></path>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(0 -1)">
+      <mask id="warning_svg__b" fill="#fff">
+        <use href="#warning_svg__a"></use>
+      </mask>
+      <path
+        fill="currentColor"
+        d="M11.715 2.797l7.268 12.112a2 2 0 01-1.715 3.03H2.732a2 2 0 01-1.715-3.03L8.285 2.797a2 2 0 013.43 0z"
+        mask="url(#warning_svg__b)"
+      ></path>
+      <circle
+        cx="10"
+        cy="14.5"
+        r="1"
+        fill="#FFF"
+        mask="url(#warning_svg__b)"
+      ></circle>
+      <rect
+        width="2"
+        height="5"
+        x="9"
+        y="7"
+        fill="#FFF"
+        mask="url(#warning_svg__b)"
+        rx="1"
+      ></rect>
+    </g>
+  </svg>
+);
 const PlusManage = () => (
   <svg
     width="12"
@@ -412,6 +454,9 @@ export const ChangePostIcon = (props: Partial<CustomIconComponentProps>) => (
 );
 export const FasterSellIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={FasterSell} {...props} />
+);
+export const WarningIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={Warning} {...props} />
 );
 export const ArrowIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Arrow} {...props} />

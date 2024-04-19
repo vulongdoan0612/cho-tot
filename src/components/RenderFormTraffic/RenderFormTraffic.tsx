@@ -31,7 +31,7 @@ import { ICommonStateFormRenderCar } from "@/interfaces/User";
 import moment from "moment";
 import { useRouter } from "next/router";
 
-const RenderOto = ({ fileList }: any) => {
+const RenderOto = ({ handleWarning, fileList }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
   const [stateForm, setStateForm] =
@@ -518,6 +518,7 @@ const RenderOto = ({ fileList }: any) => {
       <TitlePostSell
         value={stateForm?.value}
         color={stateForm?.color}
+        handleWarning={handleWarning}
         price={stateForm?.price}
         dateCar={stateForm?.dateCar}
         carNumber={stateForm?.carNumber}

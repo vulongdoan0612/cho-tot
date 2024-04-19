@@ -2,6 +2,7 @@ import {
   ArrowInputIcon,
   PlusIcon,
   UploadImageIcon,
+  WarningIcon,
 } from "@/components/CustomIcons";
 import ModalCategorySelect from "@/components/Modal/ModalCategorySelect";
 import Page from "@/layout/Page";
@@ -38,6 +39,8 @@ const PostSell = () => {
   const [render, setRender] = useState<any>("");
   type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
   const [value, setValue] = useState("");
+  const [warning, setWarning] = useState(false);
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { category } = router.query;
   const { id } = router.query;
@@ -71,10 +74,10 @@ const PostSell = () => {
       const newFileList: UploadFile[] = dataPost.post.image.map(
         (image: any, index: number) => {
           return {
-            uid: String(index),
+            uid: image?.uuid,
             name: `image_${index}`,
             status: "done",
-            url: image,
+            url: image?.img,
           };
         }
       );
@@ -109,7 +112,6 @@ const PostSell = () => {
     setPreviewOpen(true);
   };
   const [modalCategory, setModalCategory] = useState(false);
-  const handleCityChange = (event: any) => {};
   const handleModalCategory = () => {
     setModalCategory(true);
   };
@@ -127,6 +129,7 @@ const PostSell = () => {
       setFileList(newFileList);
     }
   };
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="post-sell-wrapper">
@@ -170,9 +173,30 @@ const PostSell = () => {
                 ? uploadedCustomSmaller
                 : uploadedCustom}
             </Upload>
+            {previewImage && (
+              <Image
+                wrapperStyle={{ display: "none" }}
+                preview={{
+                  visible: previewOpen,
+                  onVisibleChange: (visible) => setPreviewOpen(visible),
+                  afterOpenChange: (visible) => !visible && setPreviewImage(""),
+                }}
+                alt=""
+                src={previewImage}
+              />
+            )}
           </div>
         </div>
         <div className="right">
+          {warning ? (
+            <div className="warning">
+              <WarningIcon></WarningIcon>
+              <span className="text">Bạn cần đăng ít nhất 1 ảnh</span>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div
             className="category-select input-need-to-custom"
             onClick={handleModalCategory}
@@ -189,11 +213,14 @@ const PostSell = () => {
             <ArrowInputIcon></ArrowInputIcon>
           </div>
           {render === "0" ? (
-            <RenderOto
-              fileList={fileList}
-              id={id}
-              dataPost={dataPost}
-            ></RenderOto>
+            <>
+              <RenderOto
+                handleWarning={() => setWarning(true)}
+                fileList={fileList}
+                id={id}
+                dataPost={dataPost}
+              ></RenderOto>
+            </>
           ) : render === "1" ? (
             <>xe máy</>
           ) : render === "2" ? (

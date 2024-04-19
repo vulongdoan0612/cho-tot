@@ -58,25 +58,86 @@ export const getPostCheck = async (accessToken: string, data: any) => {
   };
   return axios(config);
 };
+export const hiddenPost = async (accessToken: string, data: any) => {
+  const config = {
+    method: "PUT",
+    url: `/hidden-post`,
+    headers: {
+      Authorization: accessToken,
+    },
+    data: data,
+  };
+  return axios(config);
+};
 
 export const getPostCheckList = async (accessToken: string) => {
   const config = {
     method: "POST",
-    url: `/get-post-check-list`,
+    url: `/get-post-check-list-accept`,
     headers: {
       Authorization: accessToken,
     },
   };
   return axios(config);
 };
+export const getPostRefuseList = async (accessToken: string) => {
+  const config = {
+    method: "POST",
+    url: `/get-post-check-list-refuse`,
+    headers: {
+      Authorization: accessToken,
+    },
+  };
+  return axios(config);
+};
+export const getPostCensorshipList = async (accessToken: string) => {
+  const config = {
+    method: "POST",
+    url: `/get-post-check-list-censorship`,
+    headers: {
+      Authorization: accessToken,
+    },
+  };
+  return axios(config);
+};
+export const getPostHiddenList = async (accessToken: string) => {
+  const config = {
+    method: "POST",
+    url: `/get-post-hidden-list`,
+    headers: {
+      Authorization: accessToken,
+    },
+  };
+  return axios(config);
+};
+
+export const unhiddenPost = async (accessToken: string, data: any) => {
+  const config = {
+    method: "POST",
+    url: `/update-post-hidden`,
+    headers: {
+      Authorization: accessToken,
+    },
+    data: data,
+  };
+  return axios(config);
+};
 export const EditPostFormSellCheck = async (accessToken: string, data: any) => {
   const formData = new FormData();
+  console.log(data?.image);
   if (data?.image?.fileList && data?.image?.fileList?.length > 0) {
     data.image.fileList.forEach((image: any, index: number) => {
+      const imageObject = {
+        uuid: image.uid,
+        img: image.url,
+      };
+      const imageString = JSON.stringify(imageObject);
+      console.log(imageString);
+
       {
         image?.response
           ? formData.append(`image`, image.originFileObj)
-          : formData.append(`image`, image.url);
+          : formData.append(`image`, imageString);
       }
     });
   }

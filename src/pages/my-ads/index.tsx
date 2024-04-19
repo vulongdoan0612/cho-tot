@@ -7,7 +7,14 @@ import {
   PlusManageIcon,
 } from "@/components/CustomIcons";
 import Page from "@/layout/Page";
-import { getPostCheckList } from "@/services/formPost";
+import {
+  getPostCensorshipList,
+  getPostCheckList,
+  getPostHiddenList,
+  getPostRefuseList,
+  hiddenPost,
+  unhiddenPost,
+} from "@/services/formPost";
 import addDay from "@/utils/addDay";
 import useDidMountEffect from "@/utils/customUseEffect";
 import getWardDistrict from "@/utils/getWardDistrict";
@@ -18,6 +25,7 @@ import {
   Image,
   InputNumberProps,
   Slider,
+  Spin,
   Tabs,
   TabsProps,
 } from "antd";
@@ -25,11 +33,15 @@ import { useEffect, useState } from "react";
 
 const MyAds = () => {
   const [inputValue, setInputValue] = useState(1);
+  const [spin, setSpin] = useState(false);
 
   const onChange: InputNumberProps["onChange"] = (newValue) => {
     setInputValue(15);
   };
   const [data, setData] = useState<any>([]);
+  const [dataHidden, setDataHidden] = useState<any>([]);
+  const [dataRefuse, setDataRefuse] = useState<any>([]);
+  const [dataCensorship, setDataCensorship] = useState<any>([]);
 
   const onChangeCheckBox: CheckboxProps["onChange"] = (e) => {
     console.log(`checked = ${e.target.checked}`);
@@ -44,9 +56,80 @@ const MyAds = () => {
       }
     }
   };
-  useEffect(() => {
+  useDidMountEffect(() => {
     getDataListPost();
+    getDataListHidden();
+    getDataListRefuse();
+    getDataListCensorship();
   }, []);
+  const getDataListHidden = async () => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      const response = await getPostHiddenList(String(token));
+
+      if (response.status === 200 && response.data.status === "SUCCESS") {
+        setDataHidden(response?.data?.data);
+      }
+    }
+  };
+
+  const getDataListRefuse = async () => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      const response = await getPostRefuseList(String(token));
+
+      if (response.status === 200 && response.data.status === "SUCCESS") {
+        setDataRefuse(response?.data?.data);
+      }
+    }
+  };
+  const getDataListCensorship = async () => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      const response = await getPostCensorshipList(String(token));
+
+      if (response.status === 200 && response.data.status === "SUCCESS") {
+        setDataCensorship(response?.data?.data);
+      }
+    }
+  };
+
+  const handleHidden = async (postId: string) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      console.log(postId);
+      const updateField = {
+        postId: postId,
+      };
+      const response = await hiddenPost(String(token), updateField);
+      if (response?.data?.status === "SUCCESS") {
+        setSpin(true);
+        setTimeout(() => {
+          setSpin(false);
+          getDataListPost();
+          getDataListHidden();
+        }, 1000);
+      }
+    }
+  };
+  const updatePostHidden = async (postId: string) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      console.log(postId);
+      const updateField = {
+        postId: postId,
+      };
+      const response = await unhiddenPost(String(token), updateField);
+      if (response?.data?.status === "SUCCESS") {
+        setSpin(true);
+        setTimeout(() => {
+          setSpin(false);
+          getDataListPost();
+          getDataListHidden();
+        }, 1000);
+      }
+    }
+  };
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -59,7 +142,7 @@ const MyAds = () => {
                 <div className="wrapper-left">
                   <div className="left">
                     <Image
-                      src={item?.post?.image}
+                      src={item?.post?.image[0]?.img}
                       alt=""
                       className="image-car"
                       width={144}
@@ -90,7 +173,7 @@ const MyAds = () => {
                           <ChangePostIcon></ChangePostIcon>Sửa tin
                         </button>
                       </a>
-                      <button>
+                      <button onClick={() => handleHidden(item.postId)}>
                         <HiddenEyeIcon></HiddenEyeIcon>Đã bán / Ẩn tin
                       </button>
                     </div>
@@ -149,13 +232,221 @@ const MyAds = () => {
     },
     {
       key: "2",
-      label: "Bị từ chối",
-      children: "Content of Tab Pane 2",
+      label: "Đang đợi duyệt",
+      children: (
+        <div className="tab-on-view">
+          {dataCensorship.map((item: any, key: number) => {
+            return (
+              <div className="on-view" key={key}>
+                <div className="wrapper-left">
+                  <div className="left">
+                    <Image
+                      src={item?.post?.image[0]?.img}
+                      alt=""
+                      className="image-car"
+                      width={144}
+                      height={144}
+                    ></Image>
+                    <div className="information">
+                      <span className="title">{item?.post?.title}</span>
+                      <span className="price">{item?.post?.price} $</span>
+                      <span className="address">
+                        {getWardDistrict(item?.post?.fullAddress)}
+                      </span>
+                      <span className="date-post">
+                        Ngày đăng tin: &nbsp;<p> {item?.date}</p>
+                      </span>
+                      <span className="date-expired">
+                        Ngày hết hạn: &nbsp;<p> {addDay(item?.date)}</p>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="right">
+                  <div className="top">
+                    <div className="flex">
+                      <div className="view">
+                        <div className="flex-view">
+                          <span className="text">Lượt xem</span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                        <div className="number-view">141</div>
+                      </div>
+                      <div className="slider">
+                        <div className="page">
+                          <span
+                            className="top"
+                            style={{ justifyContent: "center" }}
+                          >
+                            Tin chưa được hiển thị
+                          </span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="service">
+                      <div className="top">
+                        <span className="current">Dịch vụ gần đây</span>
+                        <span className="detail">Xem chi tiết</span>
+                      </div>
+                      <div className="bottom">
+                        <LetterIIcon></LetterIIcon>
+                        <span>Chưa sử dụng dịch vụ nào</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ),
     },
     {
       key: "3",
+      label: "Bị từ chối",
+      children: (
+        <div className="tab-on-view">
+          {dataRefuse.map((item: any, key: number) => {
+            return (
+              <div className="on-view" key={key}>
+                <div className="wrapper-left">
+                  <div className="left">
+                    <Image
+                      src={item?.post?.image[0]?.img}
+                      alt=""
+                      className="image-car"
+                      width={144}
+                      height={144}
+                    ></Image>
+                    <div className="information">
+                      <span className="title">{item?.post?.title}</span>
+                      <span className="price">{item?.post?.price} $</span>
+                      <span className="address">
+                        {getWardDistrict(item?.post?.fullAddress)}
+                      </span>
+                      <span className="date-post">
+                        Ngày đăng tin: &nbsp;<p> {item?.date}</p>
+                      </span>
+                      <span className="date-expired">
+                        Ngày hết hạn: &nbsp;<p> {addDay(item?.date)}</p>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="right">
+                  <div className="top">
+                    <div className="flex">
+                      <div className="view">
+                        <div className="flex-view">
+                          <span className="text">Lượt xem</span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                        <div className="number-view">141</div>
+                      </div>
+                      <div className="slider">
+                        <div className="page">
+                          <span
+                            className="top"
+                            style={{ justifyContent: "center" }}
+                          >
+                            Tin chưa được hiển thị
+                          </span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="service">
+                      <div className="top">
+                        <span className="current">Dịch vụ gần đây</span>
+                        <span className="detail">Xem chi tiết</span>
+                      </div>
+                      <div className="bottom">
+                        <LetterIIcon></LetterIIcon>
+                        <span>Chưa sử dụng dịch vụ nào</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ),
+    },
+    {
+      key: "4",
       label: "Đã ẩn",
-      children: "Content of Tab Pane 3",
+      children: (
+        <div className="tab-on-view">
+          {dataHidden.map((item: any, key: number) => {
+            return (
+              <div className="on-view" key={key}>
+                <div className="wrapper-left">
+                  <div className="left">
+                    <Image
+                      src={item?.post?.image[0]?.img}
+                      alt=""
+                      className="image-car"
+                      width={144}
+                      height={144}
+                    ></Image>
+                    <div className="information">
+                      <span className="title">{item?.post?.title}</span>
+                      <span className="price">{item?.post?.price} $</span>
+                      <span className="address">
+                        {getWardDistrict(item?.post?.fullAddress)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="right">
+                  <div className="top">
+                    <div className="flex">
+                      <div className="view">
+                        <div className="flex-view">
+                          <span className="text">Lượt xem</span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                        <div className="number-view">141</div>
+                      </div>
+                      <div className="slider">
+                        <div className="page">
+                          <span
+                            className="top"
+                            style={{ justifyContent: "center" }}
+                          >
+                            Tin chưa được hiển thị
+                          </span>
+                          <LetterIIcon></LetterIIcon>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="service">
+                      <div className="top">
+                        <span className="current">Dịch vụ gần đây</span>
+                        <span className="detail">Xem chi tiết</span>
+                      </div>
+                      <div className="bottom">
+                        <LetterIIcon></LetterIIcon>
+                        <span>Chưa sử dụng dịch vụ nào</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bottom">
+                    <button onClick={() => updatePostHidden(item?.postId)}>
+                      <HiddenEyeIcon></HiddenEyeIcon>Hiện tin lại
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ),
     },
   ];
   return (
@@ -208,6 +499,7 @@ const MyAds = () => {
         />
       </div>
       <div></div>
+      <Spin spinning={spin} fullscreen />
     </Page>
   );
 };

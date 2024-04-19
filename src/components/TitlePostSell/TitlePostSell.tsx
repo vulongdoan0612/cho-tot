@@ -22,6 +22,7 @@ const TitlePostSell = ({
   carNumber,
   fileList,
   dateCar,
+  handleWarning,
   owner,
   form,
   country,
@@ -63,7 +64,6 @@ const TitlePostSell = ({
   }, []);
 
   useEffect(() => {
-    // if(dataPaost)
     if (!id) {
       setStatePost((prevState) => ({
         ...prevState,
@@ -154,6 +154,7 @@ const TitlePostSell = ({
     dataPost?.post?.fullAddress,
     dataPost?.post?.wardValue,
     statePost?.cities,
+    id,
   ]);
   useEffect(() => {
     if (id) {
@@ -316,32 +317,33 @@ const TitlePostSell = ({
           districtValue: statePost?.districtValue,
           wardValue: statePost?.wardValue,
         };
-        console.log(fileList);
         if (fileList && !id) {
-          const response = await PostFormSellCheck(String(token), {
-            postForm,
-            image: fileList,
-          });
-          console.log(response);
-          if (response?.data?.status) {
-            setStatePost((prevState) => ({
-              ...prevState,
-              spin: true,
-            }));
-            setTimeout(() => {
+          if (fileList.length === 0) {
+            handleWarning();
+          } else {
+            const response = await PostFormSellCheck(String(token), {
+              postForm,
+              image: fileList,
+            });
+            if (response?.data?.status) {
               setStatePost((prevState) => ({
                 ...prevState,
-                spin: false,
+                spin: true,
               }));
-            }, 1000);
-            setTimeout(() => {
-              toast(response?.data?.message, { autoClose: 500 });
-            }, 1001);
-
-            if (response?.data?.status === "SUCCESS") {
               setTimeout(() => {
-                router.push(`/dashboard/view-post?id=${uuid}`);
-              }, 2000);
+                setStatePost((prevState) => ({
+                  ...prevState,
+                  spin: false,
+                }));
+              }, 1000);
+              setTimeout(() => {
+                toast(response?.data?.message, { autoClose: 500 });
+              }, 1001);
+              if (response?.data?.status === "SUCCESS") {
+                setTimeout(() => {
+                  router.push(`/dashboard/view-post?id=${uuid}`);
+                }, 2000);
+              }
             }
           }
         } else if (fileList && id) {

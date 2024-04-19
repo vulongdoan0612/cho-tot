@@ -31,6 +31,7 @@ const ViewPostCensor = () => {
   useDidMountEffect(() => {
     getDataPost();
   }, [router.query]);
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="view-post-wrapper">
@@ -55,7 +56,7 @@ const ViewPostCensor = () => {
                 className={`${loading ? "unhidden" : "hidden"} skeleton-custom`}
               >
                 <Image
-                  src={data?.post?.image[0]}
+                  src={data?.post?.image[0]?.img}
                   width={88}
                   height={88}
                   alt=""

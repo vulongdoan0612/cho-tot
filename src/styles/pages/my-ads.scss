@@ -80,6 +80,7 @@
       .left {
         .ant-image {
           img {
+            object-fit: cover;
             border-radius: 0.25rem;
           }
         }
@@ -251,6 +252,7 @@
       }
       .bottom {
         button {
+          height: 38px;
           cursor: pointer;
           width: 100%;
           display: flex;
