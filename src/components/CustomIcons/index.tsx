@@ -15,6 +15,23 @@ const Arrow = () => (
     ></path>
   </svg>
 );
+const Filter = () => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="#000000"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M3.21276 3H20.7908C21.0224 3.00036 21.249 3.06709 21.4437 3.19228C21.6385 3.31746 21.7933 3.49586 21.8898 3.70633C21.9863 3.9168 22.0204 4.15052 21.9882 4.37979C21.9559 4.60903 21.8586 4.82422 21.7079 4.99987C21.7078 4.9999 21.7078 4.99993 21.7078 4.99996L14.6509 13.2222C14.6492 13.224 14.6476 13.2259 14.646 13.2278C14.6388 13.236 14.6346 13.2464 14.6342 13.2573V19.3615C14.6348 19.513 14.5994 19.6625 14.5309 19.7977C14.4621 19.9336 14.3619 20.0511 14.2386 20.1405C14.1152 20.2298 13.9724 20.2885 13.8218 20.3116C13.6713 20.3346 13.5174 20.3215 13.373 20.2731C13.373 20.2731 13.373 20.2732 13.373 20.2731L10.0191 19.1572L10.0163 19.1562C9.82518 19.0916 9.65936 18.9682 9.54254 18.8037C9.42647 18.6403 9.36467 18.4445 9.36583 18.2441V13.2555C9.36554 13.2445 9.36142 13.2339 9.35415 13.2255L9.3513 13.2222L2.29222 4.99996C2.29221 4.99996 2.29222 4.99997 2.29222 4.99996C2.14116 4.82402 2.04377 4.60838 2.01166 4.37872C1.97956 4.14905 2.01407 3.91499 2.11109 3.70436C2.20812 3.49373 2.36358 3.31539 2.559 3.19053C2.75421 3.0658 2.9811 2.99967 3.21276 3ZM20.7039 4.25012H3.29608L10.2986 12.4065C10.5012 12.6401 10.6138 12.9384 10.6159 13.2477L10.6159 13.2521V18.0382L13.3841 18.9593V13.2521C13.3841 13.2498 13.3841 13.2476 13.3841 13.2454C13.3874 12.9362 13.5009 12.6384 13.7043 12.4056L20.7039 4.25012Z"
+      fill="currentColor"
+    ></path>
+  </svg>
+);
 const Warning = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -114,20 +131,42 @@ const LetterI = () => (
     </g>
   </svg>
 );
-const ArrowInput = () => (
-  <svg
-    data-type="monochrome"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="1em"
-    height="1em"
-    fill="none"
-  >
-    <g fill="currentColor">
-      <path d="M12.4495 14.8316C12.2013 15.0561 11.7987 15.0561 11.5505 14.8316L6.18623 9.98133C6.0044 9.81692 5.95001 9.56967 6.04841 9.35486C6.14682 9.14006 6.37864 9 6.63578 9L17.3642 9C17.6214 9 17.8532 9.14006 17.9516 9.35487C18.05 9.56967 17.9956 9.81693 17.8138 9.98133L12.4495 14.8316Z"></path>
-    </g>
-  </svg>
-);
+const ArrowInput = ({ id }: any) => {
+  return (
+    <svg
+      data-type="monochrome"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      fill="none"
+      id={id}
+    >
+      <g fill="currentColor">
+        <path
+          id={id}
+          d="M12.4495 14.8316C12.2013 15.0561 11.7987 15.0561 11.5505 14.8316L6.18623 9.98133C6.0044 9.81692 5.95001 9.56967 6.04841 9.35486C6.14682 9.14006 6.37864 9 6.63578 9L17.3642 9C17.6214 9 17.8532 9.14006 17.9516 9.35487C18.05 9.56967 17.9956 9.81693 17.8138 9.98133L12.4495 14.8316Z"
+        ></path>
+      </g>
+    </svg>
+  );
+};
+const ArrowInputNormal = () => {
+  return (
+    <svg
+      data-type="monochrome"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      fill="none"
+    >
+      <g fill="currentColor">
+        <path d="M12.4495 14.8316C12.2013 15.0561 11.7987 15.0561 11.5505 14.8316L6.18623 9.98133C6.0044 9.81692 5.95001 9.56967 6.04841 9.35486C6.14682 9.14006 6.37864 9 6.63578 9L17.3642 9C17.6214 9 17.8532 9.14006 17.9516 9.35487C18.05 9.56967 17.9956 9.81693 17.8138 9.98133L12.4495 14.8316Z"></path>
+      </g>
+    </svg>
+  );
+};
 const Facebook = () => (
   <svg
     width="20"
@@ -442,9 +481,52 @@ const HiddenEye = () => (
     </g>
   </svg>
 );
+const ArrowBack = () => (
+  <svg
+    data-type="monochrome"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
+    fill="none"
+  >
+    <g fill="currentColor">
+      <path d="M12.0034 4.68353C12.3158 4.99595 12.3158 5.50248 12.0034 5.8149L6.61907 11.1992H19.3127C19.7545 11.1992 20.1127 11.5574 20.1127 11.9992C20.1127 12.441 19.7545 12.7992 19.3127 12.7992H6.61907L12.0034 18.1835C12.3158 18.496 12.3158 19.0025 12.0034 19.3149C11.691 19.6273 11.1844 19.6273 10.872 19.3149L4.12201 12.5649C3.80959 12.2525 3.80959 11.746 4.12201 11.4335L10.872 4.68353C11.1844 4.37111 11.691 4.37111 12.0034 4.68353Z"></path>
+    </g>
+  </svg>
+);
+const Search = () => (
+  <svg
+    data-type="monochrome"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    fill="none"
+  >
+    <g fill="currentColor">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M5.88351 3.65974C7.20956 2.7737 8.76857 2.30078 10.3634 2.30078C12.5019 2.30092 14.5529 3.15051 16.0651 4.66269C17.5773 6.17487 18.4269 8.22579 18.427 10.3643C18.427 11.9592 17.9541 13.5182 17.068 14.8443C16.182 16.1703 14.9226 17.2038 13.4492 17.8142C11.9758 18.4245 10.3545 18.5842 8.79027 18.273C7.22609 17.9619 5.78929 17.1939 4.66158 16.0662C3.53387 14.9385 2.76588 13.5017 2.45475 11.9375C2.14361 10.3733 2.3033 8.752 2.91361 7.27857C3.52393 5.80514 4.55746 4.54578 5.88351 3.65974ZM10.3634 3.70078C12.1307 3.7009 13.8255 4.403 15.0751 5.65264C16.3248 6.90228 17.0269 8.59712 17.027 10.3644M10.3634 3.70078C9.04548 3.70079 7.75712 4.0916 6.66131 4.8238C5.56549 5.556 4.7114 6.59672 4.20704 7.81433C3.70269 9.03194 3.57073 10.3718 3.82785 11.6644C4.08496 12.957 4.71961 14.1443 5.65153 15.0762C6.58345 16.0082 7.77079 16.6428 9.0634 16.8999C10.356 17.157 11.6958 17.0251 12.9135 16.5207C14.1311 16.0164 15.1718 15.1623 15.904 14.0665C16.6362 12.9707 17.027 11.6823 17.027 10.3644"
+      ></path>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M15.3623 15.3613C15.6356 15.0879 16.0788 15.0879 16.3522 15.3613L21.4949 20.5039C21.7682 20.7773 21.7682 21.2205 21.4949 21.4939C21.2215 21.7672 20.7783 21.7672 20.5049 21.4939L15.3623 16.3512C15.0889 16.0779 15.0889 15.6346 15.3623 15.3613Z"
+      ></path>
+    </g>
+  </svg>
+);
 export const SidebarMenu = (props: any) => <Icon component={Bar} {...props} />;
 export const PlusIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Plus} {...props} />
+);
+export const SearchIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={Search} {...props} />
+);
+export const ArrowBackIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={ArrowBack} {...props} />
 );
 export const HiddenEyeIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={HiddenEye} {...props} />
@@ -474,6 +556,9 @@ export const BarIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Bar} {...props} />
 );
 
+export const FilterIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={Filter} {...props} />
+);
 export const BellIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Bell} {...props} />
 );
@@ -501,6 +586,9 @@ export const MangeShopIcon = (props: Partial<CustomIconComponentProps>) => (
 export const UploadNewIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={UploadNew} {...props} />
 );
+export const ArrowInputNormalIcon = (
+  props: Partial<CustomIconComponentProps>
+) => <Icon component={ArrowInputNormal} {...props} />;
 export const ArrowInputIcon = (props: Partial<CustomIconComponentProps>) => (
-  <Icon component={ArrowInput} {...props} />
+  <ArrowInput {...props} />
 );

@@ -7,6 +7,7 @@ import {
   PlusManageIcon,
 } from "@/components/CustomIcons";
 import Page from "@/layout/Page";
+import { RootState } from "@/redux/store";
 import {
   getPostCensorshipList,
   getPostCheckList,
@@ -30,11 +31,14 @@ import {
   TabsProps,
 } from "antd";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import useWebSocket from "react-use-websocket";
 
 const MyAds = () => {
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
   const [inputValue, setInputValue] = useState(1);
   const [spin, setSpin] = useState(false);
-
+  const { account } = useSelector((state: RootState) => state.auth);
   const onChange: InputNumberProps["onChange"] = (newValue) => {
     setInputValue(15);
   };
@@ -72,7 +76,6 @@ const MyAds = () => {
       }
     }
   };
-
   const getDataListRefuse = async () => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -83,6 +86,24 @@ const MyAds = () => {
       }
     }
   };
+  useEffect(() => {
+    if (lastJsonMessage) {
+      setSpin(true);
+      setTimeout(() => {
+        setSpin(false);
+      }, 500);
+      if (lastJsonMessage.action === "refuse") {
+        getDataListRefuse();
+        getDataListPost();
+      }
+      if (lastJsonMessage.action === "accept") {
+        getDataListRefuse();
+        getDataListPost();
+        getDataListCensorship();
+      }
+    }
+  }, [lastJsonMessage]);
+
   const getDataListCensorship = async () => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -97,7 +118,6 @@ const MyAds = () => {
   const handleHidden = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      console.log(postId);
       const updateField = {
         postId: postId,
       };
@@ -473,7 +493,7 @@ const MyAds = () => {
               height={48}
             ></Image>
             <div className="name">
-              <span>Nguyễn Đoàn Thành Long Vu</span>
+              <span>{account.fullname}</span>
             </div>
           </div>
           <div className="right-wrapper">

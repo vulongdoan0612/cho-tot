@@ -79,6 +79,25 @@ export interface ICommonState {
   wards: any;
   activeIndices: any;
 }
+export interface IFilterHeader {
+  searchResult: any;
+  cities: any;
+  districts: any;
+  searchResultDistrict: any;
+  cityName: string;
+  districtName: string;
+  selectCity: string;
+  valueRadioSit: string;
+  valueRadioBrand: string;
+  valueRadio: string;
+  valueRadioDistrict: string;
+  openSearchCity: boolean;
+  openSearchDistrict: boolean;
+  openFind: boolean;
+  openPrice: boolean;
+  openSit: boolean;
+  openBrand: boolean;
+}
 export interface ICommonStateFormRenderCar {
   value: string;
   color: string;

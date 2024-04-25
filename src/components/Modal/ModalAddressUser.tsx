@@ -7,9 +7,6 @@ import {
 } from "@mui/material";
 import CustomModal from "../CustomModal";
 import CustomButton from "../CustomButton";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { useEffect, useState } from "react";
 
 const ModalAddressUser = ({
   modalConfirmSwitch,
