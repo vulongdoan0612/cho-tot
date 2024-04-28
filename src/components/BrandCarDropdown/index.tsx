@@ -3,10 +3,9 @@ import { SearchIcon } from "../CustomIcons";
 import { useEffect, useRef, useState } from "react";
 import data from "./brandList.json";
 const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
-  const brandRef: any = useRef(null); 
+  const brandRef: any = useRef(null);
   const [searchBrand, setSearchBrand] = useState("");
   const [dataRender, setDataRender] = useState<any>([]);
-  console.log(openBrand);
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
@@ -57,7 +56,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
     <>
       <div className={`brand-select`} ref={brandRef}>
         <div className="header-search">
-          <span className="title">Số chỗ</span>
+          <span className="title">Hãng xe</span>
           <div onClick={handleRenew} style={{ cursor: "pointer" }}>
             <span className="renew">Xóa lọc</span>
           </div>

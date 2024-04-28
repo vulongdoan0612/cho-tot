@@ -7,7 +7,7 @@ import {
 import ModalCategorySelect from "@/components/Modal/ModalCategorySelect";
 import Page from "@/layout/Page";
 import getBase64 from "@/utils/getBase64";
-import { MenuItem, Select, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import {
   GetProp,
   Image,
@@ -17,19 +17,14 @@ import {
   UploadProps,
 } from "antd";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import RenderOto from "@/components/RenderFormTraffic/RenderFormTraffic";
-import { getPostCheck } from "@/services/formPost";
-import useDidMountEffect from "@/utils/customUseEffect";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchDataPost } from "@/redux/reducers/postSell";
 
 const PostSell = () => {
-  const { countdownDuration, loading } = useSelector(
-    (state: RootState) => state.countDownLoading
-  );
+  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
 

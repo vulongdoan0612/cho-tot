@@ -15,6 +15,20 @@ const Arrow = () => (
     ></path>
   </svg>
 );
+const ArrowDown = () => (
+  <svg
+    data-type="monochrome"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
+    fill="none"
+  >
+    <g fill="currentColor">
+      <path d="M4.68451 8.05853C4.99693 7.74611 5.50346 7.74611 5.81588 8.05853L12.0002 14.2428L18.1845 8.05853C18.4969 7.74611 19.0035 7.74611 19.3159 8.05853C19.6283 8.37095 19.6283 8.87748 19.3159 9.1899L12.5659 15.9399C12.2535 16.2523 11.7469 16.2523 11.4345 15.9399L4.68451 9.1899C4.37209 8.87748 4.37209 8.37095 4.68451 8.05853Z"></path>
+    </g>
+  </svg>
+);
 const Filter = () => (
   <svg
     width="1em"
@@ -518,9 +532,43 @@ const Search = () => (
     </g>
   </svg>
 );
+const ArrowRight = () => (
+  <svg
+    data-type="monochrome"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    fill="none"
+  >
+    <g fill="currentColor">
+      <path d="M8.05951 4.68353C8.37193 4.37111 8.87846 4.37111 9.19088 4.68353L15.9409 11.4335C16.2533 11.746 16.2533 12.2525 15.9409 12.5649L9.19088 19.3149C8.87846 19.6273 8.37193 19.6273 8.05951 19.3149C7.74709 19.0025 7.74709 18.496 8.05951 18.1835L14.2438 11.9992L8.05951 5.8149C7.74709 5.50248 7.74709 4.99595 8.05951 4.68353Z"></path>
+    </g>
+  </svg>
+);
+const DeleteFilter = () => (
+  <svg
+    data-type="monochrome"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    fill="none"
+  >
+    <g fill="currentColor">
+      <path d="M6.25483 6.33003C6.5282 6.05666 6.97141 6.05666 7.24478 6.33003L11.9998 11.0851L16.7548 6.33003C17.0282 6.05666 17.4714 6.05666 17.7448 6.33003C18.0181 6.60339 18.0181 7.04661 17.7448 7.31997L12.9898 12.075L17.7448 16.83C18.0181 17.1034 18.0181 17.5466 17.7448 17.82C17.4714 18.0933 17.0282 18.0933 16.7548 17.82L11.9998 13.0649L7.24478 17.82C6.97141 18.0933 6.5282 18.0933 6.25483 17.82C5.98146 17.5466 5.98146 17.1034 6.25483 16.83L11.0099 12.075L6.25483 7.31997C5.98146 7.04661 5.98146 6.60339 6.25483 6.33003Z"></path>
+    </g>
+  </svg>
+);
 export const SidebarMenu = (props: any) => <Icon component={Bar} {...props} />;
 export const PlusIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Plus} {...props} />
+);
+export const ArrowRightIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={ArrowRight} {...props} />
+);
+export const DeleteFilterIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={DeleteFilter} {...props} />
 );
 export const SearchIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Search} {...props} />
@@ -539,6 +587,9 @@ export const FasterSellIcon = (props: Partial<CustomIconComponentProps>) => (
 );
 export const WarningIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Warning} {...props} />
+);
+export const ArrowDownIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={ArrowDown} {...props} />
 );
 export const ArrowIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={Arrow} {...props} />

@@ -1,0 +1,106 @@
+.modal-custom-list-filter {
+  .header-search {
+    padding-bottom: 1.5rem;
+    color: #222;
+    .title {
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .renew {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 18px;
+      color: #306bd9;
+    }
+    padding-left: 12px;
+    padding-right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .selections-sit {
+    .selection {
+      padding-left: 12px;
+      padding-right: 12px;
+      position: relative;
+      display: flex;
+      .ant-input-outlined:hover {
+        border: 1px solid #222;
+        transition: all 0.3s ease;
+      }
+      .ant-input-outlined:focus {
+        border: 1px solid #f80;
+        box-shadow: none;
+      }
+      .anticon {
+        z-index: 1;
+        top: 50%;
+        bottom: 50%;
+        left: 2rem;
+        transform: translate(-50%, -50%);
+        svg {
+          color: black;
+        }
+        position: absolute;
+      }
+      input {
+        padding-left: 40px;
+        padding-right: 40px;
+        position: relative;
+      }
+      input::placeholder {
+        color: #969696 !important;
+        font-size: 0.875rem;
+      }
+    }
+    .sits {
+      padding-bottom: 12px;
+      box-shadow: inset 0 -1px 0 0 #f4f4f4;
+      cursor: pointer;
+      width: 100%;
+      .sit-item {
+        box-shadow: inset 0 -1px 0 0 #f4f4f4;
+      }
+      .sit-item:hover {
+        background: #f4f4f4;
+      }
+      .ant-radio-group {
+        width: 100%;
+
+        .ant-radio-wrapper {
+          padding: 14px 8px 10px 16px;
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          span:last-child {
+            width: 100%;
+            text-align: left;
+          }
+          span:first-child {
+            width: 16px;
+          }
+          .city-name,
+          .district-name {
+            width: 100%;
+
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.5;
+          }
+          .ant-radio-checked {
+            .ant-radio-inner {
+              border-color: #f80;
+              background-color: #f80;
+            }
+          }
+        }
+        .ant-radio-wrapper:hover .ant-radio-inner {
+          border-color: black;
+        }
+      }
+    }
+  }
+}

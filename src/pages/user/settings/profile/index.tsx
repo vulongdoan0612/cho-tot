@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import Page from "@/layout/Page";
 import { RootState } from "@/redux/store";
-import { Breadcrumb, DatePicker, DatePickerProps, Skeleton } from "antd";
+import { DatePicker, DatePickerProps, Skeleton } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
-import { parse, format } from "date-fns";
 import { ArrowInputIcon } from "@/components/CustomIcons";
 import {
   FormControl,
@@ -440,7 +439,7 @@ const User = () => {
           <div className="form-input">
             <div className="first-line input-need-to-custom">
               {" "}
-              <div className="fullname">
+              <div className="fullname ">
                 {loading ? (
                   <Skeleton.Input
                     block={true}
@@ -588,7 +587,7 @@ const User = () => {
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
               <div
-                className="second-line input-arrow"
+                className="second-line input-arrow  input-need-to-custom"
                 onClick={handleModalCCCD}
               >
                 <TextField
@@ -622,7 +621,10 @@ const User = () => {
             {loading ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
-              <div className="second-line input-arrow" onClick={handleModalFav}>
+              <div
+                className="second-line input-arrow  input-need-to-custom"
+                onClick={handleModalFav}
+              >
                 <TextField
                   className="fullname"
                   id="filled-multiline-flexible"

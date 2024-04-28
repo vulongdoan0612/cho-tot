@@ -6,19 +6,13 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import brandList from "./carList.json";
 import countries from "./country.json";
 import formCar from "./formCar.json";
 import colorCar from "./color.json";
-import {
-  DatePicker,
-  DatePickerProps,
-  InputNumber,
-  InputNumberProps,
-} from "antd";
-import dayjs, { Dayjs } from "dayjs";
+import { DatePicker, DatePickerProps, InputNumberProps } from "antd";
+import dayjs from "dayjs";
 import carsit from "./carsit.json";
 import CustomButtonSelect from "../CustomButtonSelect";
 import NumberInput from "../NumberInput/NumberInput";
@@ -30,10 +24,10 @@ import { defaultCommonState } from "./_mock";
 import { ICommonStateFormRenderCar } from "@/interfaces/User";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { onlyNumbers } from "@/utils/onlyNumbers";
 
 const RenderOto = ({ handleWarning, fileList }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);
-  const dispatch = useDispatch<AppDispatch>();
   const [stateForm, setStateForm] =
     useState<ICommonStateFormRenderCar>(defaultCommonState);
   const router = useRouter();
@@ -130,10 +124,12 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
     }));
   };
   const handleChangeCarNumber = (event: any) => {
-    setStateForm((prevState) => ({
-      ...prevState,
-      carNumber: event?.target?.value,
-    }));
+    if (onlyNumbers(event?.target?.value) || event?.target?.value === "") {
+      setStateForm((prevState) => ({
+        ...prevState,
+        carNumber: event?.target?.value,
+      }));
+    }
   };
   const handleChangeOwner = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
@@ -143,16 +139,20 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
   };
 
   const onChangeNumber: InputNumberProps["onChange"] = (value) => {
-    setStateForm((prevState) => ({
-      ...prevState,
-      km: String(value),
-    }));
+    if (onlyNumbers(value) || value === "") {
+      setStateForm((prevState) => ({
+        ...prevState,
+        km: String(value),
+      }));
+    }
   };
-  const onChangePrice: InputNumberProps["onChange"] = (value) => {
-    setStateForm((prevState) => ({
-      ...prevState,
-      price: String(value),
-    }));
+  const onChangePrice = (e: any) => {
+    if (onlyNumbers(e) || e === "") {
+      setStateForm((prevState) => ({
+        ...prevState,
+        price: String(e),
+      }));
+    }
   };
   const handleFuel = (fuelType: any) => {
     setStateForm((prevState) => ({

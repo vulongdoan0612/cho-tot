@@ -7,12 +7,16 @@ import SitDropdown from "@/components/SitDropdown";
 import { IFilterHeader } from "@/interfaces/User";
 import Page from "@/layout/Page";
 import axios from "axios";
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import { defaultCommonState } from "./_mock";
+import ModalFilter from "@/components/Modal/ModalFilter";
 
 const SellingPage = () => {
   const [state, setState] = useState<IFilterHeader>(defaultCommonState);
-
+  const [openModal, setOpenModal] = useState(false);
+  const handleCancleModal = () => {
+    setOpenModal(false);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -110,14 +114,17 @@ const SellingPage = () => {
       openBrand: !prevState.openBrand,
     }));
   };
+  const handleFilterModal = () => {
+    setOpenModal(true);
+  };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="selling-wrapper">
         <div className="header">
-          <div className="filter">
+          <div className="filter" onClick={handleFilterModal}>
             {" "}
-            <FilterIcon></FilterIcon>
-            <span>Lọc</span>
+            <FilterIcon style={{ cursor: "pointer" }}></FilterIcon>
+            <span style={{ cursor: "pointer" }}>Lọc</span>
           </div>
           <span className="line"></span>
 
@@ -213,6 +220,10 @@ const SellingPage = () => {
         </div>
       </div>
       <div></div>
+      <ModalFilter
+        handleCancleModal={handleCancleModal}
+        openModal={openModal}
+      ></ModalFilter>
     </Page>
   );
 };
