@@ -3,7 +3,6 @@ import {
   FasterSellIcon,
   HiddenEyeIcon,
   LetterIIcon,
-  PlusIcon,
   PlusManageIcon,
 } from "@/components/CustomIcons";
 import Page from "@/layout/Page";
@@ -16,8 +15,10 @@ import {
   hiddenPost,
   unhiddenPost,
 } from "@/services/formPost";
+import { getProfile } from "@/services/getProfile";
 import addDay from "@/utils/addDay";
 import useDidMountEffect from "@/utils/customUseEffect";
+import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import getWardDistrict from "@/utils/getWardDistrict";
 import {
   Breadcrumb,
@@ -87,16 +88,25 @@ const MyAds = () => {
     }
   };
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
+
     if (lastJsonMessage) {
       setSpin(true);
       setTimeout(() => {
         setSpin(false);
       }, 500);
       if (lastJsonMessage.action === "refuse") {
+        getProfile(String(token));
+        getDataListRefuse();
+        getDataListPost();
+      }
+      if (lastJsonMessage.action === "delete") {
+        getProfile(String(token));
         getDataListRefuse();
         getDataListPost();
       }
       if (lastJsonMessage.action === "accept") {
+        getProfile(String(token));
         getDataListRefuse();
         getDataListPost();
         getDataListCensorship();
@@ -170,7 +180,9 @@ const MyAds = () => {
                     ></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">{item?.post?.price} $</span>
+                      <span className="price">
+                        {formatNumberWithCommas(item?.post?.price)} đ
+                      </span>
                       <span className="address">
                         {getWardDistrict(item?.post?.fullAddress)}
                       </span>
@@ -269,7 +281,9 @@ const MyAds = () => {
                     ></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">{item?.post?.price} $</span>
+                      <span className="price">
+                        {formatNumberWithCommas(item?.post?.price)} đ
+                      </span>
                       <span className="address">
                         {getWardDistrict(item?.post?.fullAddress)}
                       </span>
@@ -342,7 +356,10 @@ const MyAds = () => {
                     ></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">{item?.post?.price} $</span>
+                      <span className="price">
+                        {" "}
+                        {formatNumberWithCommas(item?.post?.price)} đ
+                      </span>
                       <span className="address">
                         {getWardDistrict(item?.post?.fullAddress)}
                       </span>
@@ -415,7 +432,10 @@ const MyAds = () => {
                     ></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">{item?.post?.price} $</span>
+                      <span className="price">
+                        {" "}
+                        {formatNumberWithCommas(item?.post?.price)} đ
+                      </span>
                       <span className="address">
                         {getWardDistrict(item?.post?.fullAddress)}
                       </span>
@@ -471,7 +491,7 @@ const MyAds = () => {
   ];
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
-      <div>
+      <div className="my-ads">
         <Breadcrumb
           className="breadcrumb-my-ads-page"
           separator=">"
@@ -518,7 +538,6 @@ const MyAds = () => {
           className="tab-ads"
         />
       </div>
-      <div></div>
       <Spin spinning={spin} fullscreen />
     </Page>
   );

@@ -7,12 +7,14 @@ const NumberInput = ({
   defaultValue,
   className,
   value,
+  placeholder
 }: any) => {
   return (
     <InputNumber
       className={`number-input ${className}`}
-      min={min}
-      max={max}
+      // min={min}
+      // max={max}
+      placeholder={placeholder}
       value={value}
       defaultValue={defaultValue}
       onChange={onChangeNumber}

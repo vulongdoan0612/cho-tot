@@ -1,20 +1,30 @@
+"use client";
+
 import { Radio, RadioChangeEvent } from "antd";
-import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  DeleteFilterIcon,
-} from "../CustomIcons";
+import { ArrowDownIcon } from "../CustomIcons";
 import CustomModal from "../CustomModal";
 import { useEffect, useState } from "react";
 import brandList from "../RenderFormTraffic/carList.json";
 import formCar from "../RenderFormTraffic/formCar.json";
+import carSit from "../RenderFormTraffic/carSit.json";
+
 import { TextField } from "@mui/material";
 import { onlyNumbers } from "@/utils/onlyNumbers";
 import CustomButton from "../CustomButton";
 import ModalListFilter from "../ModalListFilter/ModalListFilter";
+import ItemModalFilterBrand from "../ItemModalFilter/indexBrands";
+import ItemModalFilterSits from "../ItemModalFilter/indexSits";
+import ItemModalFilterModels from "../ItemModalFilter/indexModels";
+import FilterBy from "../ItemModalFilter/indexFilter";
+import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery2";
+import { useRouter } from "next/router";
 
-const ModalFilter = ({ handleCancleModal, openModal }: any) => {
-  const dataSitAll = [2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, "Khác"];
+const ModalFilter = ({
+  handleCancleModal,
+  state,
+  setState,
+  openModal,
+}: any) => {
   const dataColor = [
     "Trắng",
     "Đen",
@@ -40,36 +50,104 @@ const ModalFilter = ({ handleCancleModal, openModal }: any) => {
     "Đài Loan",
     "Nước khác",
   ];
-  const [valueRadioAll, setValueRadioAll] = useState("");
-  const [valueRadioAllBrand, setValueRadioAllBrand] = useState("");
-  const [valueRadioAllColor, setValueRadioAllColor] = useState("");
-  const [valueRadioAllCountry, setValueRadioAllCountry] = useState("");
-  const [valueRadioAllModel, setValueRadioAllModel] = useState("");
-  const [valueRadioAllFormCar, setValueRadioAllFormCar] = useState("");
+  const updateQuery = useUpdateQuery();
+  const removeQuery = useRemoveQuery();
+  const router = useRouter();
 
-  const [valueRadio, setValueRadio] = useState("");
-  const [valueRadioFormCar, setValueRadioFormCar] = useState("");
-  const [valueRadioCountry, setValueRadioCountry] = useState("");
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    if (router && router.query && typeof router.query.price === "string") {
+      const [lowerPrice, upperPrice] = router.query.price
+        .split("-")
+        .map((item: string) => parseInt(item));
+      setState((prevState: any) => ({
+        ...prevState,
+        priceMin: lowerPrice,
+        priceMax: upperPrice,
+      }));
+    }
+    if (router && router.query && typeof router.query.date === "string") {
+      const [dateMin, dateMax] = router.query.date
+        .split("-")
+        .map((item: string) => parseInt(item));
+      setState((prevState: any) => ({
+        ...prevState,
+        date: dateMin,
+        dateMax: dateMax,
+      }));
+    }
+    if (router && router.query && typeof router.query.km === "string") {
+      const [kmMin, kmMax] = router.query.km
+        .split("-")
+        .map((item: string) => parseInt(item));
+      setState((prevState: any) => ({
+        ...prevState,
+        km: kmMin,
+        kmMax: kmMax,
+      }));
+    }
+    // setState((prevState: any) => ({
+    //   ...prevState,
+    //   valueRadioAll: router.query.sit,
+    //   valueRadioModal: router.query.sit,
+    // }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioAllBrand: router.query.brand,
+      valueRadioBrandModal: router.query.brand,
+    }));
+
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioAllFormCar: router.query.form,
+      valueRadioFormCar: router.query.form,
+    }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioNumberBox: router.query.numberBox,
+    }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioFuel: router.query.fuel,
+    }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioColor: router.query.color,
+      valueRadioAllColor: router.query.color,
+    }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioCountry: router.query.country,
+      valueRadioAllCountry: router.query.country,
+    }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioModel: router.query.model,
+      valueRadioAllModel: router.query.model,
+    }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioStatus: router.query.status,
+    }));
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioUser: router.query.post,
+    }));
+
+    const filterModel = brandList.filter(
+      (item) => item.brand === router.query.brand
+    );
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioAllModel: router.query.model,
+      valueRadioModel: router.query.model,
+    }));
+    setModels(filterModel);
+  }, [router]);
 
   const [modalListAll, setModalListAll] = useState(false);
 
-  const [valueRadioStatus, setValueRadioStatus] = useState("");
-
-  const [valueRadioUser, setValueRadioUser] = useState("");
-
-  const [valueRadioFuel, setValueRadioFuel] = useState("");
-  const [valueRadioColor, setValueRadioColor] = useState("");
-  const [valueRadioModel, setValueRadioModel] = useState("");
-
-  const [valueRadioNumberBox, setValueRadioNumberBox] = useState("");
-
-  const [date, setDate] = useState("");
-  const [dateMax, setDateMax] = useState("");
-
-  const [kmMin, setKmMin] = useState("");
-  const [kmMax, setKmMax] = useState("");
-
-  const [valueRadioBrand, setValueRadioBrand] = useState("");
   const [models, setModels] = useState<any>([]);
   const [hidden, setHidden] = useState(false);
   const [typeModal, setTypeModal] = useState("");
@@ -79,149 +157,415 @@ const ModalFilter = ({ handleCancleModal, openModal }: any) => {
   };
   const handleModalListAll = (type: string) => {
     try {
+      console.log(type, state.valueRadioAll);
       setTypeModal(type);
       setHidden(true);
     } finally {
       setModalListAll(true);
     }
   };
-  const onChangeRadio = (e: RadioChangeEvent) => {
-    setValueRadioAll(e.target.value);
-    setValueRadio(e.target.value);
+
+  const onClickRadio = (item: any) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioAll: item,
+      valueRadioModal: item,
+    }));
+    console.log(item);
+    // setSelectedSit(item);
   };
   const onChangeRadioBrand = (e: any) => {
-    setValueRadioBrand(e.target.value);
     const filterModel = brandList.filter(
       (item) => item.brand === e.target.value
     );
-    setValueRadioAllBrand(e.target.value);
-
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioAllBrand: e.target.value,
+      valueRadioBrandModal: e.target.value,
+      valueRadioAllModel: "",
+      valueRadioModel: "",
+    }));
+    console.log(filterModel);
     setModels(filterModel);
   };
 
-  const onChangeRadioFormCar = (e: RadioChangeEvent) => {
-    setValueRadioFormCar(e.target.value);
-    setValueRadioAllFormCar(e.target.value);
+  const onChangeRadioFormCar = (item: any) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioFormCar: item,
+      valueRadioAllFormCar: item,
+    }));
   };
-  const onChangeRadioCountry = (e: RadioChangeEvent) => {
-    setValueRadioCountry(e.target.value);
-    setValueRadioAllCountry(e.target.value);
+  const onChangeRadioCountry = (item: any) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioCountry: item,
+      valueRadioAllCountry: item,
+    }));
   };
   const onChangeRadioStatus = (e: RadioChangeEvent) => {
-    setValueRadioStatus(e.target.value);
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioStatus: e.target.value,
+    }));
   };
   const onChangeRadioUser = (e: RadioChangeEvent) => {
-    setValueRadioUser(e.target.value);
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioUser: e.target.value,
+    }));
   };
-  const onChangeRadioColor = (e: RadioChangeEvent) => {
-    setValueRadioColor(e.target.value);
-    setValueRadioAllColor(e.target.value);
+  const onChangeRadioColor = (item: any) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioColor: item,
+      valueRadioAllColor: item,
+    }));
   };
-  const onChangeRadioModel = (e: RadioChangeEvent) => {
-    setValueRadioModel(e.target.value);
-    setValueRadioAllModel(e.target.value);
+  const onChangeRadioModel = (item: any) => {
+    console.log(item);
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioModel: item,
+      valueRadioAllModel: item,
+    }));
   };
   const onChangeRadioFuel = (e: RadioChangeEvent) => {
-    setValueRadioFuel(e.target.value);
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioFuel: e.target.value,
+    }));
   };
   const onChangeRadioNumberBox = (e: RadioChangeEvent) => {
-    setValueRadioNumberBox(e.target.value);
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioNumberBox: e.target.value,
+    }));
   };
   const handleChangeMin = (event: any) => {
     if (onlyNumbers(event.target.value) || event.target.value === "") {
-      setDate(event.target.value);
+      setState((prevState: any) => ({
+        ...prevState,
+        date: event.target.value,
+      }));
     }
   };
   const handleChangeMax = (event: any) => {
     if (onlyNumbers(event.target.value) || event.target.value === "") {
-      setDateMax(event.target.value);
+      setState((prevState: any) => ({
+        ...prevState,
+        dateMax: event.target.value,
+      }));
     }
   };
   const handleChangeKmMin = (event: any) => {
     if (onlyNumbers(event.target.value) || event.target.value === "") {
-      setKmMin(event.target.value);
+      setState((prevState: any) => ({
+        ...prevState,
+        kmMin: event.target.value,
+      }));
     }
   };
+  const [warnPriceMax, setWarnPriceMax] = useState(false);
+  const [warnPriceMin, setWarnPriceMin] = useState(false);
+
+  const handleChangePriceMin = (event: any) => {
+    if (onlyNumbers(event.target.value) || event.target.value === "") {
+      console.log(event?.target?.value);
+      setState((prevState: any) => ({
+        ...prevState,
+        priceMin: event.target.value,
+      }));
+    }
+    if (Number(event.target.value) < 10000000) {
+      setWarnPriceMin(true);
+    } else {
+      setWarnPriceMin(false);
+    }
+  };
+  const handleChangePriceMax = (event: any) => {
+    if (onlyNumbers(event.target.value) || event.target.value === "") {
+      setState((prevState: any) => ({
+        ...prevState,
+        priceMax: event.target.value,
+      }));
+    }
+    if (Number(event.target.value) < 10000000) {
+      setWarnPriceMax(true);
+    } else {
+      setWarnPriceMax(false);
+    }
+  };
+
   const handleChangeKmMax = (event: any) => {
     if (onlyNumbers(event.target.value) || event.target.value === "") {
-      setKmMax(event.target.value);
+      setState((prevState: any) => ({
+        ...prevState,
+        kmMax: event.target.value,
+      }));
     }
   };
 
   const removeSit = () => {
-    setValueRadio("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioModal: "",
+    }));
   };
   const removeBrand = () => {
-    setValueRadioBrand("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioBrandModal: "",
+      valueRadioModel: "",
+      valueRadioAllModel: "",
+    }));
   };
   const removeDate = () => {
-    setDate("");
-    setDateMax("");
+    setState((prevState: any) => ({
+      ...prevState,
+      date: "",
+      dateMax: "",
+    }));
   };
 
   const removeKm = () => {
-    setKmMax("");
-    setKmMin("");
+    setState((prevState: any) => ({
+      ...prevState,
+      kmMin: "",
+      kmMax: "",
+    }));
+  };
+  const removePrice = () => {
+    setState((prevState: any) => ({
+      ...prevState,
+      priceMin: "",
+      priceMax: "",
+    }));
   };
   const removeNumberBox = () => {
-    setValueRadioNumberBox("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioNumberBox: "",
+    }));
   };
   const removeFuel = () => {
-    setValueRadioFuel("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioFuel: "",
+    }));
   };
   const removeColor = () => {
-    setValueRadioColor("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioColor: "",
+    }));
   };
   const removeCountry = () => {
-    setValueRadioCountry("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioCountry: "",
+    }));
   };
   const removeModel = () => {
-    setValueRadioModel("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioModel: "",
+    }));
   };
   const removeFormCar = () => {
-    setValueRadioFormCar("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioFormCar: "",
+    }));
   };
   const removeStatus = () => {
-    setValueRadioStatus("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioStatus: "",
+    }));
   };
   const removeUser = () => {
-    setValueRadioUser("");
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioCountry: "",
+      valueRadioUser: "",
+    }));
   };
   const handleRenew = () => {
-    setValueRadio("");
-    setValueRadioAll("");
-    setValueRadioBrand("");
-    setDate("");
-    setDateMax("");
-    setKmMax("");
-    setKmMin("");
-    setValueRadioNumberBox("");
-    setValueRadioFuel("");
-    setValueRadioColor("");
-    setValueRadioCountry("");
-    setValueRadioModel("");
-    setValueRadioFormCar("");
-    setValueRadioStatus("");
-    setValueRadioUser("");
+    try {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioModal: "",
+        valueRadioAll: "",
+        valueRadioAllBrand: "",
+        valueRadioAllColor: "",
+        valueRadioAllCountry: "",
+        valueRadioAllModel: "",
+        valueRadioAllFormCar: "",
+        valueRadioBrandModal: "",
+        date: "",
+        dateMax: "",
+        kmMax: "",
+        kmMin: "",
+        priceMax: "",
+        priceMin: "",
+        valueRadioNumberBox: "",
+        valueRadioFuel: "",
+        valueRadioColor: "",
+        valueRadioCountry: "",
+        valueRadioModel: "",
+        valueRadioFormCar: "",
+        valueRadioStatus: "",
+        valueRadioUser: "",
+      }));
+      removeQuery("brand");
+      removeQuery("price");
+      removeQuery("fuel");
+      removeQuery("date");
+      removeQuery("km");
+      removeQuery("numberBox");
+      removeQuery("color");
+      removeQuery("country");
+      removeQuery("model");
+      removeQuery("status");
+      removeQuery("post");
+    } finally {
+      handleCancleModal();
+    }
   };
+
+  const [hiddenDate, setHiddenDate] = useState(true);
+  const handleHiddenDate = () => {
+    setHiddenDate((prev) => !prev);
+  };
+  const [hiddenPrice, setHiddenPrice] = useState(true);
+
+  const [hiddenKm, setHiddenKm] = useState(true);
+  const handleHiddenKm = () => {
+    setHiddenKm((prev) => !prev);
+  };
+  const handleHiddenPrice = () => {
+    setHiddenPrice((prev) => !prev);
+  };
+  const [hiddenNB, setHiddenNB] = useState(true);
+  const handleHiddenNB = () => {
+    setHiddenNB((prev) => !prev);
+  };
+  const [hiddenFuel, setHiddenFuel] = useState(true);
+  const handleHiddenFuel = () => {
+    setHiddenFuel((prev) => !prev);
+  };
+  const [hiddenSt, setHiddenSt] = useState(true);
+  const handleHiddenSt = () => {
+    setHiddenSt((prev) => !prev);
+  };
+  const [hiddenOwner, setHiddenOwner] = useState(true);
+  const handleHiddenOwner = () => {
+    setHiddenOwner((prev) => !prev);
+  };
+
   const handleApply = () => {
-    console.log(
-      valueRadio,
-      valueRadioAll,
-      valueRadioBrand,
-      date,
-      dateMax,
-      kmMax,
-      kmMin,
-      valueRadioNumberBox,
-      valueRadioFuel,
-      valueRadioColor,
-      valueRadioCountry,
-      valueRadioModel,
-      valueRadioFormCar,
-      valueRadioStatus,
-      valueRadioUser
-    );
+    try {
+      if (state.valueRadioModal !== "" && state.valueRadioModal !== undefined) {
+        updateQuery("sit", state.valueRadioModal);
+      } else {
+        removeQuery("sit");
+      }
+      if (
+        state.priceMin !== "" &&
+        state.priceMax !== "" &&
+        state.priceMin !== undefined &&
+        state.priceMax !== undefined
+      ) {
+        updateQuery("price", `${state.priceMin}-${state.priceMax}`);
+      } else {
+        removeQuery("price");
+      }
+      console.log(state.kmMin, state.kmMax);
+      if (
+        state.kmMin !== "" &&
+        state.kmMax !== "" &&
+        state.kmMin !== undefined &&
+        state.kmMax !== undefined
+      ) {
+        updateQuery("km", `${state.kmMin}-${state.kmMax}`);
+      } else {
+        removeQuery("km");
+      }
+      if (
+        state.date !== "" &&
+        state.dateMax !== "" &&
+        state.dateMax !== undefined &&
+        state.date !== undefined
+      ) {
+        updateQuery("date", `${state.date}-${state.dateMax}`);
+      } else {
+        removeQuery("date");
+      }
+      if (
+        state.valueRadioNumberBox !== "" &&
+        state.valueRadioNumberBox !== undefined
+      ) {
+        updateQuery("numberBox", state.valueRadioNumberBox);
+      } else {
+        removeQuery("numberBox");
+      }
+      if (
+        state.valueRadioFormCar !== "" &&
+        state.valueRadioFormCar !== undefined
+      ) {
+        updateQuery("form", state.valueRadioFormCar);
+      } else {
+        removeQuery("form");
+      }
+      if (state.valueRadioFuel !== "" && state.valueRadioFuel !== undefined) {
+        updateQuery("fuel", state.valueRadioFuel);
+      } else {
+        removeQuery("fuel");
+      }
+      if (
+        state.valueRadioCountry !== "" &&
+        state.valueRadioCountry !== undefined
+      ) {
+        updateQuery("country", state.valueRadioCountry);
+      } else {
+        removeQuery("country");
+      }
+      if (
+        state.valueRadioBrandModal !== "" &&
+        state.valueRadioBrandModal !== undefined
+      ) {
+        updateQuery("brand", state.valueRadioBrandModal);
+      } else {
+        removeQuery("brand");
+      }
+      if (state.valueRadioModel !== "" && state.valueRadioModel !== undefined) {
+        updateQuery("model", state.valueRadioModel);
+      } else {
+        removeQuery("model");
+      }
+      if (
+        state.valueRadioStatus !== "" &&
+        state.valueRadioStatus !== undefined
+      ) {
+        updateQuery("status", state.valueRadioStatus);
+      } else {
+        removeQuery("status");
+      }
+      if (state.valueRadioUser !== "" && state.valueRadioUser !== undefined) {
+        updateQuery("post", state.valueRadioUser);
+      } else {
+        removeQuery("post");
+      }
+
+      if (state.valueRadioColor !== "" && state.valueRadioColor !== undefined) {
+        updateQuery("color", state.valueRadioColor);
+      } else {
+        removeQuery("color");
+      }
+    } finally {
+      handleCancleModal();
+    }
   };
   return (
     <CustomModal
@@ -234,504 +578,290 @@ const ModalFilter = ({ handleCancleModal, openModal }: any) => {
       centered
     >
       <div className="wrapper-content">
+        <ItemModalFilterSits
+          title="Số chỗ"
+          value={state.valueRadioModal}
+          onClickRadio={onClickRadio}
+          data={carSit}
+          onClick={() => handleModalListAll("sit")}
+        ></ItemModalFilterSits>
+        <ItemModalFilterBrand
+          title="Hãng xe"
+          value={state.valueRadioBrandModal}
+          onChange={onChangeRadioBrand}
+          data={brandList}
+          onClick={() => handleModalListAll("brand")}
+        ></ItemModalFilterBrand>
         <div className="sit">
-          <div className="header">
-            <span>Số chỗ</span>
-            <ArrowDownIcon></ArrowDownIcon>
-          </div>
-          <div className="body">
-            <Radio.Group value={valueRadio} onChange={onChangeRadio}>
-              {valueRadio === "" ||
-              dataSitAll.slice(0, 5).includes(valueRadio) ? (
-                dataSitAll.slice(0, 5).map((item, index) => (
-                  <Radio value={item} key={index}>
-                    {" "}
-                    <span className="brand-name">{item}</span>
-                  </Radio>
-                ))
-              ) : (
-                <>
-                  <Radio value={valueRadio} key={valueRadio}>
-                    <span className="brand-name">{valueRadio}</span>
-                  </Radio>
-                  {dataSitAll.slice(0, 4).map((item, index) => (
-                    <Radio value={item} key={index}>
-                      {" "}
-                      <span className="brand-name">{item}</span>
-                    </Radio>
-                  ))}
-                </>
-              )}
-            </Radio.Group>
-          </div>
-          <span className="see-all" onClick={() => handleModalListAll("sit")}>
-            Xem tất cả số chỗ <ArrowRightIcon></ArrowRightIcon>
-          </span>
-        </div>
-        <div className="sit">
-          <div className="header">
-            <span>Hãng xe</span>
-            <ArrowDownIcon></ArrowDownIcon>
-          </div>
-          <div className="body">
-            <Radio.Group value={valueRadioBrand} onChange={onChangeRadioBrand}>
-              {valueRadioBrand === "" ||
-              brandList
-                .slice(0, 5)
-                .some((item) => item.brand === valueRadioBrand) ? (
-                <>
-                  {" "}
-                  {brandList.slice(0, 5).map((item) => {
-                    return (
-                      <Radio value={item.brand} key={item.brand}>
-                        {" "}
-                        <span className="brand-name">{item.brand}</span>
-                      </Radio>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  <Radio value={valueRadioBrand} key={valueRadioBrand}>
-                    <span className="brand-name">{valueRadioBrand}</span>
-                  </Radio>
-                  {brandList.slice(0, 4).map((item) => {
-                    return (
-                      <Radio value={item.brand} key={item.brand}>
-                        {" "}
-                        <span className="brand-name">{item.brand}</span>
-                      </Radio>
-                    );
-                  })}
-                </>
-              )}
-            </Radio.Group>
-          </div>
-          <span className="see-all" onClick={() => handleModalListAll("brand")}>
-            Xem tất cả hãng xe <ArrowRightIcon></ArrowRightIcon>
-          </span>
-        </div>
-        <div className="sit">
-          <div className="header">
+          <div className="header" onClick={handleHiddenDate}>
             <span>Năm sản xuất</span>
             <ArrowDownIcon></ArrowDownIcon>
           </div>
-          <div className="date-produce">
-            <div className="body input-need-to-custom">
-              <TextField
-                type="number"
-                label="Năm sản xuất tối thiểu"
-                multiline
-                onChange={handleChangeMin}
-                value={date}
-                maxRows={1}
-                variant="filled"
-              />
+          {hiddenDate && (
+            <div className="date-produce">
+              <div className="body input-need-to-custom">
+                <TextField
+                  type="number"
+                  label="Năm sản xuất tối thiểu"
+                  multiline
+                  onChange={handleChangeMin}
+                  value={state.date}
+                  maxRows={1}
+                  variant="filled"
+                />
+              </div>
+              -
+              <div className="body input-need-to-custom">
+                <TextField
+                  type="number"
+                  label="Năm sản xuất tối đa"
+                  multiline
+                  onChange={handleChangeMax}
+                  value={state.dateMax}
+                  maxRows={1}
+                  variant="filled"
+                />
+              </div>
             </div>
-            -
-            <div className="body input-need-to-custom">
-              <TextField
-                type="number"
-                label="Năm sản xuất tối đa"
-                multiline
-                onChange={handleChangeMax}
-                value={dateMax}
-                maxRows={1}
-                variant="filled"
-              />
-            </div>
-          </div>
+          )}
         </div>
         <div className="sit">
-          <div className="header">
+          <div className="header" onClick={handleHiddenKm}>
             <span>Số km đã đi</span>
             <ArrowDownIcon></ArrowDownIcon>
           </div>
-          <div className="date-produce">
-            <div className="body input-need-to-custom">
-              <TextField
-                type="number"
-                label="Số km đã đi tối thiểu"
-                multiline
-                onChange={handleChangeKmMin}
-                value={kmMin}
-                maxRows={1}
-                variant="filled"
-              />
+          {hiddenKm && (
+            <div className="date-produce">
+              <div className="body input-need-to-custom">
+                <TextField
+                  type="number"
+                  label="Số km đã đi tối thiểu"
+                  multiline
+                  onChange={handleChangeKmMin}
+                  value={state.kmMin}
+                  maxRows={1}
+                  variant="filled"
+                />
+              </div>
+              -
+              <div className="body input-need-to-custom">
+                <TextField
+                  type="number"
+                  label="Số km đã đi tối đa"
+                  multiline
+                  onChange={handleChangeKmMax}
+                  value={state.kmMax}
+                  maxRows={1}
+                  variant="filled"
+                />
+              </div>
             </div>
-            -
-            <div className="body input-need-to-custom">
-              <TextField
-                type="number"
-                label="Số km đã đi tối đa"
-                multiline
-                onChange={handleChangeKmMax}
-                value={kmMax}
-                maxRows={1}
-                variant="filled"
-              />
-            </div>
+          )}
+        </div>{" "}
+        <div className="sit">
+          <div className="header" onClick={handleHiddenPrice}>
+            <span>Giá tiền</span>
+            <ArrowDownIcon></ArrowDownIcon>
           </div>
+          {hiddenPrice && (
+            <div className="date-produce">
+              <div className="body input-need-to-custom">
+                <TextField
+                  type="number"
+                  label="Giá tiền tối thiểu"
+                  multiline
+                  onChange={handleChangePriceMin}
+                  value={state.priceMin}
+                  maxRows={1}
+                  variant="filled"
+                />
+                {warnPriceMin ? <span>Vui lòng nhập trên 10tr</span> : <></>}
+              </div>
+              -
+              <div className="body input-need-to-custom">
+                <TextField
+                  type="number"
+                  label="Giá tiền tối đa"
+                  multiline
+                  onChange={handleChangePriceMax}
+                  value={state.priceMax}
+                  maxRows={1}
+                  variant="filled"
+                />
+                {warnPriceMax ? <span>Vui lòng nhập trên 10tr</span> : <></>}
+              </div>
+            </div>
+          )}
         </div>
         <div className="sit">
-          <div className="header">
+          <div className="header" onClick={handleHiddenNB}>
             <span>Hộp số</span>
             <ArrowDownIcon></ArrowDownIcon>
           </div>
-          <div className="body">
-            <Radio.Group
-              value={valueRadioNumberBox}
-              onChange={onChangeRadioNumberBox}
-            >
-              <Radio value="Tự động">
-                {" "}
-                <span className="brand-name">Tự động</span>
-              </Radio>
-              <Radio value="Số sàn">
-                {" "}
-                <span className="brand-name">Số sàn</span>
-              </Radio>
-              <Radio value="Bán tự động">
-                {" "}
-                <span className="brand-name">Bán tự động</span>
-              </Radio>
-            </Radio.Group>
-          </div>
+          {hiddenNB && (
+            <div className="body">
+              <Radio.Group
+                value={state.valueRadioNumberBox}
+                onChange={onChangeRadioNumberBox}
+              >
+                <Radio value="Tự động">
+                  {" "}
+                  <span className="brand-name">Tự động</span>
+                </Radio>
+                <Radio value="Số sàn">
+                  {" "}
+                  <span className="brand-name">Số sàn</span>
+                </Radio>
+                <Radio value="Bán tự động">
+                  {" "}
+                  <span className="brand-name">Bán tự động</span>
+                </Radio>
+              </Radio.Group>
+            </div>
+          )}
         </div>
         <div className="sit">
-          <div className="header">
+          <div className="header" onClick={handleHiddenFuel}>
             <span>Nhiên liệu</span>
             <ArrowDownIcon></ArrowDownIcon>
           </div>
-          <div className="body">
-            <Radio.Group value={valueRadioFuel} onChange={onChangeRadioFuel}>
-              <Radio value="Xăng">
-                {" "}
-                <span className="brand-name">Xăng</span>
-              </Radio>
-              <Radio value="Dấu">
-                {" "}
-                <span className="brand-name">Dấu</span>
-              </Radio>
-              <Radio value="Động cơ Hybrid">
-                {" "}
-                <span className="brand-name">Động cơ Hybrid</span>
-              </Radio>
-              <Radio value="Điện">
-                {" "}
-                <span className="brand-name">Điện</span>
-              </Radio>
-            </Radio.Group>
-          </div>
-        </div>
-        <div className="sit">
-          <div className="header">
-            <span>Màu sắc</span>
-            <ArrowDownIcon></ArrowDownIcon>
-          </div>
-          <div className="body">
-            <Radio.Group value={valueRadioColor} onChange={onChangeRadioColor}>
-              {valueRadioColor === "" ||
-              dataColor.slice(0, 5).includes(valueRadioColor) ? (
-                dataColor.slice(0, 5).map((item, index) => (
-                  <Radio value={item} key={index}>
-                    {" "}
-                    <span className="brand-name">{item}</span>
-                  </Radio>
-                ))
-              ) : (
-                <>
-                  <Radio value={valueRadioColor} key={valueRadioColor}>
-                    <span className="brand-name">{valueRadioColor}</span>
-                  </Radio>
-                  {dataColor.slice(0, 4).map((item, index) => (
-                    <Radio value={item} key={index}>
-                      {" "}
-                      <span className="brand-name">{item}</span>
-                    </Radio>
-                  ))}
-                </>
-              )}
-            </Radio.Group>
-          </div>
-          <span className="see-all" onClick={() => handleModalListAll("color")}>
-            Xem tất cả màu sắc <ArrowRightIcon></ArrowRightIcon>
-          </span>
-        </div>
-        <div className="sit">
-          <div className="header">
-            <span>Xuất xứ</span>
-            <ArrowDownIcon></ArrowDownIcon>
-          </div>
-          <div className="body">
-            <Radio.Group
-              value={valueRadioCountry}
-              onChange={onChangeRadioCountry}
-            >
-              {valueRadioCountry === "" ||
-              dataCountry.slice(0, 5).includes(valueRadioCountry) ? (
-                dataCountry.slice(0, 5).map((item, index) => (
-                  <Radio value={item} key={index}>
-                    {" "}
-                    <span className="brand-name">{item}</span>
-                  </Radio>
-                ))
-              ) : (
-                <>
-                  <Radio value={valueRadioCountry} key={valueRadioCountry}>
-                    <span className="brand-name">{valueRadioCountry}</span>
-                  </Radio>
-                  {dataCountry.slice(0, 4).map((item, index) => (
-                    <Radio value={item} key={index}>
-                      {" "}
-                      <span className="brand-name">{item}</span>
-                    </Radio>
-                  ))}
-                </>
-              )}
-            </Radio.Group>
-          </div>
-          <span
-            className="see-all"
-            onClick={() => handleModalListAll("country")}
-          >
-            Xem tất cả xuất xứ<ArrowRightIcon></ArrowRightIcon>
-          </span>
-        </div>
-        {valueRadioBrand && (
-          <div className="sit">
-            <div className="header">
-              <span>Dòng xe</span>
-              <ArrowDownIcon></ArrowDownIcon>
-            </div>
+          {hiddenFuel && (
             <div className="body">
               <Radio.Group
-                value={valueRadioModel}
-                onChange={onChangeRadioModel}
+                value={state.valueRadioFuel}
+                onChange={onChangeRadioFuel}
               >
-                {/* {models[0].models.slice(0, 5).map((item: any, index: any) => {
-                  return (
-                    <Radio value={item} key={index}>
-                      {" "}
-                      <span className="brand-name">{item}</span>
-                    </Radio>
-                  );
-                })} */}
-                {valueRadioModel === "" ||
-                models[0].models
-                  .slice(0, 5)
-                  .some((item: any) => item === valueRadioModel) ? (
-                  <>
-                    {" "}
-                    {models[0].models.slice(0, 5).map((item: any) => {
-                      return (
-                        <Radio value={item} key={item}>
-                          {" "}
-                          <span className="brand-name">{item}</span>
-                        </Radio>
-                      );
-                    })}
-                  </>
-                ) : (
-                  <>
-                    <Radio value={valueRadioModel} key={valueRadioModel}>
-                      <span className="brand-name">{valueRadioModel}</span>
-                    </Radio>
-                    {models[0].models.slice(0, 5).map((item: any) => {
-                      return (
-                        <Radio value={item} key={item}>
-                          {" "}
-                          <span className="brand-name">{item}</span>
-                        </Radio>
-                      );
-                    })}
-                  </>
-                )}
+                <Radio value="Xăng">
+                  {" "}
+                  <span className="brand-name">Xăng</span>
+                </Radio>
+                <Radio value="Dấu">
+                  {" "}
+                  <span className="brand-name">Dấu</span>
+                </Radio>
+                <Radio value="Động cơ Hybrid">
+                  {" "}
+                  <span className="brand-name">Động cơ Hybrid</span>
+                </Radio>
+                <Radio value="Điện">
+                  {" "}
+                  <span className="brand-name">Điện</span>
+                </Radio>
               </Radio.Group>
             </div>
-            <span
-              className="see-all"
-              onClick={() => handleModalListAll("model")}
-            >
-              Xem tất cả dòng xe <ArrowRightIcon></ArrowRightIcon>
-            </span>
-          </div>
-        )}
-        <div className="sit">
-          <div className="header">
-            <span>Kiểu dáng</span>
-            <ArrowDownIcon></ArrowDownIcon>
-          </div>
-          <div className="body">
-            <Radio.Group
-              value={valueRadioFormCar}
-              onChange={onChangeRadioFormCar}
-            >
-              {valueRadioFormCar === "" ||
-              formCar.slice(0, 5).includes(valueRadioFormCar) ? (
-                formCar.slice(0, 5).map((item, index) => (
-                  <Radio value={item} key={index}>
-                    {" "}
-                    <span className="brand-name">{item}</span>
-                  </Radio>
-                ))
-              ) : (
-                <>
-                  <Radio value={valueRadioFormCar} key={valueRadioFormCar}>
-                    <span className="brand-name">{valueRadioFormCar}</span>
-                  </Radio>
-                  {formCar.slice(0, 4).map((item, index) => (
-                    <Radio value={item} key={index}>
-                      {" "}
-                      <span className="brand-name">{item}</span>
-                    </Radio>
-                  ))}
-                </>
-              )}
-            </Radio.Group>
-          </div>
-          <span
-            className="see-all"
-            onClick={() => handleModalListAll("formCar")}
-          >
-            Xem tất cả kiểu dáng <ArrowRightIcon></ArrowRightIcon>
-          </span>
+          )}
         </div>
+        <ItemModalFilterSits
+          title="Màu sắc"
+          value={state.valueRadioColor}
+          onClickRadio={onChangeRadioColor}
+          data={dataColor}
+          onClick={() => handleModalListAll("color")}
+        ></ItemModalFilterSits>
+        <ItemModalFilterSits
+          title="Xuất xứ"
+          value={state.valueRadioCountry}
+          onClickRadio={onChangeRadioCountry}
+          data={dataCountry}
+          onClick={() => handleModalListAll("country")}
+        ></ItemModalFilterSits>
+        <ItemModalFilterModels
+          title="Dòng xe"
+          value={state.valueRadioModel}
+          onClickRadio={onChangeRadioModel}
+          data={models}
+          onClick={() => handleModalListAll("model")}
+          valueRadioBrandModal={state.valueRadioBrandModal}
+        ></ItemModalFilterModels>
+        <ItemModalFilterSits
+          title="Kiểu dáng"
+          value={state.valueRadioFormCar}
+          onClickRadio={onChangeRadioFormCar}
+          data={formCar}
+          onClick={() => handleModalListAll("formCar")}
+        ></ItemModalFilterSits>
         <div className="sit">
-          <div className="header">
+          <div className="header" onClick={handleHiddenSt}>
             <span>Tình trạng</span>
             <ArrowDownIcon></ArrowDownIcon>
           </div>
-          <div className="body">
-            <Radio.Group
-              value={valueRadioStatus}
-              onChange={onChangeRadioStatus}
-            >
-              <Radio value="Đã sử dụng">
-                {" "}
-                <span className="brand-name">Đã sử dụng</span>
-              </Radio>{" "}
-              <Radio value="Mới">
-                {" "}
-                <span className="brand-name">Mới</span>
-              </Radio>
-            </Radio.Group>
-          </div>
+          {hiddenSt && (
+            <div className="body">
+              <Radio.Group
+                value={state.valueRadioStatus}
+                onChange={onChangeRadioStatus}
+              >
+                <Radio value="Đã sử dụng">
+                  {" "}
+                  <span className="brand-name">Đã sử dụng</span>
+                </Radio>{" "}
+                <Radio value="Mới">
+                  {" "}
+                  <span className="brand-name">Mới</span>
+                </Radio>
+              </Radio.Group>
+            </div>
+          )}
         </div>
         <div className="sit">
-          <div className="header">
+          <div className="header" onClick={handleHiddenOwner}>
             <span>Đăng bởi</span>
             <ArrowDownIcon></ArrowDownIcon>
           </div>
-          <div className="body">
-            <Radio.Group value={valueRadioUser} onChange={onChangeRadioUser}>
-              <Radio value="Cá nhân">
-                {" "}
-                <span className="brand-name">Cá nhân</span>
-              </Radio>
-              <Radio value="Bán chuyên">
-                {" "}
-                <span className="brand-name">Bán chuyên</span>
-              </Radio>
-              <Radio value="Đối Tác Chợ Tốt">
-                {" "}
-                <span className="brand-name">Đối Tác Chợ Tốt</span>
-              </Radio>
-            </Radio.Group>
-          </div>
+          {hiddenOwner && (
+            <div className="body">
+              <Radio.Group
+                value={state.valueRadioUser}
+                onChange={onChangeRadioUser}
+              >
+                <Radio value="Cá nhân">
+                  {" "}
+                  <span className="brand-name">Cá nhân</span>
+                </Radio>
+                <Radio value="Bán chuyên">
+                  {" "}
+                  <span className="brand-name">Bán chuyên</span>
+                </Radio>
+                <Radio value="Đối Tác Chợ Tốt">
+                  {" "}
+                  <span className="brand-name">Đối Tác Chợ Tốt</span>
+                </Radio>
+              </Radio.Group>
+            </div>
+          )}
         </div>
       </div>
-      {valueRadio ||
-      valueRadioBrand ||
-      date ||
-      dateMax ||
-      kmMin ||
-      kmMax ||
-      valueRadioNumberBox ||
-      valueRadioFuel ||
-      valueRadioColor ||
-      valueRadioCountry ||
-      valueRadioModel ||
-      valueRadioFormCar ||
-      valueRadioStatus ||
-      valueRadioUser ? (
-        <div className="filter-list">
-          <div className="filter">
-            <span className="filter-by">Lọc theo:</span>
-            {valueRadio && (
-              <span className="text" onClick={removeSit}>
-                Số chỗ: {valueRadio} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-            {valueRadioBrand && (
-              <span className="text" onClick={removeBrand}>
-                {valueRadioBrand} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-            {date || dateMax ? (
-              <span className="text" onClick={removeDate}>
-                {dateMax ? "" : "Từ"}
-                {date ? "" : "Đến"} Năm: {date} - {dateMax}
-                <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            ) : (
-              <></>
-            )}
-            {kmMin || kmMax ? (
-              <span className="text" onClick={removeKm}>
-                {kmMax ? "" : "Từ"}
-                {kmMin ? "" : "Đến"} {kmMin ? `${kmMin} km` : ""} -{" "}
-                {kmMax ? `${kmMax} km` : ""}
-                <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            ) : (
-              <></>
-            )}
-            {valueRadioNumberBox && (
-              <span className="text" onClick={removeNumberBox}>
-                {valueRadioNumberBox} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-            {valueRadioFuel && (
-              <span className="text" onClick={removeFuel}>
-                {valueRadioFuel} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-            {valueRadioColor && (
-              <span className="text" onClick={removeColor}>
-                {valueRadioColor} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-            {valueRadioCountry && (
-              <span className="text" onClick={removeCountry}>
-                {valueRadioCountry} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}{" "}
-            {valueRadioModel && (
-              <span className="text" onClick={removeModel}>
-                {valueRadioModel} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-            {valueRadioFormCar && (
-              <span className="text" onClick={removeFormCar}>
-                {valueRadioFormCar} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-            {valueRadioStatus && (
-              <span className="text" onClick={removeStatus}>
-                {valueRadioStatus} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}{" "}
-            {valueRadioUser && (
-              <span className="text" onClick={removeUser}>
-                {valueRadioUser} <DeleteFilterIcon></DeleteFilterIcon>
-              </span>
-            )}
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
+      <FilterBy
+        valueRadioModal={state.valueRadioModal}
+        valueRadioBrandModal={state.valueRadioBrandModal}
+        date={state.date}
+        dateMax={state.dateMax}
+        kmMin={state.kmMin}
+        kmMax={state.kmMax}
+        priceMin={state.priceMin}
+        priceMax={state.priceMax}
+        valueRadioNumberBox={state.valueRadioNumberBox}
+        valueRadioFuel={state.valueRadioFuel}
+        valueRadioColor={state.valueRadioColor}
+        valueRadioCountry={state.valueRadioCountry}
+        valueRadioModel={state.valueRadioModel}
+        valueRadioFormCar={state.valueRadioFormCar}
+        valueRadioStatus={state.valueRadioStatus}
+        valueRadioUser={state.valueRadioUser}
+        removeSit={removeSit}
+        removeBrand={removeBrand}
+        removePrice={removePrice}
+        removeDate={removeDate}
+        removeKm={removeKm}
+        removeNumberBox={removeNumberBox}
+        removeFuel={removeFuel}
+        removeColor={removeColor}
+        removeCountry={removeCountry}
+        removeModel={removeModel}
+        removeFormCar={removeFormCar}
+        removeStatus={removeStatus}
+        removeUser={removeUser}
+      ></FilterBy>
 
       <div className="wrapper-filter">
         <div className="buttons">
@@ -745,7 +875,7 @@ const ModalFilter = ({ handleCancleModal, openModal }: any) => {
         handleCancleModal={handleCancleModalListAll}
         data={
           typeModal === "sit"
-            ? dataSitAll
+            ? carSit
             : typeModal === "brand"
             ? brandList
             : typeModal === "color"
@@ -753,56 +883,29 @@ const ModalFilter = ({ handleCancleModal, openModal }: any) => {
             : typeModal === "country"
             ? dataCountry
             : typeModal === "model"
-            ? models[0].models
+            ? models[0]?.models
             : typeModal === "formCar"
             ? formCar
             : ""
         }
-        setValueRadio={
-          typeModal === "sit"
-            ? setValueRadio
-            : typeModal === "brand"
-            ? setValueRadioBrand
-            : typeModal === "color"
-            ? setValueRadioColor
-            : typeModal === "country"
-            ? setValueRadioCountry
-            : typeModal === "model"
-            ? setValueRadioModel
-            : typeModal === "formCar"
-            ? setValueRadioFormCar
-            : setValueRadio
-        }
+        setValueRadio={typeModal}
+        setState={setState}
         typeModal={typeModal}
-        setValueRadioAll={
-          typeModal === "sit"
-            ? setValueRadioAll
-            : typeModal === "brand"
-            ? setValueRadioAllBrand
-            : typeModal === "color"
-            ? setValueRadioAllColor
-            : typeModal === "country"
-            ? setValueRadioAllCountry
-            : typeModal === "model"
-            ? setValueRadioAllModel
-            : typeModal === "formCar"
-            ? setValueRadioAllFormCar
-            : setValueRadioAll
-        }
+        setValueRadioAll={typeModal}
         valueRadioAll={
           typeModal === "sit"
-            ? valueRadioAll
+            ? state.valueRadioAll
             : typeModal === "brand"
-            ? valueRadioAllBrand
+            ? state.valueRadioAllBrand
             : typeModal === "color"
-            ? valueRadioAllColor
+            ? state.valueRadioAllColor
             : typeModal === "country"
-            ? valueRadioAllCountry
+            ? state.valueRadioAllCountry
             : typeModal === "model"
-            ? valueRadioAllModel
+            ? state.valueRadioAllModel
             : typeModal === "formCar"
-            ? valueRadioAllFormCar
-            : valueRadioAll
+            ? state.valueRadioAllFormCar
+            : state.valueRadioAll
         }
       ></ModalListFilter>
     </CustomModal>

@@ -4,6 +4,8 @@ import CustomButtonSelect from "../CustomButtonSelect";
 import { TextField } from "@mui/material";
 import { ArrowInputNormalIcon } from "../CustomIcons";
 import CustomButton from "../CustomButton";
+import { useRouter } from "next/router";
+import convertToSlug from "@/utils/convertToSlug";
 
 const FindInAreaDropdown = ({
   openFind,
@@ -13,9 +15,13 @@ const FindInAreaDropdown = ({
   districts,
   districtName,
   setState,
+  setFilterFind,
+  idCity,
+  idDistrict,
 }: any) => {
   const [districtValue, setDistrictValue] = useState<any>([]);
   const wrapperRef: any = useRef(null);
+  const router = useRouter();
 
   const handleChangeSelect = (status: any, event: any) => {
     setState((prevState: any) => ({
@@ -35,6 +41,7 @@ const FindInAreaDropdown = ({
       setState((prevState: any) => ({
         ...prevState,
         cityName: selectedCity.Name,
+        idCity: selectedCity.Id,
         districts: selectedCity.Districts,
         searchResultDistrict: selectedCity.Districts,
       }));
@@ -58,14 +65,32 @@ const FindInAreaDropdown = ({
       searchResultDistrict: districts,
     }));
   };
+  const updateURL = (queryParams: any) => {
+    console.log(queryParams);
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: { ...router.query, ...queryParams },
+    });
+  };
+  const removeQueries = (keysToRemove: string[]) => {
+    const updatedQuery = { ...router.query };
+    keysToRemove.forEach((key) => {
+      delete updatedQuery[key];
+    });
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: updatedQuery,
+    });
+  };
   const handleApply = () => {
     try {
-      setState((prevState: any) => ({
-        ...prevState,
-        districtName: "",
-        cityName: "",
-        selectCity: "",
-      }));
+      setFilterFind(
+        cityName ? cityName : cityName && districtName ? districtName : cityName
+      );
+      updateURL({
+        city: idCity,
+        district: idDistrict,
+      });
     } finally {
       setState((prevState: any) => ({
         ...prevState,
@@ -78,9 +103,15 @@ const FindInAreaDropdown = ({
       setState((prevState: any) => ({
         ...prevState,
         districtName: "",
+        valueRadio: "",
+        idCity: "",
+        idDistrict: "",
+        valueRadioDistrict: "",
         selectCity: "",
         cityName: "",
       }));
+      setFilterFind("");
+      removeQueries(["city", "district"]);
     } finally {
       setState((prevState: any) => ({
         ...prevState,

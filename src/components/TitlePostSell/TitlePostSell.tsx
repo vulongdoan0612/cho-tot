@@ -12,9 +12,17 @@ import { toast } from "react-toastify";
 import { Spin } from "antd";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
-import { ICommonStateFormRenderCarPost } from "@/interfaces/User";
+import {
+  ICommonStateFillFormRenderCar,
+  ICommonStateFormRenderCarPost,
+} from "@/interfaces/User";
 import { defaultCommonState } from "./_mock";
 import convertToSlug from "@/utils/convertToSlug";
+import { defaultCommonStateFill } from "../RenderFormTraffic/_fill";
+import getContentAfterThirdComma from "@/utils/getCityValueName";
+import getCityValueName from "@/utils/getCityValueName";
+import getDistrictValueName from "@/utils/getDistrictValueName";
+import getWardValueName from "@/utils/getWardValueName";
 
 const TitlePostSell = ({
   value,
@@ -35,11 +43,16 @@ const TitlePostSell = ({
   km,
   model,
   status,
+  setStateFill,
+  stateFill,
 }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const [statePost, setStatePost] =
     useState<ICommonStateFormRenderCarPost>(defaultCommonState);
-
+  const [fillAddrCity, setFillAddrCity] = useState(false);
+  const [fillAddrWard, setFillAddrWard] = useState(false);
+  const [fillAddrDistrict, setFillAddrDistrict] = useState(false);
+  const [fillAddrDetail, setFillAddrDetail] = useState(false);
   const { account } = useSelector((state: RootState) => state.auth);
 
   const router = useRouter();
@@ -189,18 +202,36 @@ const TitlePostSell = ({
       ...prevState,
       title: event?.target.value,
     }));
+    if (event?.target.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillTitle: false,
+      }));
+    }
   };
   const handleChangeIntroducing = (event: any) => {
     setStatePost((prevState) => ({
       ...prevState,
       introducing: event?.target.value,
     }));
+    if (event?.target.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillIntro: false,
+      }));
+    }
   };
   const handlePerson = (person: any) => {
     setStatePost((prevState) => ({
       ...prevState,
       person: person,
     }));
+    if (person !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillYouR: false,
+      }));
+    }
   };
   const handleCancleModal = () => {
     setStatePost((prevState) => ({
@@ -228,6 +259,9 @@ const TitlePostSell = ({
         districtValue: "",
         wardValue: "",
       }));
+      if (event.target.value !== "") {
+        setFillAddrCity(false);
+      }
     }
   };
   const handleDistrictChange = (event: any) => {
@@ -242,6 +276,13 @@ const TitlePostSell = ({
         districtValue: event.target.value,
         wards: selectedDistrict?.Wards,
       }));
+      if (event.target.value !== "") {
+        setFillAddrDistrict(false);
+        setStatePost((prevState) => ({
+          ...prevState,
+          wardValue: "",
+        }));
+      }
     }
   };
   const handleChangeWard = (event: SelectChangeEvent) => {
@@ -249,45 +290,297 @@ const TitlePostSell = ({
       ...prevState,
       wardValue: event.target.value,
     }));
+    if (event.target.value !== "") {
+      setFillAddrWard(false);
+    }
   };
   const handleChangeDetailAddress = (event: any) => {
     setStatePost((prevState) => ({
       ...prevState,
       detailAddress: event.target.value as string,
     }));
+    if (event.target.value !== "") {
+      setFillAddrDetail(false);
+    }
+  };
+  const handleAddress = (e: any) => {
+    console.log(e.target.value);
   };
   const onFinish = () => {
-    let wardName = "";
-    let city = "";
-    let district = "";
+    if (statePost?.wardValue === undefined || statePost?.wardValue === "") {
+      setFillAddrWard(true);
+    }
+    if (
+      statePost?.districtValue === undefined ||
+      statePost?.districtValue === ""
+    ) {
+      setFillAddrDistrict(true);
+    }
+    if (statePost?.cityValue === undefined || statePost?.cityValue === "") {
+      setFillAddrCity(true);
+    }
+    if (
+      statePost?.detailAddress === undefined ||
+      statePost?.detailAddress === ""
+    ) {
+      setFillAddrDetail(true);
+    }
+    if (
+      statePost?.detailAddress !== undefined &&
+      statePost?.cityValue !== undefined &&
+      statePost?.districtValue !== undefined &&
+      statePost?.wardValue !== undefined &&
+      statePost?.wardValue !== "" &&
+      statePost?.districtValue !== "" &&
+      statePost?.cityValue !== "" &&
+      statePost?.detailAddress !== ""
+    ) {
+      let wardName = "";
+      let city = "";
+      let district = "";
 
-    statePost?.wards.forEach((item: any) => {
-      if (item.Id === statePost?.wardValue) {
-        wardName = item.Name;
-      }
-    });
-    statePost?.districts.forEach((item: any) => {
-      if (item.Id === statePost?.districtValue) {
-        district = item.Name;
-      }
-    });
-    statePost?.cities.forEach((item: any) => {
-      if (item.Id === statePost?.cityValue) {
-        city = item.Name;
-      }
-    });
-    const concatenatedAddress = `${statePost?.detailAddress} ,${wardName}, ${district}, ${city}`;
-    setStatePost((prevState) => ({
-      ...prevState,
-      fullAddress: concatenatedAddress,
-      modalConfirmSwitch: false,
-    }));
+      statePost?.wards.forEach((item: any) => {
+        if (item.Id === statePost?.wardValue) {
+          wardName = item.Name;
+        }
+      });
+      statePost?.districts.forEach((item: any) => {
+        if (item.Id === statePost?.districtValue) {
+          district = item.Name;
+        }
+      });
+      statePost?.cities.forEach((item: any) => {
+        if (item.Id === statePost?.cityValue) {
+          city = item.Name;
+        }
+      });
+      const concatenatedAddress = `${statePost?.detailAddress} ,${wardName}, ${district}, ${city}`;
+      setStatePost((prevState) => ({
+        ...prevState,
+        fullAddress: concatenatedAddress,
+        modalConfirmSwitch: false,
+      }));
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillAddress: false,
+      }));
+      setFillAddrWard(false);
+      setFillAddrDistrict(false);
+      setFillAddrCity(false);
+      setFillAddrDetail(false);
+    }
   };
   const postSell = async () => {
     const token = localStorage.getItem("access_token");
     const uuid = uuidv4();
+    // console.log(
+    //   status,
+    //   "status",
+    //   value,
+    //   "value",
+    //   color,
+    //   "color",
+    //   carNumber,
+    //   "Number",
+    //   owner,
+    //   "owner",
+    //   price,
+    //   "price",
+    //   country,
+    //   "country",
+    //   model,
+    //   "model",
+    //   sit,
+    //   "sit",
+    //   activeButton,
+    //   "Button",
+    //   accessories,
+    //   "accessories",
+    //   registry,
+    //   "registry",
+    //   numberBox,
+    //   "Box",
+    //   status,
+    //   "status",
+    //   dateCar,
+    //   "Car",
+    //   statePost?.title,
+    //   "title",
+    //   statePost?.introducing,
+    //   "introducing",
+    //   km,
+    //   "km",
+    //   form,
+    //   "form",
+    //   statePost?.person,
+    //   "person",
+    //   statePost?.detailAddress,
+    //   "Address",
+    //   statePost?.fullAddress,
+    //   "Address",
+    //   statePost?.cityValue,
+    //   "Value",
+    //   statePost?.districtValue,
+    //   "Value",
+    //   statePost?.wardValue
+    // );
     try {
-      if (token) {
+      if (status === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillStatus: true,
+        }));
+      }
+      if (value === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillBrand: true,
+        }));
+      }
+      if (color === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillColor: true,
+        }));
+      }
+      if (carNumber === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillCarN: true,
+        }));
+      }
+      if (owner === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillOwner: true,
+        }));
+      }
+      if (price === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillPrice: true,
+        }));
+      }
+      if (country === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillCountry: true,
+        }));
+      }
+      if (model === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillModel: true,
+        }));
+      }
+      if (sit === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillSit: true,
+        }));
+      }
+      if (activeButton === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillFuel: true,
+        }));
+      }
+      if (accessories === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillAcces: true,
+        }));
+      }
+      if (registry === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillRegis: true,
+        }));
+      }
+      if (numberBox === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillNumberB: true,
+        }));
+      }
+      if (dateCar === "") {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillDate: true,
+        }));
+      }
+      if (statePost?.title === "") {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillTitle: true,
+        }));
+      }
+      if (statePost?.introducing === "") {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillIntro: true,
+        }));
+      }
+      if (km === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillKm: true,
+        }));
+      }
+      if (form === undefined) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillForm: true,
+        }));
+      }
+      if (statePost?.person === "") {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillOwner: true,
+        }));
+      }
+      console.log(statePost?.fullAddress);
+      if (
+        statePost?.fullAddress === undefined ||
+        statePost?.fullAddress === ""
+      ) {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillAddress: true,
+        }));
+      }
+      if (statePost?.person === "") {
+        setStateFill((prevState: any) => ({
+          ...prevState,
+          fillYouR: true,
+        }));
+      }
+      console.log("test2");
+
+      if (
+        token &&
+        status !== undefined &&
+        value !== undefined &&
+        color !== undefined &&
+        carNumber !== undefined &&
+        owner !== undefined &&
+        price !== undefined &&
+        country !== undefined &&
+        model !== undefined &&
+        sit !== undefined &&
+        activeButton !== undefined &&
+        accessories !== undefined &&
+        registry !== undefined &&
+        numberBox !== undefined &&
+        dateCar !== "" &&
+        statePost?.title !== "" &&
+        statePost?.introducing !== "" &&
+        km !== undefined &&
+        form !== undefined &&
+        statePost?.person !== "" &&
+        statePost?.fullAddress !== undefined &&
+        statePost?.fullAddress !== ""
+      ) {
         const postForm = {
           postId: uuid,
           value,
@@ -311,12 +604,14 @@ const TitlePostSell = ({
           person: statePost?.person,
           detailAddress: statePost?.detailAddress,
           fullAddress: statePost?.fullAddress,
-          districtValueName: convertToSlug(statePost?.districtValueName),
-          cityValueName: convertToSlug(statePost?.cityValueName),
+          districtValueName: getDistrictValueName(statePost?.fullAddress),
+          wardValueName: getWardValueName(statePost?.fullAddress),
+          cityValueName: getCityValueName(statePost?.fullAddress),
           cityValue: statePost?.cityValue,
           districtValue: statePost?.districtValue,
           wardValue: statePost?.wardValue,
         };
+        console.log("test", postForm);
         if (fileList && !id) {
           if (fileList.length === 0) {
             handleWarning();
@@ -326,6 +621,94 @@ const TitlePostSell = ({
               image: fileList,
             });
             if (response?.data?.status) {
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillStatus: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillBrand: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillColor: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillCarN: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillOwner: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillOwner: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillYouR: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillCountry: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillCountry: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillModel: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillSit: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillFuel: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillAcces: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillRegis: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillNumberB: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillDate: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillTitle: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillIntro: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillKm: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillForm: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillOwner: false,
+              }));
+              setStateFill((prevState: any) => ({
+                ...prevState,
+                fillAddress: false,
+              }));
               setStatePost((prevState) => ({
                 ...prevState,
                 spin: true,
@@ -367,11 +750,12 @@ const TitlePostSell = ({
             introducing: statePost?.introducing,
             km,
             form,
+            districtValueName: getDistrictValueName(statePost?.fullAddress),
+            wardValueName: getWardValueName(statePost?.fullAddress),
+            cityValueName: getCityValueName(statePost?.fullAddress),
             person: statePost?.person,
             detailAddress: statePost?.detailAddress,
             fullAddress: statePost?.fullAddress,
-            districtValueName: convertToSlug(statePost?.districtValueName),
-            cityValueName: convertToSlug(statePost?.cityValueName),
             cityValue: statePost?.cityValue,
             districtValue: statePost?.districtValue,
             wardValue: statePost?.wardValue,
@@ -381,6 +765,90 @@ const TitlePostSell = ({
             image: { fileList },
           });
           if (response?.data?.status) {
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillStatus: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillBrand: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillColor: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillCarN: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillOwner: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillPrice: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillCountry: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillCountry: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillModel: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillSit: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillFuel: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillAcces: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillRegis: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillNumberB: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillDate: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillTitle: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillIntro: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillKm: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillForm: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillOwner: false,
+            }));
+            setStateFill((prevState: any) => ({
+              ...prevState,
+              fillAddress: false,
+            }));
             setStatePost((prevState) => ({
               ...prevState,
               spin: true,
@@ -424,9 +892,14 @@ const TitlePostSell = ({
           maxRows={4}
           variant="filled"
         />
-        <span>0/50 kí tự</span>
+        {stateFill.fillTitle && (
+          <div className="warning-fill"> Vui lòng nhập Tiêu đề tin đăng</div>
+        )}
       </div>
-      <div className="introducing">
+      <div
+        className="introducing"
+        style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+      >
         <TextField
           className="text-area"
           id="filled-multiline-flexible"
@@ -436,11 +909,15 @@ const TitlePostSell = ({
           onChange={handleChangeIntroducing}
           maxRows={4}
           variant="filled"
-        />
+        />{" "}
+        <span>0/50 kí tự</span>
+        {stateFill.fillIntro && (
+          <div className="warning-fill">Vui lòng nhập Giới thiệu</div>
+        )}
       </div>
       <span className="title title-infor">Thông tin người bán</span>
       <span className="you-are">Bạn là</span>
-      <div className="display-flex">
+      <div className="display-flex" style={{ marginBottom: "4px" }}>
         <CustomButtonSelect
           handleClick={() => handlePerson("Cá nhân")}
           isActive={statePost?.person === "Cá nhân"}
@@ -454,6 +931,7 @@ const TitlePostSell = ({
           Bán chuyên
         </CustomButtonSelect>
       </div>
+      {stateFill.fillYouR && <div className="warning-fill"> Vui lòng chọn</div>}
 
       <div className="address input-need-to-custom" onClick={handleModal}>
         <TextField
@@ -462,19 +940,29 @@ const TitlePostSell = ({
           label="Địa chỉ"
           value={statePost?.fullAddress}
           multiline
+          onChange={(e) => handleAddress(e)}
           maxRows={4}
           variant="filled"
         />
         <ArrowInputIcon></ArrowInputIcon>
+        {stateFill.fillAddress && (
+          <div className="warning-fill" style={{ marginTop: "4px" }}>
+            Vui nhập địa chỉ
+          </div>
+        )}
       </div>
       <div className="finish">
         <CustomButton className="preview">Xem trước</CustomButton>
         <CustomButton className="post" onClick={postSell}>
-          Đăng tin
+          {id ? "Sửa tin" : "Đăng tin"}
         </CustomButton>
       </div>
 
       <ModalAddressUser
+        fillAddrCity={fillAddrCity}
+        fillAddrWard={fillAddrWard}
+        fillAddrDistrict={fillAddrDistrict}
+        fillAddrDetail={fillAddrDetail}
         cityValue={statePost?.cityValue}
         districtValue={statePost?.districtValue}
         wardValue={statePost?.wardValue}
@@ -490,6 +978,7 @@ const TitlePostSell = ({
         handleChangeDetailAddress={handleChangeDetailAddress}
         onFinish={onFinish}
       ></ModalAddressUser>
+
       <Spin spinning={statePost?.spin} fullscreen />
     </div>
   );

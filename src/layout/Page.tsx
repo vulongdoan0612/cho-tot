@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
+import NextAdapterPages from "next-query-params/pages";
 import React, { useMemo } from "react";
 import { ToastContainer } from "react-toastify";
+import { QueryParamProvider } from "use-query-params";
 
 interface PropsPage {
   loadingData?: boolean;
@@ -16,10 +18,10 @@ const Page = (props: PropsPage) => {
   return (
     <>
       <ToastContainer></ToastContainer>
-      <div className="page" id="page" style={style}>
-        <Header></Header>
-        {page}
-      </div>
+        <div className="page" id="page" style={style}>
+          <Header></Header>
+          {page}
+        </div>
     </>
   );
 };

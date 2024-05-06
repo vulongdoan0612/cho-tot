@@ -31,6 +31,20 @@ import useDidMountEffect from "@/utils/customUseEffect";
 
 const User = () => {
   const dispatch = useDispatch();
+  const [fillAddrCity, setFillAddrCity] = useState(false);
+  const [fillAddrWard, setFillAddrWard] = useState(false);
+  const [fillAddrDistrict, setFillAddrDistrict] = useState(false);
+  const [fillAddrDetail, setFillAddrDetail] = useState(false);
+  const [fillIntro, setFillIntro] = useState(false);
+  const [fillRemem, setFillRemem] = useState(false);
+  const [fillFax, setFillFax] = useState(false);
+  const [fillFullAddr, setFillFullAddr] = useState(false);
+  const [fillFullCCCD, setFillFullCCCD] = useState(false);
+
+  const [fillSex, setFillSex] = useState(false);
+  const [fillBirth, setFillBirth] = useState(false);
+  const [fillFav, setFillFav] = useState(false);
+  const [selectItemsFav, setSelectItemsFav] = useState<any>([]);
 
   const [stateUser, setStateUser] = useState<ICommonState>(defaultCommonState);
 
@@ -58,34 +72,103 @@ const User = () => {
   const updateProfile = async () => {
     const token = localStorage.getItem("access_token");
     try {
-      if (token) {
-        try {
-        } finally {
-          const updateProfile = {
-            address: {
-              city: stateUser?.cityValue,
-              district: stateUser?.districtValue,
-              ward: stateUser?.wardValue,
-              detailAddress: stateUser?.detailAddress,
-              fullAddress: stateUser?.fullAddress,
-            },
-            introduction: stateUser?.introducing,
-            rememberName: stateUser?.rememberName,
-            identifyCard: {
-              CMND: stateUser?.cccd,
-              date: stateUser?.dateCCCD,
-              location: stateUser?.location,
-              fullCMND: stateUser?.fullCCCD,
-            },
-            faxNumber: stateUser?.numberFax,
-            favouriteList: stateUser?.selectedItemFav,
-            sex: stateUser?.sex,
-            birthdate: stateUser?.birth,
-          };
-          const response = await changeProfile(String(token), updateProfile);
-          if (response.status === 200) {
-            toast(response.data.message);
+      console.log(stateUser.fullAddress);
+      if (
+        stateUser?.introducing === "" ||
+        stateUser?.introducing === undefined
+      ) {
+        setFillIntro(true);
+      }
+      if (
+        stateUser?.rememberName === "" ||
+        stateUser?.rememberName === undefined
+      ) {
+        setFillRemem(true);
+      }
+      if (stateUser?.numberFax === "" || stateUser?.numberFax === undefined) {
+        setFillFax(true);
+      }
+      if (selectItemsFav.length === 0 || selectItemsFav === undefined) {
+        setFillFav(true);
+      }
+      if (stateUser.fullCCCD === "") {
+        setFillFullCCCD(true);
+      }
+      if (stateUser.fullAddress === undefined || stateUser.fullAddress === "") {
+        setFillFullAddr(true);
+      }
+      if (stateUser.sex === "") {
+        setFillSex(true);
+      }
+      if (stateUser.birth === "") {
+        setFillBirth(true);
+      }
+      if (
+        token &&
+        stateUser?.introducing !== "" &&
+        stateUser?.introducing !== undefined &&
+        stateUser?.rememberName !== "" &&
+        stateUser?.rememberName !== undefined &&
+        stateUser?.numberFax !== "" &&
+        stateUser?.numberFax !== undefined &&
+        selectItemsFav.length !== 0 &&
+        selectItemsFav !== undefined &&
+        stateUser.fullCCCD !== "" &&
+        stateUser.fullAddress !== "" &&
+        stateUser.fullAddress !== undefined &&
+        stateUser.sex !== "" &&
+        stateUser.birth !== ""
+      ) {
+        let wardName = "";
+        let city = "";
+        let district = "";
+        stateUser?.wards?.forEach((item: any) => {
+          if (item.Id === stateUser?.wardValue) {
+            wardName = item?.Name;
           }
+        });
+        stateUser?.districts?.forEach((item: any) => {
+          if (item.Id === stateUser?.districtValue) {
+            district = item?.Name;
+          }
+        });
+        stateUser?.cities?.forEach((item: any) => {
+          if (item.Id === stateUser?.cityValue) {
+            city = item?.Name;
+          }
+        });
+        const updateProfile = {
+          address: {
+            city: city,
+            district: district,
+            ward: wardName,
+            detailAddress: stateUser?.detailAddress,
+            fullAddress: stateUser?.fullAddress,
+          },
+          introduction: stateUser?.introducing,
+          rememberName: stateUser?.rememberName,
+          identifyCard: {
+            CMND: stateUser?.cccd,
+            date: stateUser?.dateCCCD,
+            location: stateUser?.location,
+            fullCMND: stateUser?.fullCCCD,
+          },
+          faxNumber: stateUser?.numberFax,
+          favouriteList: stateUser?.selectedItemFav,
+          sex: stateUser?.sex,
+          birthdate: stateUser?.birth,
+        };
+        const response = await changeProfile(String(token), updateProfile);
+        if (response.status === 200) {
+          setFillIntro(false);
+          setFillRemem(false);
+          setFillFax(false);
+          setFillFav(false);
+          setFillFullCCCD(false);
+          setFillFullAddr(false);
+          setFillSex(false);
+          setFillBirth(false);
+          toast(response.data.message);
         }
       }
     } catch {
@@ -96,10 +179,20 @@ const User = () => {
   const onChangeDate: DatePickerProps<any>["onChange"] = (date, dateString) => {
     const momentDateCCCD = moment(dateString);
     const formattedDateCCCD = momentDateCCCD.format("YYYY-MM-DD");
-    setStateUser((prevState) => ({
-      ...prevState,
-      dateCCCD: formattedDateCCCD,
-    }));
+    if (formattedDateCCCD === "Invalid date") {
+      setStateUser((prevState) => ({
+        ...prevState,
+        dateCCCD: undefined,
+      }));
+    } else {
+      setStateUser((prevState) => ({
+        ...prevState,
+        dateCCCD: dayjs(formattedDateCCCD),
+      }));
+      if (formattedDateCCCD !== "Invalid date" || dateString !== "") {
+        setFillCCCDFor(false);
+      }
+    }
   };
 
   const onChangeBirth: DatePickerProps<any>["onChange"] = (
@@ -112,6 +205,9 @@ const User = () => {
       ...prevState,
       birth: formattedDateBirth,
     }));
+    if (formattedDateBirth !== "Invalid date" || dateString !== "") {
+      setFillBirth(false);
+    }
   };
   useEffect(() => {
     if (account) {
@@ -175,6 +271,9 @@ const User = () => {
         districtValue: "",
         wardValue: "",
       }));
+      if (event.target.value !== "") {
+        setFillAddrCity(false);
+      }
     }
   };
   const handleDistrictChange = (event: any) => {
@@ -189,20 +288,38 @@ const User = () => {
         districtValue: event.target.value,
         wards: selectedDistrict?.Wards,
       }));
+      if (event.target.value !== "") {
+        setFillAddrDistrict(false);
+        setStateUser((prevState) => ({
+          ...prevState,
+          wardValue: "",
+        }));
+      }
     }
   };
-
+  useDidMountEffect(() => {
+    setStateUser((prevState) => ({
+      ...prevState,
+      fullAddress: "",
+    }));
+  }, []);
   const handleChangeDetailAddress = (event: any) => {
     setStateUser((prevState) => ({
       ...prevState,
       detailAddress: event.target.value as string,
     }));
+    if (event.target.value !== "") {
+      setFillAddrDetail(false);
+    }
   };
   const handleCCCD = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
       cccd: event.target.value as string,
     }));
+    if (event.target.value !== "") {
+      setFillCCCD(false);
+    }
   };
   const handleFav = (event: any) => {
     setStateUser((prevState: any) => ({
@@ -215,12 +332,18 @@ const User = () => {
       ...prevState,
       location: event.target.value,
     }));
+    if (event.target.value !== "") {
+      setFillCCCDLocation(false);
+    }
   };
   const handleChangeWard = (event: SelectChangeEvent) => {
     setStateUser((prevState: any) => ({
       ...prevState,
       wardValue: event.target.value,
     }));
+    if (event.target.value !== "") {
+      setFillAddrWard(false);
+    }
   };
   const handleCancleModal = () => {
     setStateUser((prevState: any) => ({
@@ -266,7 +389,7 @@ const User = () => {
       setStateUser((prevState) => ({
         ...prevState,
         cccd: account?.identifyCard?.CMND,
-        dateCCCD: account?.identifyCard?.date,
+        dateCCCD: dayjs(account?.identifyCard?.date),
         location: account?.identifyCard?.location,
         fullCCCD: account?.identifyCard?.fullCMND,
       }));
@@ -315,14 +438,17 @@ const User = () => {
         ...prevState,
         selectedItemFav: account?.favouriteList,
       }));
+      setSelectItemsFav(account?.favouriteList);
     }
   }, [account?.favouriteList]);
+
   const handleModal = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
       modalConfirmSwitch: true,
     }));
   };
+
   const handleModalCCCD = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -335,54 +461,126 @@ const User = () => {
       modalConfirmSwitchFav: true,
     }));
   };
+
   const onFinish = () => {
-    let wardName = "";
-    let city = "";
-    let district = "";
-
-    stateUser.wards.forEach((item: any) => {
-      if (item.Id === stateUser.wardValue) {
-        wardName = item.Name;
+    if (stateUser?.wardValue === undefined || stateUser?.wardValue === "") {
+      setFillAddrWard(true);
+    }
+    if (
+      stateUser?.districtValue === undefined ||
+      stateUser?.districtValue === ""
+    ) {
+      setFillAddrDistrict(true);
+    }
+    if (stateUser?.cityValue === undefined || stateUser?.cityValue === "") {
+      setFillAddrCity(true);
+    }
+    if (
+      stateUser?.detailAddress === undefined ||
+      stateUser?.detailAddress === ""
+    ) {
+      setFillAddrDetail(true);
+    }
+    console.log(
+      stateUser?.wardValue,
+      "wardValue",
+      stateUser?.districtValue,
+      "districtValue",
+      stateUser?.detailAddress,
+      "detailAddress",
+      stateUser?.cityValue,
+      "cityValue"
+    );
+    if (
+      stateUser?.cities &&
+      stateUser?.detailAddress !== undefined &&
+      stateUser?.cityValue !== undefined &&
+      stateUser?.districtValue !== undefined &&
+      stateUser?.wardValue !== undefined &&
+      stateUser?.wardValue !== "" &&
+      stateUser?.districtValue !== "" &&
+      stateUser?.cityValue !== "" &&
+      stateUser?.detailAddress !== ""
+    ) {
+      let wardName = "";
+      let city = "";
+      let district = "";
+      stateUser?.wards?.forEach((item: any) => {
+        if (item.Id === stateUser?.wardValue) {
+          wardName = item?.Name;
+        }
+      });
+      stateUser?.districts?.forEach((item: any) => {
+        if (item.Id === stateUser?.districtValue) {
+          district = item?.Name;
+        }
+      });
+      stateUser?.cities?.forEach((item: any) => {
+        if (item.Id === stateUser?.cityValue) {
+          city = item?.Name;
+        }
+      });
+      const concatenatedAddress = `${stateUser.detailAddress}, ${wardName}, ${district}, ${city}`;
+      setStateUser((prevState: any) => ({
+        ...prevState,
+        fullAddress: concatenatedAddress,
+        modalConfirmSwitch: false,
+      }));
+      if (concatenatedAddress !== "") {
+        setFillFullAddr(false);
       }
-    });
-    stateUser.districts.forEach((item: any) => {
-      if (item.Id === stateUser.districtValue) {
-        district = item.Name;
-      }
-    });
-    stateUser.cities.forEach((item: any) => {
-      if (item.Id === stateUser.cityValue) {
-        city = item.Name;
-      }
-    });
-    const concatenatedAddress = `${stateUser.detailAddress} ,${wardName}, ${district}, ${city}`;
-    setStateUser((prevState: any) => ({
-      ...prevState,
-      fullAddress: concatenatedAddress,
-    }));
-
-    setStateUser((prevState: any) => ({
-      ...prevState,
-      modalConfirmSwitch: false,
-    }));
+      setFillAddrWard(false);
+      setFillAddrDistrict(false);
+      setFillAddrCity(false);
+      setFillAddrDetail(false);
+    }
   };
+  const [fillCCCD, setFillCCCD] = useState(false);
+  const [fillCCCDFor, setFillCCCDFor] = useState(false);
+  const [fillCCCDLocation, setFillCCCDLocation] = useState(false);
+
   const onFinishCCCD = () => {
-    const momentDateCCCD = moment(stateUser.dateCCCD);
+    const momentDateCCCD = dayjs(stateUser.dateCCCD);
     const formattedDateCCCD = momentDateCCCD.format("YYYY-MM-DD");
     const concatenatedCCCD = `${stateUser.cccd}, ${formattedDateCCCD}, ${stateUser.location}`;
-
-    setStateUser((prevState: any) => ({
-      ...prevState,
-      fullCCCD: concatenatedCCCD,
-      modalConfirmSwitchCCCD: false,
-    }));
+    if (stateUser.cccd === "" || stateUser.cccd === undefined) {
+      setFillCCCD(true);
+    }
+    if (stateUser.dateCCCD === undefined || stateUser.dateCCCD === "") {
+      setFillCCCDFor(true);
+    }
+    if (stateUser.location === "" || stateUser.location === undefined) {
+      setFillCCCDLocation(true);
+    }
+    if (
+      stateUser.location !== "" &&
+      stateUser.location !== undefined &&
+      stateUser.cccd !== "" &&
+      stateUser.cccd !== undefined &&
+      stateUser.dateCCCD !== undefined &&
+      stateUser.dateCCCD !== "" &&
+      stateUser.location !== "" &&
+      stateUser.location !== undefined
+    ) {
+      setStateUser((prevState: any) => ({
+        ...prevState,
+        fullCCCD: concatenatedCCCD,
+        modalConfirmSwitchCCCD: false,
+      }));
+      setFillCCCDLocation(false);
+      setFillCCCDFor(false);
+      setFillCCCD(false);
+    }
   };
   const onFinishFav = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
       modalConfirmSwitchFav: false,
-      selectedItemFav: stateUser?.selectedItemFav,
     }));
+    setSelectItemsFav(stateUser?.selectedItemFav);
+    if (stateUser?.selectedItemFav) {
+      setFillFav(false);
+    }
   };
   const handleAddFav = (index: any, item: any) => {
     if (stateUser.selectedItemFav.includes(item)) {
@@ -411,24 +609,37 @@ const User = () => {
       ...prevState,
       introducing: event.target.value,
     }));
+    if (event.target.value !== "") {
+      setFillIntro(false);
+    }
   };
   const handleChangeRemember = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
       rememberName: event.target.value,
     }));
+    if (event.target.value !== "") {
+      setFillRemem(false);
+    }
   };
+
   const handleChangeNumberFax = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
       numberFax: event.target.value,
     }));
+    if (event.target.value !== "") {
+      setFillFax(false);
+    }
   };
   const handleChangeSex = (event: SelectChangeEvent) => {
     setStateUser((prevState: any) => ({
       ...prevState,
       sex: event.target.value,
     }));
+    if (event.target.value !== "") {
+      setFillSex(false);
+    }
   };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
@@ -493,25 +704,29 @@ const User = () => {
                 )}
               </div>
             </div>
-            {loading ? (
+            {/* {loading ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
-            ) : (
-              <div
-                className="second-line input-need-to-custom"
-                onClick={handleModal}
-              >
-                <TextField
-                  className="fullname"
-                  id="filled-multiline-flexible"
-                  label="Địa chỉ"
-                  value={stateUser.fullAddress}
-                  multiline
-                  maxRows={4}
-                  variant="filled"
-                />
-                <ArrowInputIcon></ArrowInputIcon>
-              </div>
-            )}
+            ) : ( */}
+            <div
+              className="second-line input-arrow  input-need-to-custom"
+              onClick={handleModal}
+            >
+              <TextField
+                className="fullname"
+                id="filled-multiline-flexible"
+                label="Địa chỉ"
+                // onChange={handleAddress}
+                value={stateUser?.fullAddress}
+                multiline
+                maxRows={4}
+                variant="filled"
+              />
+              <ArrowInputIcon></ArrowInputIcon>
+              {fillFullAddr && (
+                <span className="warning">Vui lòng nhập Địa chỉ</span>
+              )}
+            </div>
+            {/* )} */}
             {loading ? (
               <Skeleton.Input
                 block={true}
@@ -531,6 +746,9 @@ const User = () => {
                   maxRows={4}
                   variant="filled"
                 />
+                {fillIntro && (
+                  <span className="warning">Vui lòng nhập Giới thiệu</span>
+                )}
               </div>
             )}
             <div className="remember-name input-need-to-custom">
@@ -541,16 +759,21 @@ const User = () => {
                   size="large"
                 ></Skeleton.Input>
               ) : (
-                <TextField
-                  className="rembember"
-                  id="filled-multiline-flexible"
-                  label="Tên gợi nhớ"
-                  value={stateUser.rememberName || account?.rememberName}
-                  onChange={handleChangeRemember}
-                  multiline
-                  maxRows={4}
-                  variant="filled"
-                />
+                <>
+                  <TextField
+                    className="rembember"
+                    id="filled-multiline-flexible"
+                    label="Tên gợi nhớ"
+                    value={stateUser.rememberName || account?.rememberName}
+                    onChange={handleChangeRemember}
+                    multiline
+                    maxRows={4}
+                    variant="filled"
+                  />
+                  {fillRemem && (
+                    <span className="warning">Vui lòng nhập Tên gợi nhớ</span>
+                  )}
+                </>
               )}
               <p className="text">
                 https://www.chotot.com/user/<span>dsadasdsadasd</span>
@@ -582,25 +805,32 @@ const User = () => {
                 maxRows={4}
                 variant="filled"
               />
-            </div>
+            </div>{" "}
             {loading ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
-              <div
-                className="second-line input-arrow  input-need-to-custom"
-                onClick={handleModalCCCD}
-              >
-                <TextField
-                  className="fullname"
-                  id="filled-multiline-flexible"
-                  label="CCCD / CMND / Hộ chiếu"
-                  value={stateUser.fullCCCD}
-                  multiline
-                  maxRows={4}
-                  variant="filled"
-                />
-                <ArrowInputIcon></ArrowInputIcon>
-              </div>
+              <>
+                <div
+                  className="second-line input-arrow  input-need-to-custom"
+                  onClick={handleModalCCCD}
+                >
+                  <TextField
+                    className="fullname"
+                    id="filled-multiline-flexible"
+                    label="CCCD / CMND / Hộ chiếu"
+                    value={stateUser.fullCCCD}
+                    multiline
+                    maxRows={4}
+                    variant="filled"
+                  />
+                  <ArrowInputIcon></ArrowInputIcon>
+                </div>
+                {fillFullCCCD && (
+                  <span className="warning">
+                    Vui lòng nhập CCCD / CMND / Hộ chiếu
+                  </span>
+                )}
+              </>
             )}
             {loading ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
@@ -616,6 +846,9 @@ const User = () => {
                   maxRows={4}
                   variant="filled"
                 />
+                {fillFax && (
+                  <span className="warning">Vui lòng nhập Mã số thuế</span>
+                )}
               </div>
             )}
             {loading ? (
@@ -629,13 +862,18 @@ const User = () => {
                   className="fullname"
                   id="filled-multiline-flexible"
                   label="Danh mục yêu thích"
-                  value={stateUser.selectedItemFav}
+                  value={selectItemsFav}
                   onChange={handleFav}
                   multiline
                   maxRows={4}
                   variant="filled"
                 />
                 <ArrowInputIcon></ArrowInputIcon>
+                {fillFav && (
+                  <span className="warning">
+                    Vui lòng chọn Danh mục yêu thích
+                  </span>
+                )}
               </div>
             )}
             {loading ? (
@@ -658,6 +896,9 @@ const User = () => {
                       <MenuItem value={"Nữ"}>Nữ</MenuItem>
                       <MenuItem value={"Khác"}>Khác</MenuItem>
                     </Select>
+                    {fillSex && (
+                      <span className="warning">Vui lòng chọn Giới tính</span>
+                    )}
                   </FormControl>
                 </div>
                 <div className="birth-date">
@@ -669,6 +910,9 @@ const User = () => {
                       onChange={onChangeBirth}
                       placeholder={"Ngày sinh"}
                     />
+                    {fillBirth && (
+                      <span className="warning">Vui lòng chọn Ngày sinh</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -684,6 +928,10 @@ const User = () => {
         </CustomButton>
       </Setting>
       <ModalAddressUser
+        fillAddrCity={fillAddrCity}
+        fillAddrWard={fillAddrWard}
+        fillAddrDistrict={fillAddrDistrict}
+        fillAddrDetail={fillAddrDetail}
         cityValue={stateUser.cityValue}
         districtValue={stateUser.districtValue}
         wardValue={stateUser.wardValue}
@@ -700,6 +948,9 @@ const User = () => {
         onFinish={onFinish}
       ></ModalAddressUser>
       <ModalCCCCD
+        fillCCCD={fillCCCD}
+        fillCCCDFor={fillCCCDFor}
+        fillCCCDLocation={fillCCCDLocation}
         modalConfirmSwitchCCCD={stateUser.modalConfirmSwitchCCCD}
         handleCancleModalCCCD={handleCancleModalCCCD}
         handleCCCD={handleCCCD}

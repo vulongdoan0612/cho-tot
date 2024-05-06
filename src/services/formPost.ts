@@ -6,6 +6,8 @@ export const PostFormSellCheck = async (accessToken: string, data: any) => {
       formData.append(`image`, image.originFileObj);
     });
   }
+  formData.append(`wardValueName`, data?.postForm?.wardValueName);
+
   formData.append(`postId`, data?.postForm?.postId);
   formData.append(`value`, data?.postForm?.value);
   formData.append(`color`, data?.postForm?.color);
@@ -100,6 +102,23 @@ export const getPostCensorshipList = async (accessToken: string) => {
   };
   return axios(config);
 };
+export const getPosts = async (
+  pageSize: number,
+  currentPage: number,
+  price: number,
+  form: string,
+  sit: number,
+  fuel: string,
+  numberBox: string,
+  city: string,
+  district: string
+) => {
+  const config = {
+    method: "POST",
+    url: `/get-posts?pageSize=${pageSize}&currentPage=${currentPage}&price=${price}&form=${form}&sit=${sit}&fuel=${fuel}&numberBox=${numberBox}&city=${city}&district=${district}`,
+  };
+  return axios(config);
+};
 export const getPostHiddenList = async (accessToken: string) => {
   const config = {
     method: "POST",
@@ -141,6 +160,7 @@ export const EditPostFormSellCheck = async (accessToken: string, data: any) => {
       }
     });
   }
+  formData.append(`wardValueName`, data?.postFormEdit?.wardValueName);
 
   formData.append(`postId`, data?.postFormEdit?.postId);
   formData.append(`value`, data?.postFormEdit?.value);

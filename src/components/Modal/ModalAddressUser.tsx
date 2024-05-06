@@ -23,6 +23,10 @@ const ModalAddressUser = ({
   handleChangeDetailAddress,
   detailAddress,
   onFinish,
+  fillAddrCity,
+  fillAddrWard,
+  fillAddrDistrict,
+  fillAddrDetail,
 }: any) => {
   return (
     <CustomModal
@@ -41,7 +45,6 @@ const ModalAddressUser = ({
         >
           Tỉnh, Thành phố
         </InputLabel>
-
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -57,6 +60,9 @@ const ModalAddressUser = ({
             </MenuItem>
           ))}
         </Select>
+        {fillAddrCity && (
+          <span className="warning">Vui lòng nhập Tỉnh, Thành phố</span>
+        )}
       </FormControl>
       <FormControl
         sx={{ m: 1, width: "100%" }}
@@ -83,7 +89,10 @@ const ModalAddressUser = ({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
+        {fillAddrDistrict && (
+          <span className="warning">Vui lòng nhập Quận, Huyện, Thị xã</span>
+        )}
+      </FormControl>{" "}
       <FormControl
         sx={{ m: 1, width: "100%" }}
         disabled={wards.length < 1 ? true : false}
@@ -100,7 +109,7 @@ const ModalAddressUser = ({
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={wardValue}
-          label="Quận, Huyện, Thị xã"
+          label="Phường, Xã, Thị trấn"
           onChange={(event) => handleChangeWard(event)}
         >
           {wards.map((item: any) => {
@@ -111,6 +120,9 @@ const ModalAddressUser = ({
             );
           })}
         </Select>
+        {fillAddrWard && (
+          <span className="warning">Vui lòng nhập Phường, Xã, Thị trấn</span>
+        )}
       </FormControl>
       <FormControl sx={{ m: 1, width: "100%" }}>
         <TextField
@@ -125,6 +137,9 @@ const ModalAddressUser = ({
           maxRows={4}
           variant="filled"
         />
+        {fillAddrDetail && (
+          <span className="warning">Vui lòng nhập Địa chỉ cụ thể</span>
+        )}
       </FormControl>
       <CustomButton
         type="submit"

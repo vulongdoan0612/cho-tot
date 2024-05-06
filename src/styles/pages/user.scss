@@ -37,6 +37,13 @@
     }
     .right {
       .right-content {
+        .warning {
+          color: #e5193b;
+          font-size: 0.625rem;
+          min-height: 12px;
+          margin-left: 12px;
+          line-height: 1.5;
+        }
         margin-bottom: 2rem;
         display: flex;
         flex-direction: column;
@@ -77,8 +84,6 @@
           width: 100%;
           cursor: pointer;
 
-
-         
           .ant-picker-outlined:focus-within,
           .ant-picker-outlined:focus,
           .ant-picker-outlined:hover {
@@ -273,6 +278,13 @@
   }
 }
 .modal-address-user {
+  .warning {
+    color: #e5193b;
+    font-size: 0.625rem;
+    min-height: 12px;
+    margin-left: 12px;
+    line-height: 1.5;
+  }
   .ant-modal-close {
     inset-inline-start: 12px;
   }
@@ -287,6 +299,13 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    .warning {
+      color: #e5193b;
+      font-size: 0.625rem;
+      min-height: 12px;
+      margin-left: 12px;
+      line-height: 1.5;
+    }
     .cccd {
       .MuiFormControl-root {
         width: 100%;

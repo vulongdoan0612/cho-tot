@@ -86,6 +86,10 @@ export interface IFilterHeader {
   searchResultDistrict: any;
   cityName: string;
   districtName: string;
+  idCity: string;
+  priceMin: string;
+  priceMax: string;
+  idDistrict: string;
   selectCity: string;
   valueRadioSit: string;
   valueRadioBrand: string;
@@ -97,12 +101,59 @@ export interface IFilterHeader {
   openPrice: boolean;
   openSit: boolean;
   openBrand: boolean;
+  inputValueMin: number;
+  inputValueMax: number;
+  valuePriceMax: any;
+  valuePriceMin: any;
+  valueRadioAll: string;
+  valueRadioAllBrand: string;
+  valueRadioAllColor: string;
+  valueRadioAllCountry: string;
+  valueRadioAllModel: string;
+  valueRadioAllFormCar: string;
+  valueRadioModal: string;
+  valueRadioFormCar: string;
+  valueRadioCountry: string;
+  valueRadioStatus: string;
+  valueRadioUser: string;
+  valueRadioFuel: string;
+  valueRadioColor: string;
+  valueRadioModel: string;
+  valueRadioNumberBox: string;
+  valueRadioBrandModal: string;
+  date: string;
+  dateMax: string;
+  kmMin: string;
+  kmMax: string;
+}
+export interface ICommonStateFillFormRenderCar {
+  fillStatus: boolean;
+  fillBrand: boolean;
+  fillForm: boolean;
+  fillDate: boolean;
+  fillNumberB: boolean;
+  fillFuel: boolean;
+  fillCountry: boolean;
+  fillModel: boolean;
+  fillSit: boolean;
+  fillColor: boolean;
+  fillCarN: boolean;
+  fillOwner: boolean;
+  fillAcces: boolean;
+  fillRegis: boolean;
+  fillPrice: boolean;
+  fillKm: boolean;
+  fillTitle: boolean;
+  fillIntro: boolean;
+  fillYouR: boolean;
+  fillAddress: boolean;
+  stateFill: boolean;
 }
 export interface ICommonStateFormRenderCar {
   value: string;
   color: string;
   carNumber: string;
-  dateCar: string;
+  dateCar: number;
   owner: string;
   country: string;
   sit: string;
@@ -112,8 +163,8 @@ export interface ICommonStateFormRenderCar {
   numberBox: string;
   status: string;
   form: string;
-  price: string;
-  km: string;
+  price: number;
+  km: number;
   models: any;
   model: string;
 }

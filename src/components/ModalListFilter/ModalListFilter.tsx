@@ -11,6 +11,7 @@ const ModalListFilter = ({
   setValueRadioAll,
   valueRadioAll,
   setValueRadio,
+  setState,
   typeModal,
 }: any) => {
   const [search, setSearch] = useState("");
@@ -18,8 +19,74 @@ const ModalListFilter = ({
   const handleRenew = () => {
     try {
       setSearch("");
-      setValueRadioAll("");
-      setValueRadio("");
+      setValueRadio === "sit"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioModal: "",
+          }))
+        : typeModal === "brand"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioBrandModal: "",
+          }))
+        : typeModal === "color"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioColor: "",
+          }))
+        : typeModal === "country"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioCountry: "",
+          }))
+        : typeModal === "model"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioModel: "",
+          }))
+        : typeModal === "formCar"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioFormCar: "",
+          }))
+        : setState((prevState: any) => ({
+            ...prevState,
+          }));
+      setValueRadioAll === "sit"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAll: "",
+          }))
+        : typeModal === "brand"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllBrand: "",
+          }))
+        : typeModal === "color"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllColor: "",
+          }))
+        : typeModal === "country"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllCountry: "",
+          }))
+        : typeModal === "model"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllModel: "",
+          }))
+        : typeModal === "formCar"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllFormCar: "",
+          }))
+        : setState((prevState: any) => ({
+            ...prevState,
+          }));
+      // setValueRadioAll("");
+      // setValueRadio("");
       setDataRender(data);
     } finally {
       handleCancleModal();
@@ -62,10 +129,74 @@ const ModalListFilter = ({
       setDataRender(result);
     }
   };
-  const onChangeRadio = (e: RadioChangeEvent) => {
+  const onChangeRadio = (item: any) => {
     try {
-      setValueRadio(e.target.value);
-      setValueRadioAll(e.target.value);
+      setValueRadio === "sit"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioModal: item,
+          }))
+        : typeModal === "brand"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioBrandModal: item,
+          }))
+        : typeModal === "color"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioColor: item,
+          }))
+        : typeModal === "country"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioCountry: item,
+          }))
+        : typeModal === "model"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioModel: item,
+          }))
+        : typeModal === "formCar"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioFormCar: item,
+          }))
+        : setState((prevState: any) => ({
+            ...prevState,
+          }));
+      setValueRadioAll === "sit"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAll: item,
+          }))
+        : typeModal === "brand"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllBrand: item,
+          }))
+        : typeModal === "color"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllColor: item,
+          }))
+        : typeModal === "country"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllCountry: item,
+          }))
+        : typeModal === "model"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllModel: item,
+          }))
+        : typeModal === "formCar"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioAllFormCar: item,
+          }))
+        : setState((prevState: any) => ({
+            ...prevState,
+          }));
     } finally {
       handleCancleModal();
     }
@@ -102,11 +233,12 @@ const ModalListFilter = ({
           />{" "}
         </div>
         <div className="sits">
+          <div>{valueRadioAll}ddd</div>
           {dataRender &&
             dataRender.map((item: any, index: any) => {
               return (
                 <div key={index} className="sit-item">
-                  <Radio.Group value={valueRadioAll} onChange={onChangeRadio}>
+                  <Radio.Group value={String(valueRadioAll)}>
                     <Radio
                       value={
                         typeModal === "sit"
@@ -115,6 +247,7 @@ const ModalListFilter = ({
                           ? item.brand
                           : item
                       }
+                      onClick={() => onChangeRadio(item)}
                     >
                       {" "}
                       <span className="sit-name">

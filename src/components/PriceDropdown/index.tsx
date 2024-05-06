@@ -1,23 +1,37 @@
 import { InputNumber, Slider } from "antd";
 import { useEffect, useRef, useState } from "react";
 import CustomButton from "../CustomButton";
+import { useRouter } from "next/router";
 
-const PriceDropdown = ({ openPrice, setState }: any) => {
-  const priceRef: any = useRef(null); // Ref for FindInAreaDropdown
-  const [inputValueMin, setInputValueMin] = useState(0);
-  const [inputValueMax, setInputValueMax] = useState(2000000000);
+const PriceDropdown = ({
+  openPrice,
+  setState,
+  inputValueMin,
+  inputValueMax,
+}: any) => {
+  const priceRef: any = useRef(null); 
   const [warning, setWarning] = useState(false);
+  const router = useRouter();
 
   const onChange: any["onChange"] = (newValue: any) => {
     if (newValue) {
-      setInputValueMin(newValue[0]);
+      setState((prevState: any) => ({
+        ...prevState,
+        inputValueMin: newValue[0],
+      }));
     }
     if (newValue) {
-      setInputValueMax(newValue[1]);
+      setState((prevState: any) => ({
+        ...prevState,
+        inputValueMax: newValue[1],
+      }));
     }
   };
   const onChangeMin = (newValue: any) => {
-    setInputValueMin(newValue);
+    setState((prevState: any) => ({
+      ...prevState,
+      inputValueMin: newValue,
+    }));
     if (inputValueMax < newValue) {
       setWarning(true);
     } else {
@@ -25,7 +39,10 @@ const PriceDropdown = ({ openPrice, setState }: any) => {
     }
   };
   const onChangeMax = (newValue: any) => {
-    setInputValueMax(newValue);
+    setState((prevState: any) => ({
+      ...prevState,
+      inputValueMax: newValue,
+    }));
     if (inputValueMin > newValue) {
       setWarning(true);
     } else {
@@ -53,21 +70,40 @@ const PriceDropdown = ({ openPrice, setState }: any) => {
     };
   }, [openPrice]);
   const handleRenew = () => {
-    setInputValueMin(0);
-    setInputValueMax(0);
     setState((prevState: any) => ({
       ...prevState,
       openPrice: false,
+      inputValueMax: 2000000000,
+      inputValueMin: 0,
+      valuePriceMin: null,
+      valuePriceMax: null,
     }));
+    removeQueries(["price"]);
   };
   const handleApply = () => {
-    setInputValueMin(0);
-
-    setInputValueMax(0);
     setState((prevState: any) => ({
       ...prevState,
+      valuePriceMin: inputValueMin,
+      valuePriceMax: inputValueMax,
       openPrice: false,
     }));
+    updateURL({ price: `${inputValueMin}-${inputValueMax}` });
+  };
+  const removeQueries = (keysToRemove: string[]) => {
+    const updatedQuery = { ...router.query };
+    keysToRemove.forEach((key) => {
+      delete updatedQuery[key];
+    });
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: updatedQuery,
+    });
+  };
+  const updateURL = (queryParams: any) => {
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: { ...router.query, ...queryParams },
+    });
   };
   return (
     <div ref={priceRef} className="price-slide">
@@ -76,8 +112,9 @@ const PriceDropdown = ({ openPrice, setState }: any) => {
         <Slider
           range
           value={[inputValueMin, inputValueMax]}
-          defaultValue={[inputValueMin, inputValueMax]}
+          // defaultValue={[inputValueMin, inputValueMax]}
           max={2000000000}
+          step={1000000}
           onChange={onChange}
           tooltip={{ formatter: null }}
         />

@@ -21,13 +21,20 @@ import TitlePostSell from "../TitlePostSell/TitlePostSell";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { defaultCommonState } from "./_mock";
-import { ICommonStateFormRenderCar } from "@/interfaces/User";
+import {
+  ICommonStateFillFormRenderCar,
+  ICommonStateFormRenderCar,
+} from "@/interfaces/User";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { onlyNumbers } from "@/utils/onlyNumbers";
+import { defaultCommonStateFill } from "./_fill";
 
 const RenderOto = ({ handleWarning, fileList }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);
+  const [stateFill, setStateFill] = useState<ICommonStateFillFormRenderCar>(
+    defaultCommonStateFill
+  );
   const [stateForm, setStateForm] =
     useState<ICommonStateFormRenderCar>(defaultCommonState);
   const router = useRouter();
@@ -86,12 +93,24 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       ...prevState,
       country: event?.target?.value,
     }));
+    if (event?.target?.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillCountry: false,
+      }));
+    }
   };
   const handleChangeSit = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
       sit: event?.target?.value,
     }));
+    if (event?.target?.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillSit: false,
+      }));
+    }
   };
   const handleChange = (event: SelectChangeEvent) => {
     const selectedModels =
@@ -102,26 +121,52 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       models: selectedModels,
       value: event?.target.value as string,
     }));
+    if (event?.target?.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillBrand: false,
+      }));
+    }
   };
   const handleChangeModels = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
       model: event?.target?.value,
     }));
+    console.log(event?.target?.value);
+    if (event?.target?.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillModel: false,
+      }));
+    }
   };
   const handleChangeColor = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
       color: event?.target?.value,
     }));
+    if (event?.target?.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillColor: false,
+      }));
+    }
   };
-  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+  const onChange = (date: any, dateString: any) => {
     const momentDateCCCD = moment(dateString);
     const formattedDateCCCD = momentDateCCCD.format("YYYY");
     setStateForm((prevState) => ({
       ...prevState,
-      dateCar: formattedDateCCCD,
+      dateCar: Number(formattedDateCCCD),
     }));
+    console.log(dateString);
+    if (dateString !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillDate: false,
+      }));
+    }
   };
   const handleChangeCarNumber = (event: any) => {
     if (onlyNumbers(event?.target?.value) || event?.target?.value === "") {
@@ -130,27 +175,67 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
         carNumber: event?.target?.value,
       }));
     }
+    if (event?.target?.value !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillCarN: false,
+      }));
+    }
   };
   const handleChangeOwner = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
       owner: event?.target?.value,
     }));
-  };
-
-  const onChangeNumber: InputNumberProps["onChange"] = (value) => {
-    if (onlyNumbers(value) || value === "") {
-      setStateForm((prevState) => ({
+    if (event?.target?.value !== "") {
+      setStateFill((prevState: any) => ({
         ...prevState,
-        km: String(value),
+        fillOwner: false,
       }));
     }
   };
-  const onChangePrice = (e: any) => {
-    if (onlyNumbers(e) || e === "") {
+
+  const onChangeNumber = (value: number) => {
+    if (onlyNumbers(value) || value === 0) {
       setStateForm((prevState) => ({
         ...prevState,
-        price: String(e),
+        km: Number(value),
+      }));
+    }
+    if (value === 0) {
+      setStateForm((prevState) => ({
+        ...prevState,
+        km: 0,
+      }));
+    }
+    console.log(value);
+    if (String(value) !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillKm: false,
+      }));
+    }
+  };
+  const onChangePrice = (value: any) => {
+    console.log(value);
+    if (onlyNumbers(value) || value === "") {
+      setStateForm((prevState) => ({
+        ...prevState,
+        price: value,
+      }));
+    }
+    if (value === null || value === "") {
+      setStateForm((prevState) => ({
+        ...prevState,
+        price: 0,
+      }));
+    }
+    console.log(value);
+
+    if (String(value) !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillPrice: false,
       }));
     }
   };
@@ -159,36 +244,72 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       ...prevState,
       activeButton: fuelType,
     }));
+    if (fuelType !== undefined) {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillFuel: false,
+      }));
+    }
   };
   const handleAccessories = (accessories: any) => {
     setStateForm((prevState) => ({
       ...prevState,
       accessories: accessories,
     }));
+    if (accessories !== undefined) {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillAcces: false,
+      }));
+    }
   };
   const handleRegistry = (registry: any) => {
     setStateForm((prevState) => ({
       ...prevState,
       registry: registry,
     }));
+    if (registry !== undefined) {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillRegis: false,
+      }));
+    }
   };
   const handleNumberBox = (NumberBox: any) => {
     setStateForm((prevState) => ({
       ...prevState,
       numberBox: NumberBox,
     }));
+    if (NumberBox !== undefined) {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillNumberB: false,
+      }));
+    }
   };
   const handleChangeForm = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
       form: event?.target?.value,
     }));
+    if (event?.target?.value !== undefined) {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillForm: false,
+      }));
+    }
   };
   const handleStatus = (status: any) => {
     setStateForm((prevState) => ({
       ...prevState,
       status: status,
     }));
+    if (status !== "") {
+      setStateFill((prevState: any) => ({
+        ...prevState,
+        fillStatus: false,
+      }));
+    }
   };
   return (
     <div className="detail-information-car">
@@ -196,19 +317,24 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       <div className="detail-information">
         <span className="status">
           <span>Tình trạng</span>
-          <div className="buttons">
-            <CustomButtonSelect
-              handleClick={() => handleStatus("Đã sử dụng")}
-              isActive={stateForm.status === "Đã sử dụng"}
-            >
-              Đã sử dụng
-            </CustomButtonSelect>
-            <CustomButtonSelect
-              handleClick={() => handleStatus("Mới")}
-              isActive={stateForm.status === "Mới"}
-            >
-              Mới
-            </CustomButtonSelect>
+          <div className="wrap-buttons">
+            <div className="buttons">
+              <CustomButtonSelect
+                handleClick={() => handleStatus("Đã sử dụng")}
+                isActive={stateForm.status === "Đã sử dụng"}
+              >
+                Đã sử dụng
+              </CustomButtonSelect>
+              <CustomButtonSelect
+                handleClick={() => handleStatus("Mới")}
+                isActive={stateForm.status === "Mới"}
+              >
+                Mới
+              </CustomButtonSelect>
+            </div>
+            {stateFill.fillStatus && (
+              <div className="warning-fill">Vui lòng nhập tình trạng</div>
+            )}
           </div>
         </span>
         <div className="gap">
@@ -234,6 +360,9 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 </MenuItem>
               ))}
             </Select>
+            {stateFill.fillBrand && (
+              <div className="warning-fill">Vui lòng chọn Hãng xe</div>
+            )}
           </FormControl>
           <FormControl sx={{ m: 1, width: "100%" }}>
             <InputLabel
@@ -260,67 +389,85 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 );
               })}
             </Select>
+            {stateFill.fillModel && (
+              <div className="warning-fill">Vui lòng chọn Dòng xe</div>
+            )}
           </FormControl>
-          <DatePicker
-            onChange={onChange}
-            picker="year"
-            value={stateForm.dateCar !== "" ? dayjs(stateForm.dateCar) : null}
-            placeholder="Năm sản xuất"
-            minDate={dayjs("1990")}
-            maxDate={dayjs("2024")}
-          />
+          <div className="wrap-date">
+            <DatePicker
+              onChange={onChange}
+              picker="year"
+              value={stateForm.dateCar !== 0 ? dayjs(stateForm.dateCar) : null}
+              placeholder="Năm sản xuất"
+              minDate={dayjs("1990")}
+              maxDate={dayjs("2024")}
+            />{" "}
+            {stateFill.fillDate && (
+              <div className="warning-fill">Vui lòng chọn năm sản xuất</div>
+            )}
+          </div>
         </div>
         <div className="number-box">
           <span>Hộp số</span>
-          <div className="buttons">
-            <CustomButtonSelect
-              handleClick={() => handleNumberBox("Tự động")}
-              isActive={stateForm?.numberBox === "Tự động"}
-            >
-              Tự động
-            </CustomButtonSelect>
-            <CustomButtonSelect
-              handleClick={() => handleNumberBox("Số sàn")}
-              isActive={stateForm?.numberBox === "Số sàn"}
-            >
-              Số sàn
-            </CustomButtonSelect>
-            <CustomButtonSelect
-              handleClick={() => handleNumberBox("Bán tự động")}
-              isActive={stateForm?.numberBox === "Bán tự động"}
-            >
-              Bán tự động
-            </CustomButtonSelect>
+          <div className="wrap-buttons">
+            <div className="buttons">
+              <CustomButtonSelect
+                handleClick={() => handleNumberBox("Tự động")}
+                isActive={stateForm?.numberBox === "Tự động"}
+              >
+                Tự động
+              </CustomButtonSelect>
+              <CustomButtonSelect
+                handleClick={() => handleNumberBox("Số sàn")}
+                isActive={stateForm?.numberBox === "Số sàn"}
+              >
+                Số sàn
+              </CustomButtonSelect>
+              <CustomButtonSelect
+                handleClick={() => handleNumberBox("Bán tự động")}
+                isActive={stateForm?.numberBox === "Bán tự động"}
+              >
+                Bán tự động
+              </CustomButtonSelect>
+            </div>
+            {stateFill.fillNumberB && (
+              <div className="warning-fill">Vui lòng chọn Hộp số</div>
+            )}
           </div>
         </div>
         <div className="fuel">
           <span>Nhiên liệu</span>
 
-          <div className="buttons">
-            <CustomButtonSelect
-              handleClick={() => handleFuel("Xăng")}
-              isActive={stateForm?.activeButton === "Xăng"}
-            >
-              Xăng
-            </CustomButtonSelect>
-            <CustomButtonSelect
-              handleClick={() => handleFuel("Dầu")}
-              isActive={stateForm?.activeButton === "Dầu"}
-            >
-              Dầu
-            </CustomButtonSelect>
-            <CustomButtonSelect
-              handleClick={() => handleFuel("Động cơ Hybrid")}
-              isActive={stateForm?.activeButton === "Động cơ Hybrid"}
-            >
-              Động cơ Hybrid
-            </CustomButtonSelect>
-            <CustomButtonSelect
-              handleClick={() => handleFuel("Điện")}
-              isActive={stateForm?.activeButton === "Điện"}
-            >
-              Điện
-            </CustomButtonSelect>
+          <div className="wrap-buttons">
+            <div className="buttons">
+              <CustomButtonSelect
+                handleClick={() => handleFuel("Xăng")}
+                isActive={stateForm?.activeButton === "Xăng"}
+              >
+                Xăng
+              </CustomButtonSelect>
+              <CustomButtonSelect
+                handleClick={() => handleFuel("Dầu")}
+                isActive={stateForm?.activeButton === "Dầu"}
+              >
+                Dầu
+              </CustomButtonSelect>
+              <CustomButtonSelect
+                handleClick={() => handleFuel("Động cơ Hybrid")}
+                isActive={stateForm?.activeButton === "Động cơ Hybrid"}
+              >
+                Động cơ Hybrid
+              </CustomButtonSelect>
+              <CustomButtonSelect
+                handleClick={() => handleFuel("Điện")}
+                isActive={stateForm?.activeButton === "Điện"}
+              >
+                Điện
+              </CustomButtonSelect>
+            </div>
+            {stateFill.fillFuel && (
+              <div className="warning-fill">Vui lòng chọn Nhiên liệu</div>
+            )}
           </div>
         </div>
         <div className="gap">
@@ -349,6 +496,9 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
+              {stateFill.fillCountry && (
+                <div className="warning-fill">Vui lòng chọn Xuất xứ</div>
+              )}
             </FormControl>
             <FormControl sx={{ m: 1, width: "100%" }}>
               <InputLabel
@@ -374,6 +524,9 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
+              {stateFill.fillForm && (
+                <div className="warning-fill">Vui lòng chọn Kiểu dáng</div>
+              )}
             </FormControl>
           </div>
           <div className="display-flex">
@@ -401,6 +554,9 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
+              {stateFill.fillSit && (
+                <div className="warning-fill">Vui lòng chọn Số chỗ</div>
+              )}
             </FormControl>
             <FormControl sx={{ m: 1, width: "100%" }}>
               <InputLabel
@@ -426,20 +582,35 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
+              {stateFill.fillColor && (
+                <div className="warning-fill">Vui lòng chọn Màu sắc</div>
+              )}
             </FormControl>
           </div>
           <div className="display-flex">
-            <TextField
-              required
-              className="car-number input-need-to-custom"
-              id="filled-multiline-flexible"
-              label="Biển số xe"
-              multiline
-              onChange={handleChangeCarNumber}
-              value={stateForm?.carNumber}
-              maxRows={4}
-              variant="filled"
-            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px",
+                width: "100%",
+              }}
+            >
+              <TextField
+                required
+                className="car-number input-need-to-custom"
+                id="filled-multiline-flexible"
+                label="Biển số xe"
+                multiline
+                onChange={handleChangeCarNumber}
+                value={stateForm?.carNumber}
+                maxRows={4}
+                variant="filled"
+              />
+              {stateFill.fillCarN && (
+                <div className="warning-fill">Vui lòng chọn Biển số xe</div>
+              )}
+            </div>
             <FormControl sx={{ m: 1, width: "100%" }}>
               <InputLabel
                 required
@@ -463,59 +634,86 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   &gt; 1 chủ
                 </MenuItem>
               </Select>
+              {stateFill.fillOwner && (
+                <div className="warning-fill">Vui lòng chọn Số đời chủ</div>
+              )}
             </FormControl>
           </div>
           <div className="display-flex">
             <div className="accessories">
               <span>Có phụ kiện đi kèm</span>
-              <div className="buttons">
-                <CustomButtonSelect
-                  handleClick={() => handleAccessories("Có")}
-                  isActive={stateForm?.accessories === "Có"}
-                >
-                  Có
-                </CustomButtonSelect>
-                <CustomButtonSelect
-                  handleClick={() => handleAccessories("Không")}
-                  isActive={stateForm?.accessories === "Không"}
-                >
-                  Không
-                </CustomButtonSelect>
+              <div className="wrap-buttons">
+                <div className="buttons">
+                  <CustomButtonSelect
+                    handleClick={() => handleAccessories("Có")}
+                    isActive={stateForm?.accessories === "Có"}
+                  >
+                    Có
+                  </CustomButtonSelect>
+                  <CustomButtonSelect
+                    handleClick={() => handleAccessories("Không")}
+                    isActive={stateForm?.accessories === "Không"}
+                  >
+                    Không
+                  </CustomButtonSelect>
+                </div>{" "}
+                {stateFill.fillAcces && (
+                  <div className="warning-fill">Vui lòng chọn Biển số xe</div>
+                )}
               </div>
             </div>
             <div className="registry">
               <span>Còn hạn đăng kiểm</span>
-              <div className="buttons">
-                <CustomButtonSelect
-                  handleClick={() => handleRegistry("Có")}
-                  isActive={stateForm?.registry === "Có"}
-                >
-                  Có
-                </CustomButtonSelect>
-                <CustomButtonSelect
-                  handleClick={() => handleRegistry("Không")}
-                  isActive={stateForm?.registry === "Không"}
-                >
-                  Không
-                </CustomButtonSelect>
+              <div className="wrap-buttons">
+                <div className="buttons">
+                  <CustomButtonSelect
+                    handleClick={() => handleRegistry("Có")}
+                    isActive={stateForm?.registry === "Có"}
+                  >
+                    Có
+                  </CustomButtonSelect>
+                  <CustomButtonSelect
+                    handleClick={() => handleRegistry("Không")}
+                    isActive={stateForm?.registry === "Không"}
+                  >
+                    Không
+                  </CustomButtonSelect>
+                </div>
+                {stateFill.fillRegis && (
+                  <div className="warning-fill">Vui lòng chọn Biển số xe</div>
+                )}
               </div>
             </div>
           </div>
         </div>
         <div className="gap">
-          <NumberInput
-            value={stateForm?.km}
-            className="number-input-form"
-            onChangeNumber={onChangeNumber}
-          ></NumberInput>
-          <NumberInputPrice
-            value={stateForm?.price}
-            onChangePrice={onChangePrice}
-            className=""
-          ></NumberInputPrice>
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <NumberInput
+              value={stateForm?.km}
+              placeholder="Km đã đi"
+              className="number-input-form"
+              onChangeNumber={onChangeNumber}
+            ></NumberInput>
+            {stateFill.fillKm && (
+              <div className="warning-fill">Vui lòng nhập Km đã đi</div>
+            )}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <NumberInputPrice
+              placeholder="Giá xe"
+              value={stateForm?.price}
+              onChangePrice={onChangePrice}
+              className=""
+            ></NumberInputPrice>
+            {stateFill.fillPrice && (
+              <div className="warning-fill">Vui lòng nhập Giá xe</div>
+            )}
+          </div>
         </div>
       </div>
       <TitlePostSell
+        stateFill={stateFill}
+        setStateFill={setStateFill}
         value={stateForm?.value}
         color={stateForm?.color}
         handleWarning={handleWarning}

@@ -15,7 +15,7 @@ const Selection = ({
   searchResultDistrict,
 }: any) => {
   const [searchCity, setSearchCity] = useState("");
-  const districtRef: any = useRef(null); 
+  const districtRef: any = useRef(null);
   const [searchDistrict, setSearchDistrict] = useState("");
   const cityRef: any = useRef(null);
   useEffect(() => {
@@ -110,6 +110,7 @@ const Selection = ({
           cityName: selectedCity.Name,
           districts: selectedCity.Districts,
           searchResultDistrict: selectedCity.Districts,
+          idCity: selectedCity.Id,
         }));
       }
     } finally {
@@ -129,6 +130,7 @@ const Selection = ({
       openSearchDistrict: false,
       openFind: true,
       valueRadioDistrict: selectedCity.Name,
+      idDistrict: selectedCity.Id,
     }));
     if (selectedCity) {
       setState((prevState: any) => ({
@@ -143,7 +145,6 @@ const Selection = ({
     const result = districts.filter((district: any) =>
       district.Name.toLowerCase().includes(value.toLowerCase())
     );
-    console.log(result);
     setState((prevState: any) => ({
       ...prevState,
       searchResultDistrict: result,

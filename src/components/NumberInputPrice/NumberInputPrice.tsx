@@ -1,11 +1,18 @@
 import { InputNumber } from "antd";
 
-const NumberInputPrice = ({ onChangePrice, className, value }: any) => {
+const NumberInputPrice = ({
+  onChangePrice,
+  className,
+  value,
+  placeholder,
+}: any) => {
+  console.log(value);
   return (
-    <InputNumber<number>
+    <InputNumber
       className={`number-input-price ${className}`}
       value={value}
-      formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      placeholder={placeholder}
+      formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       parser={(value) => value?.replace(/\$\s?|(,*)/g, "") as unknown as number}
       onChange={onChangePrice}
     />

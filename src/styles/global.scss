@@ -2,6 +2,7 @@
 
 @import "./pages/index.scss";
 @import "./components/index.scss";
+
 body {
   margin: 0px;
 }
@@ -11,6 +12,46 @@ a:visited,
 a:active {
   color: inherit;
   text-decoration: none;
+}
+.ant-pagination {
+  .ant-pagination-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    span {
+      font-size: 15px;
+    }
+  }
+  .ant-pagination-item-active {
+    background-color: #ffba00;
+    a {
+      font-size: 15px;
+      color: #000 !important;
+    }
+    border: 1px solid #ffd100;
+    border-radius: 4px;
+  }
+  .ant-pagination-item-active:hover {
+    border: 1px solid #ffd100;
+  }
+  .ant-pagination-item-link{
+    border-radius: 3px !important;
+  }
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    span {
+      font-size: 13px;
+
+      color: #000 !important;
+    }
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+}
+.prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 ::-webkit-scrollbar {
   width: 0.125rem;

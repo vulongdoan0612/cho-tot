@@ -14,6 +14,9 @@ const ModalCCCCD = ({
   onFinishCCCD,
   location,
   date,
+  fillCCCD,
+  fillCCCDFor,
+  fillCCCDLocation,
   cccd,
 }: any) => {
   const { account } = useSelector((state: RootState) => state.auth);
@@ -43,14 +46,18 @@ const ModalCCCCD = ({
             maxRows={4}
             variant="filled"
           />
+          {fillCCCD && (
+            <span className="warning">Vui lòng nhập CMND/ CCCD/ Hộ Chiếu</span>
+          )}
         </div>
       )}
       <div className="date input-need-to-custom">
         <DatePicker
           onChange={onChangeDate}
           placeholder={"Ngày cấp"}
-          value={dayjs(date)}
+          value={date}
         />
+        {fillCCCDFor && <span className="warning">Vui lòng nhập ngày cấp</span>}
       </div>{" "}
       <div className="date-release input-need-to-custom">
         <TextField
@@ -63,6 +70,9 @@ const ModalCCCCD = ({
           maxRows={4}
           variant="filled"
         />
+        {fillCCCDLocation && (
+          <span className="warning">Vui lòng nhập nơi cấp</span>
+        )}
       </div>
       <CustomButton
         type="submit"
