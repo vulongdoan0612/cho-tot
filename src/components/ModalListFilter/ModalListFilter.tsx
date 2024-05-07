@@ -13,6 +13,7 @@ const ModalListFilter = ({
   setValueRadio,
   setState,
   typeModal,
+  setFilter,
 }: any) => {
   const [search, setSearch] = useState("");
   const [dataRender, setDataRender] = useState([]);
@@ -85,8 +86,6 @@ const ModalListFilter = ({
         : setState((prevState: any) => ({
             ...prevState,
           }));
-      // setValueRadioAll("");
-      // setValueRadio("");
       setDataRender(data);
     } finally {
       handleCancleModal();
@@ -94,6 +93,7 @@ const ModalListFilter = ({
   };
   useEffect(() => {
     setDataRender(data);
+    console.log(data);
   }, [data]);
   const handleSearch = (event: any) => {
     const { value } = event.target;
@@ -112,7 +112,7 @@ const ModalListFilter = ({
     }
     if (typeModal === "color") {
       const result = data.filter((color: any) => {
-        return color.toLowerCase().includes(value.toLowerCase());
+        return color.item.toLowerCase().includes(value.toLowerCase());
       });
       setDataRender(result);
     }
@@ -124,13 +124,15 @@ const ModalListFilter = ({
     }
     if (typeModal === "formCar") {
       const result = data.filter((form: any) => {
-        return form.toLowerCase().includes(value.toLowerCase());
+        return form.item.toLowerCase().includes(value.toLowerCase());
       });
       setDataRender(result);
     }
   };
   const onChangeRadio = (item: any) => {
     try {
+      console.log(item);
+
       setValueRadio === "sit"
         ? setState((prevState: any) => ({
             ...prevState,
@@ -139,17 +141,17 @@ const ModalListFilter = ({
         : typeModal === "brand"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioBrandModal: item,
+            valueRadioBrandModal: item.brand,
           }))
         : typeModal === "color"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioColor: item,
+            valueRadioColor: item.item,
           }))
         : typeModal === "country"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioCountry: item,
+            valueRadioCountry: item.item,
           }))
         : typeModal === "model"
         ? setState((prevState: any) => ({
@@ -159,11 +161,48 @@ const ModalListFilter = ({
         : typeModal === "formCar"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioFormCar: item,
+            valueRadioFormCar: item.item,
           }))
         : setState((prevState: any) => ({
             ...prevState,
           }));
+      ////
+      setValueRadio === "sit"
+        ? setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            sit: item,
+          }))
+        : typeModal === "brand"
+        ? setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            brand: item.brand,
+          }))
+        : typeModal === "color"
+        ? setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            color: item.value,
+          }))
+        : typeModal === "country"
+        ? setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            country: item.value,
+          }))
+        : typeModal === "model"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioModel: item,
+          }))
+        : typeModal === "formCar"
+        ? setState((prevState: any) => ({
+            ...prevState,
+            valueRadioFormCar: item.item,
+          }))
+        : setState((prevState: any) => ({
+            ...prevState,
+          }));
+
+      ////
+
       setValueRadioAll === "sit"
         ? setState((prevState: any) => ({
             ...prevState,
@@ -172,17 +211,17 @@ const ModalListFilter = ({
         : typeModal === "brand"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioAllBrand: item,
+            valueRadioAllBrand: item.brand,
           }))
         : typeModal === "color"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioAllColor: item,
+            valueRadioAllColor: item.item,
           }))
         : typeModal === "country"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioAllCountry: item,
+            valueRadioAllCountry: item.item,
           }))
         : typeModal === "model"
         ? setState((prevState: any) => ({
@@ -192,7 +231,7 @@ const ModalListFilter = ({
         : typeModal === "formCar"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioAllFormCar: item,
+            valueRadioAllFormCar: item.item,
           }))
         : setState((prevState: any) => ({
             ...prevState,
@@ -226,16 +265,12 @@ const ModalListFilter = ({
         {" "}
         <div className="selection">
           <SearchIcon></SearchIcon>
-          <Input
-            placeholder="Nhập tìm số chỗ"
-            onChange={handleSearch}
-            value={search}
-          />{" "}
+          <Input placeholder="Nhập tìm số chỗ" onChange={handleSearch} value={search} />{" "}
         </div>
         <div className="sits">
-          <div>{valueRadioAll}ddd</div>
           {dataRender &&
             dataRender.map((item: any, index: any) => {
+              console.log(item);
               return (
                 <div key={index} className="sit-item">
                   <Radio.Group value={String(valueRadioAll)}>
@@ -245,6 +280,12 @@ const ModalListFilter = ({
                           ? item
                           : typeModal === "brand"
                           ? item.brand
+                          : typeModal === "formCar"
+                          ? item.item
+                          : typeModal === "color"
+                          ? item.item
+                          : typeModal === "country"
+                          ? item.item
                           : item
                       }
                       onClick={() => onChangeRadio(item)}
@@ -255,6 +296,12 @@ const ModalListFilter = ({
                           ? item
                           : typeModal === "brand"
                           ? item.brand
+                          : typeModal === "formCar"
+                          ? item.item
+                          : typeModal === "color"
+                          ? item.item
+                          : typeModal === "country"
+                          ? item.item
                           : item}
                       </span>
                     </Radio>

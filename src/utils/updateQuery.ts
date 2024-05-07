@@ -1,25 +1,52 @@
-// // utils.js
-// "use-client";
-// import { useCallback } from "react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
-// // Hàm để cập nhật tham số trong URL
-// const UpdateQuery = () => {
-//   const router = useRouter();
-//   const pathname = router.pathname;
-//   const searchParams = new URLSearchParams(router.asPath.split(/\?/)[1] || ""); // Lấy tham số từ URL
-//   // Hàm để tạo chuỗi tìm kiếm mới bằng cách kết hợp tham số hiện tại với tham số mới
-//   const createQueryString = useCallback(
-//     (name: any, value: any) => {
-//       searchParams.set(name, value);
-//       console.log("name:", name);
-//       console.log("value:", value);
-//       return searchParams.toString();
-//     },
-//     [searchParams]
-//   );
+export const useUpdateQuery = () => {
+  const router = useRouter();
+  const updateQuery = (queries: [string, string | string[]][]) => {
+    if (!router) {
+      console.error("useRouter() can only be used within a Next.js component.");
+      return;
+    }
 
-//   return { pathname, createQueryString };
-// };
+    const { pathname, query } = router;
+    // console.log(queries);
+    queries.forEach(([key, value]) => {
+      if (value !== "undefined" && value !== "") {
+        query[key] = value;
+      } else {
+        delete query[key];
+      }
+    });
 
-// export default UpdateQuery;
+    const updatedQuery = new URLSearchParams(query as any).toString();
+    router.push({
+      pathname,
+      search: updatedQuery,
+    });
+  };
+  return updateQuery;
+};
+
+export const useRemoveQuery = () => {
+  const router = useRouter();
+  const removeQuery = (key: string) => {
+    if (!router) {
+      console.error("useRouter() can only be used within a Next.js component.");
+      return;
+    }
+
+    const { pathname, query } = router;
+
+    if (query[key]) {
+      delete query[key];
+
+      const updatedQuery = new URLSearchParams(query as any).toString();
+
+      router.push({
+        pathname,
+        search: updatedQuery,
+      });
+    }
+  };
+  return removeQuery;
+};

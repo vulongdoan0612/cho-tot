@@ -1,12 +1,11 @@
-"use client";
-
 import { Radio, RadioChangeEvent } from "antd";
 import { ArrowDownIcon } from "../CustomIcons";
 import CustomModal from "../CustomModal";
 import { useEffect, useState } from "react";
 import brandList from "../RenderFormTraffic/carList.json";
-import formCar from "../RenderFormTraffic/formCar.json";
 import carSit from "../RenderFormTraffic/carSit.json";
+import numberBoxList from "./numberBox.json";
+import user from "./user.json";
 
 import { TextField } from "@mui/material";
 import { onlyNumbers } from "@/utils/onlyNumbers";
@@ -16,148 +15,176 @@ import ItemModalFilterBrand from "../ItemModalFilter/indexBrands";
 import ItemModalFilterSits from "../ItemModalFilter/indexSits";
 import ItemModalFilterModels from "../ItemModalFilter/indexModels";
 import FilterBy from "../ItemModalFilter/indexFilter";
-import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery2";
+import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
 import { useRouter } from "next/router";
+import convertToSlug from "@/utils/convertToSlug";
+import { colorsCar, countriesCar, formsCar, fuelCar, postCar, statusCar } from "./_mock";
+import ItemModalFilterForm from "../ItemModalFilter/indexForm";
 
-const ModalFilter = ({
-  handleCancleModal,
-  state,
-  setState,
-  openModal,
-}: any) => {
-  const dataColor = [
-    "Trắng",
-    "Đen",
-    "Bạc",
-    "Cam",
-    "Đỏ",
-    "Xanh",
-    "Vàng",
-    "Hồng",
-    "Xám",
-    "Nâu",
-    "Màu khác",
-  ];
-  const dataCountry = [
-    "Việt Nam",
-    "Ấn Độ",
-    "Hàn Quốc",
-    "Thái Lan",
-    "Nhật Bản",
-    "Trung Quốc",
-    "Mỹ",
-    "Đức",
-    "Đài Loan",
-    "Nước khác",
-  ];
+const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter, filter }: any) => {
+  const [modalListAll, setModalListAll] = useState(false);
+  const [warnPriceMax, setWarnPriceMax] = useState(false);
+  const [warnPriceMin, setWarnPriceMin] = useState(false);
+  const [warnPriceMax2, setWarnPriceMax2] = useState(false);
+  const [warnPriceMin2, setWarnPriceMin2] = useState(false);
+  const [warnKmMin, setWarnKmMin] = useState(false);
+  const [warnKmMax, setWarnKmMax] = useState(false);
+  const [warnDateMin, setWarnDateMin] = useState(false);
+  const [warnDateMax, setWarnDateMax] = useState(false);
+  const [models, setModels] = useState<any>([]);
+  const [hiddenDate, setHiddenDate] = useState(true);
+  const [hiddenPrice, setHiddenPrice] = useState(true);
+  const [hiddenNB, setHiddenNB] = useState(true);
+  const [hiddenKm, setHiddenKm] = useState(true);
+  const [hidden, setHidden] = useState(false);
+  const [hiddenFuel, setHiddenFuel] = useState(true);
+  const [hiddenSt, setHiddenSt] = useState(true);
+  const [hiddenOwner, setHiddenOwner] = useState(true);
+  const [typeModal, setTypeModal] = useState("");
   const updateQuery = useUpdateQuery();
   const removeQuery = useRemoveQuery();
-  const router = useRouter();
 
+  const router = useRouter();
   useEffect(() => {
     if (!router.isReady) return;
 
-    if (router && router.query && typeof router.query.price === "string") {
-      const [lowerPrice, upperPrice] = router.query.price
-        .split("-")
-        .map((item: string) => parseInt(item));
-      setState((prevState: any) => ({
-        ...prevState,
-        priceMin: lowerPrice,
-        priceMax: upperPrice,
-      }));
-    }
     if (router && router.query && typeof router.query.date === "string") {
-      const [dateMin, dateMax] = router.query.date
-        .split("-")
-        .map((item: string) => parseInt(item));
+      const dateParams = router.query.date.split("-");
+      let dateMin: any, dateMax: any;
+
+      if (dateParams.length === 1) {
+        const match = dateParams[0].match(/(min|max)(\d+)/);
+        if (match) {
+          if (match[1] === "min") {
+            dateMin = parseInt(match[2]);
+          } else if (match[1] === "max") {
+            dateMax = parseInt(match[2]);
+          }
+        }
+      } else if (dateParams.length === 2) {
+        dateMin = parseInt(dateParams[0]);
+        dateMax = parseInt(dateParams[1]);
+      }
+
       setState((prevState: any) => ({
         ...prevState,
-        date: dateMin,
-        dateMax: dateMax,
+        date: dateMin !== undefined ? dateMin : prevState.date,
+        dateMax: dateMax !== undefined ? dateMax : prevState.dateMax,
       }));
     }
     if (router && router.query && typeof router.query.km === "string") {
-      const [kmMin, kmMax] = router.query.km
-        .split("-")
-        .map((item: string) => parseInt(item));
+      const kmParams = router.query.km.split("-");
+      let kmMin: any, kmMax: any;
+
+      if (kmParams.length === 1) {
+        const match = kmParams[0].match(/(min|max)(\d+)/);
+        if (match) {
+          if (match[1] === "min") {
+            kmMin = parseInt(match[2]);
+          } else if (match[1] === "max") {
+            kmMax = parseInt(match[2]);
+          }
+        }
+      } else if (kmParams.length === 2) {
+        kmMin = parseInt(kmParams[0]);
+        kmMax = parseInt(kmParams[1]);
+      }
+
       setState((prevState: any) => ({
         ...prevState,
-        km: kmMin,
-        kmMax: kmMax,
+        km: kmMin !== undefined ? kmMin : prevState.km,
+        kmMax: kmMax !== undefined ? kmMax : prevState.kmMax,
       }));
     }
-    // setState((prevState: any) => ({
-    //   ...prevState,
-    //   valueRadioAll: router.query.sit,
-    //   valueRadioModal: router.query.sit,
-    // }));
+    const formFilter: any = formsCar.find((item) => {
+      return item.value === router.query.form;
+    });
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioAllBrand: router.query.brand,
-      valueRadioBrandModal: router.query.brand,
+      valueRadioAllFormCar: formFilter?.item,
+      valueRadioFormCar: formFilter?.item,
     }));
 
-    setState((prevState: any) => ({
-      ...prevState,
-      valueRadioAllFormCar: router.query.form,
-      valueRadioFormCar: router.query.form,
-    }));
     setState((prevState: any) => ({
       ...prevState,
       valueRadioNumberBox: router.query.numberBox,
     }));
+    const fuelFilter: any = fuelCar.find((item) => {
+      return item.value === router.query.fuel;
+    });
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioFuel: router.query.fuel,
+      valueRadioFuel: fuelFilter?.item,
     }));
+    const colorFilter: any = colorsCar.find((item) => {
+      return item.value === router.query.color;
+    });
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioColor: router.query.color,
-      valueRadioAllColor: router.query.color,
+      valueRadioColor: colorFilter?.item,
+      valueRadioAllColor: colorFilter?.item,
     }));
+    const countryFilter: any = countriesCar.find((item) => {
+      return item.value === router.query.country;
+    });
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioCountry: router.query.country,
-      valueRadioAllCountry: router.query.country,
-    }));
-    setState((prevState: any) => ({
-      ...prevState,
-      valueRadioModel: router.query.model,
-      valueRadioAllModel: router.query.model,
-    }));
-    setState((prevState: any) => ({
-      ...prevState,
-      valueRadioStatus: router.query.status,
-    }));
-    setState((prevState: any) => ({
-      ...prevState,
-      valueRadioUser: router.query.post,
+      valueRadioCountry: countryFilter?.item,
+      valueRadioAllCountry: countryFilter?.item,
     }));
 
-    const filterModel = brandList.filter(
-      (item) => item.brand === router.query.brand
-    );
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioModel: router.query.model,
+      valueRadioAllModel: router.query.model,
+    }));
+    const statusFilter: any = statusCar.find((item) => {
+      return item.value === router.query.status;
+    });
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioStatus: statusFilter?.item,
+    }));
+    const postFilter: any = postCar.find((item) => {
+      return item.value === router.query.post;
+    });
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioUser: postFilter?.item,
+    }));
+
+    const filterModel = brandList.filter((item) => item.brand === router.query.brand);
     setState((prevState: any) => ({
       ...prevState,
       valueRadioAllModel: router.query.model,
       valueRadioModel: router.query.model,
+    }));
+
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      sit: String(router.query.sit),
+      brand: String(router.query.brand),
+      country: String(router.query.country),
+      form: String(router.query.form),
+      color: String(router.query.color),
+      numberBox: String(router.query.numberBox),
+      fuel: String(router.query.fuel),
+      model: String(router.query.model),
+      status: String(router.query.status),
+      post: String(router.query.post),
+      date: String(router.query.date),
+      km: String(router.query.km),
+      price: String(router.query.price),
     }));
     setModels(filterModel);
   }, [router]);
 
-  const [modalListAll, setModalListAll] = useState(false);
-
-  const [models, setModels] = useState<any>([]);
-  const [hidden, setHidden] = useState(false);
-  const [typeModal, setTypeModal] = useState("");
   const handleCancleModalListAll = () => {
     setModalListAll(false);
     setHidden(false);
   };
   const handleModalListAll = (type: string) => {
     try {
-      console.log(type, state.valueRadioAll);
       setTypeModal(type);
       setHidden(true);
     } finally {
@@ -171,13 +198,13 @@ const ModalFilter = ({
       valueRadioAll: item,
       valueRadioModal: item,
     }));
-    console.log(item);
-    // setSelectedSit(item);
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      sit: item,
+    }));
   };
   const onChangeRadioBrand = (e: any) => {
-    const filterModel = brandList.filter(
-      (item) => item.brand === e.target.value
-    );
+    const filterModel = brandList.filter((item) => item.brand === e.target.value);
     setState((prevState: any) => ({
       ...prevState,
       valueRadioAllBrand: e.target.value,
@@ -185,61 +212,95 @@ const ModalFilter = ({
       valueRadioAllModel: "",
       valueRadioModel: "",
     }));
-    console.log(filterModel);
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      brand: e.target.value,
+    }));
     setModels(filterModel);
   };
 
-  const onChangeRadioFormCar = (item: any) => {
+  const onChangeRadioFormCar = (item: any, value: string) => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioFormCar: item,
       valueRadioAllFormCar: item,
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      form: value,
+    }));
   };
-  const onChangeRadioCountry = (item: any) => {
+  const onChangeRadioCountry = (item: any, value: string) => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioCountry: item,
       valueRadioAllCountry: item,
     }));
-  };
-  const onChangeRadioStatus = (e: RadioChangeEvent) => {
-    setState((prevState: any) => ({
-      ...prevState,
-      valueRadioStatus: e.target.value,
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      country: value,
     }));
   };
-  const onChangeRadioUser = (e: RadioChangeEvent) => {
+  const onChangeRadioStatus = (item: any, value: string) => {
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioUser: e.target.value,
+      valueRadioStatus: item,
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      status: value,
     }));
   };
-  const onChangeRadioColor = (item: any) => {
+  const onChangeRadioUser = (item: any, value: string) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      valueRadioUser: item,
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      post: value,
+    }));
+  };
+  const onChangeRadioColor = (item: any, value: string) => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioColor: item,
       valueRadioAllColor: item,
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      color: value,
+    }));
   };
   const onChangeRadioModel = (item: any) => {
-    console.log(item);
     setState((prevState: any) => ({
       ...prevState,
       valueRadioModel: item,
       valueRadioAllModel: item,
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      model: item,
+    }));
   };
-  const onChangeRadioFuel = (e: RadioChangeEvent) => {
+  const onChangeRadioFuel = (item: string, value: string) => {
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioFuel: e.target.value,
+      valueRadioFuel: item,
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      fuel: value,
     }));
   };
   const onChangeRadioNumberBox = (e: RadioChangeEvent) => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioNumberBox: e.target.value,
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      numberBox: e.target.value,
     }));
   };
   const handleChangeMin = (event: any) => {
@@ -248,13 +309,69 @@ const ModalFilter = ({
         ...prevState,
         date: event.target.value,
       }));
+      if (state.dateMax !== undefined && state.dateMax !== "" && event?.target?.value !== undefined && event?.target?.value !== "") {
+        if (Number(event.target.value) < Number(state.dateMax)) {
+          setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            date: `${event.target.value}-${state.dateMax}`,
+          }));
+          setWarnDateMax(false);
+          setWarnDateMin(false);
+        } else {
+          setWarnDateMin(true);
+        }
+      } else if (event.target.value === "" && state.dateMax !== "" && state.dateMax !== undefined) {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          date: `max${state.dateMax}`,
+        }));
+      } else {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          date: `min${event.target.value}`,
+        }));
+      }
+    }
+    if (event.target.value === "" && state.dateMax === "") {
+      setFilter((prevFilter: any) => ({
+        ...prevFilter,
+        date: "",
+      }));
     }
   };
   const handleChangeMax = (event: any) => {
-    if (onlyNumbers(event.target.value) || event.target.value === "") {
+    if (onlyNumbers(event?.target?.value) || event?.target?.value === "") {
       setState((prevState: any) => ({
         ...prevState,
-        dateMax: event.target.value,
+        dateMax: event?.target?.value,
+      }));
+      if (state.date !== undefined && state.date !== "" && event?.target?.value !== undefined && event?.target?.value !== "") {
+        if (Number(event.target.value) > Number(state.date)) {
+          setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            date: `${state.date}-${event?.target?.value}`,
+          }));
+          setWarnDateMax(false);
+          setWarnDateMin(false);
+        } else {
+          setWarnDateMax(true);
+        }
+      } else if (event?.target?.value === "" && state.date !== "" && state.date !== undefined) {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          date: `min${state.date}`,
+        }));
+      } else {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          date: `max${event?.target?.value}`,
+        }));
+      }
+    }
+    if (event.target.value === "" && state.date === "") {
+      setFilter((prevFilter: any) => ({
+        ...prevFilter,
+        date: "",
       }));
     }
   };
@@ -264,18 +381,104 @@ const ModalFilter = ({
         ...prevState,
         kmMin: event.target.value,
       }));
+      if (state.kmMax !== undefined && state.kmMax !== "" && event?.target?.value !== undefined && event?.target?.value !== "") {
+        if (Number(event.target.value) < Number(state.kmMax)) {
+          setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            km: `${event.target.value}-${state.kmMax}`,
+          }));
+          setWarnKmMax(false);
+
+          setWarnKmMin(false);
+          console.log("test1");
+        } else {
+          console.log("test2");
+          setWarnKmMin(true);
+        }
+      } else if (event.target.value === "" && state.kmMax !== "" && state.kmMax !== undefined) {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          km: `max${state.kmMax}`,
+        }));
+      } else {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          km: `min${event.target.value}`,
+        }));
+      }
+    }
+    if (event.target.value === "" && state.kmMax === "") {
+      setFilter((prevFilter: any) => ({
+        ...prevFilter,
+        km: "",
+      }));
     }
   };
-  const [warnPriceMax, setWarnPriceMax] = useState(false);
-  const [warnPriceMin, setWarnPriceMin] = useState(false);
-
-  const handleChangePriceMin = (event: any) => {
-    if (onlyNumbers(event.target.value) || event.target.value === "") {
-      console.log(event?.target?.value);
+  const handleChangeKmMax = (event: any) => {
+    if (onlyNumbers(event?.target?.value) || event?.target?.value === "") {
       setState((prevState: any) => ({
         ...prevState,
-        priceMin: event.target.value,
+        kmMax: event?.target?.value,
       }));
+      if (state.kmMin !== undefined && state.kmMin !== "" && event?.target?.value !== undefined && event?.target?.value !== "") {
+        if (Number(event.target.value) > Number(state.kmMin)) {
+          setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            km: `${state.kmMin}-${event?.target?.value}`,
+          }));
+          setWarnKmMin(false);
+          setWarnKmMax(false);
+        } else {
+          setWarnKmMax(true);
+        }
+      } else if (event?.target?.value === "" && state.kmMin !== "" && state.kmMin !== undefined) {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          km: `min${state.kmMin}`,
+        }));
+      } else {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          km: `max${event?.target?.value}`,
+        }));
+      }
+    }
+    if (event.target.value === "" && state.kmMin === "") {
+      setFilter((prevFilter: any) => ({
+        ...prevFilter,
+        km: "",
+      }));
+    }
+  };
+  const handleChangePriceMin = (event: any) => {
+    console.log(event.target.value);
+    if (onlyNumbers(event.target.value) || event.target.value === "") {
+      setState((prevState: any) => ({
+        ...prevState,
+        price: event.target.value,
+      }));
+      if (state.priceMax !== undefined && state.priceMax !== "" && event?.target?.value !== undefined && event?.target?.value !== "") {
+        if (Number(event.target.value) < Number(state.priceMax)) {
+          setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            price: `${event.target.value}-${state.priceMax}`,
+          }));
+          setWarnPriceMax2(false);
+          setWarnPriceMin2(false);
+        } else {
+          setWarnPriceMin2(true);
+        }
+      } else if (event.target.value === "" && state.priceMax !== "" && state.priceMax !== undefined) {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          price: `max${state.priceMax}`,
+        }));
+      } else {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          price: `min${event.target.value}`,
+        }));
+      }
     }
     if (Number(event.target.value) < 10000000) {
       setWarnPriceMin(true);
@@ -284,12 +487,41 @@ const ModalFilter = ({
     }
   };
   const handleChangePriceMax = (event: any) => {
-    if (onlyNumbers(event.target.value) || event.target.value === "") {
+    if (onlyNumbers(event?.target?.value) || event?.target?.value === "") {
       setState((prevState: any) => ({
         ...prevState,
-        priceMax: event.target.value,
+        priceMax: event?.target?.value,
+      }));
+      if (state.priceMin !== undefined && state.priceMin !== "" && event?.target?.value !== undefined && event?.target?.value !== "") {
+        if (Number(event.target.value) > Number(state.priceMin)) {
+          setFilter((prevFilter: any) => ({
+            ...prevFilter,
+            price: `${state.priceMin}-${event?.target?.value}`,
+          }));
+          setWarnPriceMax2(false);
+          setWarnPriceMin2(false);
+        } else {
+          setWarnPriceMax2(true);
+        }
+      } else if (event?.target?.value === "" && state.priceMin !== "" && state.priceMin !== undefined) {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          price: `min${state.priceMin}`,
+        }));
+      } else {
+        setFilter((prevFilter: any) => ({
+          ...prevFilter,
+          price: `max${event?.target?.value}`,
+        }));
+      }
+    }
+    if (event.target.value === "" && state.priceMin === "") {
+      setFilter((prevFilter: any) => ({
+        ...prevFilter,
+        price: "",
       }));
     }
+
     if (Number(event.target.value) < 10000000) {
       setWarnPriceMax(true);
     } else {
@@ -297,19 +529,14 @@ const ModalFilter = ({
     }
   };
 
-  const handleChangeKmMax = (event: any) => {
-    if (onlyNumbers(event.target.value) || event.target.value === "") {
-      setState((prevState: any) => ({
-        ...prevState,
-        kmMax: event.target.value,
-      }));
-    }
-  };
-
   const removeSit = () => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioModal: "",
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      sit: "",
     }));
   };
   const removeBrand = () => {
@@ -319,12 +546,20 @@ const ModalFilter = ({
       valueRadioModel: "",
       valueRadioAllModel: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      brand: "",
+    }));
   };
   const removeDate = () => {
     setState((prevState: any) => ({
       ...prevState,
       date: "",
       dateMax: "",
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      date: "",
     }));
   };
 
@@ -334,6 +569,10 @@ const ModalFilter = ({
       kmMin: "",
       kmMax: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      km: "",
+    }));
   };
   const removePrice = () => {
     setState((prevState: any) => ({
@@ -341,11 +580,19 @@ const ModalFilter = ({
       priceMin: "",
       priceMax: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      price: "",
+    }));
   };
   const removeNumberBox = () => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioNumberBox: "",
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      numberBox: "",
     }));
   };
   const removeFuel = () => {
@@ -353,11 +600,19 @@ const ModalFilter = ({
       ...prevState,
       valueRadioFuel: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      fuel: "",
+    }));
   };
   const removeColor = () => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioColor: "",
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      color: "",
     }));
   };
   const removeCountry = () => {
@@ -365,11 +620,19 @@ const ModalFilter = ({
       ...prevState,
       valueRadioCountry: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      country: "",
+    }));
   };
   const removeModel = () => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioModel: "",
+    }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      model: "",
     }));
   };
   const removeFormCar = () => {
@@ -377,19 +640,51 @@ const ModalFilter = ({
       ...prevState,
       valueRadioFormCar: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      form: "",
+    }));
   };
   const removeStatus = () => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioStatus: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      status: "",
+    }));
   };
   const removeUser = () => {
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioCountry: "",
       valueRadioUser: "",
     }));
+    setFilter((prevFilter: any) => ({
+      ...prevFilter,
+      post: "",
+    }));
+  };
+  const handleHiddenDate = () => {
+    setHiddenDate((prev) => !prev);
+  };
+  const handleHiddenKm = () => {
+    setHiddenKm((prev) => !prev);
+  };
+  const handleHiddenPrice = () => {
+    setHiddenPrice((prev) => !prev);
+  };
+  const handleHiddenNB = () => {
+    setHiddenNB((prev) => !prev);
+  };
+  const handleHiddenFuel = () => {
+    setHiddenFuel((prev) => !prev);
+  };
+  const handleHiddenSt = () => {
+    setHiddenSt((prev) => !prev);
+  };
+  const handleHiddenOwner = () => {
+    setHiddenOwner((prev) => !prev);
   };
   const handleRenew = () => {
     try {
@@ -418,160 +713,65 @@ const ModalFilter = ({
         valueRadioStatus: "",
         valueRadioUser: "",
       }));
-      removeQuery("brand");
-      removeQuery("price");
-      removeQuery("fuel");
-      removeQuery("date");
-      removeQuery("km");
-      removeQuery("numberBox");
-      removeQuery("color");
-      removeQuery("country");
-      removeQuery("model");
-      removeQuery("status");
-      removeQuery("post");
+      // Tạo một URL mới mà không có query parameters
+      const urlWithoutQuery = {
+        pathname: router.pathname,
+      };
+
+      // Cập nhật URL mà không reload trang
+      router.replace(urlWithoutQuery, undefined, { shallow: true });
+      // removeQuery("brand");
+      // removeQuery("price");
+      // removeQuery("fuel");
+      // removeQuery("date");
+      // removeQuery("km");
+      // removeQuery("form");
+      // removeQuery("date");
+      // removeQuery("km");
+      // removeQuery("price");
+
+      // removeQuery("sit");
+      // removeQuery("numberBox");
+      // removeQuery("color");
+      // removeQuery("country");
+      // removeQuery("model");
+      // removeQuery("status");
+      // removeQuery("post");
+      setFilter((prevFilter: any) => ({
+        ...prevFilter,
+        sit: "",
+        country: "",
+        form: "",
+        color: "",
+        numberBox: "",
+        fuel: "",
+        model: "",
+        status: "",
+        post: "",
+      }));
+      // const queries: any = Object.entries(filter);
+
+      // updateQuery(queries);
     } finally {
       handleCancleModal();
     }
-  };
-
-  const [hiddenDate, setHiddenDate] = useState(true);
-  const handleHiddenDate = () => {
-    setHiddenDate((prev) => !prev);
-  };
-  const [hiddenPrice, setHiddenPrice] = useState(true);
-
-  const [hiddenKm, setHiddenKm] = useState(true);
-  const handleHiddenKm = () => {
-    setHiddenKm((prev) => !prev);
-  };
-  const handleHiddenPrice = () => {
-    setHiddenPrice((prev) => !prev);
-  };
-  const [hiddenNB, setHiddenNB] = useState(true);
-  const handleHiddenNB = () => {
-    setHiddenNB((prev) => !prev);
-  };
-  const [hiddenFuel, setHiddenFuel] = useState(true);
-  const handleHiddenFuel = () => {
-    setHiddenFuel((prev) => !prev);
-  };
-  const [hiddenSt, setHiddenSt] = useState(true);
-  const handleHiddenSt = () => {
-    setHiddenSt((prev) => !prev);
-  };
-  const [hiddenOwner, setHiddenOwner] = useState(true);
-  const handleHiddenOwner = () => {
-    setHiddenOwner((prev) => !prev);
   };
 
   const handleApply = () => {
     try {
-      if (state.valueRadioModal !== "" && state.valueRadioModal !== undefined) {
-        updateQuery("sit", state.valueRadioModal);
-      } else {
-        removeQuery("sit");
-      }
-      if (
-        state.priceMin !== "" &&
-        state.priceMax !== "" &&
-        state.priceMin !== undefined &&
-        state.priceMax !== undefined
-      ) {
-        updateQuery("price", `${state.priceMin}-${state.priceMax}`);
-      } else {
-        removeQuery("price");
-      }
-      console.log(state.kmMin, state.kmMax);
-      if (
-        state.kmMin !== "" &&
-        state.kmMax !== "" &&
-        state.kmMin !== undefined &&
-        state.kmMax !== undefined
-      ) {
-        updateQuery("km", `${state.kmMin}-${state.kmMax}`);
-      } else {
-        removeQuery("km");
-      }
-      if (
-        state.date !== "" &&
-        state.dateMax !== "" &&
-        state.dateMax !== undefined &&
-        state.date !== undefined
-      ) {
-        updateQuery("date", `${state.date}-${state.dateMax}`);
-      } else {
-        removeQuery("date");
-      }
-      if (
-        state.valueRadioNumberBox !== "" &&
-        state.valueRadioNumberBox !== undefined
-      ) {
-        updateQuery("numberBox", state.valueRadioNumberBox);
-      } else {
-        removeQuery("numberBox");
-      }
-      if (
-        state.valueRadioFormCar !== "" &&
-        state.valueRadioFormCar !== undefined
-      ) {
-        updateQuery("form", state.valueRadioFormCar);
-      } else {
-        removeQuery("form");
-      }
-      if (state.valueRadioFuel !== "" && state.valueRadioFuel !== undefined) {
-        updateQuery("fuel", state.valueRadioFuel);
-      } else {
-        removeQuery("fuel");
-      }
-      if (
-        state.valueRadioCountry !== "" &&
-        state.valueRadioCountry !== undefined
-      ) {
-        updateQuery("country", state.valueRadioCountry);
-      } else {
-        removeQuery("country");
-      }
-      if (
-        state.valueRadioBrandModal !== "" &&
-        state.valueRadioBrandModal !== undefined
-      ) {
-        updateQuery("brand", state.valueRadioBrandModal);
-      } else {
-        removeQuery("brand");
-      }
-      if (state.valueRadioModel !== "" && state.valueRadioModel !== undefined) {
-        updateQuery("model", state.valueRadioModel);
-      } else {
-        removeQuery("model");
-      }
-      if (
-        state.valueRadioStatus !== "" &&
-        state.valueRadioStatus !== undefined
-      ) {
-        updateQuery("status", state.valueRadioStatus);
-      } else {
-        removeQuery("status");
-      }
-      if (state.valueRadioUser !== "" && state.valueRadioUser !== undefined) {
-        updateQuery("post", state.valueRadioUser);
-      } else {
-        removeQuery("post");
-      }
-
-      if (state.valueRadioColor !== "" && state.valueRadioColor !== undefined) {
-        updateQuery("color", state.valueRadioColor);
-      } else {
-        removeQuery("color");
+      if (!warnPriceMax && !warnPriceMin && !warnKmMin && !warnKmMax && !warnPriceMin2 && !warnPriceMax2) {
+        const queries: any = Object.entries(filter);
+        updateQuery(queries);
       }
     } finally {
-      handleCancleModal();
+      if (!warnPriceMax && !warnPriceMin && !warnKmMin && !warnKmMax && !warnPriceMin2 && !warnPriceMax2) {
+        handleCancleModal();
+      }
     }
   };
   return (
     <CustomModal
-      className={`wrapper-modal-filter ${
-        hidden ? "hidden-wrapper-modal-filter" : ""
-      }`}
+      className={`wrapper-modal-filter ${hidden ? "hidden-wrapper-modal-filter" : ""}`}
       title="Lọc nâng cao"
       open={openModal}
       onCancel={handleCancleModal}
@@ -608,7 +808,8 @@ const ModalFilter = ({
                   value={state.date}
                   maxRows={1}
                   variant="filled"
-                />
+                />{" "}
+                {warnDateMin ? <span>Vui lòng nhập bé hơn</span> : <></>}
               </div>
               -
               <div className="body input-need-to-custom">
@@ -620,7 +821,8 @@ const ModalFilter = ({
                   value={state.dateMax}
                   maxRows={1}
                   variant="filled"
-                />
+                />{" "}
+                {warnDateMax ? <span>Vui lòng nhập lớn hơn</span> : <></>}
               </div>
             </div>
           )}
@@ -642,6 +844,7 @@ const ModalFilter = ({
                   maxRows={1}
                   variant="filled"
                 />
+                {warnKmMin ? <span>Vui lòng nhập bé hơn</span> : <></>}
               </div>
               -
               <div className="body input-need-to-custom">
@@ -653,7 +856,8 @@ const ModalFilter = ({
                   value={state.kmMax}
                   maxRows={1}
                   variant="filled"
-                />
+                />{" "}
+                {warnKmMax ? <span>Vui lòng nhập lớn hơn</span> : <></>}
               </div>
             </div>
           )}
@@ -671,11 +875,14 @@ const ModalFilter = ({
                   label="Giá tiền tối thiểu"
                   multiline
                   onChange={handleChangePriceMin}
-                  value={state.priceMin}
+                  value={state.price}
                   maxRows={1}
                   variant="filled"
                 />
-                {warnPriceMin ? <span>Vui lòng nhập trên 10tr</span> : <></>}
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {warnPriceMin ? <span>Vui lòng nhập trên 10tr</span> : <></>}
+                  {warnPriceMin2 ? <span>Vui lòng nhập bé hơn</span> : <></>}
+                </div>
               </div>
               -
               <div className="body input-need-to-custom">
@@ -688,7 +895,10 @@ const ModalFilter = ({
                   maxRows={1}
                   variant="filled"
                 />
-                {warnPriceMax ? <span>Vui lòng nhập trên 10tr</span> : <></>}
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {" "}
+                  {warnPriceMax ? <span>Vui lòng nhập trên 10tr</span> : <></>} {warnPriceMax2 ? <span>Vui lòng nhập lớn hơn</span> : <></>}
+                </div>
               </div>
             </div>
           )}
@@ -700,22 +910,15 @@ const ModalFilter = ({
           </div>
           {hiddenNB && (
             <div className="body">
-              <Radio.Group
-                value={state.valueRadioNumberBox}
-                onChange={onChangeRadioNumberBox}
-              >
-                <Radio value="Tự động">
-                  {" "}
-                  <span className="brand-name">Tự động</span>
-                </Radio>
-                <Radio value="Số sàn">
-                  {" "}
-                  <span className="brand-name">Số sàn</span>
-                </Radio>
-                <Radio value="Bán tự động">
-                  {" "}
-                  <span className="brand-name">Bán tự động</span>
-                </Radio>
+              <Radio.Group value={state.valueRadioNumberBox} onChange={onChangeRadioNumberBox}>
+                {numberBoxList.map((item, index) => {
+                  return (
+                    <Radio value={item} key={index}>
+                      {" "}
+                      <span className="brand-name">{item}</span>
+                    </Radio>
+                  );
+                })}
               </Radio.Group>
             </div>
           )}
@@ -727,44 +930,33 @@ const ModalFilter = ({
           </div>
           {hiddenFuel && (
             <div className="body">
-              <Radio.Group
-                value={state.valueRadioFuel}
-                onChange={onChangeRadioFuel}
-              >
-                <Radio value="Xăng">
-                  {" "}
-                  <span className="brand-name">Xăng</span>
-                </Radio>
-                <Radio value="Dấu">
-                  {" "}
-                  <span className="brand-name">Dấu</span>
-                </Radio>
-                <Radio value="Động cơ Hybrid">
-                  {" "}
-                  <span className="brand-name">Động cơ Hybrid</span>
-                </Radio>
-                <Radio value="Điện">
-                  {" "}
-                  <span className="brand-name">Điện</span>
-                </Radio>
+              <Radio.Group value={state.valueRadioFuel}>
+                {fuelCar.map((item, index) => {
+                  return (
+                    <Radio value={item.item} key={index} onClick={() => onChangeRadioFuel(item.item, item.value)}>
+                      {" "}
+                      <span className="brand-name">{item.item}</span>
+                    </Radio>
+                  );
+                })}
               </Radio.Group>
             </div>
           )}
         </div>
-        <ItemModalFilterSits
+        <ItemModalFilterForm
           title="Màu sắc"
           value={state.valueRadioColor}
           onClickRadio={onChangeRadioColor}
-          data={dataColor}
+          data={colorsCar}
           onClick={() => handleModalListAll("color")}
-        ></ItemModalFilterSits>
-        <ItemModalFilterSits
+        ></ItemModalFilterForm>
+        <ItemModalFilterForm
           title="Xuất xứ"
           value={state.valueRadioCountry}
           onClickRadio={onChangeRadioCountry}
-          data={dataCountry}
+          data={countriesCar}
           onClick={() => handleModalListAll("country")}
-        ></ItemModalFilterSits>
+        ></ItemModalFilterForm>
         <ItemModalFilterModels
           title="Dòng xe"
           value={state.valueRadioModel}
@@ -773,13 +965,13 @@ const ModalFilter = ({
           onClick={() => handleModalListAll("model")}
           valueRadioBrandModal={state.valueRadioBrandModal}
         ></ItemModalFilterModels>
-        <ItemModalFilterSits
+        <ItemModalFilterForm
           title="Kiểu dáng"
           value={state.valueRadioFormCar}
           onClickRadio={onChangeRadioFormCar}
-          data={formCar}
+          data={formsCar}
           onClick={() => handleModalListAll("formCar")}
-        ></ItemModalFilterSits>
+        ></ItemModalFilterForm>
         <div className="sit">
           <div className="header" onClick={handleHiddenSt}>
             <span>Tình trạng</span>
@@ -787,18 +979,15 @@ const ModalFilter = ({
           </div>
           {hiddenSt && (
             <div className="body">
-              <Radio.Group
-                value={state.valueRadioStatus}
-                onChange={onChangeRadioStatus}
-              >
-                <Radio value="Đã sử dụng">
-                  {" "}
-                  <span className="brand-name">Đã sử dụng</span>
-                </Radio>{" "}
-                <Radio value="Mới">
-                  {" "}
-                  <span className="brand-name">Mới</span>
-                </Radio>
+              <Radio.Group value={state.valueRadioStatus}>
+                {statusCar.map((item, index) => {
+                  return (
+                    <Radio value={item.item} onClick={(e: any) => onChangeRadioStatus(item.item, item.value)} key={index}>
+                      {" "}
+                      <span className="brand-name">{item.item}</span>
+                    </Radio>
+                  );
+                })}
               </Radio.Group>
             </div>
           )}
@@ -810,22 +999,15 @@ const ModalFilter = ({
           </div>
           {hiddenOwner && (
             <div className="body">
-              <Radio.Group
-                value={state.valueRadioUser}
-                onChange={onChangeRadioUser}
-              >
-                <Radio value="Cá nhân">
-                  {" "}
-                  <span className="brand-name">Cá nhân</span>
-                </Radio>
-                <Radio value="Bán chuyên">
-                  {" "}
-                  <span className="brand-name">Bán chuyên</span>
-                </Radio>
-                <Radio value="Đối Tác Chợ Tốt">
-                  {" "}
-                  <span className="brand-name">Đối Tác Chợ Tốt</span>
-                </Radio>
+              <Radio.Group value={state.valueRadioUser}>
+                {postCar.map((item, index) => {
+                  return (
+                    <Radio value={item.item} key={index} onClick={() => onChangeRadioUser(item.item, item.value)}>
+                      {" "}
+                      <span className="brand-name">{item.item}</span>
+                    </Radio>
+                  );
+                })}
               </Radio.Group>
             </div>
           )}
@@ -873,19 +1055,20 @@ const ModalFilter = ({
         title="Số chỗ"
         modalListAll={modalListAll}
         handleCancleModal={handleCancleModalListAll}
+        setFilter={setFilter}
         data={
           typeModal === "sit"
             ? carSit
             : typeModal === "brand"
             ? brandList
             : typeModal === "color"
-            ? dataColor
+            ? colorsCar
             : typeModal === "country"
-            ? dataCountry
+            ? countriesCar
             : typeModal === "model"
             ? models[0]?.models
             : typeModal === "formCar"
-            ? formCar
+            ? formsCar
             : ""
         }
         setValueRadio={typeModal}

@@ -9,7 +9,7 @@ export const defaultCommonState = {
   accessories: "",
   registry: "",
   numberBox: "",
-  dateCar:0,
+  dateCar: "",
   status: "",
   form: "",
   price: 0,

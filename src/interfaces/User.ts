@@ -153,7 +153,7 @@ export interface ICommonStateFormRenderCar {
   value: string;
   color: string;
   carNumber: string;
-  dateCar: number;
+  dateCar: number | string;
   owner: string;
   country: string;
   sit: string;

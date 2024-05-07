@@ -11,8 +11,8 @@ export const prices = [
   { item: "Giá trên 2 tỷ", value: "up2t" },
 ];
 export const forms = [
-  { item: "Sudan", value: "sudan" },
-  { item: "SUV/Cross over", value: "suv/cross-over" },
+  { item: "Sedan", value: "sedan" },
+  { item: "SUV/Cross over", value: "suv-cross-over" },
   { item: "Hatchback", value: "hatchback" },
   { item: "Pick-up (bán tải)", value: "pickup" },
   { item: "Minivan (MPV)", value: "minivan" },

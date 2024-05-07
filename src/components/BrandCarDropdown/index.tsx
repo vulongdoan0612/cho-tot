@@ -1,11 +1,11 @@
 import { Input, Radio, RadioChangeEvent } from "antd";
 import { SearchIcon } from "../CustomIcons";
 import { useEffect, useRef, useState } from "react";
-import data from "./brandList.json";
-import { useRouter } from "next/router";
-import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery2";
+import brandList from "../RenderFormTraffic/carList.json";
+
+import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
+import convertToSlug from "@/utils/convertToSlug";
 const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
-  const router = useRouter();
   const updateQuery = useUpdateQuery();
   const removeQuery = useRemoveQuery();
   const brandRef: any = useRef(null);
@@ -33,14 +33,16 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
     };
   }, [openBrand]);
   useEffect(() => {
-    setDataRender(data);
+    setDataRender(brandList);
   }, []);
   const handleSearchBrand = (event: any) => {
     const { value } = event.target;
     setSearchBrand(value);
-    const result = data.filter((brand: any, index) => {
-      return brand.toLowerCase().includes(value.toLowerCase());
+    const result = brandList.filter((brand: any, index) => {
+      console.log(brand);
+      return brand.brand.toLowerCase().includes(value.toLowerCase());
     });
+    console.log(result);
     setDataRender(result);
   };
   const handleRenew = () => {
@@ -50,7 +52,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
         ...prevState,
         valueRadioBrand: "",
       }));
-      setDataRender(data);
+      setDataRender(brandList);
     } finally {
       setState((prevState: any) => ({
         ...prevState,
@@ -66,7 +68,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
       openBrand: false,
       valueRadioBrandModal: e.target.value,
     }));
-    updateQuery("brand", e.target.value);
+    updateQuery("brand", convertToSlug(e.target.value));
   };
   return (
     <>
@@ -81,20 +83,16 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
           {" "}
           <div className="selection">
             <SearchIcon></SearchIcon>
-            <Input
-              placeholder="Nhập tìm số chỗ"
-              onChange={handleSearchBrand}
-              value={searchBrand}
-            />{" "}
+            <Input placeholder="Nhập tìm số chỗ" onChange={handleSearchBrand} value={searchBrand} />{" "}
           </div>
           <div className="brands">
-            {dataRender.map((item: any, index: any) => {
+            {dataRender?.map((item: any, index: any) => {
               return (
                 <div key={index} className="brand-item">
                   <Radio.Group value={valueRadioBrand} onChange={onChangeRadio}>
-                    <Radio value={item}>
+                    <Radio value={item.brand}>
                       {" "}
-                      <span className="brand-name">{item}</span>
+                      <span className="brand-name">{item.brand}</span>
                     </Radio>
                   </Radio.Group>
                 </div>

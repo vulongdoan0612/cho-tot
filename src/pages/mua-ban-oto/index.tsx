@@ -13,22 +13,37 @@ import ModalFilter from "@/components/Modal/ModalFilter";
 import ContainMBOTO from "@/components/Contain-MBOTO";
 import formatMoney from "@/utils/formatMoney";
 import { useSelector } from "react-redux";
-import {  RootState } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 import { useFetchPosts } from "@/hooks/useFetchPosts";
-import RemoveQuery from "@/utils/removeQuery";
 import BrandCarDropdown from "@/components/BrandCarDropdown";
+import brandList from "../../components/BrandCarDropdown/brandList.json";
 
 const SellingPage = () => {
-  // const { pathname, createQueryString } = UpdateQuery();
-  const { removeQueryString } = RemoveQuery();
-
+  const router = useRouter();
   const [spin, setSpin] = useState(false);
   const [pageSize, setPagesize] = useState(5);
   const [current, setCurrent] = useState(1);
   const { posts } = useSelector((state: RootState) => state.postsData);
 
-  const router = useRouter();
+  const [state, setState] = useState<IFilterHeader>(defaultCommonState);
+  const [filterFind, setFilterFind] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [filter, setFilter] = useState<any>({
+    sit: "",
+    brand: "",
+    country: "",
+    form: "",
+    color: "",
+    numberBox: "",
+    fuel: "",
+    model: "",
+    status: "",
+    post: "",
+    date: "",
+    price: "",
+    km: "",
+  });
   useFetchPosts({
     setCurrent,
     current: current,
@@ -37,21 +52,297 @@ const SellingPage = () => {
     setSpin,
   });
 
-  const onChangePage = (page: number) => {
-    setCurrent(page);
-  };
-  const [state, setState] = useState<IFilterHeader>(defaultCommonState);
-  const [filterFind, setFilterFind] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const handleCancleModal = () => {
-    setOpenModal(false);
-  };
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (router.query.price === "un200tr") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 0,
+        inputValueMin: 0,
+        inputValueMax: 200000000,
+        valuePriceMax: 200000000,
+        priceMin: 0,
+        priceMax: 200000000,
+      }));
+    } else if (router.query.price === "200tr-300tr") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 200000000,
+        inputValueMin: 200000000,
+        inputValueMax: 300000000,
+        valuePriceMax: 300000000,
+        priceMin: 200000000,
+        priceMax: 300000000,
+      }));
+    } else if (router.query.price === "300tr-400tr") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 300000000,
+        inputValueMin: 300000000,
+        inputValueMax: 400000000,
+        valuePriceMax: 400000000,
+        priceMin: 300000000,
+        priceMax: 400000000,
+      }));
+    } else if (router.query.price === "400tr-500tr") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 400000000,
+        inputValueMin: 400000000,
+        inputValueMax: 500000000,
+        valuePriceMax: 500000000,
+        priceMin: 400000000,
+        priceMax: 500000000,
+      }));
+    } else if (router.query.price === "500tr-600tr") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 500000000,
+        inputValueMin: 500000000,
+        inputValueMax: 600000000,
+        valuePriceMax: 600000000,
+        priceMin: 500000000,
+        priceMax: 600000000,
+      }));
+    } else if (router.query.price === "600tr-700tr") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 600000000,
+        inputValueMin: 600000000,
+        inputValueMax: 700000000,
+        valuePriceMax: 700000000,
+        priceMin: 600000000,
+        priceMax: 700000000,
+      }));
+    } else if (router.query.price === "700tr-800tr") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 700000000,
+        inputValueMin: 700000000,
+        inputValueMax: 800000000,
+        valuePriceMax: 800000000,
+        priceMin: 700000000,
+        priceMax: 800000000,
+      }));
+    } else if (router.query.price === "800tr-1t") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 800000000,
+        inputValueMin: 800000000,
+        inputValueMax: 1000000000,
+        valuePriceMax: 1000000000,
+        priceMin: 800000000,
+        priceMax: 1000000000,
+      }));
+    } else if (router.query.price === "1t-2t") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 1000000000,
+        inputValueMin: 1000000000,
+        inputValueMax: 2000000000,
+        valuePriceMax: 2000000000,
+        priceMin: 1000000000,
+        priceMax: 2000000000,
+      }));
+    } else if (router.query.price === "up2t") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: 2000000000,
+        inputValueMin: 2000000000,
+        inputValueMax: 0,
+        valuePriceMax: 0,
+        priceMin: 2000000000,
+        priceMax: 0,
+      }));
+    } else if (router && router.query && typeof router.query.price === "string") {
+      const priceParams = router.query.price.split("-");
+      let lowerPrice: any, upperPrice: any;
+      if (priceParams.length === 1) {
+        const match = priceParams[0].match(/(min|max)(\d+)/);
+        if (match) {
+          if (match[1] === "min") {
+            lowerPrice = parseInt(match[2]);
+            setState((prevState: any) => ({
+              ...prevState,
+              valuePriceMin: lowerPrice,
+              valuePriceMax: 0,
+              inputValueMax: 0,
+              inputValueMin: lowerPrice,
+              priceMin: lowerPrice,
+              priceMax: 0,
+            }));
+          } else if (match[1] === "max") {
+            upperPrice = parseInt(match[2]);
+            setState((prevState: any) => ({
+              ...prevState,
+              valuePriceMin: 0,
+              valuePriceMax: upperPrice,
+              inputValueMax: upperPrice,
+              inputValueMin: 0,
+              priceMin: 0,
+              priceMax: upperPrice,
+            }));
+          }
+        }
+      } else if (priceParams.length === 2) {
+        lowerPrice = parseInt(priceParams[0]);
+        upperPrice = parseInt(priceParams[1]);
+        setState((prevState: any) => ({
+          ...prevState,
+          valuePriceMin: lowerPrice,
+          valuePriceMax: upperPrice,
+          inputValueMax: upperPrice,
+          inputValueMin: lowerPrice,
+          priceMin: lowerPrice,
+          priceMax: upperPrice,
+        }));
+      }
+    } else if (router.query.price === undefined) {
+      setState((prevState: any) => ({
+        ...prevState,
+        valuePriceMin: null,
+        valuePriceMax: null,
+        inputValueMax: 0,
+        inputValueMin: 0,
+      }));
+    }
+    if (router.query.sit === "2") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 2,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "4") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 4,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "5") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 5,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "6") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 6,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "7") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 7,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "8") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 8,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "9") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 9,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "10") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 10,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "12") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 12,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "14") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 14,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === "16") {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: 16,
+        valueRadioAll: router.query.sit,
+        valueRadioModal: router.query.sit,
+      }));
+    } else if (router.query.sit === undefined) {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioSit: "",
+      }));
+    }
+    if (router.query.city && state?.cities) {
+      const selectedCity = state?.cities?.find((city: any) => city.Id === router.query.city);
+      setState((prevState: any) => ({
+        ...prevState,
+        idCity: selectedCity?.Id,
+        selectCity: selectedCity?.Name,
+        cityName: selectedCity?.Name,
+        valueRadio: selectedCity?.Name,
+        districts: selectedCity?.Districts,
+      }));
+      setFilterFind(selectedCity?.Name);
+    }
+
+    if (router.query.brand !== "" && router.query.brand !== undefined) {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioBrand: router.query.brand,
+        valueRadioAllBrand: router.query.brand,
+        valueRadioBrandModal: router.query.brand,
+      }));
+    } else if (router.query.brand === undefined) {
+      setState((prevState: any) => ({
+        ...prevState,
+        valueRadioBrand: "",
+      }));
+    }
+  }, [
+    router.isReady,
+    router.query.city,
+    router.query.price,
+    router.query.district,
+    router.query.sit,
+    router.query.brand,
+    state?.cities,
+    router,
+  ]);
+
+  useEffect(() => {
+    if (state?.districts?.length > 0 && router.query.district) {
+      const selectedDistrict = state?.districts?.find((district: any) => district.Id === router.query.district);
+      setState((prevState: any) => ({
+        ...prevState,
+        idDistrict: selectedDistrict?.Id,
+        districtName: selectedDistrict?.Name,
+        valueRadioDistrict: selectedDistrict?.Name,
+      }));
+      setFilterFind(selectedDistrict?.Name || state.cityName);
+    }
+  }, [state?.districts, router.query.district, router]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
-        );
+        const response = await axios.get("https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json");
         setState((prevState) => ({
           ...prevState,
           cities: response.data,
@@ -64,26 +355,6 @@ const SellingPage = () => {
 
     fetchData();
   }, []);
-  const handleClickFindAddress = () => {
-    setState((prevState: any) => ({
-      ...prevState,
-      openFind: !prevState.openFind,
-    }));
-    if (state.openSearchCity && !state.openFind) {
-      setState((prevState: any) => ({
-        ...prevState,
-        openFind: false,
-        openSearchCity: false,
-      }));
-    }
-    if (state.openSearchDistrict && !state.openFind) {
-      setState((prevState: any) => ({
-        ...prevState,
-        openFind: false,
-        openSearchDistrict: false,
-      }));
-    }
-  };
   useEffect(() => {
     if (state.openFind) {
       setState((prevState: any) => ({
@@ -124,6 +395,26 @@ const SellingPage = () => {
       }));
     }
   }, [state.openSit]);
+  const handleClickFindAddress = () => {
+    setState((prevState: any) => ({
+      ...prevState,
+      openFind: !prevState.openFind,
+    }));
+    if (state.openSearchCity && !state.openFind) {
+      setState((prevState: any) => ({
+        ...prevState,
+        openFind: false,
+        openSearchCity: false,
+      }));
+    }
+    if (state.openSearchDistrict && !state.openFind) {
+      setState((prevState: any) => ({
+        ...prevState,
+        openFind: false,
+        openSearchDistrict: false,
+      }));
+    }
+  };
 
   const handleClickPrice = () => {
     setState((prevState: any) => ({
@@ -146,241 +437,13 @@ const SellingPage = () => {
   const handleFilterModal = () => {
     setOpenModal(true);
   };
-  const updateURL = (queryParams: any) => {
-    console.log(queryParams);
-    router.push({
-      pathname: "/mua-ban-oto",
-      query: { ...router.query, ...queryParams },
-    });
+
+  const handleCancleModal = () => {
+    setOpenModal(false);
   };
-  const removeQueries = (keysToRemove: string[]) => {
-    const updatedQuery = { ...router.query };
-    keysToRemove.forEach((key) => {
-      delete updatedQuery[key];
-    });
-    router.push({
-      pathname: "/mua-ban-oto",
-      query: updatedQuery,
-    });
+  const onChangePage = (page: number) => {
+    setCurrent(page);
   };
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    if (router && router.query && typeof router.query.price === "string") {
-      const [lowerPrice, upperPrice] = router.query.price
-        .split("-")
-        .map((item: string) => parseInt(item));
-      setState((prevState: any) => ({
-        ...prevState,
-        priceMin: lowerPrice,
-        priceMax: upperPrice,
-      }));
-    }
-    setState((prevState: any) => ({
-      ...prevState,
-      valueRadioAll: router.query.sit,
-      valueRadioModal: router.query.sit,
-    }));
-  }, [router]);
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (router.query.price === "un200tr") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 0,
-        inputValueMin: 0,
-        inputValueMax: 200000000,
-        valuePriceMax: 200000000,
-      }));
-    } else if (router.query.price === "200tr-300tr") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 200000000,
-        inputValueMin: 200000000,
-        inputValueMax: 300000000,
-        valuePriceMax: 300000000,
-      }));
-    } else if (router.query.price === "300tr-400tr") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 300000000,
-        inputValueMin: 300000000,
-        inputValueMax: 400000000,
-        valuePriceMax: 400000000,
-      }));
-    } else if (router.query.price === "400tr-500tr") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 400000000,
-        inputValueMin: 400000000,
-        inputValueMax: 500000000,
-        valuePriceMax: 500000000,
-      }));
-    } else if (router.query.price === "500tr-600tr") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 500000000,
-        inputValueMin: 500000000,
-        inputValueMax: 600000000,
-        valuePriceMax: 600000000,
-      }));
-    } else if (router.query.price === "600tr-700tr") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 600000000,
-        inputValueMin: 600000000,
-        inputValueMax: 700000000,
-        valuePriceMax: 700000000,
-      }));
-    } else if (router.query.price === "700tr-800tr") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 700000000,
-        inputValueMin: 700000000,
-        inputValueMax: 800000000,
-        valuePriceMax: 800000000,
-      }));
-    } else if (router.query.price === "800tr-1t") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 800000000,
-        inputValueMin: 800000000,
-        inputValueMax: 1000000000,
-        valuePriceMax: 1000000000,
-      }));
-    } else if (router.query.price === "1t-2t") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 1000000000,
-        inputValueMin: 1000000000,
-        inputValueMax: 2000000000,
-        valuePriceMax: 2000000000,
-      }));
-    } else if (router.query.price === "up2t") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valuePriceMin: 2000000000,
-        inputValueMin: 2000000000,
-        inputValueMax: 0,
-        valuePriceMax: 0,
-      }));
-    } else {
-      // Phân tích giá trị price thành hai phần, số thứ nhất và số thứ hai
-      if (router && router.query && typeof router.query.price === "string") {
-        const [lowerPrice, upperPrice] = router.query.price
-          .split("-")
-          .map((item: string) => parseInt(item));
-        setState((prevState: any) => ({
-          ...prevState,
-          valuePriceMin: lowerPrice,
-          valuePriceMax: upperPrice,
-          inputValueMax: upperPrice,
-          inputValueMin: lowerPrice,
-        }));
-      }
-    }
-    if (router.query.sit === "2") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 2,
-      }));
-    } else if (router.query.sit === "4") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 4,
-      }));
-    } else if (router.query.sit === "5") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 5,
-      }));
-    } else if (router.query.sit === "6") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 6,
-      }));
-    } else if (router.query.sit === "7") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 7,
-      }));
-    } else if (router.query.sit === "8") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 8,
-      }));
-    } else if (router.query.sit === "9") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 9,
-      }));
-    } else if (router.query.sit === "10") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 10,
-      }));
-    } else if (router.query.sit === "12") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 12,
-      }));
-    } else if (router.query.sit === "14") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 14,
-      }));
-    } else if (router.query.sit === "16") {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioSit: 16,
-      }));
-    }
-    if (router.query.city && state?.cities) {
-      const selectedCity = state?.cities?.find(
-        (city: any) => city.Id === router.query.city
-      );
-      setState((prevState: any) => ({
-        ...prevState,
-        idCity: selectedCity?.Id,
-        selectCity: selectedCity?.Name,
-        cityName: selectedCity?.Name,
-        valueRadio: selectedCity?.Name,
-        districts: selectedCity?.Districts,
-      }));
-      setFilterFind(selectedCity?.Name);
-    }
-    if (router.query.brand !== "" && router.query.brand !== undefined) {
-      setState((prevState: any) => ({
-        ...prevState,
-        valueRadioBrand: router.query.brand,
-      }));
-    }
-  }, [
-    router.isReady,
-    router.query.city,
-    router.query.price,
-    router.query.district,
-    router.query.sit,
-    router.query.brand,
-
-    state?.cities,
-  ]);
-
-  useEffect(() => {
-    if (state?.districts?.length > 0 && router.query.district) {
-      const selectedDistrict = state?.districts?.find(
-        (district: any) => district.Id === router.query.district
-      );
-      setState((prevState: any) => ({
-        ...prevState,
-        idDistrict: selectedDistrict?.Id,
-        districtName: selectedDistrict?.Name,
-        valueRadioDistrict: selectedDistrict?.Name,
-      }));
-      setFilterFind(selectedDistrict?.Name || state.cityName);
-    }
-  }, [state?.districts, router.query.district]);
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="selling-wrapper">
@@ -465,9 +528,7 @@ const SellingPage = () => {
               <div className="find-address-flex">
                 <span
                   onClick={handleClickFindAddress}
-                  className={`button ${
-                    filterFind !== "" ? "active-filter-button" : ""
-                  }`}
+                  className={`button ${filterFind !== "" ? "active-filter-button" : ""}`}
                   id="button-toan-quoc"
                 >
                   {filterFind !== "" ? filterFind : "Toàn quốc"}
@@ -505,9 +566,7 @@ const SellingPage = () => {
               {" "}
               <span
                 className={`button ${
-                  state.valuePriceMin === 0 &&
-                  state.valuePriceMax !== null &&
-                  state.valuePriceMax !== 0
+                  state.valuePriceMin === 0 && state.valuePriceMax !== null && state.valuePriceMax !== 0
                     ? "active-filter-button"
                     : state.valuePriceMin !== 0 && state.valuePriceMin !== null
                     ? "active-filter-button"
@@ -516,19 +575,16 @@ const SellingPage = () => {
                 onClick={handleClickPrice}
                 id="button-gia"
               >
-                {state.valuePriceMin === 0 &&
-                state.valuePriceMax !== null &&
-                state.valuePriceMax !== 0
+                {(state.valuePriceMin === 0 || state.valuePriceMin === null) && state.valuePriceMax !== null && state.valuePriceMax !== 0
                   ? `Đến ${formatMoney(state.valuePriceMax)}`
-                  : state.valuePriceMin === 2000000000 &&
-                    state.valuePriceMax === 0 &&
-                    state.inputValueMin === 2000000000 &&
-                    state.inputValueMax === 0
+                  : // state.valuePriceMin === 2000000000 &&
+                  //   state.valuePriceMax === 0 &&
+                  //   state.inputValueMin === 2000000000 &&
+                  //   state.inputValueMax === 0
+                  (state.valuePriceMax === 0 || state.valuePriceMax === null) && state.valuePriceMin !== null && state.valuePriceMin !== 0
                   ? `Từ ${formatMoney(state.valuePriceMin)}`
                   : state.valuePriceMin !== 0 && state.valuePriceMin !== null
-                  ? `${formatMoney(state.valuePriceMin)} - ${formatMoney(
-                      state.valuePriceMax
-                    )}`
+                  ? `${formatMoney(state.valuePriceMin)} - ${formatMoney(state.valuePriceMax)}`
                   : state.valuePriceMax === null && state.valuePriceMin === null
                   ? "Giá"
                   : "Giá"}
@@ -536,6 +592,8 @@ const SellingPage = () => {
               </span>
               {state.openPrice && (
                 <PriceDropdown
+                  setFilter={setFilter}
+                  filter={filter}
                   inputValueMin={state.inputValueMin}
                   inputValueMax={state.inputValueMax}
                   openPrice={state.openPrice}
@@ -545,40 +603,22 @@ const SellingPage = () => {
             </div>
             <div className="sit">
               <span
-                className={`button ${
-                  state.valueRadioSit !== "" &&
-                  state.valueRadioSit !== undefined
-                    ? "active-filter-button"
-                    : ""
-                }`}
+                className={`button ${state.valueRadioSit !== "" && state.valueRadioSit !== undefined ? "active-filter-button" : ""}`}
                 id="button-so-cho"
                 onClick={handleClickSit}
               >
-                {state.valueRadioSit !== "" && state.valueRadioSit !== undefined
-                  ? `${state.valueRadioSit} chỗ`
-                  : "Số chỗ"}{" "}
+                {state.valueRadioSit !== "" && state.valueRadioSit !== undefined ? `${state.valueRadioSit} chỗ` : "Số chỗ"}{" "}
                 <ArrowInputIcon id="svg-so-cho"></ArrowInputIcon>
               </span>
-              {state.openSit && (
-                <SitDropdown
-                  valueRadioSit={state.valueRadioSit}
-                  setState={setState}
-                  state={state}
-                ></SitDropdown>
-              )}
+              {state.openSit && <SitDropdown valueRadioSit={state.valueRadioSit} setState={setState} state={state}></SitDropdown>}
             </div>
             <div className="brand">
               <span
-                className={`button ${
-                  state.valueRadioBrand !== "" ? "active-filter-button" : ""
-                }`}
+                className={`button ${state.valueRadioBrand !== "" ? "active-filter-button" : ""}`}
                 id="button-hang-xe"
                 onClick={handleClickBrand}
               >
-                {state.valueRadioBrand !== ""
-                  ? `${state.valueRadioBrand}`
-                  : "Hãng xe"}{" "}
-                <ArrowInputIcon id="svg-hang-xe"></ArrowInputIcon>
+                {state.valueRadioBrand !== "" ? `${state.valueRadioBrand}` : "Hãng xe"} <ArrowInputIcon id="svg-hang-xe"></ArrowInputIcon>
               </span>
               {state.openBrand && (
                 <BrandCarDropdown
@@ -588,7 +628,6 @@ const SellingPage = () => {
                 ></BrandCarDropdown>
               )}
             </div>
-        
           </div>
         </div>
         <ContainMBOTO
@@ -607,6 +646,8 @@ const SellingPage = () => {
         handleCancleModal={handleCancleModal}
         state={state}
         openModal={openModal}
+        setFilter={setFilter}
+        filter={filter}
       ></ModalFilter>
       {/* <Spin spinning={spin} fullscreen={true}></Spin> */}
     </Page>

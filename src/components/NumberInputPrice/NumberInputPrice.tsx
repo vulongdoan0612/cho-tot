@@ -6,7 +6,6 @@ const NumberInputPrice = ({
   value,
   placeholder,
 }: any) => {
-  console.log(value);
   return (
     <InputNumber
       className={`number-input-price ${className}`}

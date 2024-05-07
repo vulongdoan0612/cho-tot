@@ -1,49 +1,30 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import brandList from "./carList.json";
 import countries from "./country.json";
 import formCar from "./formCar.json";
 import colorCar from "./color.json";
-import { DatePicker, DatePickerProps, InputNumberProps } from "antd";
+import carSit from "./carSit.json";
+import { DatePicker, DatePickerProps } from "antd";
 import dayjs from "dayjs";
-import carsit from "./carsit.json";
 import CustomButtonSelect from "../CustomButtonSelect";
 import NumberInput from "../NumberInput/NumberInput";
 import NumberInputPrice from "../NumberInputPrice/NumberInputPrice";
 import TitlePostSell from "../TitlePostSell/TitlePostSell";
-import { AppDispatch, RootState } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 import { defaultCommonState } from "./_mock";
-import {
-  ICommonStateFillFormRenderCar,
-  ICommonStateFormRenderCar,
-} from "@/interfaces/User";
+import { ICommonStateFillFormRenderCar, ICommonStateFormRenderCar } from "@/interfaces/User";
 import moment from "moment";
-import { useRouter } from "next/router";
 import { onlyNumbers } from "@/utils/onlyNumbers";
 import { defaultCommonStateFill } from "./_fill";
 
 const RenderOto = ({ handleWarning, fileList }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);
-  const [stateFill, setStateFill] = useState<ICommonStateFillFormRenderCar>(
-    defaultCommonStateFill
-  );
-  const [stateForm, setStateForm] =
-    useState<ICommonStateFormRenderCar>(defaultCommonState);
-  const router = useRouter();
-  const { id } = router.query;
+  const [stateFill, setStateFill] = useState<ICommonStateFillFormRenderCar>(defaultCommonStateFill);
+  const [stateForm, setStateForm] = useState<ICommonStateFormRenderCar>(defaultCommonState);
   useEffect(() => {
-    const selectedModels =
-      brandList.find((item: any) => item.brand === dataPost?.post?.value)
-        ?.models || [];
-
+    const selectedModels = brandList.find((item: any) => item.brand === dataPost?.post?.value)?.models || [];
     setStateForm((prevState) => ({
       ...prevState,
       models: selectedModels,
@@ -113,9 +94,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
     }
   };
   const handleChange = (event: SelectChangeEvent) => {
-    const selectedModels =
-      brandList.find((item: any) => item.brand === event?.target.value)
-        ?.models || [];
+    const selectedModels = brandList.find((item: any) => item.brand === event?.target.value)?.models || [];
     setStateForm((prevState) => ({
       ...prevState,
       models: selectedModels,
@@ -153,15 +132,16 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
-  const onChange = (date: any, dateString: any) => {
+  const onChange: DatePickerProps<any>["onChange"] = (date: any, dateString: any) => {
     const momentDateCCCD = moment(dateString);
     const formattedDateCCCD = momentDateCCCD.format("YYYY");
+    console.log();
     setStateForm((prevState) => ({
       ...prevState,
-      dateCar: Number(formattedDateCCCD),
+      dateCar: String(formattedDateCCCD),
     }));
-    console.log(dateString);
-    if (dateString !== "") {
+    console.log(formattedDateCCCD);
+    if (dateString !== "" || formattedDateCCCD !== "Invalid date") {
       setStateFill((prevState: any) => ({
         ...prevState,
         fillDate: false,
@@ -230,7 +210,6 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
         price: 0,
       }));
     }
-    console.log(value);
 
     if (String(value) !== "") {
       setStateFill((prevState: any) => ({
@@ -319,31 +298,19 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
           <span>Tình trạng</span>
           <div className="wrap-buttons">
             <div className="buttons">
-              <CustomButtonSelect
-                handleClick={() => handleStatus("Đã sử dụng")}
-                isActive={stateForm.status === "Đã sử dụng"}
-              >
+              <CustomButtonSelect handleClick={() => handleStatus("Đã sử dụng")} isActive={stateForm.status === "Đã sử dụng"}>
                 Đã sử dụng
               </CustomButtonSelect>
-              <CustomButtonSelect
-                handleClick={() => handleStatus("Mới")}
-                isActive={stateForm.status === "Mới"}
-              >
+              <CustomButtonSelect handleClick={() => handleStatus("Mới")} isActive={stateForm.status === "Mới"}>
                 Mới
               </CustomButtonSelect>
             </div>
-            {stateFill.fillStatus && (
-              <div className="warning-fill">Vui lòng nhập tình trạng</div>
-            )}
+            {stateFill.fillStatus && <div className="warning-fill">Vui lòng nhập tình trạng</div>}
           </div>
         </span>
         <div className="gap">
           <FormControl sx={{ m: 1, width: "100%" }}>
-            <InputLabel
-              required
-              id="demo-select-small-label"
-              className="city-select-label"
-            >
+            <InputLabel required id="demo-select-small-label" className="city-select-label">
               Hãng xe{" "}
             </InputLabel>
 
@@ -360,16 +327,10 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 </MenuItem>
               ))}
             </Select>
-            {stateFill.fillBrand && (
-              <div className="warning-fill">Vui lòng chọn Hãng xe</div>
-            )}
+            {stateFill.fillBrand && <div className="warning-fill">Vui lòng chọn Hãng xe</div>}
           </FormControl>
           <FormControl sx={{ m: 1, width: "100%" }}>
-            <InputLabel
-              required
-              id="demo-select-small-label"
-              className="city-select-label"
-            >
+            <InputLabel required id="demo-select-small-label" className="city-select-label">
               Dòng xe
             </InputLabel>
 
@@ -389,9 +350,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 );
               })}
             </Select>
-            {stateFill.fillModel && (
-              <div className="warning-fill">Vui lòng chọn Dòng xe</div>
-            )}
+            {stateFill.fillModel && <div className="warning-fill">Vui lòng chọn Dòng xe</div>}
           </FormControl>
           <div className="wrap-date">
             <DatePicker
@@ -399,40 +358,27 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               picker="year"
               value={stateForm.dateCar !== 0 ? dayjs(stateForm.dateCar) : null}
               placeholder="Năm sản xuất"
-              minDate={dayjs("1990")}
-              maxDate={dayjs("2024")}
+              // minDate={dayjs("1990")}
+              // maxDate={dayjs("2024")}
             />{" "}
-            {stateFill.fillDate && (
-              <div className="warning-fill">Vui lòng chọn năm sản xuất</div>
-            )}
+            {stateFill.fillDate && <div className="warning-fill">Vui lòng chọn năm sản xuất</div>}
           </div>
         </div>
         <div className="number-box">
           <span>Hộp số</span>
           <div className="wrap-buttons">
             <div className="buttons">
-              <CustomButtonSelect
-                handleClick={() => handleNumberBox("Tự động")}
-                isActive={stateForm?.numberBox === "Tự động"}
-              >
+              <CustomButtonSelect handleClick={() => handleNumberBox("Tự động")} isActive={stateForm?.numberBox === "Tự động"}>
                 Tự động
               </CustomButtonSelect>
-              <CustomButtonSelect
-                handleClick={() => handleNumberBox("Số sàn")}
-                isActive={stateForm?.numberBox === "Số sàn"}
-              >
+              <CustomButtonSelect handleClick={() => handleNumberBox("Số sàn")} isActive={stateForm?.numberBox === "Số sàn"}>
                 Số sàn
               </CustomButtonSelect>
-              <CustomButtonSelect
-                handleClick={() => handleNumberBox("Bán tự động")}
-                isActive={stateForm?.numberBox === "Bán tự động"}
-              >
+              <CustomButtonSelect handleClick={() => handleNumberBox("Bán tự động")} isActive={stateForm?.numberBox === "Bán tự động"}>
                 Bán tự động
               </CustomButtonSelect>
             </div>
-            {stateFill.fillNumberB && (
-              <div className="warning-fill">Vui lòng chọn Hộp số</div>
-            )}
+            {stateFill.fillNumberB && <div className="warning-fill">Vui lòng chọn Hộp số</div>}
           </div>
         </div>
         <div className="fuel">
@@ -440,44 +386,26 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
 
           <div className="wrap-buttons">
             <div className="buttons">
-              <CustomButtonSelect
-                handleClick={() => handleFuel("Xăng")}
-                isActive={stateForm?.activeButton === "Xăng"}
-              >
+              <CustomButtonSelect handleClick={() => handleFuel("Xăng")} isActive={stateForm?.activeButton === "Xăng"}>
                 Xăng
               </CustomButtonSelect>
-              <CustomButtonSelect
-                handleClick={() => handleFuel("Dầu")}
-                isActive={stateForm?.activeButton === "Dầu"}
-              >
+              <CustomButtonSelect handleClick={() => handleFuel("Dầu")} isActive={stateForm?.activeButton === "Dầu"}>
                 Dầu
               </CustomButtonSelect>
-              <CustomButtonSelect
-                handleClick={() => handleFuel("Động cơ Hybrid")}
-                isActive={stateForm?.activeButton === "Động cơ Hybrid"}
-              >
+              <CustomButtonSelect handleClick={() => handleFuel("Động cơ Hybrid")} isActive={stateForm?.activeButton === "Động cơ Hybrid"}>
                 Động cơ Hybrid
               </CustomButtonSelect>
-              <CustomButtonSelect
-                handleClick={() => handleFuel("Điện")}
-                isActive={stateForm?.activeButton === "Điện"}
-              >
+              <CustomButtonSelect handleClick={() => handleFuel("Điện")} isActive={stateForm?.activeButton === "Điện"}>
                 Điện
               </CustomButtonSelect>
             </div>
-            {stateFill.fillFuel && (
-              <div className="warning-fill">Vui lòng chọn Nhiên liệu</div>
-            )}
+            {stateFill.fillFuel && <div className="warning-fill">Vui lòng chọn Nhiên liệu</div>}
           </div>
         </div>
         <div className="gap">
           <div className="display-flex">
             <FormControl sx={{ m: 1, width: "100%" }}>
-              <InputLabel
-                required
-                id="demo-select-small-label"
-                className="city-select-label"
-              >
+              <InputLabel required id="demo-select-small-label" className="city-select-label">
                 Xuất xứ
               </InputLabel>
 
@@ -496,16 +424,10 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
-              {stateFill.fillCountry && (
-                <div className="warning-fill">Vui lòng chọn Xuất xứ</div>
-              )}
+              {stateFill.fillCountry && <div className="warning-fill">Vui lòng chọn Xuất xứ</div>}
             </FormControl>
             <FormControl sx={{ m: 1, width: "100%" }}>
-              <InputLabel
-                required
-                id="demo-select-small-label"
-                className="city-select-label"
-              >
+              <InputLabel required id="demo-select-small-label" className="city-select-label">
                 Kiểu dáng
               </InputLabel>
 
@@ -524,18 +446,12 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
-              {stateFill.fillForm && (
-                <div className="warning-fill">Vui lòng chọn Kiểu dáng</div>
-              )}
+              {stateFill.fillForm && <div className="warning-fill">Vui lòng chọn Kiểu dáng</div>}
             </FormControl>
           </div>
           <div className="display-flex">
             <FormControl sx={{ m: 1, width: "100%" }}>
-              <InputLabel
-                required
-                id="demo-select-small-label"
-                className="city-select-label"
-              >
+              <InputLabel required id="demo-select-small-label" className="city-select-label">
                 Số chỗ
               </InputLabel>
 
@@ -546,7 +462,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 label="Số chỗ"
                 onChange={handleChangeSit}
               >
-                {carsit.map((item: any, index: any) => {
+                {carSit.map((item: any, index: any) => {
                   return (
                     <MenuItem key={index} value={item}>
                       {item}
@@ -554,16 +470,10 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
-              {stateFill.fillSit && (
-                <div className="warning-fill">Vui lòng chọn Số chỗ</div>
-              )}
+              {stateFill.fillSit && <div className="warning-fill">Vui lòng chọn Số chỗ</div>}
             </FormControl>
             <FormControl sx={{ m: 1, width: "100%" }}>
-              <InputLabel
-                required
-                id="demo-select-small-label"
-                className="city-select-label"
-              >
+              <InputLabel required id="demo-select-small-label" className="city-select-label">
                 Màu sắc
               </InputLabel>
 
@@ -582,9 +492,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   );
                 })}
               </Select>
-              {stateFill.fillColor && (
-                <div className="warning-fill">Vui lòng chọn Màu sắc</div>
-              )}
+              {stateFill.fillColor && <div className="warning-fill">Vui lòng chọn Màu sắc</div>}
             </FormControl>
           </div>
           <div className="display-flex">
@@ -607,16 +515,10 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 maxRows={4}
                 variant="filled"
               />
-              {stateFill.fillCarN && (
-                <div className="warning-fill">Vui lòng chọn Biển số xe</div>
-              )}
+              {stateFill.fillCarN && <div className="warning-fill">Vui lòng chọn Biển số xe</div>}
             </div>
             <FormControl sx={{ m: 1, width: "100%" }}>
-              <InputLabel
-                required
-                id="demo-select-small-label"
-                className="city-select-label"
-              >
+              <InputLabel required id="demo-select-small-label" className="city-select-label">
                 Số đời chủ
               </InputLabel>
 
@@ -634,9 +536,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   &gt; 1 chủ
                 </MenuItem>
               </Select>
-              {stateFill.fillOwner && (
-                <div className="warning-fill">Vui lòng chọn Số đời chủ</div>
-              )}
+              {stateFill.fillOwner && <div className="warning-fill">Vui lòng chọn Số đời chủ</div>}
             </FormControl>
           </div>
           <div className="display-flex">
@@ -644,44 +544,28 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               <span>Có phụ kiện đi kèm</span>
               <div className="wrap-buttons">
                 <div className="buttons">
-                  <CustomButtonSelect
-                    handleClick={() => handleAccessories("Có")}
-                    isActive={stateForm?.accessories === "Có"}
-                  >
+                  <CustomButtonSelect handleClick={() => handleAccessories("Có")} isActive={stateForm?.accessories === "Có"}>
                     Có
                   </CustomButtonSelect>
-                  <CustomButtonSelect
-                    handleClick={() => handleAccessories("Không")}
-                    isActive={stateForm?.accessories === "Không"}
-                  >
+                  <CustomButtonSelect handleClick={() => handleAccessories("Không")} isActive={stateForm?.accessories === "Không"}>
                     Không
                   </CustomButtonSelect>
                 </div>{" "}
-                {stateFill.fillAcces && (
-                  <div className="warning-fill">Vui lòng chọn Biển số xe</div>
-                )}
+                {stateFill.fillAcces && <div className="warning-fill">Vui lòng chọn Biển số xe</div>}
               </div>
             </div>
             <div className="registry">
               <span>Còn hạn đăng kiểm</span>
               <div className="wrap-buttons">
                 <div className="buttons">
-                  <CustomButtonSelect
-                    handleClick={() => handleRegistry("Có")}
-                    isActive={stateForm?.registry === "Có"}
-                  >
+                  <CustomButtonSelect handleClick={() => handleRegistry("Có")} isActive={stateForm?.registry === "Có"}>
                     Có
                   </CustomButtonSelect>
-                  <CustomButtonSelect
-                    handleClick={() => handleRegistry("Không")}
-                    isActive={stateForm?.registry === "Không"}
-                  >
+                  <CustomButtonSelect handleClick={() => handleRegistry("Không")} isActive={stateForm?.registry === "Không"}>
                     Không
                   </CustomButtonSelect>
                 </div>
-                {stateFill.fillRegis && (
-                  <div className="warning-fill">Vui lòng chọn Biển số xe</div>
-                )}
+                {stateFill.fillRegis && <div className="warning-fill">Vui lòng chọn Biển số xe</div>}
               </div>
             </div>
           </div>
@@ -694,20 +578,11 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               className="number-input-form"
               onChangeNumber={onChangeNumber}
             ></NumberInput>
-            {stateFill.fillKm && (
-              <div className="warning-fill">Vui lòng nhập Km đã đi</div>
-            )}
+            {stateFill.fillKm && <div className="warning-fill">Vui lòng nhập Km đã đi</div>}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <NumberInputPrice
-              placeholder="Giá xe"
-              value={stateForm?.price}
-              onChangePrice={onChangePrice}
-              className=""
-            ></NumberInputPrice>
-            {stateFill.fillPrice && (
-              <div className="warning-fill">Vui lòng nhập Giá xe</div>
-            )}
+            <NumberInputPrice placeholder="Giá xe" value={stateForm?.price} onChangePrice={onChangePrice} className=""></NumberInputPrice>
+            {stateFill.fillPrice && <div className="warning-fill">Vui lòng nhập Giá xe</div>}
           </div>
         </div>
       </div>

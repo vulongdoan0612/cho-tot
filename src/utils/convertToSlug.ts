@@ -1,4 +1,5 @@
-const convertToSlug = (str: string | undefined) => {
+const convertToSlug = (str: string | undefined | any) => {
+  if (str === undefined) return;
   if (str) {
     return str
       .toLowerCase()
@@ -10,4 +11,3 @@ const convertToSlug = (str: string | undefined) => {
   }
 };
 export default convertToSlug;
-

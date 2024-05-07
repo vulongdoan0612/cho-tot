@@ -93,33 +93,23 @@ const RightFilterMBOTO = ({ setState }: any) => {
   };
   return (
     <div className="right-contain">
-      <div className="filter-status">
-        <span
-          onClick={handleFilterStatus}
-          className="title-filter prevent-select"
-        >
-          Lọc theo tình trạng{" "}
-          <ArrowDownIcon
-            className={filterStatus ? "" : "rotate"}
-          ></ArrowDownIcon>
-        </span>
-        {filterStatus && (
-          <div className="list">
-            <span>Đã sử dụng</span>
-            <span>Mới</span>
-          </div>
-        )}
-      </div>{" "}
+      {!router.query.status && (
+        <div className="filter-status">
+          <span onClick={handleFilterStatus} className="title-filter prevent-select">
+            Lọc theo tình trạng <ArrowDownIcon className={filterStatus ? "" : "rotate"}></ArrowDownIcon>
+          </span>
+          {filterStatus && (
+            <div className="list">
+              <span>Đã sử dụng</span>
+              <span>Mới</span>
+            </div>
+          )}
+        </div>
+      )}
       {!router.query.price && (
         <div className="filter-status">
-          <span
-            onClick={handleFilterPrice}
-            className="title-filter prevent-select"
-          >
-            Lọc theo giá{" "}
-            <ArrowDownIcon
-              className={filterPrice ? "" : "rotate"}
-            ></ArrowDownIcon>
+          <span onClick={handleFilterPrice} className="title-filter prevent-select">
+            Lọc theo giá <ArrowDownIcon className={filterPrice ? "" : "rotate"}></ArrowDownIcon>
           </span>
           {filterPrice && (
             <div className="list">
@@ -142,62 +132,48 @@ const RightFilterMBOTO = ({ setState }: any) => {
                 <></>
               )}
               <div className="see-more" onClick={handleFilterSeeMorePrice}>
-                Xem thêm{" "}
-                <ArrowDownIcon
-                  className={filterSeeMorePrice ? "rotate" : ""}
-                ></ArrowDownIcon>
+                Xem thêm <ArrowDownIcon className={filterSeeMorePrice ? "rotate" : ""}></ArrowDownIcon>
               </div>
             </div>
           )}
         </div>
       )}
-      <div className="filter-status">
-        <span
-          onClick={handleFilterForm}
-          className="title-filter prevent-select"
-        >
-          Lọc theo kiểu dáng{" "}
-          <ArrowDownIcon className={filterForm ? "" : "rotate"}></ArrowDownIcon>
-        </span>
-        {filterForm && (
-          <div className="list">
-            {forms.slice(0, 5).map((item, index) => {
-              return (
-                <span key={index} onClick={() => queryForm(item.value)}>
-                  {item.item}
-                </span>
-              );
-            })}
-            {filterSeeMoreForm ? (
-              forms.slice(5, 8).map((item, index) => {
+      {!router.query.form && (
+        <div className="filter-status">
+          <span onClick={handleFilterForm} className="title-filter prevent-select">
+            Lọc theo kiểu dáng <ArrowDownIcon className={filterForm ? "" : "rotate"}></ArrowDownIcon>
+          </span>
+          {filterForm && (
+            <div className="list">
+              {forms.slice(0, 5).map((item, index) => {
                 return (
                   <span key={index} onClick={() => queryForm(item.value)}>
                     {item.item}
                   </span>
                 );
-              })
-            ) : (
-              <></>
-            )}
-            <div className="see-more" onClick={handleFilterSeeMoreForm}>
-              Xem thêm{" "}
-              <ArrowDownIcon
-                className={filterSeeMoreForm ? "rotate" : ""}
-              ></ArrowDownIcon>
+              })}
+              {filterSeeMoreForm ? (
+                forms.slice(5, 8).map((item, index) => {
+                  return (
+                    <span key={index} onClick={() => queryForm(item.value)}>
+                      {item.item}
+                    </span>
+                  );
+                })
+              ) : (
+                <></>
+              )}
+              <div className="see-more" onClick={handleFilterSeeMoreForm}>
+                Xem thêm <ArrowDownIcon className={filterSeeMoreForm ? "rotate" : ""}></ArrowDownIcon>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
       {!router.query.sit && (
         <div className="filter-status">
-          <span
-            onClick={handleFilterSit}
-            className="title-filter prevent-select"
-          >
-            Lọc theo số chỗ{" "}
-            <ArrowDownIcon
-              className={filterSit ? "" : "rotate"}
-            ></ArrowDownIcon>
+          <span onClick={handleFilterSit} className="title-filter prevent-select">
+            Lọc theo số chỗ <ArrowDownIcon className={filterSit ? "" : "rotate"}></ArrowDownIcon>
           </span>
           {filterSit && (
             <div className="list">
@@ -220,67 +196,52 @@ const RightFilterMBOTO = ({ setState }: any) => {
                 <></>
               )}
               <div className="see-more" onClick={handleFilterSeeMoreSit}>
-                Xem thêm{" "}
-                <ArrowDownIcon
-                  className={filterSeeMoreSit ? "rotate" : ""}
-                ></ArrowDownIcon>
+                Xem thêm <ArrowDownIcon className={filterSeeMoreSit ? "rotate" : ""}></ArrowDownIcon>
               </div>
             </div>
           )}
         </div>
       )}
-      <div className="filter-status">
-        <span
-          onClick={handleFilterFuel}
-          className="title-filter prevent-select"
-        >
-          Lọc theo nhiên liệu{" "}
-          <ArrowDownIcon className={filterFuel ? "" : "rotate"}></ArrowDownIcon>
-        </span>
-        {filterFuel && (
-          <div className="list">
-            {fuels.map((item, index) => {
-              return (
-                <span key={index} onClick={() => queryFuel(item.value)}>
-                  {item.item}
-                </span>
-              );
-            })}
-          </div>
-        )}
-      </div>
-      <div className="filter-status">
-        <span
-          onClick={handleFilterNumberBox}
-          className="title-filter prevent-select"
-        >
-          Lọc theo hộp số{" "}
-          <ArrowDownIcon
-            className={filterNumberBox ? "" : "rotate"}
-          ></ArrowDownIcon>
-        </span>
-        {filterNumberBox && (
-          <div className="list">
-            {numberBox.map((item, index) => {
-              return (
-                <span key={index} onClick={() => queryNumberBox(item.value)}>
-                  {item.item}
-                </span>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      {!router.query.fuel && (
+        <div className="filter-status">
+          <span onClick={handleFilterFuel} className="title-filter prevent-select">
+            Lọc theo nhiên liệu <ArrowDownIcon className={filterFuel ? "" : "rotate"}></ArrowDownIcon>
+          </span>
+          {filterFuel && (
+            <div className="list">
+              {fuels.map((item, index) => {
+                return (
+                  <span key={index} onClick={() => queryFuel(item.value)}>
+                    {item.item}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+      {!router.query.form && (
+        <div className="filter-status">
+          <span onClick={handleFilterNumberBox} className="title-filter prevent-select">
+            Lọc theo hộp số <ArrowDownIcon className={filterNumberBox ? "" : "rotate"}></ArrowDownIcon>
+          </span>
+          {filterNumberBox && (
+            <div className="list">
+              {numberBox.map((item, index) => {
+                return (
+                  <span key={index} onClick={() => queryNumberBox(item.value)}>
+                    {item.item}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
       {!router.query.city && (
         <div className="filter-status">
-          <span
-            onClick={handleFilterCity}
-            className="title-filter prevent-select"
-          >
-            Mua bán ô tô{" "}
-            <ArrowDownIcon
-              className={filterCity ? "" : "rotate"}
-            ></ArrowDownIcon>
+          <span onClick={handleFilterCity} className="title-filter prevent-select">
+            Mua bán ô tô <ArrowDownIcon className={filterCity ? "" : "rotate"}></ArrowDownIcon>
           </span>
           {filterCity && (
             <div className="list">
@@ -303,10 +264,7 @@ const RightFilterMBOTO = ({ setState }: any) => {
                 <></>
               )}
               <div className="see-more" onClick={handleFilterSeeMoreCity}>
-                Xem thêm{" "}
-                <ArrowDownIcon
-                  className={filterSeeMoreCity ? "rotate" : ""}
-                ></ArrowDownIcon>
+                Xem thêm <ArrowDownIcon className={filterSeeMoreCity ? "rotate" : ""}></ArrowDownIcon>
               </div>
             </div>
           )}
