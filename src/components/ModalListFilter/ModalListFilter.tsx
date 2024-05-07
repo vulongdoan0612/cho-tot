@@ -93,7 +93,6 @@ const ModalListFilter = ({
   };
   useEffect(() => {
     setDataRender(data);
-    console.log(data);
   }, [data]);
   const handleSearch = (event: any) => {
     const { value } = event.target;
@@ -131,7 +130,6 @@ const ModalListFilter = ({
   };
   const onChangeRadio = (item: any) => {
     try {
-      console.log(item);
 
       setValueRadio === "sit"
         ? setState((prevState: any) => ({
@@ -270,7 +268,6 @@ const ModalListFilter = ({
         <div className="sits">
           {dataRender &&
             dataRender.map((item: any, index: any) => {
-              console.log(item);
               return (
                 <div key={index} className="sit-item">
                   <Radio.Group value={String(valueRadioAll)}>

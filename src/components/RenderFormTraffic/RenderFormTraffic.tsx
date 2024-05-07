@@ -112,7 +112,6 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       ...prevState,
       model: event?.target?.value,
     }));
-    console.log(event?.target?.value);
     if (event?.target?.value !== "") {
       setStateFill((prevState: any) => ({
         ...prevState,
@@ -135,12 +134,10 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
   const onChange: DatePickerProps<any>["onChange"] = (date: any, dateString: any) => {
     const momentDateCCCD = moment(dateString);
     const formattedDateCCCD = momentDateCCCD.format("YYYY");
-    console.log();
     setStateForm((prevState) => ({
       ...prevState,
       dateCar: String(formattedDateCCCD),
     }));
-    console.log(formattedDateCCCD);
     if (dateString !== "" || formattedDateCCCD !== "Invalid date") {
       setStateFill((prevState: any) => ({
         ...prevState,
@@ -188,7 +185,6 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
         km: 0,
       }));
     }
-    console.log(value);
     if (String(value) !== "") {
       setStateFill((prevState: any) => ({
         ...prevState,
@@ -197,7 +193,6 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
     }
   };
   const onChangePrice = (value: any) => {
-    console.log(value);
     if (onlyNumbers(value) || value === "") {
       setStateForm((prevState) => ({
         ...prevState,

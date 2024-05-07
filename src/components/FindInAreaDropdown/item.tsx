@@ -66,7 +66,6 @@ const FindInAreaDropdown = ({
     }));
   };
   const updateURL = (queryParams: any) => {
-    console.log(queryParams);
     router.push({
       pathname: "/mua-ban-oto",
       query: { ...router.query, ...queryParams },

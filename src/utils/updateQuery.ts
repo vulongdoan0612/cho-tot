@@ -9,7 +9,6 @@ export const useUpdateQuery = () => {
     }
 
     const { pathname, query } = router;
-    // console.log(queries);
     queries.forEach(([key, value]) => {
       if (value !== "undefined" && value !== "") {
         query[key] = value;

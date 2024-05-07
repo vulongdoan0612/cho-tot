@@ -622,6 +622,8 @@ const SellingPage = () => {
               </span>
               {state.openBrand && (
                 <BrandCarDropdown
+                  setFilter={setFilter}
+                  filter={filter}
                   valueRadioBrand={state.valueRadioBrand}
                   setState={setState}
                   openBrand={state.openBrand}

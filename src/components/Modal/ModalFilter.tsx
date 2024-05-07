@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import convertToSlug from "@/utils/convertToSlug";
 import { colorsCar, countriesCar, formsCar, fuelCar, postCar, statusCar } from "./_mock";
 import ItemModalFilterForm from "../ItemModalFilter/indexForm";
+import { numberBox } from "../Contain-MBOTO/_mock";
 
 const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter, filter }: any) => {
   const [modalListAll, setModalListAll] = useState(false);
@@ -293,14 +294,14 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
       fuel: value,
     }));
   };
-  const onChangeRadioNumberBox = (e: RadioChangeEvent) => {
+  const onChangeRadioNumberBox = (item: any, value: any) => {
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioNumberBox: e.target.value,
+      valueRadioNumberBox: item,
     }));
     setFilter((prevFilter: any) => ({
       ...prevFilter,
-      numberBox: e.target.value,
+      numberBox: value,
     }));
   };
   const handleChangeMin = (event: any) => {
@@ -390,9 +391,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
           setWarnKmMax(false);
 
           setWarnKmMin(false);
-          console.log("test1");
         } else {
-          console.log("test2");
           setWarnKmMin(true);
         }
       } else if (event.target.value === "" && state.kmMax !== "" && state.kmMax !== undefined) {
@@ -451,7 +450,6 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
     }
   };
   const handleChangePriceMin = (event: any) => {
-    console.log(event.target.value);
     if (onlyNumbers(event.target.value) || event.target.value === "") {
       setState((prevState: any) => ({
         ...prevState,
@@ -910,12 +908,12 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
           </div>
           {hiddenNB && (
             <div className="body">
-              <Radio.Group value={state.valueRadioNumberBox} onChange={onChangeRadioNumberBox}>
-                {numberBoxList.map((item, index) => {
+              <Radio.Group value={state.valueRadioNumberBox}>
+                {numberBox.map((item: any, index: any) => {
                   return (
-                    <Radio value={item} key={index}>
+                    <Radio value={item.item} key={index} onClick={() => onChangeRadioNumberBox(item.item, item.value)}>
                       {" "}
-                      <span className="brand-name">{item}</span>
+                      <span className="brand-name">{item.item}</span>
                     </Radio>
                   );
                 })}

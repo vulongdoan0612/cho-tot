@@ -143,7 +143,6 @@ export const unhiddenPost = async (accessToken: string, data: any) => {
 };
 export const EditPostFormSellCheck = async (accessToken: string, data: any) => {
   const formData = new FormData();
-  console.log(data?.image);
   if (data?.image?.fileList && data?.image?.fileList?.length > 0) {
     data.image.fileList.forEach((image: any, index: number) => {
       const imageObject = {
@@ -151,7 +150,6 @@ export const EditPostFormSellCheck = async (accessToken: string, data: any) => {
         img: image.url,
       };
       const imageString = JSON.stringify(imageObject);
-      console.log(imageString);
 
       {
         image?.response

@@ -5,13 +5,20 @@ import brandList from "../RenderFormTraffic/carList.json";
 
 import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
 import convertToSlug from "@/utils/convertToSlug";
-const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
+import { useRouter } from "next/router";
+const BrandCarDropdown = ({ openBrand, setState, setFilter, filter, valueRadioBrand }: any) => {
   const updateQuery = useUpdateQuery();
   const removeQuery = useRemoveQuery();
   const brandRef: any = useRef(null);
   const [searchBrand, setSearchBrand] = useState("");
   const [dataRender, setDataRender] = useState<any>([]);
-
+  const router = useRouter();
+  const updateURL = (queryParams: any) => {
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: { ...router.query, ...queryParams },
+    });
+  };
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
@@ -39,10 +46,8 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
     const { value } = event.target;
     setSearchBrand(value);
     const result = brandList.filter((brand: any, index) => {
-      console.log(brand);
       return brand.brand.toLowerCase().includes(value.toLowerCase());
     });
-    console.log(result);
     setDataRender(result);
   };
   const handleRenew = () => {
@@ -61,6 +66,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
       removeQuery("brand");
     }
   };
+
   const onChangeRadio = (e: RadioChangeEvent) => {
     setState((prevState: any) => ({
       ...prevState,
@@ -68,7 +74,14 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
       openBrand: false,
       valueRadioBrandModal: e.target.value,
     }));
-    updateQuery("brand", convertToSlug(e.target.value));
+    updateURL({ brand: e.target.value }); // setFilter((prevFilter: any) => ({
+    //   ...prevFilter,
+    //   brand: e.target.value,
+    // }));
+    //   const queries: any = Object.entries(filter);
+    // updateQuery(queries);
+
+    // updateQuery("brand", convertToSlug(e.target.value));
   };
   return (
     <>

@@ -175,7 +175,6 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
     try {
       const queries: any = Object.entries(filter);
       updateQuery(queries);
-      console.log(inputValueMin);
     } finally {
       setState((prevState: any) => ({
         ...prevState,

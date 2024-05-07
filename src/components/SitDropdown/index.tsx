@@ -86,7 +86,6 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
       openSit: false,
       valueRadioModal: e.target.value,
     }));
-    console.log(e.target.value, typeof e.target.value);
 
     updateURL({ sit: String(e.target.value) });
   };

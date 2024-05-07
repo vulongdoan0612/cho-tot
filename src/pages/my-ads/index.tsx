@@ -145,7 +145,6 @@ const MyAds = () => {
   const updatePostHidden = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      console.log(postId);
       const updateField = {
         postId: postId,
       };

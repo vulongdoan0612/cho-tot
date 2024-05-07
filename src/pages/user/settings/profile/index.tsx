@@ -72,7 +72,6 @@ const User = () => {
   const updateProfile = async () => {
     const token = localStorage.getItem("access_token");
     try {
-      console.log(stateUser.fullAddress);
       if (
         stateUser?.introducing === "" ||
         stateUser?.introducing === undefined
@@ -481,16 +480,7 @@ const User = () => {
     ) {
       setFillAddrDetail(true);
     }
-    console.log(
-      stateUser?.wardValue,
-      "wardValue",
-      stateUser?.districtValue,
-      "districtValue",
-      stateUser?.detailAddress,
-      "detailAddress",
-      stateUser?.cityValue,
-      "cityValue"
-    );
+
     if (
       stateUser?.cities &&
       stateUser?.detailAddress !== undefined &&

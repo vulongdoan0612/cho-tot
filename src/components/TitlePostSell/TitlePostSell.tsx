@@ -373,57 +373,6 @@ const TitlePostSell = ({
   const postSell = async () => {
     const token = localStorage.getItem("access_token");
     const uuid = uuidv4();
-    // console.log(
-    //   status,
-    //   "status",
-    //   value,
-    //   "value",
-    //   color,
-    //   "color",
-    //   carNumber,
-    //   "Number",
-    //   owner,
-    //   "owner",
-    //   price,
-    //   "price",
-    //   country,
-    //   "country",
-    //   model,
-    //   "model",
-    //   sit,
-    //   "sit",
-    //   activeButton,
-    //   "Button",
-    //   accessories,
-    //   "accessories",
-    //   registry,
-    //   "registry",
-    //   numberBox,
-    //   "Box",
-    //   status,
-    //   "status",
-    //   dateCar,
-    //   "Car",
-    //   statePost?.title,
-    //   "title",
-    //   statePost?.introducing,
-    //   "introducing",
-    //   km,
-    //   "km",
-    //   form,
-    //   "form",
-    //   statePost?.person,
-    //   "person",
-    //   statePost?.detailAddress,
-    //   "Address",
-    //   statePost?.fullAddress,
-    //   "Address",
-    //   statePost?.cityValue,
-    //   "Value",
-    //   statePost?.districtValue,
-    //   "Value",
-    //   statePost?.wardValue
-    // );
     try {
       if (status === undefined) {
         setStateFill((prevState: any) => ({
@@ -539,7 +488,6 @@ const TitlePostSell = ({
           fillOwner: true,
         }));
       }
-      console.log(statePost?.fullAddress);
       if (
         statePost?.fullAddress === undefined ||
         statePost?.fullAddress === ""
@@ -555,7 +503,6 @@ const TitlePostSell = ({
           fillYouR: true,
         }));
       }
-      console.log("test2");
 
       if (
         token &&
@@ -611,7 +558,6 @@ const TitlePostSell = ({
           districtValue: statePost?.districtValue,
           wardValue: statePost?.wardValue,
         };
-        console.log("test", postForm);
         if (fileList && !id) {
           if (fileList.length === 0) {
             handleWarning();
