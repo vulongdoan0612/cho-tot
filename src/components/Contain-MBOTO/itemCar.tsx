@@ -1,21 +1,58 @@
 import { Image, InputNumberProps, Skeleton, Tabs, TabsProps } from "antd";
 import { useEffect, useState } from "react";
-import {
-  ChatIcon,
-  FavouriteIcon,
-  MangeShopIcon,
-  TopPostIcon,
-} from "../CustomIcons";
+import { AddedFavouritePostIcon, ChatIcon, FavouriteIcon, MangeShopIcon, TopPostIcon } from "../CustomIcons";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
+import { useRouter } from "next/router";
+import { useFetchFavListMain } from "@/hooks/useFetchFavListMain";
+import { addFavPost, removeFavPost } from "@/services/favPost";
+import { fetchDataFavListMain } from "@/redux/reducers/posts";
 
 const ItemCar = ({ posts, spin }: any) => {
+  const { favPostListMain } = useSelector((state: RootState) => state.postsData);
   const [inputValue, setInputValue] = useState(1);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const onChange: InputNumberProps["onChange"] = (newValue) => {
     setInputValue(15);
+  };
+  useFetchFavListMain();
+
+  const router = useRouter();
+  const handleRouter = (item: any) => {
+    // console.log(item);
+    router.push(`/${item?.post?.slug}/${item?.postId}`);
+  };
+  const handleRemoveFavPost = async (postId: any) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      const updateField = {
+        postId: postId,
+      };
+      try {
+        await removeFavPost(String(token), updateField);
+      } finally {
+        dispatch(fetchDataFavListMain());
+      }
+    }
+
+    // setFav(false);
+  };
+  const handleAddFavPost = async (postId: any) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      const updateField = {
+        postId: postId,
+      };
+      try {
+        await addFavPost(String(token), updateField);
+      } finally {
+        dispatch(fetchDataFavListMain());
+      }
+    }
+
+    // setFav(false);
   };
   const items: TabsProps["items"] = [
     {
@@ -26,15 +63,12 @@ const ItemCar = ({ posts, spin }: any) => {
           <div className="wrapper-tabs">
             {posts &&
               posts?.data?.map((item: any, index: any) => {
+                const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
                 return (
-                  <div className="tab" key={index}>
+                  <div className="tab" key={index} onClick={() => handleRouter(item)}>
                     <div className="contain">
                       <Skeleton.Button block active></Skeleton.Button>
-                      <div
-                        className={`${
-                          spin ? "unhidden" : "hidden"
-                        } skeleton-custom`}
-                      >
+                      <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}>
                         <Image
                           className={"left-contain-tab"}
                           src={item?.post?.image[0]?.img}
@@ -46,14 +80,19 @@ const ItemCar = ({ posts, spin }: any) => {
                       </div>
                       <div className="right-contain-tab">
                         <Skeleton active />
-                        <div
-                          className={`${
-                            spin ? "unhidden" : "hidden"
-                          } skeleton-custom-right`}
-                        >
+                        <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
                           <div className="header">
                             <span className="title">{item?.post?.title}</span>
-                            <FavouriteIcon></FavouriteIcon>
+                            {isFavorite ? (
+                              <div className="add-fav">
+                                <AddedFavouritePostIcon
+                                  onClick={() => handleRemoveFavPost(item?.postId)}
+                                  className="fav"
+                                ></AddedFavouritePostIcon>
+                              </div>
+                            ) : (
+                              <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                            )}
                           </div>
                           <span className="description">
                             {item?.post?.dateCar} <hr></hr>
@@ -62,9 +101,7 @@ const ItemCar = ({ posts, spin }: any) => {
                             {item?.post?.numberBox}
                           </span>
                           <div className="middle">
-                            <span className="price">
-                              {formatNumberWithCommas(item?.post?.price)} đ
-                            </span>
+                            <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                             <span className="address">
                               <TopPostIcon></TopPostIcon> Tin ưu tiên <hr></hr>
                               {item?.post?.cityValueName}
@@ -80,17 +117,11 @@ const ItemCar = ({ posts, spin }: any) => {
                                   height={24}
                                 ></Image>
                                 <div className="info-user">
-                                  <span className="username">
-                                    {item?.userInfo?.fullName}
-                                  </span>
+                                  <span className="username">{item?.userInfo?.fullName}</span>
                                   <div className="sell">
-                                    <span className="selled">
-                                      {item?.userInfo?.selled} đã bán
-                                    </span>
+                                    <span className="selled">{item?.userInfo?.selled} đã bán</span>
                                     <hr></hr>
-                                    <span className="selling">
-                                      {item?.userInfo?.selling} đang bán
-                                    </span>
+                                    <span className="selling">{item?.userInfo?.selling} đang bán</span>
                                   </div>
                                 </div>
                               </div>

@@ -1,0 +1,122 @@
+.wrapper-post-detail {
+  .slide-car {
+    .gallery {
+      z-index: 1;
+      margin-bottom: 12px;
+      .image-main-slide {
+        border-radius: 8px;
+        // transition: all 1s ease;
+        // filter: blur(0px);
+      }
+      // .blur-image {
+      //   filter: blur(3px);
+      // }
+      position: relative;
+      .add-fav {
+        font-size: 20px;
+        .fav {
+          color: #e5193b;
+        }
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        z-index: 1;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        cursor: pointer;
+        border-radius: 50%;
+        align-items: center;
+        background-color: #fff;
+        justify-content: center;
+      }
+      .count {
+        bottom: 10px;
+        padding: 4px 8px;
+        border-radius: 20px;
+        background-color: #fff;
+        position: absolute;
+        z-index: 1;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #222;
+        left: calc(50% - 29px);
+      }
+      .prev-icon,
+      .next-icon {
+        top: 50%;
+        display: flex;
+        width: 28px;
+        -webkit-user-select: all;
+        user-select: all;
+        justify-content: center;
+        height: 28px;
+        border-radius: 50%;
+        position: absolute;
+        background-color: white;
+        // width: 28px;
+        // height: 28px;
+        font-size: 17px;
+        font-weight: 700;
+        transform: translate(00%, -50%);
+        cursor: pointer;
+      }
+      .prev-icon {
+        z-index: 1;
+
+        right: 20px;
+      }
+      .next-icon {
+        -webkit-user-select: all;
+        user-select: all;
+        z-index: 1;
+        left: 20px;
+      }
+    }
+    .slider-less {
+      display: flex;
+      .slider-item {
+        width: 110px;
+        .active {
+          border: 2px solid #ff8800;
+        }
+        img {
+          border: 2px solid transparent;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+      }
+    }
+    .slider {
+      .slick-next {
+        right: 15px;
+        z-index: 1;
+      }
+      .slick-prev {
+        z-index: 1;
+        left: 5px;
+      }
+      .slick-next::before,
+      .slick-prev::before {
+        color: rgba(24, 24, 24);
+        opacity: 0.8;
+        font-size: 28px;
+      }
+      .slick-list {
+        .slick-slide {
+          .active {
+            border: 2px solid #ff8800;
+          }
+          img {
+            cursor: pointer;
+            border: 2px solid transparent;
+
+            object-fit: cover;
+            border-radius: 8px;
+          }
+        }
+      }
+    }
+  }
+}

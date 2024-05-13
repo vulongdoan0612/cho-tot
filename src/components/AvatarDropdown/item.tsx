@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { limitText } from "@/utils/limitText";
 import { logout } from "@/services/authentication";
 import { useRouter } from "next/router";
 import { isObjectLike, isUndefined } from "lodash";
@@ -13,38 +12,24 @@ const DropdownList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { isAuthenticated, account } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { isAuthenticated, account } = useSelector((state: RootState) => state.auth);
   const handleLogOut = () => {
     router.push("/");
     logout(dispatch);
   };
+
   return (
     <div className="avatar-dropdown-header">
       {isAuthenticated ? (
         <div className="user-info">
           <div className="avatar">
-            <Avatar
-              src={
-                <Image
-                  src="/images/vu01.png"
-                  alt="avatar"
-                  width={100}
-                  height={100}
-                />
-              }
-            />
+            <Avatar src={<Image src="/images/vu01.png" alt="avatar" width={100} height={100} />} />
           </div>
           <div className="right">
             <div className="name">{account?.fullname}</div>
             <div className="rate">
               <span className="rate-number">2</span>
-              <Rate
-                disabled
-                defaultValue={2}
-                character={<StarIcon></StarIcon>}
-              />
+              <Rate disabled defaultValue={2} character={<StarIcon></StarIcon>} />
               <span className="text">Chưa có người đánh giá</span>
             </div>
             <hr></hr>
@@ -70,22 +55,12 @@ const DropdownList = () => {
         </div>
         <div className="container">
           <span className="buy">
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/escrow_buy_orders.svg"
-              width={24}
-              height={24}
-              alt=""
-            ></Image>
+            <Image src="https://static.chotot.com/storage/chotot-icons/svg/escrow_buy_orders.svg" width={24} height={24} alt=""></Image>
             <span>Đơn mua</span>
           </span>
           <span className="sell">
             {" "}
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/escrow-orders.svg"
-              width={24}
-              height={24}
-              alt=""
-            ></Image>
+            <Image src="https://static.chotot.com/storage/chotot-icons/svg/escrow-orders.svg" width={24} height={24} alt=""></Image>
             <span>Đơn bán</span>
           </span>
         </div>
@@ -95,22 +70,14 @@ const DropdownList = () => {
           <span>Tiện ích</span>
         </div>
         <div className="container">
-          <span className="post-save">
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/menu-saved-ad.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
-            <span>Tin đăng đã lưu</span>{" "}
-          </span>
+          <a href="/bookmark/tin-dang-da-luu">
+            <span className="post-save">
+              <Image src="https://static.chotot.com/storage/chotot-icons/svg/menu-saved-ad.svg" alt="" width={24} height={24}></Image>
+              <span>Tin đăng đã lưu</span>{" "}
+            </span>
+          </a>
           <span className="search-save">
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/menu-saved-search.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://static.chotot.com/storage/chotot-icons/svg/menu-saved-search.svg" alt="" width={24} height={24}></Image>
             <span>Tìm kiếm đã lưu</span>{" "}
           </span>
         </div>
@@ -122,22 +89,12 @@ const DropdownList = () => {
         <div className="container">
           <span className="dongtot">
             {" "}
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg" alt="" width={24} height={24}></Image>
             <span>Đồng tốt</span>{" "}
           </span>
           <span className="history">
             {" "}
-            <Image
-              src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg" alt="" width={24} height={24}></Image>
             <span>Lịch sử giao dịch</span>{" "}
           </span>
         </div>
@@ -149,22 +106,12 @@ const DropdownList = () => {
         <div className="container">
           <span className="dongtot">
             {" "}
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg" alt="" width={24} height={24}></Image>
             <span>Đồng tốt</span>{" "}
           </span>
           <span className="history">
             {" "}
-            <Image
-              src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg" alt="" width={24} height={24}></Image>
             <span>Lịch sử giao dịch</span>{" "}
           </span>
         </div>
@@ -176,22 +123,12 @@ const DropdownList = () => {
         <div className="container">
           <span className="dongtot">
             {" "}
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg" alt="" width={24} height={24}></Image>
             <span>Đồng tốt</span>{" "}
           </span>
           <span className="history">
             {" "}
-            <Image
-              src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg" alt="" width={24} height={24}></Image>
             <span>Lịch sử giao dịch</span>{" "}
           </span>
         </div>
@@ -203,22 +140,12 @@ const DropdownList = () => {
         <div className="container">
           <span className="dongtot">
             {" "}
-            <Image
-              src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg" alt="" width={24} height={24}></Image>
             <span>Đồng tốt</span>{" "}
           </span>
           <span className="history">
             {" "}
-            <Image
-              src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg" alt="" width={24} height={24}></Image>
             <span>Lịch sử giao dịch</span>{" "}
           </span>
         </div>
@@ -228,26 +155,16 @@ const DropdownList = () => {
           <span>Khác</span>
         </div>
         <div className="container">
-          <span className="dongtot">
-            {" "}
-            <a href="/user/settings/profile">
-              <Image
-                src="https://static.chotot.com/storage/icons/svg/setting.svg"
-                alt=""
-                width={24}
-                height={24}
-              ></Image>
+          <a href="/user/settings/profile">
+            <span className="dongtot">
+              {" "}
+              <Image src="https://static.chotot.com/storage/icons/svg/setting.svg" alt="" width={24} height={24}></Image>
               <span>Cài đặt tài khoản</span>{" "}
-            </a>
-          </span>
+            </span>
+          </a>
           <span className="history" onClick={handleLogOut}>
             {" "}
-            <Image
-              src="https://static.chotot.com/storage/icons/svg/logout.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
+            <Image src="https://static.chotot.com/storage/icons/svg/logout.svg" alt="" width={24} height={24}></Image>
             <span>Đăng xuất</span>{" "}
           </span>
         </div>

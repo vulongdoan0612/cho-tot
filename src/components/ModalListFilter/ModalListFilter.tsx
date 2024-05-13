@@ -13,6 +13,7 @@ const ModalListFilter = ({
   setValueRadio,
   setState,
   typeModal,
+  placeholder,
   setFilter,
 }: any) => {
   const [search, setSearch] = useState("");
@@ -93,6 +94,7 @@ const ModalListFilter = ({
   };
   useEffect(() => {
     setDataRender(data);
+    setSearch("");
   }, [data]);
   const handleSearch = (event: any) => {
     const { value } = event.target;
@@ -117,7 +119,7 @@ const ModalListFilter = ({
     }
     if (typeModal === "country") {
       const result = data.filter((country: any) => {
-        return country.toLowerCase().includes(value.toLowerCase());
+        return country.item.toLowerCase().includes(value.toLowerCase());
       });
       setDataRender(result);
     }
@@ -127,10 +129,15 @@ const ModalListFilter = ({
       });
       setDataRender(result);
     }
+    if (typeModal === "model") {
+      const result = data.filter((form: any) => {
+        return form.toLowerCase().includes(value.toLowerCase());
+      });
+      setDataRender(result);
+    }
   };
   const onChangeRadio = (item: any) => {
     try {
-
       setValueRadio === "sit"
         ? setState((prevState: any) => ({
             ...prevState,
@@ -241,6 +248,7 @@ const ModalListFilter = ({
   const handleBack = () => {
     handleCancleModal();
   };
+  console.log(title, typeModal);
   return (
     <CustomModal
       open={modalListAll}
@@ -263,7 +271,7 @@ const ModalListFilter = ({
         {" "}
         <div className="selection">
           <SearchIcon></SearchIcon>
-          <Input placeholder="Nhập tìm số chỗ" onChange={handleSearch} value={search} />{" "}
+          <Input placeholder={placeholder} onChange={handleSearch} value={search} />{" "}
         </div>
         <div className="sits">
           {dataRender &&

@@ -48,7 +48,17 @@ export const PostFormSellCheck = async (accessToken: string, data: any) => {
 
   return axios(config);
 };
-
+export const getPost = async (accessToken: string, data: any) => {
+  const config = {
+    method: "POST",
+    url: `/get-post`,
+    headers: {
+      Authorization: accessToken,
+    },
+    data: data,
+  };
+  return axios(config);
+};
 export const getPostCheck = async (accessToken: string, data: any) => {
   const config = {
     method: "POST",
@@ -111,11 +121,19 @@ export const getPosts = async (
   fuel: string,
   numberBox: string,
   city: string,
-  district: string
+  district: string,
+  date: string,
+  km: string,
+  color: string,
+  country: string,
+  model: string,
+  brand: string,
+  status: string,
+  post: string
 ) => {
   const config = {
     method: "POST",
-    url: `/get-posts?pageSize=${pageSize}&currentPage=${currentPage}&price=${price}&form=${form}&sit=${sit}&fuel=${fuel}&numberBox=${numberBox}&city=${city}&district=${district}`,
+    url: `/get-posts?pageSize=${pageSize}&currentPage=${currentPage}&price=${price}&form=${form}&sit=${sit}&fuel=${fuel}&numberBox=${numberBox}&city=${city}&district=${district}&date=${date}&km=${km}&color=${color}&country=${country}&model=${model}&brand=${brand}&status=${status}&post=${post}`,
   };
   return axios(config);
 };
@@ -152,9 +170,7 @@ export const EditPostFormSellCheck = async (accessToken: string, data: any) => {
       const imageString = JSON.stringify(imageObject);
 
       {
-        image?.response
-          ? formData.append(`image`, image.originFileObj)
-          : formData.append(`image`, imageString);
+        image?.response ? formData.append(`image`, image.originFileObj) : formData.append(`image`, imageString);
       }
     });
   }

@@ -162,7 +162,7 @@ const PostSell = () => {
               onPreview={handlePreview}
               onChange={handleChange}
             >
-              {fileList.length >= 8
+              {fileList.length >= 20
                 ? null
                 : fileList.length !== 0
                 ? uploadedCustomSmaller

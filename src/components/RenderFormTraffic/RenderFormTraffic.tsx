@@ -1,10 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import brandList from "./carList.json";
-import countries from "./country.json";
-import formCar from "./formCar.json";
-import colorCar from "./color.json";
-import carSit from "./carSit.json";
 import { DatePicker, DatePickerProps } from "antd";
 import dayjs from "dayjs";
 import CustomButtonSelect from "../CustomButtonSelect";
@@ -18,6 +14,7 @@ import { ICommonStateFillFormRenderCar, ICommonStateFormRenderCar } from "@/inte
 import moment from "moment";
 import { onlyNumbers } from "@/utils/onlyNumbers";
 import { defaultCommonStateFill } from "./_fill";
+import { colorsCar, countriesCar, formsCar, sitsCar } from "../Contain-MBOTO/_mock";
 
 const RenderOto = ({ handleWarning, fileList }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);
@@ -312,6 +309,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              className={stateFill.fillBrand ? "warn-border" : ""}
               value={stateForm?.value}
               label="Hãng xe"
               onChange={handleChange}
@@ -332,6 +330,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              className={stateFill.fillModel ? "warn-border" : ""}
               value={stateForm?.model}
               disabled={stateForm?.value ? false : true}
               label="Dòng xe"
@@ -351,7 +350,8 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
             <DatePicker
               onChange={onChange}
               picker="year"
-              value={stateForm.dateCar !== 0 ? dayjs(stateForm.dateCar) : null}
+              value={stateForm.dateCar !== "" ? dayjs(stateForm.dateCar) : null}
+              className={stateFill.fillDate ? "warn-border" : ""}
               placeholder="Năm sản xuất"
               // minDate={dayjs("1990")}
               // maxDate={dayjs("2024")}
@@ -407,14 +407,15 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
+                className={stateFill.fillCountry ? "warn-border" : ""}
                 value={stateForm?.country}
                 label="Dòng xe"
                 onChange={handleChangeCountry}
               >
-                {countries.map((item: any, index: any) => {
+                {countriesCar.map((item: any, index: any) => {
                   return (
-                    <MenuItem key={index} value={item}>
-                      {item}
+                    <MenuItem key={index} value={item.item}>
+                      {item.item}
                     </MenuItem>
                   );
                 })}
@@ -430,13 +431,14 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={stateForm?.form}
+                className={stateFill.fillForm ? "warn-border" : ""}
                 label="Dòng xe"
                 onChange={handleChangeForm}
               >
-                {formCar.map((item: any, index: any) => {
+                {formsCar.map((item: any, index: any) => {
                   return (
-                    <MenuItem key={index} value={item}>
-                      {item}
+                    <MenuItem key={index} value={item.item}>
+                      {item.item}
                     </MenuItem>
                   );
                 })}
@@ -454,13 +456,14 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={stateForm?.sit}
+                className={stateFill.fillSit ? "warn-border" : ""}
                 label="Số chỗ"
                 onChange={handleChangeSit}
               >
-                {carSit.map((item: any, index: any) => {
+                {sitsCar.map((item: any, index: any) => {
                   return (
-                    <MenuItem key={index} value={item}>
-                      {item}
+                    <MenuItem key={index} value={item.value}>
+                      {item.item}
                     </MenuItem>
                   );
                 })}
@@ -476,13 +479,14 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={stateForm?.color}
+                className={stateFill.fillColor ? "warn-border" : ""}
                 label="Dòng xe"
                 onChange={handleChangeColor}
               >
-                {colorCar.map((item: any, index: any) => {
+                {colorsCar.map((item: any, index: any) => {
                   return (
-                    <MenuItem key={index} value={item}>
-                      {item}
+                    <MenuItem key={index} value={item.item}>
+                      {item.item}
                     </MenuItem>
                   );
                 })}
@@ -495,16 +499,16 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "4px",
+                gap: "2px",
                 width: "100%",
               }}
             >
               <TextField
                 required
-                className="car-number input-need-to-custom"
                 id="filled-multiline-flexible"
                 label="Biển số xe"
                 multiline
+                className={`car-number input-need-to-custom ${stateFill.fillCarN ? "warn-border" : ""}`}
                 onChange={handleChangeCarNumber}
                 value={stateForm?.carNumber}
                 maxRows={4}
@@ -521,6 +525,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={stateForm?.owner}
+                className={stateFill.fillOwner ? "warn-border" : ""}
                 label="Số đời chủ"
                 onChange={handleChangeOwner}
               >
@@ -546,7 +551,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                     Không
                   </CustomButtonSelect>
                 </div>{" "}
-                {stateFill.fillAcces && <div className="warning-fill">Vui lòng chọn Biển số xe</div>}
+                {stateFill.fillAcces && <div className="warning-fill">Vui lòng chọn phụ kiện đi kèm</div>}
               </div>
             </div>
             <div className="registry">
@@ -560,23 +565,28 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                     Không
                   </CustomButtonSelect>
                 </div>
-                {stateFill.fillRegis && <div className="warning-fill">Vui lòng chọn Biển số xe</div>}
+                {stateFill.fillRegis && <div className="warning-fill">Vui lòng chọn hạn đăng kiểm</div>}
               </div>
             </div>
           </div>
         </div>
         <div className="gap">
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <NumberInput
               value={stateForm?.km}
               placeholder="Km đã đi"
-              className="number-input-form"
+              className={`number-input-form ${stateFill.fillKm ? "warn-border" : ""}`}
               onChangeNumber={onChangeNumber}
             ></NumberInput>
             {stateFill.fillKm && <div className="warning-fill">Vui lòng nhập Km đã đi</div>}
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <NumberInputPrice placeholder="Giá xe" value={stateForm?.price} onChangePrice={onChangePrice} className=""></NumberInputPrice>
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            <NumberInputPrice
+              placeholder="Giá xe"
+              value={stateForm?.price}
+              onChangePrice={onChangePrice}
+              className={`${stateFill.fillPrice ? "warn-border" : ""}`}
+            ></NumberInputPrice>
             {stateFill.fillPrice && <div className="warning-fill">Vui lòng nhập Giá xe</div>}
           </div>
         </div>

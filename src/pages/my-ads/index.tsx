@@ -1,10 +1,5 @@
-import {
-  ChangePostIcon,
-  FasterSellIcon,
-  HiddenEyeIcon,
-  LetterIIcon,
-  PlusManageIcon,
-} from "@/components/CustomIcons";
+import CustomButtonGreen from "@/components/CustomButton/green";
+import { ChangePostIcon, FasterSellIcon, HiddenEyeIcon, LetterIIcon, PlusManageIcon } from "@/components/CustomIcons";
 import Page from "@/layout/Page";
 import { RootState } from "@/redux/store";
 import {
@@ -20,17 +15,7 @@ import addDay from "@/utils/addDay";
 import useDidMountEffect from "@/utils/customUseEffect";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import getWardDistrict from "@/utils/getWardDistrict";
-import {
-  Breadcrumb,
-  Checkbox,
-  CheckboxProps,
-  Image,
-  InputNumberProps,
-  Slider,
-  Spin,
-  Tabs,
-  TabsProps,
-} from "antd";
+import { Breadcrumb, Checkbox, CheckboxProps, Image, InputNumberProps, Slider, Spin, Tabs, TabsProps } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
@@ -170,21 +155,11 @@ const MyAds = () => {
               <div className="on-view" key={key}>
                 <div className="wrapper-left">
                   <div className="left">
-                    <Image
-                      src={item?.post?.image[0]?.img}
-                      alt=""
-                      className="image-car"
-                      width={144}
-                      height={144}
-                    ></Image>
+                    <Image src={item?.post?.image[0]?.img} alt="" className="image-car" width={144} height={144}></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">
-                        {formatNumberWithCommas(item?.post?.price)} đ
-                      </span>
-                      <span className="address">
-                        {getWardDistrict(item?.post?.fullAddress)}
-                      </span>
+                      <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                      <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                       <span className="date-post">
                         Ngày đăng tin: &nbsp;<p> {item?.date}</p>
                       </span>
@@ -228,14 +203,7 @@ const MyAds = () => {
                           </span>
                           <LetterIIcon></LetterIIcon>
                         </div>
-                        <Slider
-                          min={1}
-                          max={20}
-                          onChange={onChange}
-                          value={
-                            typeof inputValue === "number" ? inputValue : 0
-                          }
-                        />
+                        <Slider min={1} max={20} onChange={onChange} value={typeof inputValue === "number" ? inputValue : 0} />
                       </div>
                     </div>
                     <div className="service">
@@ -250,9 +218,9 @@ const MyAds = () => {
                     </div>
                   </div>
                   <div className="bottom">
-                    <button>
+                    <CustomButtonGreen>
                       <FasterSellIcon></FasterSellIcon>Bán nhanh hơn
-                    </button>
+                    </CustomButtonGreen>
                   </div>
                 </div>
               </div>
@@ -271,21 +239,11 @@ const MyAds = () => {
               <div className="on-view" key={key}>
                 <div className="wrapper-left">
                   <div className="left">
-                    <Image
-                      src={item?.post?.image[0]?.img}
-                      alt=""
-                      className="image-car"
-                      width={144}
-                      height={144}
-                    ></Image>
+                    <Image src={item?.post?.image[0]?.img} alt="" className="image-car" width={144} height={144}></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">
-                        {formatNumberWithCommas(item?.post?.price)} đ
-                      </span>
-                      <span className="address">
-                        {getWardDistrict(item?.post?.fullAddress)}
-                      </span>
+                      <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                      <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                       <span className="date-post">
                         Ngày đăng tin: &nbsp;<p> {item?.date}</p>
                       </span>
@@ -308,10 +266,7 @@ const MyAds = () => {
                       </div>
                       <div className="slider">
                         <div className="page">
-                          <span
-                            className="top"
-                            style={{ justifyContent: "center" }}
-                          >
+                          <span className="top" style={{ justifyContent: "center" }}>
                             Tin chưa được hiển thị
                           </span>
                           <LetterIIcon></LetterIIcon>
@@ -346,22 +301,11 @@ const MyAds = () => {
               <div className="on-view" key={key}>
                 <div className="wrapper-left">
                   <div className="left">
-                    <Image
-                      src={item?.post?.image[0]?.img}
-                      alt=""
-                      className="image-car"
-                      width={144}
-                      height={144}
-                    ></Image>
+                    <Image src={item?.post?.image[0]?.img} alt="" className="image-car" width={144} height={144}></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">
-                        {" "}
-                        {formatNumberWithCommas(item?.post?.price)} đ
-                      </span>
-                      <span className="address">
-                        {getWardDistrict(item?.post?.fullAddress)}
-                      </span>
+                      <span className="price"> {formatNumberWithCommas(item?.post?.price)} đ</span>
+                      <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                       <span className="date-post">
                         Ngày đăng tin: &nbsp;<p> {item?.date}</p>
                       </span>
@@ -384,10 +328,7 @@ const MyAds = () => {
                       </div>
                       <div className="slider">
                         <div className="page">
-                          <span
-                            className="top"
-                            style={{ justifyContent: "center" }}
-                          >
+                          <span className="top" style={{ justifyContent: "center" }}>
                             Tin chưa được hiển thị
                           </span>
                           <LetterIIcon></LetterIIcon>
@@ -422,22 +363,11 @@ const MyAds = () => {
               <div className="on-view" key={key}>
                 <div className="wrapper-left">
                   <div className="left">
-                    <Image
-                      src={item?.post?.image[0]?.img}
-                      alt=""
-                      className="image-car"
-                      width={144}
-                      height={144}
-                    ></Image>
+                    <Image src={item?.post?.image[0]?.img} alt="" className="image-car" width={144} height={144}></Image>
                     <div className="information">
                       <span className="title">{item?.post?.title}</span>
-                      <span className="price">
-                        {" "}
-                        {formatNumberWithCommas(item?.post?.price)} đ
-                      </span>
-                      <span className="address">
-                        {getWardDistrict(item?.post?.fullAddress)}
-                      </span>
+                      <span className="price"> {formatNumberWithCommas(item?.post?.price)} đ</span>
+                      <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                     </div>
                   </div>
                 </div>
@@ -454,10 +384,7 @@ const MyAds = () => {
                       </div>
                       <div className="slider">
                         <div className="page">
-                          <span
-                            className="top"
-                            style={{ justifyContent: "center" }}
-                          >
+                          <span className="top" style={{ justifyContent: "center" }}>
                             Tin chưa được hiển thị
                           </span>
                           <LetterIIcon></LetterIIcon>
@@ -505,24 +432,14 @@ const MyAds = () => {
         />
         <div className="user-manage">
           <div className="left">
-            <Image
-              src="https://cdn.chotot.com/uac2/26802657"
-              alt=""
-              width={48}
-              height={48}
-            ></Image>
+            <Image src="https://cdn.chotot.com/uac2/26802657" alt="" width={48} height={48}></Image>
             <div className="name">
               <span>{account.fullname}</span>
             </div>
           </div>
           <div className="right-wrapper">
             <div className="right">
-              <Image
-                src="https://static.chotot.com/storage/react-common/dongTot.svg"
-                alt="alt"
-                width={16}
-                height={16}
-              ></Image>
+              <Image src="https://static.chotot.com/storage/react-common/dongTot.svg" alt="alt" width={16} height={16}></Image>
               <span className="balance">Số dư: 0</span>
               <button>
                 <PlusManageIcon></PlusManageIcon>
@@ -530,12 +447,7 @@ const MyAds = () => {
             </div>
           </div>
         </div>
-        <Tabs
-          defaultActiveKey="1"
-          items={items}
-          onChange={onChange}
-          className="tab-ads"
-        />
+        <Tabs defaultActiveKey="1" items={items} onChange={onChange} className="tab-ads" />
       </div>
       <Spin spinning={spin} fullscreen />
     </Page>

@@ -10,7 +10,21 @@ export const prices = [
   { item: "Giá 1 tỷ - 2 tỷ", value: "1t-2t" },
   { item: "Giá trên 2 tỷ", value: "up2t" },
 ];
-export const forms = [
+export const colorsCar = [
+  { item: "Trắng", value: "trang" },
+  { item: "Đen", value: "den" },
+  { item: "Bạc", value: "bac" },
+  { item: "Cam", value: "cam" },
+  { item: "Đỏ", value: "do" },
+  { item: "Xanh dương", value: "xanh-duong" },
+  { item: "Vàng", value: "vang" },
+  { item: "Xanh lá", value: "xanh-la" },
+  { item: "Hồng", value: "hong" },
+  { item: "Xám", value: "xam" },
+  { item: "Nâu", value: "nau" },
+  { item: "Màu khác", value: "khac" },
+];
+export const formsCar = [
   { item: "Sedan", value: "sedan" },
   { item: "SUV/Cross over", value: "suv-cross-over" },
   { item: "Hatchback", value: "hatchback" },
@@ -19,8 +33,21 @@ export const forms = [
   { item: "Van", value: "van" },
   { item: "Couple 2 cửa", value: "couple-2-cua" },
   { item: "Mui trần", value: "mui-tran" },
+  { item: "Khác", value: "khac" },
 ];
-export const sits = [
+export const countriesCar = [
+  { item: "Việt Nam", value: "viet-nam" },
+  { item: "Ấn Độ", value: "an-do" },
+  { item: "Hàn Quốc", value: "han-quoc" },
+  { item: "Thái Lan", value: "thai-lan" },
+  { item: "Trung Quốc", value: "trung-quoc" },
+  { item: "Mỹ", value: "my" },
+  { item: "Đức", value: "duc" },
+  { item: "Đài Loan", value: "dai-loan" },
+  { item: "Nước khác", value: "khac" },
+];
+
+export const sitsCar = [
   { item: "2 chỗ", value: "2" },
   { item: "4 chỗ", value: "4" },
   { item: "5 chỗ", value: "5" },
@@ -33,12 +60,22 @@ export const sits = [
   { item: "14 chỗ", value: "14" },
   { item: "16 chỗ", value: "16" },
 ];
-export const fuels = [
+export const postCar = [
+  { item: "Cá nhân", value: "ca-nhan" },
+  { item: "Bán chuyên", value: "ban-chuyen" },
+  { item: "Đối Tác Chợ Tốt", value: "doi-tac-cho-tot" },
+];
+export const statusCar = [
+  { item: "Đã sử dụng", value: "da-su-dung" },
+  { item: "Mới", value: "moi" },
+];
+export const fuelCar = [
   { item: "Xăng", value: "xang" },
   { item: "Dầu", value: "dau" },
-  { item: "Động cơ Hybrid", value: "hybrid" },
+  { item: "Động cơ Hybrid", value: "hyprid" },
   { item: "Điện", value: "dien" },
 ];
+
 export const numberBox = [
   { item: "Tự động", value: "tu-dong" },
   { item: "Số sàn", value: "so-san" },

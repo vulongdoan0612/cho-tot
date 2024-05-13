@@ -118,7 +118,6 @@
           border-radius: 100%;
           float: left;
           position: relative;
-  
         }
         .text {
           float: left;
@@ -154,8 +153,11 @@
         .container {
           display: flex;
           flex-direction: column;
-          .post-save {
+          a {
             padding: 8px 12px;
+          }
+          .post-save {
+            // padding: 8px 12px;
             span {
               color: #222222;
               line-height: 24px;

@@ -3,6 +3,7 @@
     width: 824px;
     margin-top: 12px !important;
     margin: auto;
+
     .ant-breadcrumb {
       padding-left: 12px !important;
     }
@@ -190,6 +191,14 @@
                     border-radius: 4px;
                   }
                   .right-contain-tab {
+                    .add-fav {
+                      display: flex;
+                      height: 20px;
+                      font-size: 20px;
+                      .fav {
+                        color: #c90927;
+                      }
+                    }
                     position: relative;
                     display: flex;
                     flex-direction: column;

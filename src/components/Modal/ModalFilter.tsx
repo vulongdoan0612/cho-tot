@@ -3,24 +3,18 @@ import { ArrowDownIcon } from "../CustomIcons";
 import CustomModal from "../CustomModal";
 import { useEffect, useState } from "react";
 import brandList from "../RenderFormTraffic/carList.json";
-import carSit from "../RenderFormTraffic/carSit.json";
-import numberBoxList from "./numberBox.json";
-import user from "./user.json";
 
 import { TextField } from "@mui/material";
 import { onlyNumbers } from "@/utils/onlyNumbers";
 import CustomButton from "../CustomButton";
 import ModalListFilter from "../ModalListFilter/ModalListFilter";
 import ItemModalFilterBrand from "../ItemModalFilter/indexBrands";
-import ItemModalFilterSits from "../ItemModalFilter/indexSits";
 import ItemModalFilterModels from "../ItemModalFilter/indexModels";
 import FilterBy from "../ItemModalFilter/indexFilter";
 import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
 import { useRouter } from "next/router";
-import convertToSlug from "@/utils/convertToSlug";
-import { colorsCar, countriesCar, formsCar, fuelCar, postCar, statusCar } from "./_mock";
 import ItemModalFilterForm from "../ItemModalFilter/indexForm";
-import { numberBox } from "../Contain-MBOTO/_mock";
+import { colorsCar, countriesCar, formsCar, fuelCar, numberBox, postCar, sitsCar, statusCar } from "../Contain-MBOTO/_mock";
 
 const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter, filter }: any) => {
   const [modalListAll, setModalListAll] = useState(false);
@@ -776,13 +770,13 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
       centered
     >
       <div className="wrapper-content">
-        <ItemModalFilterSits
+        <ItemModalFilterForm
           title="Số chỗ"
           value={state.valueRadioModal}
           onClickRadio={onClickRadio}
-          data={carSit}
+          data={sitsCar}
           onClick={() => handleModalListAll("sit")}
-        ></ItemModalFilterSits>
+        ></ItemModalFilterForm>
         <ItemModalFilterBrand
           title="Hãng xe"
           value={state.valueRadioBrandModal}
@@ -1050,13 +1044,42 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
         </div>
       </div>
       <ModalListFilter
-        title="Số chỗ"
+        title={
+          typeModal === "sit"
+            ? "Số chỗ"
+            : typeModal === "brand"
+            ? "Hãng xe"
+            : typeModal === "color"
+            ? "Màu sắc"
+            : typeModal === "country"
+            ? "Xuất xứ"
+            : typeModal === "model"
+            ? "Dòng xe"
+            : typeModal === "formCar"
+            ? "Kiểu dáng"
+            : ""
+        }
+        placeholder={
+          typeModal === "sit"
+            ? "Nhập tìm số chỗ"
+            : typeModal === "brand"
+            ? "Nhập tìm hãng xe"
+            : typeModal === "color"
+            ? "Nhập tìm màu sắc"
+            : typeModal === "country"
+            ? "Nhập tìm xuất xứ"
+            : typeModal === "model"
+            ? "Nhập tìm dòng xe"
+            : typeModal === "formCar"
+            ? "Nhập tìm kiểu dáng"
+            : ""
+        }
         modalListAll={modalListAll}
         handleCancleModal={handleCancleModalListAll}
         setFilter={setFilter}
         data={
           typeModal === "sit"
-            ? carSit
+            ? sitsCar
             : typeModal === "brand"
             ? brandList
             : typeModal === "color"

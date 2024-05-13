@@ -12,10 +12,7 @@ import { toast } from "react-toastify";
 import { Spin } from "antd";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
-import {
-  ICommonStateFillFormRenderCar,
-  ICommonStateFormRenderCarPost,
-} from "@/interfaces/User";
+import { ICommonStateFillFormRenderCar, ICommonStateFormRenderCarPost } from "@/interfaces/User";
 import { defaultCommonState } from "./_mock";
 import convertToSlug from "@/utils/convertToSlug";
 import { defaultCommonStateFill } from "../RenderFormTraffic/_fill";
@@ -47,8 +44,7 @@ const TitlePostSell = ({
   stateFill,
 }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);
-  const [statePost, setStatePost] =
-    useState<ICommonStateFormRenderCarPost>(defaultCommonState);
+  const [statePost, setStatePost] = useState<ICommonStateFormRenderCarPost>(defaultCommonState);
   const [fillAddrCity, setFillAddrCity] = useState(false);
   const [fillAddrWard, setFillAddrWard] = useState(false);
   const [fillAddrDistrict, setFillAddrDistrict] = useState(false);
@@ -61,9 +57,7 @@ const TitlePostSell = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
-        );
+        const response = await axios.get("https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json");
         setStatePost((prevState) => ({
           ...prevState,
           cities: response.data,
@@ -89,9 +83,7 @@ const TitlePostSell = ({
 
       if (account?.address?.city !== null && statePost?.cities.length > 0) {
         const selectedCityId = account?.address?.city;
-        const selectedCity = statePost?.cities.find(
-          (city: any) => city.Id === selectedCityId
-        );
+        const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
         setStatePost((prevState) => ({
           ...prevState,
           cityValueName: selectedCity?.Name,
@@ -104,22 +96,12 @@ const TitlePostSell = ({
         }
       }
     }
-  }, [
-    account,
-    account?.address,
-    account?.address?.city,
-    account?.address?.district,
-    account?.address?.ward,
-    statePost?.cities,
-    id,
-  ]);
+  }, [account, account?.address, account?.address?.city, account?.address?.district, account?.address?.ward, statePost?.cities, id]);
   useEffect(() => {
     if (!id) {
       if (statePost?.districts.length > 0) {
         const selectedDistrictId = account?.address?.district;
-        const selectedDistrict = statePost?.districts.find(
-          (district: any) => district.Id === selectedDistrictId
-        );
+        const selectedDistrict = statePost?.districts.find((district: any) => district.Id === selectedDistrictId);
         setStatePost((prevState) => ({
           ...prevState,
           districtValueName: selectedDistrict?.Name,
@@ -148,9 +130,7 @@ const TitlePostSell = ({
 
       if (dataPost?.post?.cityValue !== null) {
         const selectedCityId = dataPost?.post?.cityValue;
-        const selectedCity = statePost?.cities.find(
-          (city: any) => city.Id === selectedCityId
-        );
+        const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
         if (selectedCity) {
           setStatePost((prevState) => ({
             ...prevState,
@@ -173,9 +153,7 @@ const TitlePostSell = ({
     if (id) {
       if (statePost?.districts.length > 0) {
         const selectedDistrictId = dataPost?.post?.districtValue;
-        const selectedDistrict = statePost?.districts.find(
-          (district: any) => district.Id === selectedDistrictId
-        );
+        const selectedDistrict = statePost?.districts.find((district: any) => district.Id === selectedDistrictId);
         if (selectedDistrict) {
           setStatePost((prevState) => ({
             ...prevState,
@@ -247,9 +225,7 @@ const TitlePostSell = ({
   };
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
-    const selectedCity = statePost?.cities.find(
-      (city: any) => city.Id === selectedCityId
-    );
+    const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
     if (selectedCity) {
       setStatePost((prevState) => ({
         ...prevState,
@@ -266,9 +242,7 @@ const TitlePostSell = ({
   };
   const handleDistrictChange = (event: any) => {
     const selectedDistrictId = event.target.value;
-    const selectedDistrict = statePost?.districts.find(
-      (district: any) => district?.Id === selectedDistrictId
-    );
+    const selectedDistrict = statePost?.districts.find((district: any) => district?.Id === selectedDistrictId);
 
     if (selectedDistrict) {
       setStatePost((prevState) => ({
@@ -310,19 +284,13 @@ const TitlePostSell = ({
     if (statePost?.wardValue === undefined || statePost?.wardValue === "") {
       setFillAddrWard(true);
     }
-    if (
-      statePost?.districtValue === undefined ||
-      statePost?.districtValue === ""
-    ) {
+    if (statePost?.districtValue === undefined || statePost?.districtValue === "") {
       setFillAddrDistrict(true);
     }
     if (statePost?.cityValue === undefined || statePost?.cityValue === "") {
       setFillAddrCity(true);
     }
-    if (
-      statePost?.detailAddress === undefined ||
-      statePost?.detailAddress === ""
-    ) {
+    if (statePost?.detailAddress === undefined || statePost?.detailAddress === "") {
       setFillAddrDetail(true);
     }
     if (
@@ -488,10 +456,7 @@ const TitlePostSell = ({
           fillOwner: true,
         }));
       }
-      if (
-        statePost?.fullAddress === undefined ||
-        statePost?.fullAddress === ""
-      ) {
+      if (statePost?.fullAddress === undefined || statePost?.fullAddress === "") {
         setStateFill((prevState: any) => ({
           ...prevState,
           fillAddress: true,
@@ -811,9 +776,7 @@ const TitlePostSell = ({
 
             if (response?.data?.status === "SUCCESS") {
               setTimeout(() => {
-                router.push(
-                  `/dashboard/view-post?id=${dataPost?.postId}&edit=yes`
-                );
+                router.push(`/dashboard/view-post?id=${dataPost?.postId}&edit=yes`);
               }, 2000);
             }
           }
@@ -829,27 +792,22 @@ const TitlePostSell = ({
       <div className="title-field">
         <TextField
           required
-          className="car-number input-need-to-custom"
           id="filled-multiline-flexible"
           label="Tiêu đề tin đăng"
           multiline
+          className={`car-number input-need-to-custom ${stateFill.fillTitle ? "warn-border" : ""}`}
           onChange={handleChangeTitle}
           value={statePost?.title}
           maxRows={4}
           variant="filled"
         />
-        {stateFill.fillTitle && (
-          <div className="warning-fill"> Vui lòng nhập Tiêu đề tin đăng</div>
-        )}
+        {stateFill.fillTitle && <div className="warning-fill"> Vui lòng nhập Tiêu đề tin đăng</div>}
       </div>
-      <div
-        className="introducing"
-        style={{ display: "flex", flexDirection: "column", gap: "4px" }}
-      >
+      <div className="introducing" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
         <TextField
-          className="text-area"
           id="filled-multiline-flexible"
           label="Giới thiệu"
+          className={`text-area ${stateFill.fillIntro ? "warn-border" : ""}`}
           multiline
           value={statePost?.introducing}
           onChange={handleChangeIntroducing}
@@ -857,23 +815,15 @@ const TitlePostSell = ({
           variant="filled"
         />{" "}
         <span>0/50 kí tự</span>
-        {stateFill.fillIntro && (
-          <div className="warning-fill">Vui lòng nhập Giới thiệu</div>
-        )}
+        {stateFill.fillIntro && <div className="warning-fill">Vui lòng nhập Giới thiệu</div>}
       </div>
       <span className="title title-infor">Thông tin người bán</span>
       <span className="you-are">Bạn là</span>
       <div className="display-flex" style={{ marginBottom: "4px" }}>
-        <CustomButtonSelect
-          handleClick={() => handlePerson("Cá nhân")}
-          isActive={statePost?.person === "Cá nhân"}
-        >
+        <CustomButtonSelect handleClick={() => handlePerson("Cá nhân")} isActive={statePost?.person === "Cá nhân"}>
           Cá nhân
         </CustomButtonSelect>
-        <CustomButtonSelect
-          handleClick={() => handlePerson("Bán chuyên")}
-          isActive={statePost?.person === "Bán chuyên"}
-        >
+        <CustomButtonSelect handleClick={() => handlePerson("Bán chuyên")} isActive={statePost?.person === "Bán chuyên"}>
           Bán chuyên
         </CustomButtonSelect>
       </div>
@@ -881,11 +831,11 @@ const TitlePostSell = ({
 
       <div className="address input-need-to-custom" onClick={handleModal}>
         <TextField
-          className="fullname"
           id="filled-multiline-flexible"
           label="Địa chỉ"
           value={statePost?.fullAddress}
           multiline
+          className={`fullname ${stateFill.fillAddress ? "warn-border" : ""}`}
           onChange={(e) => handleAddress(e)}
           maxRows={4}
           variant="filled"

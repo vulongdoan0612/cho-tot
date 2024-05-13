@@ -3,13 +3,7 @@ import { AppDispatch } from "@/redux/store";
 import useDidMountEffect from "@/utils/customUseEffect";
 import { useDispatch } from "react-redux";
 
-export const useFetchPosts = ({
-  setSpin,
-  setCurrent,
-  current,
-  pageSize,
-  body,
-}: any) => {
+export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: any) => {
   const dispatch: AppDispatch = useDispatch();
   useDidMountEffect(() => {
     current = 1;
@@ -37,6 +31,14 @@ export const useFetchPosts = ({
           numberBox: body.query.numberBox,
           city: body.query.city,
           district: body.query.district,
+          date: body.query.date,
+          km: body.query.km,
+          color: body.query.color,
+          country: body.query.country,
+          model: body.query.model,
+          brand: body.query.brand,
+          status: body.query.status,
+          post: body.query.post,
         })
       );
     } catch (error) {

@@ -1,6 +1,13 @@
-export const limitText = (text: string) => {
-  if (text && text.length > 13) {
-    return text.substring(0, 7) + "..." + text.slice(-3);
+export const limitTextTitle = (text: string) => {
+  if (text && text.length > 40) {
+    return text.substring(0, 35) + "...";
+  }
+  return text;
+};
+export const limitTextDescription = (text: string) => {
+  console.log(text);
+  if (text && text.length > 26) {
+    return text.substring(0, 25) + "...";
   }
   return text;
 };

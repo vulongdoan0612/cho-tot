@@ -183,13 +183,13 @@
           }
         }
         .MuiFormControl-root {
-          gap: 4px;
+          gap: 2px;
           margin: 0;
         }
         .wrap-date {
           display: flex;
           flex-direction: column;
-          gap: 4px;
+          gap: 2px;
         }
         .number-box,
         .fuel,
@@ -234,6 +234,7 @@
     }
   }
 }
+
 .modal-category-select {
   width: 630px !important;
   .ant-modal-body {
@@ -271,20 +272,31 @@
   }
 }
 .number-input-price:hover,
-.number-input-price:focus,
-.number-input-price:focus-within,
-.number-input:focus,
-.number-input:focus-within,
 .number-input:hover {
   border-color: silver !important;
   box-shadow: none;
+}
+.number-input:focus,
+.number-input-price:focus,
+.number-input-price:focus-within,
+.number-input:focus-within {
+  border-color: #f80 !important;
+}
+.warn-border {
+  border-color: #e5193b !important;
+  .MuiInputBase-root {
+    border-color: #e5193b ;
+  }
+  .Mui-focused {
+    // border-color: #e5193b !important;
+  }
 }
 .number-input,
 .number-input-price {
   border-radius: 4px;
   width: 100%;
   height: 48px;
-  border-color: silver !important;
+  border-color: silver;
 
   .ant-input-number-input-wrap {
     height: 100%;

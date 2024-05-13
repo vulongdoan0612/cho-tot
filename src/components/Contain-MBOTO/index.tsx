@@ -7,21 +7,11 @@ import BrandSlide from "./brandSlide";
 import ItemCar from "./itemCar";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {  RootState } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 
-const ContainMBOTO = ({
-  posts,
-  spin,
-  pageSize,
-  current,
-
-  setState,
-  onChangePage,
-}: any) => {
-  const {  loading } = useSelector(
-    (state: RootState) => state.countDownLoading
-  );
+const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, setState, onChangePage }: any) => {
+  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [reCurrent, setReCurrent] = useState(1);
   const router = useRouter();
   const { query } = router;
@@ -44,6 +34,8 @@ const ContainMBOTO = ({
           {
             title: `Ô tô`,
           },
+          cityName !== "" ? { title: cityName } : {},
+          districtName !== "" ? { title: districtName } : {},
         ]}
       />
       <div className="main-contain">
@@ -51,17 +43,10 @@ const ContainMBOTO = ({
           {loading ? (
             <Skeleton.Button block={true} active size="large"></Skeleton.Button>
           ) : (
-            <div className="title-main">
-              Mua bán xe ô tô, xe hơi giá tốt cập nhật tháng 04/2024
-            </div>
+            <div className="title-main">Mua bán xe ô tô, xe hơi giá tốt cập nhật tháng 04/2024</div>
           )}
           {loading ? (
-            <Skeleton.Input
-              style={{ height: "92px" }}
-              block={true}
-              active
-              size="large"
-            ></Skeleton.Input>
+            <Skeleton.Input style={{ height: "92px" }} block={true} active size="large"></Skeleton.Input>
           ) : (
             <div className="recommend">
               <div className="title-recommend">Gợi ý khu vực</div>
@@ -76,26 +61,14 @@ const ContainMBOTO = ({
             </div>
           )}
           {loading ? (
-            <Skeleton.Input
-              style={{ height: "68px" }}
-              block={true}
-              active
-              size="large"
-            ></Skeleton.Input>
+            <Skeleton.Input style={{ height: "68px" }} block={true} active size="large"></Skeleton.Input>
           ) : (
             <BrandSlide></BrandSlide>
           )}
           <ItemCar spin={spin} posts={posts}></ItemCar>
-          <Pagination
-            current={reCurrent}
-            pageSize={pageSize}
-            onChange={onChangePage}
-            total={posts.total}
-          />
+          <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} />
         </div>
-        <RightFilterMBOTO
-          setState={setState}
-        ></RightFilterMBOTO>
+        <RightFilterMBOTO setState={setState}></RightFilterMBOTO>
       </div>
     </div>
   );

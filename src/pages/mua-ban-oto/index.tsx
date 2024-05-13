@@ -540,8 +540,8 @@ const SellingPage = () => {
                     districts={state.districts}
                     setState={setState}
                     selectCity={state.selectCity}
-                    districtName={state.districtName}
                     cities={state.cities}
+                    districtName={state.districtName}
                     cityName={state.cityName}
                     idCity={state.idCity}
                     idDistrict={state.idDistrict}
@@ -633,6 +633,8 @@ const SellingPage = () => {
           </div>
         </div>
         <ContainMBOTO
+          districtName={state.districtName}
+          cityName={state.cityName}
           spin={spin}
           pageSize={pageSize}
           posts={posts}

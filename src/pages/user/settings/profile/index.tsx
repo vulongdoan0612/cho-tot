@@ -5,13 +5,7 @@ import { DatePicker, DatePickerProps, Skeleton } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import { ArrowInputIcon } from "@/components/CustomIcons";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import moment from "moment";
 
 import axios from "axios";
@@ -49,15 +43,11 @@ const User = () => {
   const [stateUser, setStateUser] = useState<ICommonState>(defaultCommonState);
 
   const { account } = useSelector((state: RootState) => state.auth);
-  const { countdownDuration, loading } = useSelector(
-    (state: RootState) => state.countDownLoading
-  );
+  const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
-        );
+        const response = await axios.get("https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json");
         setStateUser((prevState) => ({
           ...prevState,
           cities: response.data,
@@ -72,16 +62,10 @@ const User = () => {
   const updateProfile = async () => {
     const token = localStorage.getItem("access_token");
     try {
-      if (
-        stateUser?.introducing === "" ||
-        stateUser?.introducing === undefined
-      ) {
+      if (stateUser?.introducing === "" || stateUser?.introducing === undefined) {
         setFillIntro(true);
       }
-      if (
-        stateUser?.rememberName === "" ||
-        stateUser?.rememberName === undefined
-      ) {
+      if (stateUser?.rememberName === "" || stateUser?.rememberName === undefined) {
         setFillRemem(true);
       }
       if (stateUser?.numberFax === "" || stateUser?.numberFax === undefined) {
@@ -194,10 +178,7 @@ const User = () => {
     }
   };
 
-  const onChangeBirth: DatePickerProps<any>["onChange"] = (
-    date,
-    dateString
-  ) => {
+  const onChangeBirth: DatePickerProps<any>["onChange"] = (date, dateString) => {
     const birthDate = moment(dateString);
     const formattedDateBirth = birthDate.format("YYYY-MM-DD");
     setStateUser((prevState: any) => ({
@@ -223,9 +204,7 @@ const User = () => {
   useEffect(() => {
     if (account?.address?.city !== null) {
       const selectedCityId = account?.address?.city;
-      const selectedCity = stateUser.cities.find(
-        (city: any) => city.Id === selectedCityId
-      );
+      const selectedCity = stateUser.cities.find((city: any) => city.Id === selectedCityId);
       if (selectedCity) {
         setStateUser((prevState) => ({
           ...prevState,
@@ -233,19 +212,11 @@ const User = () => {
         }));
       }
     }
-  }, [
-    account,
-    account?.address,
-    account?.address?.city,
-    account?.address?.district,
-    account?.address?.ward,
-  ]);
+  }, [account, account?.address, account?.address?.city, account?.address?.district, account?.address?.ward]);
   useEffect(() => {
     if (stateUser.districts.length > 0) {
       const selectedDistrictId = account?.address?.district;
-      const selectedDistrict = stateUser?.districts?.find(
-        (district: any) => district.Id === selectedDistrictId
-      );
+      const selectedDistrict = stateUser?.districts?.find((district: any) => district.Id === selectedDistrictId);
 
       if (selectedDistrict) {
         setStateUser((prevState) => ({
@@ -258,9 +229,7 @@ const User = () => {
 
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
-    const selectedCity = stateUser.cities.find(
-      (city: any) => city.Id === selectedCityId
-    );
+    const selectedCity = stateUser.cities.find((city: any) => city.Id === selectedCityId);
     if (selectedCity) {
       setStateUser((prevState) => ({
         ...prevState,
@@ -277,9 +246,7 @@ const User = () => {
   };
   const handleDistrictChange = (event: any) => {
     const selectedDistrictId = event.target.value;
-    const selectedDistrict = stateUser.districts.find(
-      (district: any) => district?.Id === selectedDistrictId
-    );
+    const selectedDistrict = stateUser.districts.find((district: any) => district?.Id === selectedDistrictId);
 
     if (selectedDistrict) {
       setStateUser((prevState) => ({
@@ -380,11 +347,7 @@ const User = () => {
     }
   }, [account?.birthdate]);
   useEffect(() => {
-    if (
-      account?.identifyCard?.CMND ||
-      account?.identifyCard?.date ||
-      account?.identifyCard?.location
-    ) {
+    if (account?.identifyCard?.CMND || account?.identifyCard?.date || account?.identifyCard?.location) {
       setStateUser((prevState) => ({
         ...prevState,
         cccd: account?.identifyCard?.CMND,
@@ -393,12 +356,7 @@ const User = () => {
         fullCCCD: account?.identifyCard?.fullCMND,
       }));
     }
-  }, [
-    account?.identifyCard?.CMND,
-    account?.identifyCard?.date,
-    account?.identifyCard?.location,
-    account?.identifyCard?.fullCMND,
-  ]);
+  }, [account?.identifyCard?.CMND, account?.identifyCard?.date, account?.identifyCard?.location, account?.identifyCard?.fullCMND]);
   useEffect(() => {
     if (account?.introduction) {
       setStateUser((prevState) => ({
@@ -465,19 +423,13 @@ const User = () => {
     if (stateUser?.wardValue === undefined || stateUser?.wardValue === "") {
       setFillAddrWard(true);
     }
-    if (
-      stateUser?.districtValue === undefined ||
-      stateUser?.districtValue === ""
-    ) {
+    if (stateUser?.districtValue === undefined || stateUser?.districtValue === "") {
       setFillAddrDistrict(true);
     }
     if (stateUser?.cityValue === undefined || stateUser?.cityValue === "") {
       setFillAddrCity(true);
     }
-    if (
-      stateUser?.detailAddress === undefined ||
-      stateUser?.detailAddress === ""
-    ) {
+    if (stateUser?.detailAddress === undefined || stateUser?.detailAddress === "") {
       setFillAddrDetail(true);
     }
 
@@ -576,9 +528,7 @@ const User = () => {
     if (stateUser.selectedItemFav.includes(item)) {
       setStateUser((prevState: any) => ({
         ...prevState,
-        selectedItemFav: stateUser.selectedItemFav.filter(
-          (selectedItem: any) => selectedItem !== item
-        ),
+        selectedItemFav: stateUser.selectedItemFav.filter((selectedItem: any) => selectedItem !== item),
       }));
     } else {
       setStateUser((prevState: any) => ({
@@ -642,11 +592,7 @@ const User = () => {
               {" "}
               <div className="fullname ">
                 {loading ? (
-                  <Skeleton.Input
-                    block={true}
-                    active
-                    size="large"
-                  ></Skeleton.Input>
+                  <Skeleton.Input block={true} active size="large"></Skeleton.Input>
                 ) : (
                   <TextField
                     required
@@ -661,17 +607,9 @@ const User = () => {
                   />
                 )}
               </div>
-              <div
-                className={`phone ${
-                  account?.phone ? "phone-exit" : "phone-not-exit"
-                }`}
-              >
+              <div className={`phone ${account?.phone ? "phone-exit" : "phone-not-exit"}`}>
                 {loading ? (
-                  <Skeleton.Input
-                    block={true}
-                    active
-                    size="large"
-                  ></Skeleton.Input>
+                  <Skeleton.Input block={true} active size="large"></Skeleton.Input>
                 ) : (
                   <>
                     <TextField
@@ -685,11 +623,7 @@ const User = () => {
                       variant="filled"
                       defaultValue={account?.phone}
                     />
-                    {account?.phone ? (
-                      <span className="change-phone">Thay đổi</span>
-                    ) : (
-                      <></>
-                    )}
+                    {account?.phone ? <span className="change-phone">Thay đổi</span> : <></>}
                   </>
                 )}
               </div>
@@ -697,14 +631,11 @@ const User = () => {
             {/* {loading ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : ( */}
-            <div
-              className="second-line input-arrow  input-need-to-custom"
-              onClick={handleModal}
-            >
+            <div className="second-line input-arrow  input-need-to-custom" onClick={handleModal}>
               <TextField
-                className="fullname"
                 id="filled-multiline-flexible"
                 label="Địa chỉ"
+                className={`fullname ${fillFullAddr ? "warn-border" : ""}`}
                 // onChange={handleAddress}
                 value={stateUser?.fullAddress}
                 multiline
@@ -712,47 +643,34 @@ const User = () => {
                 variant="filled"
               />
               <ArrowInputIcon></ArrowInputIcon>
-              {fillFullAddr && (
-                <span className="warning">Vui lòng nhập Địa chỉ</span>
-              )}
+              {fillFullAddr && <span className="warning">Vui lòng nhập Địa chỉ</span>}
             </div>
             {/* )} */}
             {loading ? (
-              <Skeleton.Input
-                block={true}
-                active
-                size="large"
-                style={{ height: "155px" }}
-              ></Skeleton.Input>
+              <Skeleton.Input block={true} active size="large" style={{ height: "155px" }}></Skeleton.Input>
             ) : (
               <div className="introducing">
                 <TextField
-                  className="text-area"
                   id="filled-multiline-flexible"
                   label="Giới thiệu"
+                  className={`text-area ${fillIntro ? "warn-border" : ""}`}
                   multiline
                   value={stateUser.introducing}
                   onChange={handleChangeIntroducing}
                   maxRows={4}
                   variant="filled"
                 />
-                {fillIntro && (
-                  <span className="warning">Vui lòng nhập Giới thiệu</span>
-                )}
+                {fillIntro && <span className="warning">Vui lòng nhập Giới thiệu</span>}
               </div>
             )}
             <div className="remember-name input-need-to-custom">
               {loading ? (
-                <Skeleton.Input
-                  block={true}
-                  active
-                  size="large"
-                ></Skeleton.Input>
+                <Skeleton.Input block={true} active size="large"></Skeleton.Input>
               ) : (
                 <>
                   <TextField
-                    className="rembember"
                     id="filled-multiline-flexible"
+                    className={`rembember ${fillRemem ? "warn-border" : ""}`}
                     label="Tên gợi nhớ"
                     value={stateUser.rememberName || account?.rememberName}
                     onChange={handleChangeRemember}
@@ -760,33 +678,21 @@ const User = () => {
                     maxRows={4}
                     variant="filled"
                   />
-                  {fillRemem && (
-                    <span className="warning">Vui lòng nhập Tên gợi nhớ</span>
-                  )}
+                  {fillRemem && <span className="warning">Vui lòng nhập Tên gợi nhớ</span>}
                 </>
               )}
               <p className="text">
                 https://www.chotot.com/user/<span>dsadasdsadasd</span>
               </p>
-              <p className="des">
-                Tên gợi nhớ sau khi được cập nhật sẽ không thể thay đổi trong
-                vòng 60 ngày tới.
-              </p>
+              <p className="des">Tên gợi nhớ sau khi được cập nhật sẽ không thể thay đổi trong vòng 60 ngày tới.</p>
             </div>
           </div>
         </div>
         <div className="security">
           <span className="title">Thông tin bảo mật</span>
-          <p className="des-sec">
-            Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể thấy
-            và chỉnh sửa những thông tin này.
-          </p>
+          <p className="des-sec">Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể thấy và chỉnh sửa những thông tin này.</p>
           <div className="form-input">
-            <div
-              className={`email input-need-to-custom ${
-                account?.email !== "" ? "email-exit" : "email-not-exit"
-              }`}
-            >
+            <div className={`email input-need-to-custom ${account?.email !== "" ? "email-exit" : "email-not-exit"}`}>
               <TextField
                 className="email"
                 id="filled-multiline-flexible"
@@ -800,12 +706,9 @@ const User = () => {
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
               <>
-                <div
-                  className="second-line input-arrow  input-need-to-custom"
-                  onClick={handleModalCCCD}
-                >
+                <div className="second-line input-arrow  input-need-to-custom" onClick={handleModalCCCD}>
                   <TextField
-                    className="fullname"
+                    className={`fullname ${fillFullCCCD ? "warn-border" : ""}`}
                     id="filled-multiline-flexible"
                     label="CCCD / CMND / Hộ chiếu"
                     value={stateUser.fullCCCD}
@@ -814,12 +717,8 @@ const User = () => {
                     variant="filled"
                   />
                   <ArrowInputIcon></ArrowInputIcon>
+                  {fillFullCCCD && <span className="warning">Vui lòng nhập CCCD / CMND / Hộ chiếu</span>}
                 </div>
-                {fillFullCCCD && (
-                  <span className="warning">
-                    Vui lòng nhập CCCD / CMND / Hộ chiếu
-                  </span>
-                )}
               </>
             )}
             {loading ? (
@@ -827,43 +726,34 @@ const User = () => {
             ) : (
               <div className="fax-number input-need-to-custom">
                 <TextField
-                  className="fax"
                   id="filled-multiline-flexible"
                   label="Mã số thuế"
+                  className={`fax ${fillFax ? "warn-border" : ""}`}
                   value={stateUser.numberFax}
                   onChange={handleChangeNumberFax}
                   multiline
                   maxRows={4}
                   variant="filled"
                 />
-                {fillFax && (
-                  <span className="warning">Vui lòng nhập Mã số thuế</span>
-                )}
+                {fillFax && <span className="warning">Vui lòng nhập Mã số thuế</span>}
               </div>
             )}
             {loading ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
-              <div
-                className="second-line input-arrow  input-need-to-custom"
-                onClick={handleModalFav}
-              >
+              <div className="second-line input-arrow  input-need-to-custom" onClick={handleModalFav}>
                 <TextField
-                  className="fullname"
                   id="filled-multiline-flexible"
                   label="Danh mục yêu thích"
                   value={selectItemsFav}
                   onChange={handleFav}
                   multiline
+                  className={`fullname ${fillFav ? "warn-border" : ""}`}
                   maxRows={4}
                   variant="filled"
                 />
                 <ArrowInputIcon></ArrowInputIcon>
-                {fillFav && (
-                  <span className="warning">
-                    Vui lòng chọn Danh mục yêu thích
-                  </span>
-                )}
+                {fillFav && <span className="warning">Vui lòng chọn Danh mục yêu thích</span>}
               </div>
             )}
             {loading ? (
@@ -872,13 +762,12 @@ const User = () => {
               <div className="bottom">
                 <div className="sex">
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                      Giới tính
-                    </InputLabel>
+                    <InputLabel id="demo-simple-select-label">Giới tính</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={stateUser.sex}
+                      className={`${fillSex ? "warn-border" : ""}`}
                       label="Giới tính"
                       onChange={handleChangeSex}
                     >
@@ -886,34 +775,25 @@ const User = () => {
                       <MenuItem value={"Nữ"}>Nữ</MenuItem>
                       <MenuItem value={"Khác"}>Khác</MenuItem>
                     </Select>
-                    {fillSex && (
-                      <span className="warning">Vui lòng chọn Giới tính</span>
-                    )}
+                    {fillSex && <span className="warning">Vui lòng chọn Giới tính</span>}
                   </FormControl>
                 </div>
                 <div className="birth-date">
                   <div className="date input-need-to-custom">
                     <DatePicker
-                      value={
-                        stateUser.birth !== "" ? dayjs(stateUser.birth) : null
-                      }
+                      value={stateUser.birth !== "" ? dayjs(stateUser.birth) : null}
+                      className={`${fillBirth ? "warn-border" : ""}`}
                       onChange={onChangeBirth}
                       placeholder={"Ngày sinh"}
                     />
-                    {fillBirth && (
-                      <span className="warning">Vui lòng chọn Ngày sinh</span>
-                    )}
+                    {fillBirth && <span className="warning">Vui lòng chọn Ngày sinh</span>}
                   </div>
                 </div>
               </div>
             )}
           </div>
         </div>
-        <CustomButton
-          type="submit"
-          className="save-change"
-          onClick={updateProfile}
-        >
+        <CustomButton type="submit" className="save-change" onClick={updateProfile}>
           Lưu thay đổi
         </CustomButton>
       </Setting>

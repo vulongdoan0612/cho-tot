@@ -2,7 +2,7 @@
 
 @import "./pages/index.scss";
 @import "./components/index.scss";
-
+@import "~react-image-gallery/styles/scss/image-gallery.scss";
 body {
   margin: 0px;
 }
@@ -33,7 +33,7 @@ a:active {
   .ant-pagination-item-active:hover {
     border: 1px solid #ffd100;
   }
-  .ant-pagination-item-link{
+  .ant-pagination-item-link {
     border-radius: 3px !important;
   }
   .ant-pagination-prev,
@@ -103,6 +103,9 @@ a:active {
   border-radius: 4px;
   border: 1px solid silver;
   background-color: white !important;
+}
+.Mui-focused {
+  border-color: #f80 !important;
 }
 .css-phksla-MuiInputBase-root-MuiFilledInput-root::before {
   border-bottom: none !important;

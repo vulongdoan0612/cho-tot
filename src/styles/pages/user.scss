@@ -329,6 +329,7 @@
   border-radius: 4px;
   height: 48px;
   width: 100%;
+  box-shadow: none !important;
   .ant-picker-input {
     input {
       font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -339,7 +340,12 @@
     }
   }
 }
-
+.ant-picker:focus {
+  box-shadow: none !important;
+}
+.ant-picker:focus-within {
+  border-color: #f80 !important;
+}
 .modal-fav {
   .fav-wrapper {
     row-gap: 1rem;

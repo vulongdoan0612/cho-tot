@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowDownIcon } from "../CustomIcons";
-import { cities, forms, fuels, numberBox, prices, sits } from "./_mock";
+import { cities, formsCar, fuelCar, numberBox, prices,sitsCar } from "./_mock";
 import { useRouter } from "next/router";
 
 const RightFilterMBOTO = ({ setState }: any) => {
@@ -145,7 +145,7 @@ const RightFilterMBOTO = ({ setState }: any) => {
           </span>
           {filterForm && (
             <div className="list">
-              {forms.slice(0, 5).map((item, index) => {
+              {formsCar.slice(0, 5).map((item, index) => {
                 return (
                   <span key={index} onClick={() => queryForm(item.value)}>
                     {item.item}
@@ -153,7 +153,7 @@ const RightFilterMBOTO = ({ setState }: any) => {
                 );
               })}
               {filterSeeMoreForm ? (
-                forms.slice(5, 8).map((item, index) => {
+                formsCar.slice(5, 8).map((item, index) => {
                   return (
                     <span key={index} onClick={() => queryForm(item.value)}>
                       {item.item}
@@ -177,7 +177,7 @@ const RightFilterMBOTO = ({ setState }: any) => {
           </span>
           {filterSit && (
             <div className="list">
-              {sits.slice(0, 6).map((item, index) => {
+              {sitsCar.slice(0, 6).map((item, index) => {
                 return (
                   <span key={index} onClick={() => querySit(item.value)}>
                     {item.item}
@@ -185,7 +185,7 @@ const RightFilterMBOTO = ({ setState }: any) => {
                 );
               })}
               {filterSeeMoreSit ? (
-                sits.slice(6, 12).map((item, index) => {
+                sitsCar.slice(6, 12).map((item, index) => {
                   return (
                     <span key={index} onClick={() => querySit(item.value)}>
                       {item.item}
@@ -209,7 +209,7 @@ const RightFilterMBOTO = ({ setState }: any) => {
           </span>
           {filterFuel && (
             <div className="list">
-              {fuels.map((item, index) => {
+              {fuelCar.map((item, index) => {
                 return (
                   <span key={index} onClick={() => queryFuel(item.value)}>
                     {item.item}
