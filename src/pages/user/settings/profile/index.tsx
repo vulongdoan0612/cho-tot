@@ -7,7 +7,6 @@ import TextField from "@mui/material/TextField";
 import { ArrowInputIcon } from "@/components/CustomIcons";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import moment from "moment";
-
 import axios from "axios";
 import ModalAddressUser from "@/components/Modal/ModalAddressUser";
 import ModalCCCCD from "@/components/Modal/ModalCCCD";
@@ -24,6 +23,8 @@ import Setting from "@/layout/Setting";
 import useDidMountEffect from "@/utils/customUseEffect";
 
 const User = () => {
+  const { loading } = useSelector((state: RootState) => state.countDownLoading);
+  const { account } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const [fillAddrCity, setFillAddrCity] = useState(false);
   const [fillAddrWard, setFillAddrWard] = useState(false);
@@ -33,17 +34,16 @@ const User = () => {
   const [fillRemem, setFillRemem] = useState(false);
   const [fillFax, setFillFax] = useState(false);
   const [fillFullAddr, setFillFullAddr] = useState(false);
+  const [fillCCCD, setFillCCCD] = useState(false);
+  const [fillCCCDFor, setFillCCCDFor] = useState(false);
+  const [fillCCCDLocation, setFillCCCDLocation] = useState(false);
   const [fillFullCCCD, setFillFullCCCD] = useState(false);
-
   const [fillSex, setFillSex] = useState(false);
   const [fillBirth, setFillBirth] = useState(false);
   const [fillFav, setFillFav] = useState(false);
   const [selectItemsFav, setSelectItemsFav] = useState<any>([]);
-
   const [stateUser, setStateUser] = useState<ICommonState>(defaultCommonState);
 
-  const { account } = useSelector((state: RootState) => state.auth);
-  const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,6 +59,129 @@ const User = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (account) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        cityValue: account?.address?.city,
+        districtValue: account?.address?.district,
+        wardValue: account?.address?.ward,
+        detailAddress: account?.address?.detailAddress,
+        fullAddress: account?.address?.fullAddress,
+      }));
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (account?.address?.city !== null) {
+      const selectedCityId = account?.address?.city;
+      const selectedCity = stateUser.cities.find((city: any) => city.Id === selectedCityId);
+      if (selectedCity) {
+        setStateUser((prevState) => ({
+          ...prevState,
+          districts: selectedCity.Districts,
+        }));
+      }
+    }
+  }, [account, account?.address, account?.address?.city, account?.address?.district, account?.address?.ward]);
+  useEffect(() => {
+    if (stateUser.districts.length > 0) {
+      const selectedDistrictId = account?.address?.district;
+      const selectedDistrict = stateUser?.districts?.find((district: any) => district.Id === selectedDistrictId);
+
+      if (selectedDistrict) {
+        setStateUser((prevState) => ({
+          ...prevState,
+          wards: selectedDistrict?.Wards,
+        }));
+      }
+    }
+  }, [stateUser.districts]);
+
+  useDidMountEffect(() => {
+    setStateUser((prevState) => ({
+      ...prevState,
+      fullAddress: "",
+    }));
+  }, []);
+
+  useEffect(() => {
+    if (account?.rememberName) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        rememberName: account?.rememberName,
+      }));
+    }
+  }, [account?.rememberName]);
+
+  useEffect(() => {
+    if (account?.birthdate) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        birth: account?.birthdate,
+      }));
+    }
+  }, [account?.birthdate]);
+
+  useEffect(() => {
+    if (account?.identifyCard?.CMND || account?.identifyCard?.date || account?.identifyCard?.location) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        cccd: account?.identifyCard?.CMND,
+        dateCCCD: dayjs(account?.identifyCard?.date),
+        location: account?.identifyCard?.location,
+        fullCCCD: account?.identifyCard?.fullCMND,
+      }));
+    }
+  }, [account?.identifyCard?.CMND, account?.identifyCard?.date, account?.identifyCard?.location, account?.identifyCard?.fullCMND]);
+
+  useEffect(() => {
+    if (account?.introduction) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        introducing: account?.introduction,
+      }));
+    }
+  }, [account?.introduction]);
+
+  useEffect(() => {
+    if (account?.fullname) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        fullName: account?.fullname,
+      }));
+    }
+  }, [account?.fullname]);
+
+  useEffect(() => {
+    if (account?.faxNumber) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        numberFax: account?.faxNumber,
+      }));
+    }
+  }, [account?.faxNumber]);
+
+  useEffect(() => {
+    if (account?.sex) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        sex: account?.sex,
+      }));
+    }
+  }, [account?.sex]);
+
+  useEffect(() => {
+    if (account?.favouriteList) {
+      setStateUser((prevState) => ({
+        ...prevState,
+        selectedItemFav: account?.favouriteList,
+      }));
+      setSelectItemsFav(account?.favouriteList);
+    }
+  }, [account?.favouriteList]);
+
   const updateProfile = async () => {
     const token = localStorage.getItem("access_token");
     try {
@@ -189,43 +312,6 @@ const User = () => {
       setFillBirth(false);
     }
   };
-  useEffect(() => {
-    if (account) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        cityValue: account?.address?.city,
-        districtValue: account?.address?.district,
-        wardValue: account?.address?.ward,
-        detailAddress: account?.address?.detailAddress,
-        fullAddress: account?.address?.fullAddress,
-      }));
-    }
-  }, [account]);
-  useEffect(() => {
-    if (account?.address?.city !== null) {
-      const selectedCityId = account?.address?.city;
-      const selectedCity = stateUser.cities.find((city: any) => city.Id === selectedCityId);
-      if (selectedCity) {
-        setStateUser((prevState) => ({
-          ...prevState,
-          districts: selectedCity.Districts,
-        }));
-      }
-    }
-  }, [account, account?.address, account?.address?.city, account?.address?.district, account?.address?.ward]);
-  useEffect(() => {
-    if (stateUser.districts.length > 0) {
-      const selectedDistrictId = account?.address?.district;
-      const selectedDistrict = stateUser?.districts?.find((district: any) => district.Id === selectedDistrictId);
-
-      if (selectedDistrict) {
-        setStateUser((prevState) => ({
-          ...prevState,
-          wards: selectedDistrict?.Wards,
-        }));
-      }
-    }
-  }, [stateUser.districts]);
 
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
@@ -244,6 +330,7 @@ const User = () => {
       }
     }
   };
+
   const handleDistrictChange = (event: any) => {
     const selectedDistrictId = event.target.value;
     const selectedDistrict = stateUser.districts.find((district: any) => district?.Id === selectedDistrictId);
@@ -263,12 +350,7 @@ const User = () => {
       }
     }
   };
-  useDidMountEffect(() => {
-    setStateUser((prevState) => ({
-      ...prevState,
-      fullAddress: "",
-    }));
-  }, []);
+
   const handleChangeDetailAddress = (event: any) => {
     setStateUser((prevState) => ({
       ...prevState,
@@ -278,6 +360,7 @@ const User = () => {
       setFillAddrDetail(false);
     }
   };
+
   const handleCCCD = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -287,12 +370,14 @@ const User = () => {
       setFillCCCD(false);
     }
   };
+
   const handleFav = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
       selectedItemFav: event.target.value,
     }));
   };
+
   const handleLocation = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -302,6 +387,7 @@ const User = () => {
       setFillCCCDLocation(false);
     }
   };
+
   const handleChangeWard = (event: SelectChangeEvent) => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -311,93 +397,27 @@ const User = () => {
       setFillAddrWard(false);
     }
   };
+
   const handleCancleModal = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
       modalConfirmSwitch: false,
     }));
   };
+
   const handleCancleModalFav = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
       modalConfirmSwitchFav: false,
     }));
   };
+
   const handleCancleModalCCCD = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
       modalConfirmSwitchCCCD: false,
     }));
   };
-
-  useEffect(() => {
-    if (account?.rememberName) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        rememberName: account?.rememberName,
-      }));
-    }
-  }, [account?.rememberName]);
-  useEffect(() => {
-    if (account?.birthdate) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        birth: account?.birthdate,
-      }));
-    }
-  }, [account?.birthdate]);
-  useEffect(() => {
-    if (account?.identifyCard?.CMND || account?.identifyCard?.date || account?.identifyCard?.location) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        cccd: account?.identifyCard?.CMND,
-        dateCCCD: dayjs(account?.identifyCard?.date),
-        location: account?.identifyCard?.location,
-        fullCCCD: account?.identifyCard?.fullCMND,
-      }));
-    }
-  }, [account?.identifyCard?.CMND, account?.identifyCard?.date, account?.identifyCard?.location, account?.identifyCard?.fullCMND]);
-  useEffect(() => {
-    if (account?.introduction) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        introducing: account?.introduction,
-      }));
-    }
-  }, [account?.introduction]);
-  useEffect(() => {
-    if (account?.fullname) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        fullName: account?.fullname,
-      }));
-    }
-  }, [account?.fullname]);
-  useEffect(() => {
-    if (account?.faxNumber) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        numberFax: account?.faxNumber,
-      }));
-    }
-  }, [account?.faxNumber]);
-  useEffect(() => {
-    if (account?.sex) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        sex: account?.sex,
-      }));
-    }
-  }, [account?.sex]);
-  useEffect(() => {
-    if (account?.favouriteList) {
-      setStateUser((prevState) => ({
-        ...prevState,
-        selectedItemFav: account?.favouriteList,
-      }));
-      setSelectItemsFav(account?.favouriteList);
-    }
-  }, [account?.favouriteList]);
 
   const handleModal = () => {
     setStateUser((prevState: any) => ({
@@ -432,7 +452,6 @@ const User = () => {
     if (stateUser?.detailAddress === undefined || stateUser?.detailAddress === "") {
       setFillAddrDetail(true);
     }
-
     if (
       stateUser?.cities &&
       stateUser?.detailAddress !== undefined &&
@@ -477,9 +496,6 @@ const User = () => {
       setFillAddrDetail(false);
     }
   };
-  const [fillCCCD, setFillCCCD] = useState(false);
-  const [fillCCCDFor, setFillCCCDFor] = useState(false);
-  const [fillCCCDLocation, setFillCCCDLocation] = useState(false);
 
   const onFinishCCCD = () => {
     const momentDateCCCD = dayjs(stateUser.dateCCCD);
@@ -514,6 +530,7 @@ const User = () => {
       setFillCCCD(false);
     }
   };
+
   const onFinishFav = () => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -524,6 +541,7 @@ const User = () => {
       setFillFav(false);
     }
   };
+
   const handleAddFav = (index: any, item: any) => {
     if (stateUser.selectedItemFav.includes(item)) {
       setStateUser((prevState: any) => ({
@@ -537,6 +555,7 @@ const User = () => {
       }));
     }
   };
+
   const handleChangeFullName = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -553,6 +572,7 @@ const User = () => {
       setFillIntro(false);
     }
   };
+
   const handleChangeRemember = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -572,6 +592,7 @@ const User = () => {
       setFillFax(false);
     }
   };
+
   const handleChangeSex = (event: SelectChangeEvent) => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -581,6 +602,7 @@ const User = () => {
       setFillSex(false);
     }
   };
+  
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <Setting title="Thông tin cá nhân" active="1">

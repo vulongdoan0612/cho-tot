@@ -1,16 +1,12 @@
-import { Avatar, Dropdown, MenuProps, Rate, Skeleton, Space } from "antd";
-import { ArrowIcon, StarIcon, UserAvatarIcon } from "../CustomIcons";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Dropdown, MenuProps } from "antd";
+import { ArrowIcon, UserAvatarIcon } from "../CustomIcons";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import DropdownList from "./item";
 
 const AvatarDropdown = () => {
-  const { account, isAuthenticated } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { account, isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -18,16 +14,13 @@ const AvatarDropdown = () => {
       label: <DropdownList></DropdownList>,
     },
   ];
+
   return (
     <div className="avatar-dropdown">
       <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
         <a onClick={(e) => e.preventDefault()}>
           <UserAvatarIcon></UserAvatarIcon>
-          {isAuthenticated ? (
-            <span className="fullname">{account?.fullname}</span>
-          ) : (
-            <span className="fullname">Tài khoản</span>
-          )}
+          {isAuthenticated ? <span className="fullname">{account?.fullname}</span> : <span className="fullname">Tài khoản</span>}
           <ArrowIcon></ArrowIcon>
         </a>
       </Dropdown>

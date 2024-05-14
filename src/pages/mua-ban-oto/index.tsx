@@ -17,15 +17,13 @@ import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 import { useFetchPosts } from "@/hooks/useFetchPosts";
 import BrandCarDropdown from "@/components/BrandCarDropdown";
-import brandList from "../../components/BrandCarDropdown/brandList.json";
 
 const SellingPage = () => {
   const router = useRouter();
+  const { posts } = useSelector((state: RootState) => state.postsData);
   const [spin, setSpin] = useState(false);
   const [pageSize, setPagesize] = useState(5);
   const [current, setCurrent] = useState(1);
-  const { posts } = useSelector((state: RootState) => state.postsData);
-
   const [state, setState] = useState<IFilterHeader>(defaultCommonState);
   const [filterFind, setFilterFind] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -44,6 +42,7 @@ const SellingPage = () => {
     price: "",
     km: "",
   });
+
   useFetchPosts({
     setCurrent,
     current: current,
@@ -355,6 +354,7 @@ const SellingPage = () => {
 
     fetchData();
   }, []);
+
   useEffect(() => {
     if (state.openFind) {
       setState((prevState: any) => ({
@@ -382,6 +382,7 @@ const SellingPage = () => {
       }));
     }
   }, [state.openPrice]);
+
   useEffect(() => {
     if (state.openSit) {
       setState((prevState: any) => ({
@@ -395,6 +396,7 @@ const SellingPage = () => {
       }));
     }
   }, [state.openSit]);
+
   const handleClickFindAddress = () => {
     setState((prevState: any) => ({
       ...prevState,
@@ -422,12 +424,14 @@ const SellingPage = () => {
       openPrice: !prevState.openPrice,
     }));
   };
+
   const handleClickSit = () => {
     setState((prevState: any) => ({
       ...prevState,
       openSit: !prevState.openSit,
     }));
   };
+
   const handleClickBrand = () => {
     setState((prevState: any) => ({
       ...prevState,
@@ -441,6 +445,7 @@ const SellingPage = () => {
   const handleCancleModal = () => {
     setOpenModal(false);
   };
+
   const onChangePage = (page: number) => {
     setCurrent(page);
   };
@@ -577,11 +582,7 @@ const SellingPage = () => {
               >
                 {(state.valuePriceMin === 0 || state.valuePriceMin === null) && state.valuePriceMax !== null && state.valuePriceMax !== 0
                   ? `Đến ${formatMoney(state.valuePriceMax)}`
-                  : // state.valuePriceMin === 2000000000 &&
-                  //   state.valuePriceMax === 0 &&
-                  //   state.inputValueMin === 2000000000 &&
-                  //   state.inputValueMax === 0
-                  (state.valuePriceMax === 0 || state.valuePriceMax === null) && state.valuePriceMin !== null && state.valuePriceMin !== 0
+                  : (state.valuePriceMax === 0 || state.valuePriceMax === null) && state.valuePriceMin !== null && state.valuePriceMin !== 0
                   ? `Từ ${formatMoney(state.valuePriceMin)}`
                   : state.valuePriceMin !== 0 && state.valuePriceMin !== null
                   ? `${formatMoney(state.valuePriceMin)} - ${formatMoney(state.valuePriceMax)}`
@@ -636,6 +637,7 @@ const SellingPage = () => {
           districtName={state.districtName}
           cityName={state.cityName}
           spin={spin}
+          state={state}
           pageSize={pageSize}
           posts={posts}
           setState={setState}

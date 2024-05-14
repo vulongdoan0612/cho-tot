@@ -1,6 +1,5 @@
 import CustomModal from "../CustomModal";
 import CustomButton from "../CustomButton";
-import CustomButtonSelect from "../CustomButtonSelect";
 
 const ModalFav = ({
   modalConfirmSwitchFav,

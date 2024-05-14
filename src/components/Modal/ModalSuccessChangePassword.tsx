@@ -19,7 +19,7 @@ const ModalSuccessChangePassword = ({
     >
       <div className="contain">
         <Image
-          src="https://static.chotot.com/storage/assets/LOGIN/password_success.png"
+          src="/images/password_success.png"
           width={64}
           height={88.5}
           alt=""

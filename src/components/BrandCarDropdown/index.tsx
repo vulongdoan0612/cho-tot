@@ -2,23 +2,23 @@ import { Input, Radio, RadioChangeEvent } from "antd";
 import { SearchIcon } from "../CustomIcons";
 import { useEffect, useRef, useState } from "react";
 import brandList from "../RenderFormTraffic/carList.json";
-
-import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
-import convertToSlug from "@/utils/convertToSlug";
+import { useRemoveQuery } from "@/utils/updateQuery";
 import { useRouter } from "next/router";
-const BrandCarDropdown = ({ openBrand, setState, setFilter, filter, valueRadioBrand }: any) => {
-  const updateQuery = useUpdateQuery();
+const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
+
+  const router = useRouter();
   const removeQuery = useRemoveQuery();
   const brandRef: any = useRef(null);
   const [searchBrand, setSearchBrand] = useState("");
   const [dataRender, setDataRender] = useState<any>([]);
-  const router = useRouter();
+
   const updateURL = (queryParams: any) => {
     router.push({
       pathname: "/mua-ban-oto",
       query: { ...router.query, ...queryParams },
     });
   };
+
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
@@ -39,9 +39,11 @@ const BrandCarDropdown = ({ openBrand, setState, setFilter, filter, valueRadioBr
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openBrand]);
+
   useEffect(() => {
     setDataRender(brandList);
   }, []);
+
   const handleSearchBrand = (event: any) => {
     const { value } = event.target;
     setSearchBrand(value);
@@ -50,6 +52,7 @@ const BrandCarDropdown = ({ openBrand, setState, setFilter, filter, valueRadioBr
     });
     setDataRender(result);
   };
+
   const handleRenew = () => {
     try {
       setSearchBrand("");
@@ -74,15 +77,9 @@ const BrandCarDropdown = ({ openBrand, setState, setFilter, filter, valueRadioBr
       openBrand: false,
       valueRadioBrandModal: e.target.value,
     }));
-    updateURL({ brand: e.target.value }); // setFilter((prevFilter: any) => ({
-    //   ...prevFilter,
-    //   brand: e.target.value,
-    // }));
-    //   const queries: any = Object.entries(filter);
-    // updateQuery(queries);
-
-    // updateQuery("brand", convertToSlug(e.target.value));
+    updateURL({ brand: e.target.value });
   };
+  
   return (
     <>
       <div className={`brand-select`} ref={brandRef}>

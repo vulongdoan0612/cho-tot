@@ -3,11 +3,11 @@ const convertToSlug = (str: string | undefined | any) => {
   if (str) {
     return str
       .toLowerCase()
-      .normalize("NFD") // Loại bỏ dấu
+      .normalize("NFD") 
       .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, "-"); // Thay thế khoảng trắng bằng dấu gạch ngang
+      .replace(/\s+/g, "-"); 
   } else {
-    return ""; // Trả về chuỗi rỗng nếu biến str không có giá trị
+    return ""; 
   }
 };
 export default convertToSlug;

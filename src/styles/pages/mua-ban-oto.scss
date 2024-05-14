@@ -1,14 +1,13 @@
 .selling-wrapper {
   background-color: #f4f4f4;
-  height: 100vh;
   .header {
     justify-content: center;
     background: #fff;
     align-items: center;
     display: flex;
     gap: 2px;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
+    -webkit-user-select: none;
+    -ms-user-select: none; 
     user-select: none;
     .buttons-bottom-dropdown-header {
       display: flex;
@@ -303,11 +302,7 @@
               width: 80%;
               .ant-slider-handle::after {
                 box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 9px 0px !important;
-                // width: 15px;
                 border: 1px solid transparent;
-
-                // height: 15px;
-                // top: -2px;
               }
               .ant-slider-handle {
                 border: 1px solid transparent;
@@ -368,7 +363,6 @@
         position: relative;
         .sit-select {
           z-index: 1;
-          // padding: 12px;
           position: absolute;
           background-color: #fff;
           box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.25);
@@ -479,7 +473,6 @@
         position: relative;
         .brand-select {
           z-index: 1;
-          // padding: 12px;
           position: absolute;
           background-color: #fff;
           box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.25);

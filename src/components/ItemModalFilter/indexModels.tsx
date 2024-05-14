@@ -2,23 +2,19 @@ import { Radio } from "antd";
 import { ArrowDownIcon, ArrowRightIcon } from "../CustomIcons";
 import { useState } from "react";
 
-const ItemModalFilterModels = ({
-  value,
-  onClickRadio,
-  title,
-  data,
-  onClick,
-  valueRadioBrandModal,
-}: any) => {
+const ItemModalFilterModels = ({ value, onClickRadio, title, data, onClick, valueRadioBrandModal }: any) => {
+
   const [state, setState] = useState(true);
+  
   const handleClick = () => {
     setState((prev) => !prev);
   };
+
   return (
     <>
       {valueRadioBrandModal && (
         <div className="sit">
-          <div className="header">
+          <div className="header" onClick={handleClick}>
             <span>{title}</span>
             <ArrowDownIcon></ArrowDownIcon>
           </div>
@@ -26,19 +22,11 @@ const ItemModalFilterModels = ({
             <>
               <div className="body">
                 <Radio.Group value={value}>
-                  {value === "" ||
-                  value === undefined ||
-                  data[0]?.models
-                    .slice(0, 5)
-                    .some((item: any) => item === value) ? (
+                  {value === "" || value === undefined || data[0]?.models.slice(0, 5).some((item: any) => item === value) ? (
                     <>
                       {data[0]?.models?.slice(0, 5).map((item: any) => {
                         return (
-                          <Radio
-                            value={item}
-                            key={item}
-                            onClick={() => onClickRadio(item)}
-                          >
+                          <Radio value={item} key={item} onClick={() => onClickRadio(item)}>
                             {" "}
                             <span className="brand-name">{item}</span>
                           </Radio>
@@ -52,11 +40,7 @@ const ItemModalFilterModels = ({
                       </Radio>
                       {data[0].models.slice(0, 4).map((item: any) => {
                         return (
-                          <Radio
-                            value={item}
-                            key={item}
-                            onClick={() => onClickRadio(item)}
-                          >
+                          <Radio value={item} key={item} onClick={() => onClickRadio(item)}>
                             {" "}
                             <span className="brand-name">{item}</span>
                           </Radio>

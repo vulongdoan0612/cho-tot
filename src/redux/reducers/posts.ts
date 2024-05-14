@@ -1,6 +1,6 @@
 import { checkFavPost, getFavPost, getFavPostMain } from "@/services/favPost";
 import { getPost, getPosts } from "@/services/formPost";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface IState {
   posts: any;

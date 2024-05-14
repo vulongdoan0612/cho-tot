@@ -21,21 +21,56 @@ import { useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 
 const MyAds = () => {
+  const { account } = useSelector((state: RootState) => state.auth);
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
   const [inputValue, setInputValue] = useState(1);
   const [spin, setSpin] = useState(false);
-  const { account } = useSelector((state: RootState) => state.auth);
-  const onChange: InputNumberProps["onChange"] = (newValue) => {
-    setInputValue(15);
-  };
   const [data, setData] = useState<any>([]);
   const [dataHidden, setDataHidden] = useState<any>([]);
   const [dataRefuse, setDataRefuse] = useState<any>([]);
   const [dataCensorship, setDataCensorship] = useState<any>([]);
 
+  useDidMountEffect(() => {
+    getDataListPost();
+    getDataListHidden();
+    getDataListRefuse();
+    getDataListCensorship();
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (lastJsonMessage && account?._id === lastJsonMessage?.userId) {
+      setSpin(true);
+      setTimeout(() => {
+        setSpin(false);
+      }, 500);
+      if (lastJsonMessage.action === "refuse" && account?._id === lastJsonMessage?.userId) {
+        getProfile(String(token));
+        getDataListRefuse();
+        getDataListPost();
+      }
+      if (lastJsonMessage.action === "delete" && account?._id === lastJsonMessage?.userId) {
+        getProfile(String(token));
+        getDataListRefuse();
+        getDataListPost();
+      }
+      if (lastJsonMessage.action === "accept" && account?._id === lastJsonMessage?.userId) {
+        getProfile(String(token));
+        getDataListRefuse();
+        getDataListPost();
+        getDataListCensorship();
+      }
+    }
+  }, [lastJsonMessage]);
+
+  const onChange: InputNumberProps["onChange"] = (newValue) => {
+    setInputValue(15);
+  };
+
   const onChangeCheckBox: CheckboxProps["onChange"] = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
+
   const getDataListPost = async () => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -46,12 +81,7 @@ const MyAds = () => {
       }
     }
   };
-  useDidMountEffect(() => {
-    getDataListPost();
-    getDataListHidden();
-    getDataListRefuse();
-    getDataListCensorship();
-  }, []);
+
   const getDataListHidden = async () => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -62,6 +92,7 @@ const MyAds = () => {
       }
     }
   };
+
   const getDataListRefuse = async () => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -72,32 +103,6 @@ const MyAds = () => {
       }
     }
   };
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-
-    if (lastJsonMessage) {
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
-      if (lastJsonMessage.action === "refuse") {
-        getProfile(String(token));
-        getDataListRefuse();
-        getDataListPost();
-      }
-      if (lastJsonMessage.action === "delete") {
-        getProfile(String(token));
-        getDataListRefuse();
-        getDataListPost();
-      }
-      if (lastJsonMessage.action === "accept") {
-        getProfile(String(token));
-        getDataListRefuse();
-        getDataListPost();
-        getDataListCensorship();
-      }
-    }
-  }, [lastJsonMessage]);
 
   const getDataListCensorship = async () => {
     const token = localStorage.getItem("access_token");
@@ -127,6 +132,7 @@ const MyAds = () => {
       }
     }
   };
+
   const updatePostHidden = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -144,6 +150,7 @@ const MyAds = () => {
       }
     }
   };
+
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -415,6 +422,7 @@ const MyAds = () => {
       ),
     },
   ];
+  
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="my-ads">

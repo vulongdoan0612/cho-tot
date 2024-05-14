@@ -1,8 +1,8 @@
-import { Button, Checkbox, Form, Input, Spin } from "antd";
+import { Checkbox, Form, Input, Spin } from "antd";
 import Image from "next/image";
 import { FacebookIcon, GoogleIcon } from "@/components/CustomIcons";
 import { useRouter } from "next/router";
-import { requestLogin, requestSignUp } from "@/services/authentication";
+import { requestSignUp } from "@/services/authentication";
 import { ToastContainer, toast } from "react-toastify";
 import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
@@ -59,34 +59,14 @@ const Register = () => {
 
       <div className="modal-login">
         <div className="logo">
-          <Image
-            src="/images/logo-login.png"
-            alt=""
-            width={121}
-            height={44}
-          ></Image>
+          <Image src="/images/logo-login.png" alt="" width={121} height={44}></Image>
         </div>
         <h3>Đăng ký tài khoản</h3>
-        <Form
-          name="normal_login"
-          className="login-form"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="fullname"
-            className="fullname"
-            rules={[{ required: true, message: "Vui lòng nhập Họ và Tên!" }]}
-          >
+        <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish}>
+          <Form.Item name="fullname" className="fullname" rules={[{ required: true, message: "Vui lòng nhập Họ và Tên!" }]}>
             <Input placeholder="Họ và Tên" />
           </Form.Item>
-          <Form.Item
-            name="phone"
-            className="phone"
-            rules={[
-              { required: true, message: "Vui lòng nhập số điện thoại!" },
-            ]}
-          >
+          <Form.Item name="phone" className="phone" rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}>
             <Input placeholder="Số điện thoại" />
           </Form.Item>
           <Form.Item
@@ -108,11 +88,7 @@ const Register = () => {
                 validator: (_, value) =>
                   value
                     ? Promise.resolve()
-                    : Promise.reject(
-                        new Error(
-                          "Bạn cần đồng ý với Điều khoản sử dụng và Chính sách bảo mật của Chợ Tốt."
-                        )
-                      ),
+                    : Promise.reject(new Error("Bạn cần đồng ý với Điều khoản sử dụng và Chính sách bảo mật của Chợ Tốt.")),
               },
             ]}
             {...tailFormItemLayout}
@@ -120,17 +96,11 @@ const Register = () => {
             <Checkbox>
               <span>
                 Bằng việc Đăng ký, bạn đã đọc và đồng ý với{" "}
-                <a
-                  href="https://trogiup.chotot.com/nguoi-ban/hoat-dong"
-                  target="_blank"
-                >
+                <a href="https://trogiup.chotot.com/nguoi-ban/hoat-dong" target="_blank">
                   Điều khoản sử dụng
                 </a>{" "}
                 và{" "}
-                <a
-                  href="https://trogiup.chotot.com/nguoi-ban/chinh-sach-bao-mat-cua-cho-tot"
-                  target="_blank"
-                >
+                <a href="https://trogiup.chotot.com/nguoi-ban/chinh-sach-bao-mat-cua-cho-tot" target="_blank">
                   Chính sách bảo mật
                 </a>{" "}
                 của Chợ Tốt
@@ -163,28 +133,13 @@ const Register = () => {
         <p>Được phát triển bởi</p>
         <div className="logo">
           <a href="https://www.chotot.com" target="_blank">
-            <Image
-              src="/images/chotot-logo-login.png"
-              alt="Chotot Logo"
-              width={55}
-              height={20}
-            />
+            <Image src="/images/chotot-logo-login.png" alt="Chotot Logo" width={55} height={20} />
           </a>
           <a href="https://www.nhatot.com" target="_blank">
-            <Image
-              src="/images/nhatot-logo-login.png"
-              alt="Nhatot Logo"
-              width={90}
-              height={20}
-            />
+            <Image src="/images/nhatot-logo-login.png" alt="Nhatot Logo" width={90} height={20} />
           </a>
           <a href="https://www.vieclamtot.com" target="_blank">
-            <Image
-              src="/images/vieclamtot-logo-login.png"
-              alt="Vieclamtot Logo"
-              width={68}
-              height={20}
-            />
+            <Image src="/images/vieclamtot-logo-login.png" alt="Vieclamtot Logo" width={68} height={20} />
           </a>
         </div>
       </div>

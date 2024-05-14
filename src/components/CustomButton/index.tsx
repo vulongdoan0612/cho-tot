@@ -8,21 +8,9 @@ interface ICustomButton {
   style?: any;
   onClick?: any;
 }
-const CustomButton = ({
-  children,
-  className,
-  type,
-  style,
-  onClick,
-  ...props
-}: ICustomButton) => {
+const CustomButton = ({ children, className, type, style, onClick, ...props }: ICustomButton) => {
   return (
-    <button
-      type={type}
-      className={`custom-button ${className}`}
-      style={style}
-      onClick={onClick}
-    >
+    <button type={type} className={`custom-button ${className ? className : ""}`} style={style} onClick={onClick}>
       {children}
     </button>
   );

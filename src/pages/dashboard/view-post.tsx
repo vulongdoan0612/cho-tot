@@ -6,18 +6,20 @@ import useDidMountEffect from "@/utils/customUseEffect";
 import numberWithCommas from "@/utils/numberWithCommas";
 import { Image, Skeleton } from "antd";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const ViewPostCensor = () => {
   const router = useRouter();
   const { id } = router.query;
   const { edit } = router.query;
-
+  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [data, setData] = useState<any>([]);
-  const { countdownDuration, loading } = useSelector(
-    (state: RootState) => state.countDownLoading
-  );
+
+  useDidMountEffect(() => {
+    getDataPost();
+  }, [router.query]);
+
   const getDataPost = async () => {
     if (id) {
       const token = localStorage.getItem("access_token");
@@ -28,21 +30,13 @@ const ViewPostCensor = () => {
       }
     }
   };
-  useDidMountEffect(() => {
-    getDataPost();
-  }, [router.query]);
 
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="view-post-wrapper">
         <div className="top-part">
           <div className="annoucement">
-            <Image
-              src="https://static.chotot.com/storage/default_images/pty/tick_green_pty.png"
-              width={20}
-              height={20}
-              alt=""
-            />
+            <Image src="https://static.chotot.com/storage/default_images/pty/tick_green_pty.png" width={20} height={20} alt="" />
             <span>
               {edit
                 ? "Sửa tin thành công! Chợ Tốt sẽ duyệt nội dung mới trong chốc lát."
@@ -52,31 +46,17 @@ const ViewPostCensor = () => {
           <div className="detail-info">
             <div className="product">
               <Skeleton.Button block active></Skeleton.Button>
-              <div
-                className={`${loading ? "unhidden" : "hidden"} skeleton-custom`}
-              >
-                <Image
-                  src={data?.post?.image[0]?.img}
-                  width={88}
-                  height={88}
-                  alt=""
-                  preview={false}
-                />
+              <div className={`${loading ? "unhidden" : "hidden"} skeleton-custom`}>
+                <Image src={data?.post?.image[0]?.img} width={88} height={88} alt="" preview={false} />
               </div>
             </div>{" "}
             <div className="title-price">
               {loading ? (
-                <Skeleton.Button
-                  active
-                  size="large"
-                  shape="square"
-                ></Skeleton.Button>
+                <Skeleton.Button active size="large" shape="square"></Skeleton.Button>
               ) : (
                 <>
                   <span className="title">{data && data?.post?.title}</span>
-                  <span className="price">
-                    {numberWithCommas(String(data?.post?.price))} đ
-                  </span>
+                  <span className="price">{numberWithCommas(String(data?.post?.price))} đ</span>
                 </>
               )}
             </div>
@@ -86,10 +66,7 @@ const ViewPostCensor = () => {
             <div className="left">
               <span className="title">Phương thức đăng tin</span>
               <h5>Đăng tin thường (Miễn phí)</h5>
-              <span className="descrip">
-                * Tin sẽ hiển thị trên Chợ Tốt dưới dạng tin đăng thường trong
-                60 ngày.
-              </span>
+              <span className="descrip">* Tin sẽ hiển thị trên Chợ Tốt dưới dạng tin đăng thường trong 60 ngày.</span>
             </div>
             <div className="mid">
               <span className="title">Số ngày đăng tin</span>
@@ -103,9 +80,7 @@ const ViewPostCensor = () => {
         </div>
         <div className="second-part">
           <h5>Mua thêm dịch vụ bán nhanh hơn</h5>
-          <span className="descrip">
-            Tiếp cận thêm nhiều khách hàng và bán nhanh hơn
-          </span>
+          <span className="descrip">Tiếp cận thêm nhiều khách hàng và bán nhanh hơn</span>
           <div className="menu">
             <div className="left">
               <div className="title">

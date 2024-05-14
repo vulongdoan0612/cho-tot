@@ -75,14 +75,12 @@
                 width: 100%;
                 background-color: #e0e0e0;
               }
-              // padding-top: 8px;
               display: flex;
               flex-direction: column;
               .devide {
                 display: flex;
                 padding-bottom: 8px;
                 flex-direction: row;
-                // justify-content: space-between;
                 .left {
                   gap: 4px;
                   span:first-child {
@@ -150,7 +148,6 @@
             border-radius: 8px;
             background-color: #ffffff;
             .top {
-              // border-radius-top: 8px;
               border-top-left-radius: 8px;
               border-top-right-radius: 8px;
 
@@ -633,10 +630,7 @@
                 text-overflow: ellipsis;
               }
               span {
-                // display: inline-block;
                 font-size: 11px;
-                // white-space: nowrap;
-                // text-transform: capitalize;
                 margin-top: 2px;
               }
               .dot {

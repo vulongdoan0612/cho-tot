@@ -1,21 +1,9 @@
-import {
-  ArrowInputIcon,
-  PlusIcon,
-  UploadImageIcon,
-  WarningIcon,
-} from "@/components/CustomIcons";
+import { ArrowInputIcon, PlusIcon, UploadImageIcon, WarningIcon } from "@/components/CustomIcons";
 import ModalCategorySelect from "@/components/Modal/ModalCategorySelect";
 import Page from "@/layout/Page";
 import getBase64 from "@/utils/getBase64";
 import { TextField } from "@mui/material";
-import {
-  GetProp,
-  Image,
-  Skeleton,
-  Upload,
-  UploadFile,
-  UploadProps,
-} from "antd";
+import { GetProp, Image, Skeleton, Upload, UploadFile, UploadProps } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RenderOto from "@/components/RenderFormTraffic/RenderFormTraffic";
@@ -24,21 +12,21 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { fetchDataPost } from "@/redux/reducers/postSell";
 
 const PostSell = () => {
+  const router = useRouter();
+  const { category } = router.query;
+  const { id } = router.query;
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
-
-  const router = useRouter();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
-  const [render, setRender] = useState<any>("");
-  type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+  const [render, setRender] = useState<string | string[] | undefined>("");
   const [value, setValue] = useState("");
+  const [modalCategory, setModalCategory] = useState(false);
   const [warning, setWarning] = useState(false);
-
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const { category } = router.query;
-  const { id } = router.query;
+  type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
   useEffect(() => {
     setRender(category);
     if (category === "0") {
@@ -66,16 +54,14 @@ const PostSell = () => {
 
   useEffect(() => {
     if (dataPost && dataPost.post && dataPost.post.image) {
-      const newFileList: UploadFile[] = dataPost.post.image.map(
-        (image: any, index: number) => {
-          return {
-            uid: image?.uuid,
-            name: `image_${index}`,
-            status: "done",
-            url: image?.img,
-          };
-        }
-      );
+      const newFileList: UploadFile[] = dataPost.post.image.map((image: any, index: number) => {
+        return {
+          uid: image?.uuid,
+          name: `image_${index}`,
+          status: "done",
+          url: image?.img,
+        };
+      });
       setFileList(newFileList);
     }
   }, [dataPost]);
@@ -92,6 +78,7 @@ const PostSell = () => {
       <p>ĐĂNG TỪ 01 ĐẾN 20 HÌNH</p>
     </div>
   );
+
   const uploadedCustomSmaller = (
     <div>
       <PlusIcon></PlusIcon>
@@ -102,17 +89,18 @@ const PostSell = () => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as FileType);
     }
-
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
   };
-  const [modalCategory, setModalCategory] = useState(false);
+
   const handleModalCategory = () => {
     setModalCategory(true);
   };
+
   const handleCancleCategory = () => {
     setModalCategory(false);
   };
+
   const handleSelectCategory = (item: any, index: number) => {
     setValue(item);
     setModalCategory(false);
@@ -132,11 +120,7 @@ const PostSell = () => {
           <h5>Hình ảnh và Video sản phẩm</h5>
           <p className="more-about">
             Xem thêm về&nbsp;
-            <a
-              href="https://trogiup.chotot.com/nguoi-ban/dang-tin/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="https://trogiup.chotot.com/nguoi-ban/dang-tin/" target="_blank" rel="noreferrer">
               Quy định đăng tin của Chợ Tốt
             </a>
           </p>
@@ -145,28 +129,20 @@ const PostSell = () => {
               block={true}
               style={{ height: "221px" }}
               active
-              className={` ${
-                id !== undefined && loading ? "visible-ske" : "disvisible-ske"
-              }`}
+              className={` ${id !== undefined && loading ? "visible-ske" : "disvisible-ske"}`}
               size="large"
             ></Skeleton.Input>
             <Upload
               name="image"
               listType="picture-card"
               fileList={fileList}
-              className={`upload-antd ${
-                fileList.length !== 0 ? "upload-antd-custom" : ""
-              } ${
+              className={`upload-antd ${fileList.length !== 0 ? "upload-antd-custom" : ""} ${
                 id !== undefined && loading ? "unhidden" : "hidden"
               } skeleton-custom`}
               onPreview={handlePreview}
               onChange={handleChange}
             >
-              {fileList.length >= 20
-                ? null
-                : fileList.length !== 0
-                ? uploadedCustomSmaller
-                : uploadedCustom}
+              {fileList.length >= 20 ? null : fileList.length !== 0 ? uploadedCustomSmaller : uploadedCustom}
             </Upload>
             {previewImage && (
               <Image
@@ -192,10 +168,7 @@ const PostSell = () => {
             <></>
           )}
 
-          <div
-            className="category-select input-need-to-custom"
-            onClick={handleModalCategory}
-          >
+          <div className="category-select input-need-to-custom" onClick={handleModalCategory}>
             <TextField
               className="category"
               id="filled-multiline-flexible"
@@ -209,12 +182,7 @@ const PostSell = () => {
           </div>
           {render === "0" ? (
             <>
-              <RenderOto
-                handleWarning={() => setWarning(true)}
-                fileList={fileList}
-                id={id}
-                dataPost={dataPost}
-              ></RenderOto>
+              <RenderOto handleWarning={() => setWarning(true)} fileList={fileList} id={id} dataPost={dataPost}></RenderOto>
             </>
           ) : render === "1" ? (
             <>xe máy</>

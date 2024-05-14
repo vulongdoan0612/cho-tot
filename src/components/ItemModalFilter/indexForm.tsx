@@ -3,10 +3,13 @@ import { ArrowDownIcon, ArrowRightIcon } from "../CustomIcons";
 import { useState } from "react";
 
 const ItemModalFilterForm = ({ value, onClickRadio, title, data, onClick }: any) => {
+
   const [state, setState] = useState(true);
+
   const handleClick = () => {
     setState((prev) => !prev);
   };
+  
   return (
     <div className="sit">
       <div className="header" onClick={handleClick}>
@@ -20,7 +23,7 @@ const ItemModalFilterForm = ({ value, onClickRadio, title, data, onClick }: any)
               {value === "" || value === undefined || data.slice(0, 5).some((item: any) => item.item === value) ? (
                 <>
                   {" "}
-                  {data.slice(0, 5).map((item: any, index: any) => {
+                  {data.slice(0, 5).map((item: any, index: number) => {
                     return (
                       <Radio value={item.item} key={index} onClick={() => onClickRadio(item.item, item.value)}>
                         {" "}
@@ -34,7 +37,7 @@ const ItemModalFilterForm = ({ value, onClickRadio, title, data, onClick }: any)
                   <Radio value={value} key={value}>
                     <span className="brand-name">{value}</span>
                   </Radio>
-                  {data.slice(0, 4).map((item: any, index: any) => {
+                  {data.slice(0, 4).map((item: any, index: number) => {
                     return (
                       <Radio value={item.item} key={index} onClick={() => onClickRadio(item.item, item.value)}>
                         {" "}

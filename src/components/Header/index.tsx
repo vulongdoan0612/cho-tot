@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Badge,
   Button,
   Dropdown,
@@ -20,8 +19,7 @@ import {
 } from "../CustomIcons";
 import AvatarDropdown from "../AvatarDropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDataUser, setAuthenticate } from "@/redux/reducers/auth";
-import { getProfile } from "@/services/getProfile";
+import { fetchDataUser } from "@/redux/reducers/auth";
 import useDidMountEffect from "@/utils/customUseEffect";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
@@ -30,21 +28,24 @@ import {
 } from "@/redux/reducers/countDownLoading";
 
 const Header = () => {
+  
   const dispatch = useDispatch<AppDispatch>();
-  const { account } = useSelector((state: RootState) => state.auth);
   const { countdownDuration, loading } = useSelector(
     (state: RootState) => state.countDownLoading
   );
+
   useDidMountEffect(() => {
     fetchData();
     startCountdown();
   }, []);
+
   const startCountdown = () => {
     setTimeout(() => {
       dispatch(countDownLoading(0));
       dispatch(countdownComplete());
     }, countdownDuration);
   };
+
   const fetchData = async () => {
     const token = localStorage.getItem("access_token");
     try {
@@ -55,6 +56,7 @@ const Header = () => {
       console.log("error");
     }
   };
+
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -113,18 +115,14 @@ const Header = () => {
   ];
 
   const handleOnSearch = ({ string, results }: any) => {
-    // onSearch will have as the first callback parameter
-    // the string searched and for the second the results.
     console.log(string, results);
   };
 
   const handleOnHover = (result: any) => {
-    // the item hovered
     console.log(result);
   };
 
   const handleOnSelect = (item: any) => {
-    // the item selected
     console.log(item);
   };
 

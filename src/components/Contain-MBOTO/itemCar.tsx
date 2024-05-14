@@ -1,6 +1,5 @@
-import { Image, InputNumberProps, Skeleton, Tabs, TabsProps } from "antd";
-import { useEffect, useState } from "react";
-import { AddedFavouritePostIcon, ChatIcon, FavouriteIcon, MangeShopIcon, TopPostIcon } from "../CustomIcons";
+import { Image, Skeleton, Tabs, TabsProps } from "antd";
+import { AddedFavouritePostIcon, ChatIcon, FavouriteIcon, TopPostIcon } from "../CustomIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
@@ -10,21 +9,16 @@ import { addFavPost, removeFavPost } from "@/services/favPost";
 import { fetchDataFavListMain } from "@/redux/reducers/posts";
 
 const ItemCar = ({ posts, spin }: any) => {
+  const router = useRouter();
   const { favPostListMain } = useSelector((state: RootState) => state.postsData);
-  const [inputValue, setInputValue] = useState(1);
   const dispatch: AppDispatch = useDispatch();
 
-  const onChange: InputNumberProps["onChange"] = (newValue) => {
-    setInputValue(15);
-  };
   useFetchFavListMain();
 
-  const router = useRouter();
   const handleRouter = (item: any) => {
-    // console.log(item);
     router.push(`/${item?.post?.slug}/${item?.postId}`);
   };
-  const handleRemoveFavPost = async (postId: any) => {
+  const handleRemoveFavPost = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
       const updateField = {
@@ -36,10 +30,9 @@ const ItemCar = ({ posts, spin }: any) => {
         dispatch(fetchDataFavListMain());
       }
     }
-
-    // setFav(false);
   };
-  const handleAddFavPost = async (postId: any) => {
+
+  const handleAddFavPost = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
       const updateField = {
@@ -51,9 +44,8 @@ const ItemCar = ({ posts, spin }: any) => {
         dispatch(fetchDataFavListMain());
       }
     }
-
-    // setFav(false);
   };
+
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -62,21 +54,14 @@ const ItemCar = ({ posts, spin }: any) => {
         <div className="tab-all-type">
           <div className="wrapper-tabs">
             {posts &&
-              posts?.data?.map((item: any, index: any) => {
+              posts?.data?.map((item: any, index: number) => {
                 const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
                 return (
                   <div className="tab" key={index} onClick={() => handleRouter(item)}>
                     <div className="contain">
                       <Skeleton.Button block active></Skeleton.Button>
                       <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}>
-                        <Image
-                          className={"left-contain-tab"}
-                          src={item?.post?.image[0]?.img}
-                          alt=""
-                          // preview={false}
-                          width={128}
-                          height={128}
-                        ></Image>
+                        <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
                       </div>
                       <div className="right-contain-tab">
                         <Skeleton active />
@@ -152,6 +137,7 @@ const ItemCar = ({ posts, spin }: any) => {
       children: <div className="tab-proffesional">Bán chuyên</div>,
     },
   ];
+
   return (
     <div className="wrapper-item-car">
       <Tabs defaultActiveKey="1" items={items} className="tab-ads" />

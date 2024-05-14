@@ -10,14 +10,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 
-const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, setState, onChangePage }: any) => {
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
-  const [reCurrent, setReCurrent] = useState(1);
+const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, setState, onChangePage, state }: any) => {
   const router = useRouter();
   const { query } = router;
+  const { loading } = useSelector((state: RootState) => state.countDownLoading);
+  const [reCurrent, setReCurrent] = useState(1);
+
   useEffect(() => {
     setReCurrent(1);
   }, [query]);
+
   useEffect(() => {
     setReCurrent(current);
   }, [current]);
@@ -33,9 +35,26 @@ const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, 
           },
           {
             title: `Ô tô`,
+            onClick: () => {
+              router.push("/mua-ban-oto");
+            },
           },
-          cityName !== "" ? { title: cityName } : {},
-          districtName !== "" ? { title: districtName } : {},
+          cityName !== ""
+            ? {
+                title: cityName,
+                onClick: () => {
+                  router.push(`/mua-ban-oto?city=${state.idCity}`);
+                },
+              }
+            : {},
+          districtName !== ""
+            ? {
+                title: districtName,
+                onClick: () => {
+                  router.push(`/mua-ban-oto?city=${state.idCity}&district=${state.idDistrict}`);
+                },
+              }
+            : {},
         ]}
       />
       <div className="main-contain">

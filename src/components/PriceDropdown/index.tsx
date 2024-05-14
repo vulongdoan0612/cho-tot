@@ -4,6 +4,7 @@ import CustomButton from "../CustomButton";
 import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
 
 const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setFilter, filter }: any) => {
+
   const priceRef: any = useRef(null);
   const updateQuery = useUpdateQuery();
   const removeQuery = useRemoveQuery();
@@ -23,12 +24,12 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
         }));
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openPrice]);
+
   const onChange: any["onChange"] = (newValue: any) => {
     if (newValue) {
       setState((prevState: any) => ({
@@ -91,8 +92,8 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
       }));
     }
   };
-  const onChangeMin = (newValue: any) => {
 
+  const onChangeMin = (newValue: any) => {
     setState((prevState: any) => ({
       ...prevState,
       inputValueMin: newValue,
@@ -124,13 +125,12 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
       setWarning(false);
     }
   };
-  const onChangeMax = (newValue: any) => {
 
+  const onChangeMax = (newValue: any) => {
     setState((prevState: any) => ({
       ...prevState,
       inputValueMax: newValue,
     }));
-
     if (inputValueMin !== undefined && inputValueMin !== "" && newValue !== undefined && newValue !== "") {
       if (Number(newValue) > Number(inputValueMin)) {
         setFilter((prevFilter: any) => ({
@@ -152,7 +152,6 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
         price: `max${newValue}`,
       }));
     }
-
     if (inputValueMin > newValue) {
       setWarning(true);
     } else {
@@ -171,6 +170,7 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
     }));
     removeQuery("price");
   };
+
   const handleApply = () => {
     try {
       const queries: any = Object.entries(filter);
@@ -192,7 +192,6 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
         <Slider
           range
           value={[inputValueMin, inputValueMax]}
-          // defaultValue={[inputValueMin, inputValueMax]}
           max={2000000000}
           step={1000000}
           onChange={onChange}

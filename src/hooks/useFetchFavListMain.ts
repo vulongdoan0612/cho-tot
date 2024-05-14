@@ -1,7 +1,6 @@
-import { fetchDataFavList, fetchDataFavListMain, fetchDataPost, fetchDataPosts } from "@/redux/reducers/posts";
+import {  fetchDataFavListMain } from "@/redux/reducers/posts";
 import { AppDispatch } from "@/redux/store";
 import useDidMountEffect from "@/utils/customUseEffect";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 export const useFetchFavListMain = () => {

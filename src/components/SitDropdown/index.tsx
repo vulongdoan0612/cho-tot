@@ -4,33 +4,24 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
-  const sitRef: any = useRef(null); // Ref for FindInAreaDropdown
-  const [searchSit, setSearchSit] = useState("");
+  
   const router = useRouter();
-  // useEffect(() => {
-  //   if (!router.isReady) return;
-  //   setState((prevState: any) => ({
-  //     ...prevState,
-  //     valueRadioSit: router.query.sit,
-  //   }));
-  // }, [router]);
-  const removeQueries = (keysToRemove: string[]) => {
-    const updatedQuery = { ...router.query };
-    keysToRemove.forEach((key) => {
-      delete updatedQuery[key];
-    });
-    router.push({
-      pathname: "/mua-ban-oto",
-      query: updatedQuery,
-    });
-  };
+  const sitRef: any = useRef(null);
+  const [searchSit, setSearchSit] = useState("");
+  const [dataRender, setDataRender] = useState<any>([]);
+  const data = [2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, "Khác"];
+
   const updateURL = (queryParams: any) => {
     router.push({
       pathname: "/mua-ban-oto",
       query: { ...router.query, ...queryParams },
     });
   };
-  const [dataRender, setDataRender] = useState<any>([]);
+
+  useEffect(() => {
+    setDataRender(data);
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
@@ -45,13 +36,12 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
         }));
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [state.openSit]);
-  const data = [2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, "Khác"];
+
   const handleRenew = () => {
     try {
       setSearchSit("");
@@ -65,12 +55,9 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
         ...prevState,
         openSit: false,
       }));
-      // removeQueries(["sit"]);
     }
   };
-  useEffect(() => {
-    setDataRender(data);
-  }, []);
+
   const handleSearchSit = (event: any) => {
     const { value } = event.target;
     setSearchSit(value);
@@ -79,6 +66,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
     });
     setDataRender(result);
   };
+
   const onChangeRadio = (e: RadioChangeEvent) => {
     setState((prevState: any) => ({
       ...prevState,
@@ -86,9 +74,9 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
       openSit: false,
       valueRadioModal: e.target.value,
     }));
-
     updateURL({ sit: String(e.target.value) });
   };
+
   return (
     <>
       {" "}
@@ -103,14 +91,10 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
           {" "}
           <div className="selection">
             <SearchIcon></SearchIcon>
-            <Input
-              placeholder="Nhập tìm số chỗ"
-              onChange={handleSearchSit}
-              value={searchSit}
-            />{" "}
+            <Input placeholder="Nhập tìm số chỗ" onChange={handleSearchSit} value={searchSit} />{" "}
           </div>
           <div className="sits">
-            {dataRender.map((item: any, index: any) => {
+            {dataRender.map((item: any, index: number) => {
               return (
                 <div key={index} className="sit-item">
                   <Radio.Group value={valueRadioSit} onChange={onChangeRadio}>

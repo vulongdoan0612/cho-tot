@@ -5,7 +5,6 @@ export const limitTextTitle = (text: string) => {
   return text;
 };
 export const limitTextDescription = (text: string) => {
-  console.log(text);
   if (text && text.length > 26) {
     return text.substring(0, 25) + "...";
   }

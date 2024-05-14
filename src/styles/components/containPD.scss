@@ -5,12 +5,8 @@
       margin-bottom: 12px;
       .image-main-slide {
         border-radius: 8px;
-        // transition: all 1s ease;
-        // filter: blur(0px);
+ 
       }
-      // .blur-image {
-      //   filter: blur(3px);
-      // }
       position: relative;
       .add-fav {
         font-size: 20px;
@@ -55,8 +51,6 @@
         border-radius: 50%;
         position: absolute;
         background-color: white;
-        // width: 28px;
-        // height: 28px;
         font-size: 17px;
         font-weight: 700;
         transform: translate(00%, -50%);

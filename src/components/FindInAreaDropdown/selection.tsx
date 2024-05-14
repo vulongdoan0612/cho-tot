@@ -14,10 +14,12 @@ const Selection = ({
   setState,
   searchResultDistrict,
 }: any) => {
-  const [searchCity, setSearchCity] = useState("");
+
   const districtRef: any = useRef(null);
-  const [searchDistrict, setSearchDistrict] = useState("");
   const cityRef: any = useRef(null);
+  const [searchCity, setSearchCity] = useState("");
+  const [searchDistrict, setSearchDistrict] = useState("");
+
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
@@ -41,6 +43,7 @@ const Selection = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openFind, openSearchCity]);
+
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
@@ -64,6 +67,7 @@ const Selection = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openFind, openSearchDistrict]);
+
   const handleOpenSearchCity = () => {
     setState((prevState: any) => ({
       ...prevState,
@@ -72,6 +76,7 @@ const Selection = ({
     }));
     setSearchCity("");
   };
+
   const handleOpenSearchDistrict = () => {
     setState((prevState: any) => ({
       ...prevState,
@@ -92,6 +97,7 @@ const Selection = ({
       searchResult: result,
     }));
   };
+
   const onChangeRadio = (e: RadioChangeEvent) => {
     try {
       const selectedCity: any = cities.find((city: any) =>
@@ -121,6 +127,7 @@ const Selection = ({
       }));
     }
   };
+
   const onChangeRadioDistrict = (e: RadioChangeEvent) => {
     const selectedCity: any = districts.find((district: any) =>
       district.Name.includes(e.target.value)
@@ -139,6 +146,7 @@ const Selection = ({
       }));
     }
   };
+
   const handleSearchDistrict = (event: any) => {
     const { value } = event.target;
     setSearchDistrict(value);
@@ -150,6 +158,7 @@ const Selection = ({
       searchResultDistrict: result,
     }));
   };
+  
   return (
     <>
       <div
@@ -173,7 +182,7 @@ const Selection = ({
             />{" "}
           </div>
           <div className="cities">
-            {searchResult.map((item: any, index: any) => {
+            {searchResult.map((item: any, index: number) => {
               return (
                 <div
                   key={index}
@@ -216,7 +225,7 @@ const Selection = ({
           </div>
           <div className="districts">
             {searchResultDistrict &&
-              searchResultDistrict?.map((item: any, index: any) => {
+              searchResultDistrict?.map((item: any, index: number) => {
                 return (
                   <div key={index} className="district-item">
                     <Radio.Group

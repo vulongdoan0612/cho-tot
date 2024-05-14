@@ -12,3 +12,11 @@ export const changeProfile = async (accessToken: string, data: any) => {
   return axios(config);
 };
 
+export const getDetailProfileUser = async (data: any) => {
+  const config = {
+    method: "POST",
+    url: `/get-detail-profile-user`,
+    data: data,
+  };
+  return axios(config);
+};

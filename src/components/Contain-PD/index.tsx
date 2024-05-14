@@ -13,7 +13,7 @@ import {
 } from "../CustomIcons";
 import CustomButtonGreen from "../CustomButton/green";
 import ProductSlide from "./productSlide";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFetchPost } from "@/hooks/useFetchPost";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -24,23 +24,27 @@ import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import { useFetchCheckFavPost } from "@/hooks/useFetchCheckFavPost";
 
 const ContainPD = () => {
+  const router = useRouter();
+  const { post, checkFavPost } = useSelector((state: RootState) => state.postsData);
+  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [hiddenPhone, setHiddenPhone] = useState(true);
   const [lessDetail, setLessDetail] = useState(false);
   const [spin, setSpin] = useState(false);
-  const { post, checkFavPost } = useSelector((state: RootState) => state.postsData);
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
 
-  const router = useRouter();
   useFetchPost({ setSpin, body: router });
+
   useFetchCheckFavPost({
     body: router,
   });
+
   const handleSwitchPhone = () => {
     setHiddenPhone((prev) => !prev);
   };
+
   const handleLessDetail = () => {
     setLessDetail((prev) => !prev);
   };
+
   function SampleNextArrow(props: any) {
     const { className, onClick } = props;
     return (
@@ -58,6 +62,7 @@ const ContainPD = () => {
       </div>
     );
   }
+
   const settings = {
     dots: false,
     infinite: false,
@@ -69,9 +74,11 @@ const ContainPD = () => {
     variableWidth: true,
     className: "slider variable-width",
   };
-  const handleRouterRec = (rec: any, postId: any) => {
+
+  const handleRouterRec = (rec: string, postId: string) => {
     router.push(`/${rec}/${postId}`);
   };
+
   return (
     <div className="wrapper-contain">
       <Breadcrumb
@@ -83,18 +90,25 @@ const ContainPD = () => {
           },
           {
             title: `Ô tô`,
+            onClick: () => {
+              router.push("/mua-ban-oto");
+            },
           },
           {
-            title: `Ô tô TP Hồ Chí Minh`,
+            title: `${post?.post?.post?.cityValueName}`,
+            onClick: () => {
+              router.push(`/mua-ban-oto?city=${post?.post?.post?.cityValue}`);
+            },
           },
           {
-            title: `Ô tô Quận 7`,
+            title: `${post?.post?.post?.districtValueName}`,
+            onClick: () => {
+              router.push(`/mua-ban-oto?city=${post?.post?.post?.cityValue}&district=${post?.post?.post?.districtValue}`);
+            },
           },
           {
-            title: `Honda CRV, bản 2.0 AT, Màu Bạc/Kem`,
+            title: `${post?.post?.post?.value} ${post?.post?.post?.color}, ${post?.post?.post?.model}, ${post?.post?.post?.form}`,
           },
-          //   cityName !== "" ? { title: cityName } : {},
-          //   districtName !== "" ? { title: districtName } : {},
         ]}
       />
       <div className="main-contain">
@@ -121,7 +135,7 @@ const ContainPD = () => {
                 <div className="devide">
                   <div className="left">
                     <span>Số Km đã đi</span>
-                    {!loading ? (
+                    {loading ? (
                       <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                     ) : (
                       <span>{post?.post?.post?.km}</span>
@@ -196,7 +210,7 @@ const ContainPD = () => {
                   <div className="devide">
                     <div className="left">
                       <span>Hãng</span>
-                      {!loading ? (
+                      { loading ? (
                         <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                       ) : (
                         <span>{post?.post?.post?.value}</span>
@@ -287,12 +301,7 @@ const ContainPD = () => {
             <div className="advise-buy">
               <div className="top">
                 <span>Vay mua xe</span>
-                <Image
-                  src="https://static.chotot.com/storage/chotot-icons/png/veh_partnership_2x.png"
-                  alt=""
-                  preview={false}
-                  width={150.9}
-                ></Image>
+                <Image src="/images/veh_partnership_2x.png" alt="" preview={false} width={150.9}></Image>
               </div>
               <div className="mid">
                 <div className="advan">
@@ -365,6 +374,7 @@ const ContainPD = () => {
                 <Image
                   src="https://xe.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fuac2%2F23367792&w=1920&q=75"
                   alt=""
+                  preview={false}
                   width={32}
                   height={32}
                 ></Image>
@@ -406,14 +416,7 @@ const ContainPD = () => {
           <div className="top">
             <span>Tin đăng tương tự</span>
             <div className="see-all">
-              Xem tất cả{" "}
-              <Image
-                src="https://static.chotot.com/storage/icons/svg/right_arrow_blue.svg"
-                alt=""
-                preview={false}
-                width={15}
-                height={15}
-              ></Image>
+              Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
             </div>
           </div>
           <div className="slide-rec">
@@ -439,7 +442,7 @@ const ContainPD = () => {
                       <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                     </div>
                     <div className="bottom-rec">
-                      <Image src="https://static.chotot.com/storage/icons/owner/pro.svg" alt="" width={16} height={15}></Image>
+                      <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
                       <div className="ellipsis">
                         <div className="dot"></div>
                         <span>2 tuần trước</span> <div className="dot"></div>

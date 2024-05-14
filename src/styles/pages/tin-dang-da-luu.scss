@@ -38,14 +38,12 @@
     font-weight: bold;
   }
   .fav-list {
-    // border-top: 1px solid #f4f4f4;
     .fav-item {
       border-top: 1px solid #f4f4f4;
       cursor: pointer;
       padding: 12px;
       display: flex;
       flex-direction: row;
-      //   justify-content: space-between;
       .fav-left {
         margin-right: 11.5px;
       }
@@ -106,12 +104,10 @@
               align-items: center;
               border: 1px solid rgb(51, 166, 55);
               border-radius: 20px;
-              //   margin: 0px 6px;
               padding-top: 7px;
               padding-left: 14px;
               padding-right: 14px;
               padding-bottom: 7px;
-              //   height: 3px;
               cursor: pointer;
               background: white;
               color: rgb(51, 166, 55);

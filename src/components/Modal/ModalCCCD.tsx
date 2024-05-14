@@ -4,7 +4,6 @@ import CustomButton from "../CustomButton";
 import { DatePicker, Skeleton } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import dayjs from "dayjs";
 const ModalCCCCD = ({
   modalConfirmSwitchCCCD,
   handleCancleModalCCCD,
@@ -19,10 +18,11 @@ const ModalCCCCD = ({
   fillCCCDLocation,
   cccd,
 }: any) => {
-  const { account } = useSelector((state: RootState) => state.auth);
-  const { countdownDuration, loading } = useSelector(
+
+  const { loading } = useSelector(
     (state: RootState) => state.countDownLoading
   );
+  
   return (
     <CustomModal
       title="CMND/ CCCD/ HỘ CHIẾU"

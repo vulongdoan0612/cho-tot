@@ -1,4 +1,4 @@
-import { Input, Radio, RadioChangeEvent } from "antd";
+import { Input, Radio } from "antd";
 import { ArrowBackIcon, SearchIcon } from "../CustomIcons";
 import CustomModal from "../CustomModal";
 import { useEffect, useState } from "react";
@@ -16,8 +16,15 @@ const ModalListFilter = ({
   placeholder,
   setFilter,
 }: any) => {
+
   const [search, setSearch] = useState("");
   const [dataRender, setDataRender] = useState([]);
+  
+  useEffect(() => {
+    setDataRender(data);
+    setSearch("");
+  }, [data]);
+
   const handleRenew = () => {
     try {
       setSearch("");
@@ -92,10 +99,7 @@ const ModalListFilter = ({
       handleCancleModal();
     }
   };
-  useEffect(() => {
-    setDataRender(data);
-    setSearch("");
-  }, [data]);
+
   const handleSearch = (event: any) => {
     const { value } = event.target;
     setSearch(value);
@@ -136,6 +140,7 @@ const ModalListFilter = ({
       setDataRender(result);
     }
   };
+
   const onChangeRadio = (item: any) => {
     try {
       setValueRadio === "sit"
@@ -171,7 +176,6 @@ const ModalListFilter = ({
         : setState((prevState: any) => ({
             ...prevState,
           }));
-      ////
       setValueRadio === "sit"
         ? setFilter((prevFilter: any) => ({
             ...prevFilter,
@@ -205,9 +209,6 @@ const ModalListFilter = ({
         : setState((prevState: any) => ({
             ...prevState,
           }));
-
-      ////
-
       setValueRadioAll === "sit"
         ? setState((prevState: any) => ({
             ...prevState,
@@ -245,10 +246,11 @@ const ModalListFilter = ({
       handleCancleModal();
     }
   };
+
   const handleBack = () => {
     handleCancleModal();
   };
-  console.log(title, typeModal);
+
   return (
     <CustomModal
       open={modalListAll}

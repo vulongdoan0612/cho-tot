@@ -7,6 +7,7 @@
   gap: 0.75rem;
   margin-right: auto;
   margin-left: auto;
+
   .top-part {
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
@@ -18,6 +19,7 @@
       display: flex;
       align-items: center;
       background-color: rgb(236 249 241 / 1);
+
       span {
         padding-top: 0.75rem;
         padding-bottom: 0.75rem;
@@ -26,44 +28,49 @@
         line-height: 18px;
         font-size: 0.875rem;
       }
+
       .ant-image {
         margin-left: 1rem;
         margin-top: 1rem;
         margin-bottom: 1rem;
       }
     }
+
     .detail-info {
       display: flex;
       padding-bottom: 1rem;
       padding-top: 1rem;
       gap: 1rem;
+
       .product {
         width: 88px;
         height: 88px;
         position: relative;
-        .ant-skeleton {
-        }
+
+        .ant-skeleton {}
+
         .skeleton-custom {
           position: absolute;
           top: 0;
           transition: all 0.3s ease;
         }
+
         .hidden {
           opacity: 1;
         }
+
         .unhidden {
           opacity: 0;
         }
+
         .ant-skeleton {
           height: 100%;
+
           .ant-skeleton-button {
             height: 100%;
           }
         }
-        // .ant-skeleton-image {
-        //   width: 88px;
-        //   height: 88px;
-        // }
+
         background-size: cover;
         background-position: 50%;
 
@@ -72,6 +79,7 @@
           object-fit: cover;
         }
       }
+
       .title-price {
         .title {
           color: rgb(34, 34, 34);
@@ -79,18 +87,22 @@
           line-height: 1.25rem;
           font-weight: 700;
         }
+
         .price {
           color: rgb(208 2 27);
           font-weight: 700;
         }
+
         display: flex;
         flex-direction: column;
       }
     }
+
     .line {
       padding-bottom: 1rem;
       border-top: 1px dashed rgb(192 192 192);
     }
+
     .description {
       background: rgb(244 244 244);
       padding: 1rem;
@@ -98,59 +110,70 @@
       font-size: 0.875rem;
       line-height: 1.25rem;
       display: flex;
+
       .left,
       .mid,
       .right {
         .title {
           font-size: 14px;
         }
+
         h5 {
           color: rgb(34 34 34);
           font-weight: 700;
           margin-top: 0.25rem;
           margin-bottom: 0.25rem;
         }
+
         .descrip {
           font-style: italic;
           color: rgb(48 107 217);
           font-size: 13px;
           font-weight: 400;
         }
+
         width: 100%;
         padding-left: 1.5rem;
         padding-right: 1.5rem;
         padding-top: 0;
         padding-bottom: 0;
         border-right: 1px dashed rgb(192 192 192);
+
         .title {
           color: rgb(140 140 140);
         }
       }
+
       .right {
         border: none !important;
       }
     }
   }
+
   .second-part {
     padding: 0.75rem;
     background-color: #fff;
+
     h5 {
       font-weight: 700;
       line-height: 1.25rem;
       font-size: 1rem;
       margin-bottom: 0rem;
     }
+
     .descrip {
       font-size: 0.875rem;
       line-height: 1.25rem;
       margin-top: 0.25rem;
       color: rgb(140 140 140);
     }
+
     .menu {
       margin-top: 13px;
       display: flex;
       flex-direction: row;
       gap: 0.5rem;
+
       .left,
       .mid,
       .right {
@@ -161,6 +184,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         .add {
           cursor: pointer;
           display: flex;
@@ -173,6 +197,7 @@
           border: 1px solid rgb(18 161 84);
           color: rgb(18 161 84);
         }
+
         .title {
           .name {
             font-weight: 700;
@@ -180,6 +205,7 @@
             line-height: 1.25rem;
             color: rgb(34 34 34);
           }
+
           .price {
             width: fit-content;
             font-size: 0.75rem;
@@ -192,24 +218,28 @@
             padding-right: 2px;
             display: inline;
           }
+
           display: flex;
           flex-direction: column;
         }
       }
     }
   }
+
   .third-part {
     display: flex;
     padding: 0.75rem;
     background-color: #fff;
     flex-direction: row-reverse;
     gap: 1rem;
+
     .manage-button {
       border: 1px solid rgb(192 192 192);
       color: black;
       background-color: #fff;
       width: fit-content;
     }
+
     .sell-button {
       background-color: rgb(18 161 84);
       border: 1px solid rgb(18 161 84);

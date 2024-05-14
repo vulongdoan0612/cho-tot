@@ -2,8 +2,6 @@ import { InputNumber } from "antd";
 
 const NumberInput = ({
   onChangeNumber,
-  min,
-  max,
   defaultValue,
   className,
   value,
@@ -12,8 +10,6 @@ const NumberInput = ({
   return (
     <InputNumber
       className={`number-input ${className}`}
-      // min={min}
-      // max={max}
       placeholder={placeholder}
       value={value}
       defaultValue={defaultValue}

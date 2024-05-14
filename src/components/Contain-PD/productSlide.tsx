@@ -1,24 +1,32 @@
-import { Image, Skeleton } from "antd";
+import { Alert, Image, Skeleton } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
-import { AddFavouritePostIcon, AddedFavouritePostIcon, ArrowSlideNextIcon, ArrowSlidePrevIcon, FavouriteIcon } from "../CustomIcons";
-import { test } from "./_mock";
+import { AddFavouritePostIcon, AddedFavouritePostIcon, ArrowSlideNextIcon, ArrowSlidePrevIcon } from "../CustomIcons";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { addFavPost, removeFavPost } from "@/services/favPost";
 
 const ProductSlide = ({ post, checkFavPost }: any) => {
+  
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
-
+  const sliderRef: any = useRef(null);
+  const [alertShare, setAlertShare] = useState(false);
   const [hoveredImageSrc, setHoveredImageSrc] = useState("");
   const [active, setActive] = useState(1);
   const [hoveredImageSrc2, setHoveredImageSrc2] = useState("");
   const [active2, setActive2] = useState(1);
   const [fav, setFav] = useState(false);
   const [fav2, setFav2] = useState(false);
-
   const [blur, setBlur] = useState(false);
+
+  const handleShare = () => {
+    setAlertShare(true);
+    setTimeout(() => {
+      setAlertShare(false);
+    }, 2000);
+  };
+
   useEffect(() => {
     if (checkFavPost.status) {
       setFav(true);
@@ -29,9 +37,6 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
     }
   }, [checkFavPost]);
 
-  const sliderRef: any = useRef(null);
-
-  const router = useRouter();
   function SampleNextArrow(props: any) {
     const { className, onClick } = props;
     return (
@@ -49,6 +54,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
       </div>
     );
   }
+
   const settings: any = {
     dots: false,
     infinite: false,
@@ -60,7 +66,8 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
-  const handleHoverImage = (src: any, index: any) => {
+
+  const handleHoverImage = (src: string, index: number) => {
     setHoveredImageSrc(src);
     setActive(index);
   };
@@ -69,7 +76,6 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
     setActive((prevActive) => {
       const newIndex = prevActive + 1 < 0 ? post?.post?.post?.image?.length + 1 : prevActive + 1;
       setHoveredImageSrc(post?.post?.post?.image[newIndex - 1]?.img);
-
       return newIndex;
     });
     if (active === 6 || active === 12) {
@@ -95,7 +101,8 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
       sliderRef.current.slickGoTo(post?.post?.post?.image?.length);
     }
   };
-  const handleFav = async (postId: any) => {
+
+  const handleFav = async (postId: number) => {
     const token = localStorage.getItem("access_token");
     if (token) {
       const updateField = {
@@ -103,9 +110,14 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
       };
       await addFavPost(String(token), updateField);
     }
+    setAlertShare(true);
+    setTimeout(() => {
+      setAlertShare(false);
+    }, 2000);
     setFav(true);
   };
-  const handleUnFav = async (postId: any) => {
+
+  const handleUnFav = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
       const updateField = {
@@ -115,43 +127,37 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
     }
     setFav(false);
   };
-  const handleHoverImage2 = (src: any, index: any) => {
+
+  const handleHoverImage2 = (src: string, index: number) => {
     setHoveredImageSrc2(src);
     setActive2(index);
   };
-  // useEffect(() => {
-  //   if (!router.isReady) return;
-  //   setBlur(true);
-  //   setTimeout(() => {
-  //     setBlur(false);
-  //   }, 300);
-  // }, [active]);
+
   const handleNextSlide2 = () => {
     setActive2((prevActive) => {
       const newIndex = prevActive + 1 < 0 ? post?.post?.post?.image?.length + 1 : prevActive + 1;
       console.log(newIndex, post?.post?.post?.image?.length);
       setHoveredImageSrc2(post?.post?.post?.image[newIndex - 1]?.img);
-
       return newIndex;
     });
-
     if (active2 === post?.post?.post?.image?.length) {
       setActive2(1);
     }
   };
+
   const handlePrevSlide2 = () => {
     setActive2((prevActive) => {
       const newIndex = prevActive - 1 < 0 ? post?.post?.post?.image?.length.length - 1 : prevActive - 1;
       setHoveredImageSrc2(post?.post?.post?.image[newIndex - 1]?.img);
       return newIndex;
     });
-
     if (active2 === 1) {
       setActive2(post?.post?.post?.image?.length);
       setHoveredImageSrc2(post?.post?.post?.image[post?.post?.post?.image?.length - 1]?.img);
     }
   };
-  const handleFav2 = async (postId: any) => {
+
+  const handleFav2 = async (postId: number) => {
     const token = localStorage.getItem("access_token");
     if (token) {
       console.log(postId);
@@ -160,9 +166,14 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
       };
       await addFavPost(String(token), updateField);
     }
+    setAlertShare(true);
+    setTimeout(() => {
+      setAlertShare(false);
+    }, 2000);
     setFav2(true);
   };
-  const handleUnFav2 = async (postId: any) => {
+
+  const handleUnFav2 = async (postId: number) => {
     const token = localStorage.getItem("access_token");
     if (token) {
       const updateField = {
@@ -242,7 +253,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
               <Skeleton.Input style={{ height: "106px" }} block={true} active size="large"></Skeleton.Input>
             ) : (
               <div className="slider-less">
-                {post?.post?.post?.image.map((item: any, index: any) => {
+                {post?.post?.post?.image.map((item: any, index: number) => {
                   return (
                     <div className="slider-item" key={index}>
                       <Image
@@ -268,10 +279,9 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
               <Skeleton.Input style={{ height: "106px" }} block={true} active size="large"></Skeleton.Input>
             ) : (
               <Slider {...settings} className="slider" ref={sliderRef}>
-                {post?.post?.post?.image.map((item: any, index: any) => {
+                {post?.post?.post?.image.map((item: any, index: number) => {
                   return (
                     <Image
-                      // style={{ width: 110 }}
                       key={index}
                       className={active === index + 1 ? "active" : ""}
                       preview={false}
@@ -288,6 +298,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
           </>
         )}
       </>
+      <Alert message="Tin đã được đưa vào danh sách theo dõi" type="success" className={alertShare ? "show-alert" : ""} />
     </div>
   );
 };

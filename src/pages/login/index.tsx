@@ -1,4 +1,4 @@
-import { Button, Form, Input, Spin } from "antd";
+import { Form, Input, Spin } from "antd";
 import Image from "next/image";
 import { FacebookIcon, GoogleIcon } from "@/components/CustomIcons";
 import { useRouter } from "next/router";
@@ -8,8 +8,10 @@ import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 
 const Login = () => {
+
   const router = useRouter();
   const [spin, setSpin] = useState(false);
+
   const onFinish = async (values: any) => {
     try {
       const dataLogin = {
@@ -39,6 +41,7 @@ const Login = () => {
       console.log("Sai mật khẩu hoặc tài khoản không tồn tại.", error);
     }
   };
+
   return (
     <div className={`login-wrapper ${spin ? "spinning" : ""}`}>
       <ToastContainer></ToastContainer>

@@ -13,6 +13,26 @@ a:active {
   color: inherit;
   text-decoration: none;
 }
+.ant-alert {
+  opacity: 0;
+  left: 50%;
+  transition: all 0.3s ease;
+  position: absolute;
+  bottom: 5%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  min-width: 619px;
+  max-width: 636px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  line-height: 20px;
+  background-color: #222;
+  color: #fff;
+  border: none;
+}
+.show-alert {
+  opacity: 0.8;
+}
 .ant-pagination {
   .ant-pagination-item {
     border: 1px solid #ddd;
@@ -48,30 +68,30 @@ a:active {
     border-radius: 4px;
   }
 }
+.ant-breadcrumb-link{
+  cursor: pointer;
+}
 .prevent-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  -webkit-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none; 
 }
 ::-webkit-scrollbar {
   width: 0.125rem;
   height: 0.125rem;
   border-radius: 0.25rem;
 
-  // display: none;
 }
 
 ::-webkit-scrollbar-track {
   background: #e7e7e7;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #a3a2a2;
   border-radius: 0.25rem;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #a3a2a2;
 }

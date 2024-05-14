@@ -12,25 +12,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const Account = () => {
-  const { countdownDuration, loading } = useSelector(
+
+  const router = useRouter();
+  const { loading } = useSelector(
     (state: RootState) => state.countDownLoading
   );
   const dispatch = useDispatch();
-  const router = useRouter();
-
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [modalSucces, setModalSuccess] = useState(false);
+  
   const handleChangeConfirmPassword = (event: any) => {
     setConfirmPassword(event.target.value);
   };
+
   const handleChange = (event: any) => {
     setCurrentPassword(event.target.value);
   };
+
   const handleChangeNewPassword = (event: any) => {
     setNewPassword(event.target.value);
   };
+
   const updatePassword = async () => {
     const token = localStorage.getItem("access_token");
     try {
@@ -51,14 +55,17 @@ const Account = () => {
       console.log("error");
     }
   };
+
   const handleCancleModalPassowrd = () => {
     setModalSuccess(false);
   };
+
   const onFinishPassword = () => {
     setModalSuccess(false);
     router.push("/");
     logout(dispatch);
   };
+  
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <Setting title="Cài đặt tài khoản" active="3" removeAccount={true}>

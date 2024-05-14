@@ -15,6 +15,7 @@ const initialState: IState = {
   isAuthenticated: false,
   account: {},
   loading: false,
+  
 };
 
 const slicer = createSlice({

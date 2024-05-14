@@ -10,11 +10,13 @@ const ItemModalFilterSits = ({
   data,
   onClick,
 }: any) => {
-  const [state, setState] = useState(true);
 
+  const [state, setState] = useState(true);
+  
   const handleClick = () => {
     setState((prev) => !prev);
   };
+
   return (
     <div className="sit">
       <div className="header" onClick={handleClick}>
@@ -28,7 +30,7 @@ const ItemModalFilterSits = ({
               {value === "" ||
               value === undefined ||
               data.slice(0, 5).includes(value) ? (
-                data.slice(0, 5).map((item: any, index: any) => (
+                data.slice(0, 5).map((item: any, index: number) => (
                   <Radio
                     value={item}
                     key={index}
@@ -43,7 +45,7 @@ const ItemModalFilterSits = ({
                   <Radio value={value} key={value}>
                     <span className="brand-name">{value}</span>
                   </Radio>
-                  {data.slice(0, 4).map((item: any, index: any) => (
+                  {data.slice(0, 4).map((item: any, index: number) => (
                     <Radio
                       value={item}
                       key={index}

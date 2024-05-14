@@ -12,11 +12,8 @@ import { toast } from "react-toastify";
 import { Spin } from "antd";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
-import { ICommonStateFillFormRenderCar, ICommonStateFormRenderCarPost } from "@/interfaces/User";
+import { ICommonStateFormRenderCarPost } from "@/interfaces/User";
 import { defaultCommonState } from "./_mock";
-import convertToSlug from "@/utils/convertToSlug";
-import { defaultCommonStateFill } from "../RenderFormTraffic/_fill";
-import getContentAfterThirdComma from "@/utils/getCityValueName";
 import getCityValueName from "@/utils/getCityValueName";
 import getDistrictValueName from "@/utils/getDistrictValueName";
 import getWardValueName from "@/utils/getWardValueName";
@@ -43,16 +40,16 @@ const TitlePostSell = ({
   setStateFill,
   stateFill,
 }: any) => {
+  
+  const router = useRouter();
+  const { id } = router.query;
   const { dataPost } = useSelector((state: RootState) => state.postSell);
+  const { account } = useSelector((state: RootState) => state.auth);
   const [statePost, setStatePost] = useState<ICommonStateFormRenderCarPost>(defaultCommonState);
   const [fillAddrCity, setFillAddrCity] = useState(false);
   const [fillAddrWard, setFillAddrWard] = useState(false);
   const [fillAddrDistrict, setFillAddrDistrict] = useState(false);
   const [fillAddrDetail, setFillAddrDetail] = useState(false);
-  const { account } = useSelector((state: RootState) => state.auth);
-
-  const router = useRouter();
-  const { id } = router.query;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +63,6 @@ const TitlePostSell = ({
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -97,6 +93,7 @@ const TitlePostSell = ({
       }
     }
   }, [account, account?.address, account?.address?.city, account?.address?.district, account?.address?.ward, statePost?.cities, id]);
+
   useEffect(() => {
     if (!id) {
       if (statePost?.districts.length > 0) {
@@ -106,7 +103,6 @@ const TitlePostSell = ({
           ...prevState,
           districtValueName: selectedDistrict?.Name,
         }));
-
         if (selectedDistrict) {
           setStatePost((prevState) => ({
             ...prevState,
@@ -116,7 +112,7 @@ const TitlePostSell = ({
       }
     }
   }, [statePost?.districts]);
-  ///////////////////////////////////////////////
+
   useEffect(() => {
     if (id) {
       setStatePost((prevState) => ({
@@ -127,7 +123,6 @@ const TitlePostSell = ({
         detailAddress: dataPost?.post?.detailAddress,
         fullAddress: dataPost?.post?.fullAddress,
       }));
-
       if (dataPost?.post?.cityValue !== null) {
         const selectedCityId = dataPost?.post?.cityValue;
         const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
@@ -149,6 +144,7 @@ const TitlePostSell = ({
     statePost?.cities,
     id,
   ]);
+
   useEffect(() => {
     if (id) {
       if (statePost?.districts.length > 0) {
@@ -187,6 +183,7 @@ const TitlePostSell = ({
       }));
     }
   };
+
   const handleChangeIntroducing = (event: any) => {
     setStatePost((prevState) => ({
       ...prevState,
@@ -199,6 +196,7 @@ const TitlePostSell = ({
       }));
     }
   };
+
   const handlePerson = (person: any) => {
     setStatePost((prevState) => ({
       ...prevState,
@@ -211,18 +209,21 @@ const TitlePostSell = ({
       }));
     }
   };
+
   const handleCancleModal = () => {
     setStatePost((prevState) => ({
       ...prevState,
       modalConfirmSwitch: false,
     }));
   };
+
   const handleModal = () => {
     setStatePost((prevState) => ({
       ...prevState,
       modalConfirmSwitch: true,
     }));
   };
+  
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
     const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
@@ -240,6 +241,7 @@ const TitlePostSell = ({
       }
     }
   };
+
   const handleDistrictChange = (event: any) => {
     const selectedDistrictId = event.target.value;
     const selectedDistrict = statePost?.districts.find((district: any) => district?.Id === selectedDistrictId);
@@ -259,6 +261,7 @@ const TitlePostSell = ({
       }
     }
   };
+
   const handleChangeWard = (event: SelectChangeEvent) => {
     setStatePost((prevState) => ({
       ...prevState,
@@ -268,6 +271,7 @@ const TitlePostSell = ({
       setFillAddrWard(false);
     }
   };
+
   const handleChangeDetailAddress = (event: any) => {
     setStatePost((prevState) => ({
       ...prevState,
@@ -277,9 +281,11 @@ const TitlePostSell = ({
       setFillAddrDetail(false);
     }
   };
+
   const handleAddress = (e: any) => {
     console.log(e.target.value);
   };
+
   const onFinish = () => {
     if (statePost?.wardValue === undefined || statePost?.wardValue === "") {
       setFillAddrWard(true);
@@ -338,6 +344,7 @@ const TitlePostSell = ({
       setFillAddrDetail(false);
     }
   };
+
   const postSell = async () => {
     const token = localStorage.getItem("access_token");
     const uuid = uuidv4();
@@ -468,7 +475,6 @@ const TitlePostSell = ({
           fillYouR: true,
         }));
       }
-
       if (
         token &&
         status !== undefined &&
@@ -786,6 +792,7 @@ const TitlePostSell = ({
       console.log("error", err);
     }
   };
+  
   return (
     <div className="title-post-sell-wrapper">
       <span className="title">Tiêu đề tin đăng và Mô tả chi tiết</span>

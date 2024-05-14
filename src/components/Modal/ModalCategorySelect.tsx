@@ -1,17 +1,11 @@
-import { TextField } from "@mui/material";
 import CustomModal from "../CustomModal";
-import CustomButton from "../CustomButton";
-import { DatePicker, Skeleton } from "antd";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import dayjs from "dayjs";
 import { ArrowInputIcon } from "../CustomIcons";
 const ModalCategorySelect = ({
   modalCategory,
   handleCancleCategory,
   handleSelectCategory,
-  category,
 }: any) => {
+
   const trafficList = [
     "Ô tô",
     "Xe máy",
@@ -21,6 +15,7 @@ const ModalCategorySelect = ({
     "Phương tiện khác",
     "Phụ tùng xe",
   ];
+  
   return (
     <CustomModal
       title="Chọn danh mục"

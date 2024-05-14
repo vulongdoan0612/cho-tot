@@ -7,7 +7,6 @@ export const PostFormSellCheck = async (accessToken: string, data: any) => {
     });
   }
   formData.append(`wardValueName`, data?.postForm?.wardValueName);
-
   formData.append(`postId`, data?.postForm?.postId);
   formData.append(`value`, data?.postForm?.value);
   formData.append(`color`, data?.postForm?.color);

@@ -17,9 +17,11 @@ import { defaultCommonStateFill } from "./_fill";
 import { colorsCar, countriesCar, formsCar, sitsCar } from "../Contain-MBOTO/_mock";
 
 const RenderOto = ({ handleWarning, fileList }: any) => {
+
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const [stateFill, setStateFill] = useState<ICommonStateFillFormRenderCar>(defaultCommonStateFill);
   const [stateForm, setStateForm] = useState<ICommonStateFormRenderCar>(defaultCommonState);
+
   useEffect(() => {
     const selectedModels = brandList.find((item: any) => item.brand === dataPost?.post?.value)?.models || [];
     setStateForm((prevState) => ({
@@ -58,6 +60,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
     dataPost?.post?.status,
     dataPost?.post?.value,
   ]);
+
   useEffect(() => {
     if (dataPost?.post?.dateCar) {
       setStateForm((prevState) => ({
@@ -66,6 +69,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   }, [dataPost?.post?.dateCar]);
+
   const handleChangeCountry = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -78,6 +82,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleChangeSit = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -90,6 +95,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleChange = (event: SelectChangeEvent) => {
     const selectedModels = brandList.find((item: any) => item.brand === event?.target.value)?.models || [];
     setStateForm((prevState) => ({
@@ -104,6 +110,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleChangeModels = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -116,6 +123,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleChangeColor = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -128,6 +136,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const onChange: DatePickerProps<any>["onChange"] = (date: any, dateString: any) => {
     const momentDateCCCD = moment(dateString);
     const formattedDateCCCD = momentDateCCCD.format("YYYY");
@@ -142,6 +151,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleChangeCarNumber = (event: any) => {
     if (onlyNumbers(event?.target?.value) || event?.target?.value === "") {
       setStateForm((prevState) => ({
@@ -156,6 +166,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleChangeOwner = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -189,6 +200,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const onChangePrice = (value: any) => {
     if (onlyNumbers(value) || value === "") {
       setStateForm((prevState) => ({
@@ -202,7 +214,6 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
         price: 0,
       }));
     }
-
     if (String(value) !== "") {
       setStateFill((prevState: any) => ({
         ...prevState,
@@ -210,6 +221,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleFuel = (fuelType: any) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -222,6 +234,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleAccessories = (accessories: any) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -234,6 +247,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleRegistry = (registry: any) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -246,6 +260,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleNumberBox = (NumberBox: any) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -258,6 +273,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleChangeForm = (event: SelectChangeEvent) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -270,6 +286,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+
   const handleStatus = (status: any) => {
     setStateForm((prevState) => ({
       ...prevState,
@@ -282,6 +299,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       }));
     }
   };
+  
   return (
     <div className="detail-information-car">
       <span className="title">Thông tin chi tiết</span>
@@ -336,7 +354,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               label="Dòng xe"
               onChange={handleChangeModels}
             >
-              {stateForm?.models.map((item: any, index: any) => {
+              {stateForm?.models.map((item: any, index: number) => {
                 return (
                   <MenuItem key={index} value={item}>
                     {item}
@@ -353,8 +371,6 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               value={stateForm.dateCar !== "" ? dayjs(stateForm.dateCar) : null}
               className={stateFill.fillDate ? "warn-border" : ""}
               placeholder="Năm sản xuất"
-              // minDate={dayjs("1990")}
-              // maxDate={dayjs("2024")}
             />{" "}
             {stateFill.fillDate && <div className="warning-fill">Vui lòng chọn năm sản xuất</div>}
           </div>
@@ -412,7 +428,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 label="Dòng xe"
                 onChange={handleChangeCountry}
               >
-                {countriesCar.map((item: any, index: any) => {
+                {countriesCar.map((item: any, index: number) => {
                   return (
                     <MenuItem key={index} value={item.item}>
                       {item.item}
@@ -435,7 +451,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 label="Dòng xe"
                 onChange={handleChangeForm}
               >
-                {formsCar.map((item: any, index: any) => {
+                {formsCar.map((item: any, index: number) => {
                   return (
                     <MenuItem key={index} value={item.item}>
                       {item.item}
@@ -460,7 +476,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 label="Số chỗ"
                 onChange={handleChangeSit}
               >
-                {sitsCar.map((item: any, index: any) => {
+                {sitsCar.map((item: any, index: number) => {
                   return (
                     <MenuItem key={index} value={item.value}>
                       {item.item}
@@ -483,7 +499,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                 label="Dòng xe"
                 onChange={handleChangeColor}
               >
-                {colorsCar.map((item: any, index: any) => {
+                {colorsCar.map((item: any, index: number) => {
                   return (
                     <MenuItem key={index} value={item.item}>
                       {item.item}

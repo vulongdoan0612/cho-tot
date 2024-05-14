@@ -5,7 +5,6 @@ import { TextField } from "@mui/material";
 import { ArrowInputNormalIcon } from "../CustomIcons";
 import CustomButton from "../CustomButton";
 import { useRouter } from "next/router";
-import convertToSlug from "@/utils/convertToSlug";
 
 const FindInAreaDropdown = ({
   openFind,
@@ -19,11 +18,34 @@ const FindInAreaDropdown = ({
   idCity,
   idDistrict,
 }: any) => {
-  const [districtValue, setDistrictValue] = useState<any>([]);
+
   const wrapperRef: any = useRef(null);
   const router = useRouter();
+  const [districtValue, setDistrictValue] = useState<any>([]);
 
-  const handleChangeSelect = (status: any, event: any) => {
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target) &&
+        event?.target?.id !== "button-toan-quoc" &&
+        event?.target?.id !== "svg-toan-quoc"
+      ) {
+        setState((prevState: any) => ({
+          ...prevState,
+          openFind: false,
+          openSearchCity: false,
+        }));
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openFind]);
+  
+  const handleChangeSelect = (status: string, event: any) => {
     setState((prevState: any) => ({
       ...prevState,
       districtName: "",
@@ -57,6 +79,7 @@ const FindInAreaDropdown = ({
       searchResult: cities,
     }));
   };
+
   const handleOpenSearchDistrict = () => {
     setState((prevState: any) => ({
       ...prevState,
@@ -65,12 +88,14 @@ const FindInAreaDropdown = ({
       searchResultDistrict: districts,
     }));
   };
+
   const updateURL = (queryParams: any) => {
     router.push({
       pathname: "/mua-ban-oto",
       query: { ...router.query, ...queryParams },
     });
   };
+
   const removeQueries = (keysToRemove: string[]) => {
     const updatedQuery = { ...router.query };
     keysToRemove.forEach((key) => {
@@ -81,6 +106,7 @@ const FindInAreaDropdown = ({
       query: updatedQuery,
     });
   };
+
   const handleApply = () => {
     try {
       setFilterFind(
@@ -97,6 +123,7 @@ const FindInAreaDropdown = ({
       }));
     }
   };
+
   const handleRenew = () => {
     try {
       setState((prevState: any) => ({
@@ -118,27 +145,8 @@ const FindInAreaDropdown = ({
       }));
     }
   };
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target) &&
-        event?.target?.id !== "button-toan-quoc" &&
-        event?.target?.id !== "svg-toan-quoc"
-      ) {
-        setState((prevState: any) => ({
-          ...prevState,
-          openFind: false,
-          openSearchCity: false,
-        }));
-      }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [openFind]);
+
   return (
     <>
       <div
