@@ -61,21 +61,21 @@ const User = () => {
   }, []);
 
   useEffect(() => {
-    if (account) {
+    if (account?.user) {
       setStateUser((prevState) => ({
         ...prevState,
-        cityValue: account?.address?.city,
-        districtValue: account?.address?.district,
-        wardValue: account?.address?.ward,
-        detailAddress: account?.address?.detailAddress,
-        fullAddress: account?.address?.fullAddress,
+        cityValue: account?.user?.address?.city,
+        districtValue: account?.user?.address?.district,
+        wardValue: account?.user?.address?.ward,
+        detailAddress: account?.user?.address?.detailAddress,
+        fullAddress: account?.user?.address?.fullAddress,
       }));
     }
-  }, [account]);
+  }, [account?.user]);
 
   useEffect(() => {
-    if (account?.address?.city !== null) {
-      const selectedCityId = account?.address?.city;
+    if (account?.user?.address?.city !== null) {
+      const selectedCityId = account?.user?.address?.city;
       const selectedCity = stateUser.cities.find((city: any) => city.Id === selectedCityId);
       if (selectedCity) {
         setStateUser((prevState) => ({
@@ -84,10 +84,10 @@ const User = () => {
         }));
       }
     }
-  }, [account, account?.address, account?.address?.city, account?.address?.district, account?.address?.ward]);
+  }, [account?.user, account?.user?.address, account?.user?.address?.city, account?.user?.address?.district, account?.user?.address?.ward]);
   useEffect(() => {
     if (stateUser.districts.length > 0) {
-      const selectedDistrictId = account?.address?.district;
+      const selectedDistrictId = account?.user?.address?.district;
       const selectedDistrict = stateUser?.districts?.find((district: any) => district.Id === selectedDistrictId);
 
       if (selectedDistrict) {
@@ -107,80 +107,85 @@ const User = () => {
   }, []);
 
   useEffect(() => {
-    if (account?.rememberName) {
+    if (account?.user?.rememberName) {
       setStateUser((prevState) => ({
         ...prevState,
-        rememberName: account?.rememberName,
+        rememberName: account?.user?.rememberName,
       }));
     }
-  }, [account?.rememberName]);
+  }, [account?.user?.rememberName]);
 
   useEffect(() => {
-    if (account?.birthdate) {
+    if (account?.user?.birthdate) {
       setStateUser((prevState) => ({
         ...prevState,
-        birth: account?.birthdate,
+        birth: account?.user?.birthdate,
       }));
     }
-  }, [account?.birthdate]);
+  }, [account?.user?.birthdate]);
 
   useEffect(() => {
-    if (account?.identifyCard?.CMND || account?.identifyCard?.date || account?.identifyCard?.location) {
+    if (account?.user?.identifyCard?.CMND || account?.user?.identifyCard?.date || account?.user?.identifyCard?.location) {
       setStateUser((prevState) => ({
         ...prevState,
-        cccd: account?.identifyCard?.CMND,
-        dateCCCD: dayjs(account?.identifyCard?.date),
-        location: account?.identifyCard?.location,
-        fullCCCD: account?.identifyCard?.fullCMND,
+        cccd: account?.user?.identifyCard?.CMND,
+        dateCCCD: dayjs(account?.user?.identifyCard?.date),
+        location: account?.user?.identifyCard?.location,
+        fullCCCD: account?.user?.identifyCard?.fullCMND,
       }));
     }
-  }, [account?.identifyCard?.CMND, account?.identifyCard?.date, account?.identifyCard?.location, account?.identifyCard?.fullCMND]);
+  }, [
+    account?.user?.identifyCard?.CMND,
+    account?.user?.identifyCard?.date,
+    account?.user?.identifyCard?.location,
+    account?.user?.identifyCard?.fullCMND,
+  ]);
 
   useEffect(() => {
-    if (account?.introduction) {
+    if (account?.user?.introduction) {
       setStateUser((prevState) => ({
         ...prevState,
-        introducing: account?.introduction,
+        introducing: account?.user?.introduction,
       }));
     }
-  }, [account?.introduction]);
+  }, [account?.user?.introduction]);
 
   useEffect(() => {
-    if (account?.fullname) {
+    if (account?.user?.fullname) {
       setStateUser((prevState) => ({
         ...prevState,
-        fullName: account?.fullname,
+        fullName: account?.user?.fullname,
       }));
     }
-  }, [account?.fullname]);
+  }, [account?.user?.fullname]);
 
   useEffect(() => {
-    if (account?.faxNumber) {
+    if (account?.user?.faxNumber) {
       setStateUser((prevState) => ({
         ...prevState,
-        numberFax: account?.faxNumber,
+        numberFax: account?.user?.faxNumber,
       }));
     }
-  }, [account?.faxNumber]);
+  }, [account?.user?.faxNumber]);
 
   useEffect(() => {
-    if (account?.sex) {
+    if (account?.user?.sex) {
       setStateUser((prevState) => ({
         ...prevState,
-        sex: account?.sex,
+        sex: account?.user?.sex,
       }));
     }
-  }, [account?.sex]);
+  }, [account?.user?.sex]);
 
   useEffect(() => {
-    if (account?.favouriteList) {
+    if (account?.user?.favouriteList) {
       setStateUser((prevState) => ({
         ...prevState,
-        selectedItemFav: account?.favouriteList,
+        selectedItemFav: account?.user?.favouriteList,
       }));
-      setSelectItemsFav(account?.favouriteList);
+      setSelectItemsFav(account?.user?.favouriteList);
     }
-  }, [account?.favouriteList]);
+  }, [account?.user?.favouriteList]);
 
   const updateProfile = async () => {
     const token = localStorage.getItem("access_token");
@@ -602,7 +607,7 @@ const User = () => {
       setFillSex(false);
     }
   };
-  
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <Setting title="Thông tin cá nhân" active="1">
@@ -629,7 +634,7 @@ const User = () => {
                   />
                 )}
               </div>
-              <div className={`phone ${account?.phone ? "phone-exit" : "phone-not-exit"}`}>
+              <div className={`phone ${account?.user?.phone ? "phone-exit" : "phone-not-exit"}`}>
                 {loading ? (
                   <Skeleton.Input block={true} active size="large"></Skeleton.Input>
                 ) : (
@@ -643,9 +648,9 @@ const User = () => {
                       multiline
                       maxRows={4}
                       variant="filled"
-                      defaultValue={account?.phone}
+                      defaultValue={account?.user?.phone}
                     />
-                    {account?.phone ? <span className="change-phone">Thay đổi</span> : <></>}
+                    {account?.user?.phone ? <span className="change-phone">Thay đổi</span> : <></>}
                   </>
                 )}
               </div>
@@ -694,7 +699,7 @@ const User = () => {
                     id="filled-multiline-flexible"
                     className={`rembember ${fillRemem ? "warn-border" : ""}`}
                     label="Tên gợi nhớ"
-                    value={stateUser.rememberName || account?.rememberName}
+                    value={stateUser.rememberName || account?.user?.rememberName}
                     onChange={handleChangeRemember}
                     multiline
                     maxRows={4}
@@ -714,11 +719,11 @@ const User = () => {
           <span className="title">Thông tin bảo mật</span>
           <p className="des-sec">Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể thấy và chỉnh sửa những thông tin này.</p>
           <div className="form-input">
-            <div className={`email input-need-to-custom ${account?.email !== "" ? "email-exit" : "email-not-exit"}`}>
+            <div className={`email input-need-to-custom ${account?.user?.email !== "" ? "email-exit" : "email-not-exit"}`}>
               <TextField
                 className="email"
                 id="filled-multiline-flexible"
-                label={`${account?.email !== "" ? "Email" : "Thêm email"}`}
+                label={`${account?.user?.email !== "" ? "Email" : "Thêm email"}`}
                 multiline
                 maxRows={4}
                 variant="filled"

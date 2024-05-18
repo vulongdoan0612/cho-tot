@@ -1,0 +1,23 @@
+.wrapper-not-found {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: #fff;
+  width: 50%;
+  //   margin: 20vh auto 0;
+  padding: 20px;
+  justify-content: center;
+  margin-left: auto;
+  margin-top: 0px;
+  margin-right: auto;
+  align-items: center;
+  .top {
+    width: 100%;
+    background-color: rgb(254, 153, 0);
+    padding: 10px;
+  }
+  .text{
+    padding-top: 20px;
+    font-weight: 700;
+  }
+}

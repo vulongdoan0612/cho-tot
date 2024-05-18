@@ -40,7 +40,6 @@ const TitlePostSell = ({
   setStateFill,
   stateFill,
 }: any) => {
-  
   const router = useRouter();
   const { id } = router.query;
   const { dataPost } = useSelector((state: RootState) => state.postSell);
@@ -70,15 +69,15 @@ const TitlePostSell = ({
     if (!id) {
       setStatePost((prevState) => ({
         ...prevState,
-        cityValue: account?.address?.city,
-        districtValue: account?.address?.district,
-        wardValue: account?.address?.ward,
-        detailAddress: account?.address?.detailAddress,
-        fullAddress: account?.address?.fullAddress,
+        cityValue: account?.user?.address?.city,
+        districtValue: account?.user?.address?.district,
+        wardValue: account?.user?.address?.ward,
+        detailAddress: account?.user?.address?.detailAddress,
+        fullAddress: account?.user?.address?.fullAddress,
       }));
 
-      if (account?.address?.city !== null && statePost?.cities.length > 0) {
-        const selectedCityId = account?.address?.city;
+      if (account?.user?.address?.city !== null && statePost?.cities.length > 0) {
+        const selectedCityId = account?.user?.address?.city;
         const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
         setStatePost((prevState) => ({
           ...prevState,
@@ -92,12 +91,21 @@ const TitlePostSell = ({
         }
       }
     }
-  }, [account, account?.address, account?.address?.city, account?.address?.district, account?.address?.ward, statePost?.cities, id]);
+  }, [
+    account,
+    account?.user,
+    account?.user?.address,
+    account?.user?.address?.city,
+    account?.user?.address?.district,
+    account?.user?.address?.ward,
+    statePost?.cities,
+    id,
+  ]);
 
   useEffect(() => {
     if (!id) {
       if (statePost?.districts.length > 0) {
-        const selectedDistrictId = account?.address?.district;
+        const selectedDistrictId = account?.user?.address?.district;
         const selectedDistrict = statePost?.districts.find((district: any) => district.Id === selectedDistrictId);
         setStatePost((prevState) => ({
           ...prevState,
@@ -223,7 +231,7 @@ const TitlePostSell = ({
       modalConfirmSwitch: true,
     }));
   };
-  
+
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
     const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
@@ -792,7 +800,7 @@ const TitlePostSell = ({
       console.log("error", err);
     }
   };
-  
+
   return (
     <div className="title-post-sell-wrapper">
       <span className="title">Tiêu đề tin đăng và Mô tả chi tiết</span>

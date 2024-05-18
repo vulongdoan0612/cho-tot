@@ -12,14 +12,18 @@ import { defaultCommonState } from "./_mock";
 import ModalFilter from "@/components/Modal/ModalFilter";
 import ContainMBOTO from "@/components/Contain-MBOTO";
 import formatMoney from "@/utils/formatMoney";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 import { useFetchPosts } from "@/hooks/useFetchPosts";
 import BrandCarDropdown from "@/components/BrandCarDropdown";
+import useWebSocket from "react-use-websocket";
+import { fetchDataFavListMain, fetchDataPosts } from "@/redux/reducers/posts";
 
 const SellingPage = () => {
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
   const router = useRouter();
+  const dispatch: AppDispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.postsData);
   const [spin, setSpin] = useState(false);
   const [pageSize, setPagesize] = useState(5);
@@ -50,6 +54,42 @@ const SellingPage = () => {
     body: router,
     setSpin,
   });
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+    setSpin(true);
+    if (lastJsonMessage) {
+      if (lastJsonMessage.action === "refuse" || lastJsonMessage.action === "delete" || lastJsonMessage.action === "accept") {
+        setTimeout(() => {
+          setSpin(false);
+        }, 500);
+        dispatch(fetchDataFavListMain());
+        dispatch(
+          fetchDataPosts({
+            pageSize,
+            current,
+            price: router.query.price,
+            form: router.query.form,
+            sit: router.query.sit,
+            fuel: router.query.fuel,
+            numberBox: router.query.numberBox,
+            city: router.query.city,
+            district: router.query.district,
+            date: router.query.date,
+            km: router.query.km,
+            color: router.query.color,
+            country: router.query.country,
+            model: router.query.model,
+            brand: router.query.brand,
+            status: router.query.status,
+            post: router.query.post,
+          })
+        );
+      }
+    }
+  }, [lastJsonMessage]);
 
   useEffect(() => {
     if (!router.isReady) return;

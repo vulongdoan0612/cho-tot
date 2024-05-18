@@ -20,3 +20,13 @@ export const getDetailProfileUser = async (data: any) => {
   };
   return axios(config);
 };
+export const getAnnounceChat = async (accessToken: string) => {
+  const config = {
+    method: "POST",
+    url: `/get-announce-chat`,
+    headers: {
+      Authorization: accessToken,
+    },
+  };
+  return axios(config);
+};

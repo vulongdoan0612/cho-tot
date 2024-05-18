@@ -180,6 +180,7 @@ const PostSell = () => {
             />
             <ArrowInputIcon></ArrowInputIcon>
           </div>
+
           {render === "0" ? (
             <>
               <RenderOto handleWarning={() => setWarning(true)} fileList={fileList} id={id} dataPost={dataPost}></RenderOto>
@@ -197,7 +198,18 @@ const PostSell = () => {
           ) : render === "6" ? (
             <>pt xe</>
           ) : (
-            <></>
+            <div className="banner-post">
+              {" "}
+              <Image
+                src="https://static.chotot.com/storage/chotot-icons/svg/empty-category.svg"
+                alt=""
+                width={458}
+                height={275}
+                preview={false}
+              ></Image>
+              <span className="title">ĐĂNG NHANH - BÁN GỌN</span>
+              <p className="select">Chọn “danh mục tin đăng” để đăng tin</p>
+            </div>
           )}
         </div>
       </div>

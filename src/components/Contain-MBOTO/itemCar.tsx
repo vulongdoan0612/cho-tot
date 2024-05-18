@@ -6,7 +6,9 @@ import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { useRouter } from "next/router";
 import { useFetchFavListMain } from "@/hooks/useFetchFavListMain";
 import { addFavPost, removeFavPost } from "@/services/favPost";
-import { fetchDataFavListMain } from "@/redux/reducers/posts";
+import { fetchDataFavListMain, fetchDataPosts } from "@/redux/reducers/posts";
+import useWebSocket from "react-use-websocket";
+import { useEffect } from "react";
 
 const ItemCar = ({ posts, spin }: any) => {
   const router = useRouter();
@@ -18,6 +20,7 @@ const ItemCar = ({ posts, spin }: any) => {
   const handleRouter = (item: any) => {
     router.push(`/${item?.post?.slug}/${item?.postId}`);
   };
+  
   const handleRemoveFavPost = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {

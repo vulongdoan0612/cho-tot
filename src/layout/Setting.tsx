@@ -29,7 +29,7 @@ const Setting = (props: PropsPage) => {
             title: "Chợ tốt",
           },
           {
-            title: `Trang cá nhân của ${account?.fullname}`,
+            title: `Trang cá nhân của ${account?.user?.fullname}`,
           },
           {
             title: "Thông tin cá nhân",
@@ -42,15 +42,11 @@ const Setting = (props: PropsPage) => {
           <div className="left-content">
             <ul>
               <a href="/user/settings/profile">
-                <li className={`${active === "1" ? "bold" : ""}`}>
-                  Thông tin cá nhân
-                </li>
+                <li className={`${active === "1" ? "bold" : ""}`}>Thông tin cá nhân</li>
               </a>
               <li>Liên kết mạng xã hội</li>
               <a href="/user/settings/account">
-                <li className={`${active === "3" ? "bold" : ""}`}>
-                  Cài đặt tài khoản
-                </li>
+                <li className={`${active === "3" ? "bold" : ""}`}>Cài đặt tài khoản</li>
               </a>
               <li>Quản lý lịch sử đăng nhập</li>
             </ul>

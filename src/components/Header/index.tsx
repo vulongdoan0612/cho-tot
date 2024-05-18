@@ -1,39 +1,35 @@
-import {
-  Badge,
-  Button,
-  Dropdown,
-  MenuProps,
-  Skeleton,
-  Space,
-} from "antd";
+import { Badge, Button, Dropdown, MenuProps, Skeleton, Space } from "antd";
 import Image from "next/image";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import {
-  BarIcon,
-  BellIcon,
-  CartIcon,
-  ChatIcon,
-  ArrowIcon,
-  MangeShopIcon,
-  UploadNewIcon,
-} from "../CustomIcons";
+import { BarIcon, BellIcon, CartIcon, ChatIcon, ArrowIcon, MangeShopIcon, UploadNewIcon } from "../CustomIcons";
 import AvatarDropdown from "../AvatarDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataUser } from "@/redux/reducers/auth";
 import useDidMountEffect from "@/utils/customUseEffect";
 import { AppDispatch, RootState } from "@/redux/store";
-import {
-  countDownLoading,
-  countdownComplete,
-} from "@/redux/reducers/countDownLoading";
+import { countDownLoading, countdownComplete } from "@/redux/reducers/countDownLoading";
+import Link from "next/link";
+import useWebSocket from "react-use-websocket";
+import { useEffect, useState } from "react";
+import { getAnnounceChat } from "@/services/user";
 
 const Header = () => {
-  
+  const { account } = useSelector((state: RootState) => state.auth);
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:8085");
   const dispatch = useDispatch<AppDispatch>();
-  const { countdownDuration, loading } = useSelector(
-    (state: RootState) => state.countDownLoading
-  );
+  const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
+  const [badge, setBadge] = useState(false);
 
+  const fetchAnnounce = async () => {
+    const token = localStorage.getItem("access_token");
+    const res = await getAnnounceChat(String(token));
+    setBadge(res.data.announceChat);
+  };
+  useEffect(() => {
+    if (lastJsonMessage?.userId === account?.user?._id && lastJsonMessage?.action === "annouce") {
+      fetchAnnounce();
+    }
+  }, [lastJsonMessage]);
   useDidMountEffect(() => {
     fetchData();
     startCountdown();
@@ -50,6 +46,7 @@ const Header = () => {
     const token = localStorage.getItem("access_token");
     try {
       if (token) {
+        fetchAnnounce();
         dispatch(fetchDataUser());
       }
     } catch {
@@ -132,12 +129,8 @@ const Header = () => {
   const formatResult = (item: any) => {
     return (
       <>
-        <span style={{ display: "block", textAlign: "left" }}>
-          id: {item.id}
-        </span>
-        <span style={{ display: "block", textAlign: "left" }}>
-          name: {item.name}
-        </span>
+        <span style={{ display: "block", textAlign: "left" }}>id: {item.id}</span>
+        <span style={{ display: "block", textAlign: "left" }}>name: {item.name}</span>
       </>
     );
   };
@@ -149,12 +142,7 @@ const Header = () => {
           {loading ? (
             <Skeleton.Button block={true} active size="large"></Skeleton.Button>
           ) : (
-            <Image
-              src="/images/chotot-logo.png"
-              alt=""
-              width={100}
-              height={35}
-            ></Image>
+            <Image src="/images/chotot-logo.png" alt="" width={100} height={35}></Image>
           )}
         </div>
         <div className="dropdown-category">
@@ -197,15 +185,13 @@ const Header = () => {
             <Badge count={5}>
               <BellIcon />
             </Badge>
-            <Badge count={5}>
-              <ChatIcon />
-            </Badge>
+            <Link href="/chat">
+              <Badge dot={badge}>
+                <ChatIcon />
+              </Badge>
+            </Link>
             <div className="dropdown-cart">
-              <Dropdown
-                menu={{ items }}
-                placement="bottom"
-                arrow={{ pointAtCenter: true }}
-              >
+              <Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <CartIcon />
                 </a>
@@ -213,31 +199,23 @@ const Header = () => {
             </div>
             <div className="mangeShop">
               <MangeShopIcon />
-              <a href="/my-ads"><span className="text">Quản lý tin</span></a>
+              <a href="/my-ads">
+                <span className="text">Quản lý tin</span>
+              </a>
             </div>
           </>
         )}
 
         <div className="avatar">
           {loading ? (
-            <Skeleton.Button
-              active
-              block={true}
-              size="large"
-              style={{ minWidth: "72px" }}
-            ></Skeleton.Button>
+            <Skeleton.Button active block={true} size="large" style={{ minWidth: "72px" }}></Skeleton.Button>
           ) : (
             <AvatarDropdown></AvatarDropdown>
           )}
         </div>
         <div>
           {loading ? (
-            <Skeleton.Button
-              block={true}
-              active
-              size="large"
-              style={{ minWidth: "123px" }}
-            ></Skeleton.Button>
+            <Skeleton.Button block={true} active size="large" style={{ minWidth: "123px" }}></Skeleton.Button>
           ) : (
             <Button>
               <UploadNewIcon></UploadNewIcon>

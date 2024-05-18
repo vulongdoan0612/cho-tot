@@ -25,6 +25,7 @@
     }
   }
   .contain-detail-user {
+    margin-bottom: 12px;
     margin-left: auto;
     margin-right: auto;
     width: 941px;
@@ -198,7 +199,8 @@
           }
         }
         .null-content {
-          height: 421px;
+          min-height: 563.69px;
+
           margin-top: auto;
           display: flex;
           flex-direction: column;

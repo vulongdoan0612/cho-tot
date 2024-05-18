@@ -1,13 +1,16 @@
-
 import { fetchDataUserProfile } from "@/redux/reducers/profileUser";
 import { AppDispatch } from "@/redux/store";
 import useDidMountEffect from "@/utils/customUseEffect";
 import { useDispatch } from "react-redux";
 
-export const useFetchDataUser = ({ body }: any) => {
+export const useFetchDataUser = ({ body, setSpin }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
   useDidMountEffect(() => {
+    setSpin(true);
+    setTimeout(() => {
+      setSpin(false);
+    }, 500);
     handleFetchDataUser();
   }, [body]);
   const handleFetchDataUser = () => {

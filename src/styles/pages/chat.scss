@@ -1,0 +1,385 @@
+.chat-wrapper {
+  display: flex;
+  width: 936px;
+  height: 70vh;
+  margin-left: auto;
+  margin-right: auto;
+  background: white;
+  //   margin-top: 12px;
+  // margin-bottom: -12px;
+
+  .left {
+    border-right: 1px solid #e8e8e8;
+    display: flex;
+    width: 40%;
+    border-bottom: 1px solid #e8e8e8;
+
+    border-left: 1px solid #e8e8e8;
+    // gap: 15px;
+    flex-direction: column;
+    .hidden-top {
+      min-height: 56px;
+      background-color: #fff;
+      border-left: 1px solid #e8e8e8;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      font-size: 0.875rem;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .count-hidden {
+        font-weight: 700;
+        color: #f80;
+      }
+      img {
+        cursor: pointer;
+        display: flex;
+      }
+    }
+    .search {
+      padding: 12px 12px 8px;
+      .ant-input-outlined:focus-within {
+        border-color: #f80 !important;
+        box-shadow: none;
+      }
+      .ant-input-outlined:hover {
+        border: 1px solid #d9d9d9;
+        // border-color: #d9d9d9 !important;
+      }
+      .ant-input-outlined {
+        height: 34px;
+      }
+    }
+    .type {
+      padding: 8px 12px;
+      .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+        padding: 5.5px 14px;
+        width: 150px;
+      }
+    }
+    .list-room {
+      max-height: 705px;
+      overflow-y: scroll;
+      height: 100%;
+      .item-room:hover {
+        background-color: #ececec;
+      }
+      .item-room {
+        justify-content: space-between;
+        .left-item-room {
+          gap: 9px;
+          align-items: center;
+          display: flex;
+          flex-direction: row;
+
+          .ant-checkbox-checked {
+            .ant-checkbox-inner {
+              border: 1px solid #f80;
+              background-color: #f80;
+            }
+          }
+          .ant-checkbox-inner {
+            border: 1px solid #d9d9d9;
+          }
+        }
+        cursor: pointer;
+        border-bottom: 1px solid #ececec;
+        padding: 12px 8px;
+        display: flex;
+        .avatar {
+          img {
+            border-radius: 50%;
+          }
+        }
+        .car-info {
+          gap: 5px;
+          display: flex;
+          flex-direction: column;
+          .username {
+            .time {
+              font-size: 0.8em;
+              line-height: 19px;
+            }
+            font-weight: 400;
+            font-size: 0.875rem;
+            line-height: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: #000;
+          }
+          .descript {
+            font-weight: 700;
+            font-size: 0.75rem;
+            margin: 0 0 1px;
+            color: #9b9b9b;
+          }
+          .text {
+            color: #9b9b9b;
+            font-size: 12px;
+          }
+        }
+        .car {
+          img {
+            object-fit: cover;
+            border-radius: 8px;
+          }
+        }
+      }
+      .null-chat {
+        justify-content: center;
+        display: flex;
+        height: 100%;
+        text-align: center;
+        /* align-content: center; */
+        align-items: center;
+        font-weight: 600;
+      }
+    }
+    .hidden-option {
+      gap: 10px;
+      // box-shadow: 0 -2px 8px #5959591f;
+      display: flex;
+      padding: 8px 10px;
+      .custom-button:first-child {
+        border: 1px solid silver;
+        background-color: #fff;
+        font-weight: 700;
+        padding: 0 16px;
+        color: #222;
+      }
+    }
+    .hidden-chat {
+      border-radius: 0;
+      height: 48px;
+      padding: 8px 10px;
+      box-shadow: 0 -2px 8px #5959591f;
+      display: flex;
+      button {
+        cursor: pointer;
+        border: 1px solid silver;
+        background-color: #fff;
+        font-weight: 700;
+        padding: 0 16px;
+        height: 32px;
+        font-size: 14px;
+        border-radius: 4px;
+        justify-content: center;
+      }
+    }
+  }
+  .right {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 60%;
+    border-right: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+
+    .top {
+      .header {
+        min-height: 49px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        .user-info {
+          padding: 6px 12px 6px 7px;
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          img {
+            border-radius: 50%;
+          }
+          span {
+            font-weight: 700;
+            font-size: 14px;
+          }
+        }
+        display: flex;
+        justify-content: space-between;
+      }
+      .car-info {
+        padding: 7px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        min-width: 318px;
+        max-width: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        img {
+          object-fit: cover;
+          border-radius: 5px;
+        }
+        .car-price {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          span:first-child {
+            font-weight: 700;
+          }
+          span:last-child {
+            color: #d0021b;
+            font-size: 15px;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+    .middle {
+      padding-right: 8px;
+      padding-left: 10px;
+      height: 100%;
+      gap: 15px;
+      overflow: scroll;
+      .date-message {
+        margin-top: 15px;
+        text-align: center;
+        font-weight: 500;
+        color: #a9a9a9;
+      }
+      .text-message {
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+      }
+      .send {
+        background-color: #fff4d6;
+        text-align: right;
+        margin-left: auto;
+      }
+      .receive {
+        background-color: #f4f4f4;
+        text-align: left;
+      }
+      .time {
+        font-size: 0.75rem;
+        color: #bdc1c9;
+      }
+      display: flex;
+      flex-direction: column;
+    }
+    .bottom {
+      .send-text {
+        img {
+          cursor: pointer;
+        }
+        width: 100%;
+        align-items: center;
+        gap: 10px;
+        .ant-input-outlined {
+          background-color: #f4f4f4 !important;
+          border-color: transparent;
+          box-shadow: none;
+        }
+        .ant-input-outlined:focus-within {
+          border-color: transparent;
+          box-shadow: none;
+        }
+        .ant-input {
+          width: 100%;
+        }
+        display: flex;
+      }
+      .recommend {
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        margin: 0 8px;
+        padding-bottom: 10px;
+        padding-left: 5px;
+        padding-right: 5px;
+        // padding: 10px 0 2px 4px;
+        max-width: 540.59px;
+        ul {
+          padding-top: 5px;
+          list-style-type: none !important;
+          padding-left: 0;
+          margin: 0;
+          display: flex;
+          li {
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.24);
+            border-radius: 40px;
+            padding: 7px;
+            margin-right: 8px;
+            display: inline-block;
+            color: #333;
+            cursor: pointer;
+            white-space: nowrap;
+            // text-overflow: ellipsis;
+            max-width: 16rem;
+            font-size: 12px;
+            line-height: 14px;
+          }
+        }
+      }
+      gap: 10px;
+      flex-direction: column;
+      padding: 6px 8px 12px;
+      align-items: center;
+      display: flex;
+
+      // justify-content: ;
+    }
+    .null-room {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+}
+.back-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 936px;
+  max-width: 320px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  height: 809px;
+  .type {
+    padding-bottom: 32px;
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+      padding: 5.5px 14px;
+      width: 100px;
+    }
+  }
+  h5 {
+    margin-top: 20px;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-family: Helvetica, Arial, Roboto, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5;
+    font-size: 1rem;
+    color: #222;
+  }
+  p {
+    font-size: 13px;
+  }
+  button {
+    height: fit-content;
+    max-width: 146px;
+  }
+}
+.check-profile {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+  .anticon {
+    width: 16px;
+    height: 16px;
+  }
+}

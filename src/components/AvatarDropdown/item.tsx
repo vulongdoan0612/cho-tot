@@ -1,5 +1,5 @@
 import { Avatar, Rate } from "antd";
-import {  StarIcon } from "../CustomIcons";
+import { StarIcon } from "../CustomIcons";
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,18 +15,17 @@ const DropdownList = () => {
     router.push("/");
     logout(dispatch);
   };
-  
   return (
     <div className="avatar-dropdown-header">
       {isAuthenticated ? (
-        <Link href={`/user/${account?._id}`}>
+        <Link href={`/user/${account?.user?._id}`}>
           <div className="user-info">
             <div className="avatar">
               <Avatar src={<Image src="/images/vu01.png" alt="avatar" width={100} height={100} />} />
             </div>
             <div className="right">
-              <div className="name">{account?.fullname}</div>
-              <div className="rate">
+              <div className="name">{account?.user?.fullname}</div>
+              {/* <div className="rate">
                 <span className="rate-number">2</span>
                 <Rate disabled defaultValue={2} character={<StarIcon></StarIcon>} />
                 <span className="text">Chưa có người đánh giá</span>
@@ -36,16 +35,16 @@ const DropdownList = () => {
                 <span>0 Người theo dõi</span>
                 <span className="line"></span>
                 <span>0 Đang theo dõi</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </Link>
       ) : (
         <div className="sign-in">
-          <Link href="/login">
-            <span className="avatar"></span>
-            <span className="text">Đăng nhập / Đăng ký</span>
-          </Link>
+          <span className="avatar"></span>
+          <span className="text">
+            <a href="/login">Đăng nhập</a> / <a href="/register">Đăng ký</a>
+          </span>
         </div>
       )}
 

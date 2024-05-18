@@ -14,6 +14,7 @@ a:active {
   text-decoration: none;
 }
 .ant-alert {
+  z-index: 222222;
   opacity: 0;
   left: 50%;
   transition: all 0.3s ease;
@@ -68,27 +69,30 @@ a:active {
     border-radius: 4px;
   }
 }
-.ant-breadcrumb-link{
+.ant-breadcrumb-link {
   cursor: pointer;
 }
 .prevent-select {
-  -webkit-user-select: none; 
-  -ms-user-select: none; 
-  user-select: none; 
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 ::-webkit-scrollbar {
-  width: 0.125rem;
+  width: 0.275rem;
   height: 0.125rem;
   border-radius: 0.25rem;
-
 }
 
 ::-webkit-scrollbar-track {
-  background: #e7e7e7;
+  // cursor: pointer;
+
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #a3a2a2;
+  cursor: pointer;
+
   border-radius: 0.25rem;
 }
 

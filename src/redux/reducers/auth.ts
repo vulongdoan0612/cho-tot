@@ -9,7 +9,7 @@ interface IState {
 export const fetchDataUser = createAsyncThunk("/get-profile", async () => {
   const token = localStorage.getItem("access_token");
   const res = await getProfile(String(token));
-  return res.data?.user;
+  return res.data;
 });
 const initialState: IState = {
   isAuthenticated: false,
