@@ -9,6 +9,7 @@ export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: 
     current = 1;
   }, [body]);
   useDidMountEffect(() => {
+    console.log(body.query.district);
     handleFetchPosts();
   }, [current, body]);
   const handleFetchPosts = () => {
@@ -30,7 +31,7 @@ export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: 
           fuel: body.query.fuel,
           numberBox: body.query.numberBox,
           city: body.query.city,
-          district: body.query.district,
+          district: body.query.district === "" ? undefined : body.query.district,
           date: body.query.date,
           km: body.query.km,
           color: body.query.color,

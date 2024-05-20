@@ -26,7 +26,7 @@ const SellingPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.postsData);
   const [spin, setSpin] = useState(false);
-  const [pageSize, setPagesize] = useState(5);
+  const [pageSize, setPagesize] = useState(7);
   const [current, setCurrent] = useState(1);
   const [state, setState] = useState<IFilterHeader>(defaultCommonState);
   const [filterFind, setFilterFind] = useState("");
@@ -76,7 +76,7 @@ const SellingPage = () => {
             fuel: router.query.fuel,
             numberBox: router.query.numberBox,
             city: router.query.city,
-            district: router.query.district,
+            district: router.query.district === "" ? undefined : router.query.district,
             date: router.query.date,
             km: router.query.km,
             color: router.query.color,
@@ -681,7 +681,6 @@ const SellingPage = () => {
           pageSize={pageSize}
           posts={posts}
           setState={setState}
-          setPagesize={setPagesize}
           setCurrent={setCurrent}
           onChangePage={onChangePage}
           current={current}

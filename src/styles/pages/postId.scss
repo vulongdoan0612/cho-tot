@@ -626,10 +626,11 @@
               margin: 2px 4px 0 0;
             }
             .bottom-rec {
+              width: 100%;
               .ellipsis {
                 color: #9b9b9b;
                 display: flex;
-                max-width: 140px;
+                max-width: 160px;
                 align-items: flex-start;
                 text-overflow: ellipsis;
               }

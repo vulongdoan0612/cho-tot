@@ -6,9 +6,8 @@ import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { useRouter } from "next/router";
 import { useFetchFavListMain } from "@/hooks/useFetchFavListMain";
 import { addFavPost, removeFavPost } from "@/services/favPost";
-import { fetchDataFavListMain, fetchDataPosts } from "@/redux/reducers/posts";
-import useWebSocket from "react-use-websocket";
-import { useEffect } from "react";
+import { fetchDataFavListMain } from "@/redux/reducers/posts";
+import { createConversation } from "@/services/chat";
 
 const ItemCar = ({ posts, spin }: any) => {
   const router = useRouter();
@@ -20,7 +19,7 @@ const ItemCar = ({ posts, spin }: any) => {
   const handleRouter = (item: any) => {
     router.push(`/${item?.post?.slug}/${item?.postId}`);
   };
-  
+
   const handleRemoveFavPost = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -48,7 +47,17 @@ const ItemCar = ({ posts, spin }: any) => {
       }
     }
   };
+  const handleChat = async (postId: any) => {
+    const accessToken: any = localStorage.getItem("access_token");
+    const data = {
+      postId: postId,
+    };
+    const res = await createConversation(accessToken, data);
 
+    if (res.status === 200) {
+      router.push(`/chat?currentRoom=${postId}`);
+    }
+  };
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -60,16 +69,16 @@ const ItemCar = ({ posts, spin }: any) => {
               posts?.data?.map((item: any, index: number) => {
                 const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
                 return (
-                  <div className="tab" key={index} onClick={() => handleRouter(item)}>
+                  <div className="tab" key={index}>
                     <div className="contain">
                       <Skeleton.Button block active></Skeleton.Button>
-                      <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}>
+                      <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
                         <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
                       </div>
                       <div className="right-contain-tab">
                         <Skeleton active />
                         <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                          <div className="header">
+                          <div className="header" onClick={() => handleRouter(item)}>
                             <span className="title">{item?.post?.title}</span>
                             {isFavorite ? (
                               <div className="add-fav">
@@ -82,13 +91,13 @@ const ItemCar = ({ posts, spin }: any) => {
                               <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
                             )}
                           </div>
-                          <span className="description">
+                          <span className="description" onClick={() => handleRouter(item)}>
                             {item?.post?.dateCar} <hr></hr>
                             {item?.post?.km} km <hr></hr>
                             {item?.post?.fuel}
                             {item?.post?.numberBox}
                           </span>
-                          <div className="middle">
+                          <div className="middle" onClick={() => handleRouter(item)}>
                             <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                             <span className="address">
                               <TopPostIcon></TopPostIcon> Tin ưu tiên <hr></hr>
@@ -97,7 +106,7 @@ const ItemCar = ({ posts, spin }: any) => {
                           </div>
                           <div className="footer">
                             <div className="user">
-                              <div className="user-left">
+                              <div className="user-left" onClick={() => handleRouter(item)}>
                                 <Image
                                   src="https://xe.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2FclxH5MAniG0kUVnKN1c1tMwNrFmaqF0UUkuTmovdLWU%2Fpreset%3Ashopava%2Fplain%2F5f2af29c77500dd2140ba1030feed7f9-2812881885288510943.jpg&w=1920&q=75"
                                   alt=""
@@ -113,7 +122,7 @@ const ItemCar = ({ posts, spin }: any) => {
                                   </div>
                                 </div>
                               </div>
-                              <button>
+                              <button onClick={() => handleChat(item?.postId)}>
                                 <ChatIcon width={20} height={20}></ChatIcon>
                                 Chat
                               </button>

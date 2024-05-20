@@ -69,15 +69,15 @@ const TitlePostSell = ({
     if (!id) {
       setStatePost((prevState) => ({
         ...prevState,
-        cityValue: account?.user?.address?.city,
-        districtValue: account?.user?.address?.district,
-        wardValue: account?.user?.address?.ward,
+        cityValue: account?.user?.address?.cityValue,
+        districtValue: account?.user?.address?.districtValue,
+        wardValue: account?.user?.address?.wardValue,
         detailAddress: account?.user?.address?.detailAddress,
         fullAddress: account?.user?.address?.fullAddress,
       }));
 
       if (account?.user?.address?.city !== null && statePost?.cities.length > 0) {
-        const selectedCityId = account?.user?.address?.city;
+        const selectedCityId = account?.user?.address?.cityValue;
         const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
         setStatePost((prevState) => ({
           ...prevState,
@@ -95,9 +95,9 @@ const TitlePostSell = ({
     account,
     account?.user,
     account?.user?.address,
-    account?.user?.address?.city,
-    account?.user?.address?.district,
-    account?.user?.address?.ward,
+    account?.user?.address?.cityValue,
+    account?.user?.address?.districtValue,
+    account?.user?.address?.wardValue,
     statePost?.cities,
     id,
   ]);
@@ -105,7 +105,7 @@ const TitlePostSell = ({
   useEffect(() => {
     if (!id) {
       if (statePost?.districts.length > 0) {
-        const selectedDistrictId = account?.user?.address?.district;
+        const selectedDistrictId = account?.user?.address?.districtValue;
         const selectedDistrict = statePost?.districts.find((district: any) => district.Id === selectedDistrictId);
         setStatePost((prevState) => ({
           ...prevState,
@@ -235,6 +235,7 @@ const TitlePostSell = ({
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
     const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
+    console.log(event.target.value);
     if (selectedCity) {
       setStatePost((prevState) => ({
         ...prevState,
@@ -323,17 +324,17 @@ const TitlePostSell = ({
 
       statePost?.wards.forEach((item: any) => {
         if (item.Id === statePost?.wardValue) {
-          wardName = item.Name;
+          wardName = item.Id;
         }
       });
       statePost?.districts.forEach((item: any) => {
         if (item.Id === statePost?.districtValue) {
-          district = item.Name;
+          district = item.Id;
         }
       });
       statePost?.cities.forEach((item: any) => {
         if (item.Id === statePost?.cityValue) {
-          city = item.Name;
+          city = item.Id;
         }
       });
       const concatenatedAddress = `${statePost?.detailAddress} ,${wardName}, ${district}, ${city}`;

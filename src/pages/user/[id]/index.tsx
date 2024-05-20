@@ -17,6 +17,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import formatISOToCustomDate from "@/utils/convertDate";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
+import timeAgo from "@/utils/timeAgo";
 import { Alert, Breadcrumb, Image, InputNumberProps, Skeleton, Spin, Tabs, TabsProps } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -80,7 +81,6 @@ const DetailUser = () => {
   const handleRouterPost = (slug: string, postId: string) => {
     router.push(`/${slug}/${postId}`);
   };
-  console.log(account?.user?._id, router.query.id);
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -91,6 +91,7 @@ const DetailUser = () => {
             <div className="tab-on-view">
               {" "}
               {detailProfileUser?.acceptedPosts?.map((item: any, index: number) => {
+                console.log(item);
                 return (
                   <div key={index} className="tab-item" onClick={() => handleRouterPost(item?.post?.slug, item?.postId)}>
                     <div className="picture">
@@ -100,8 +101,8 @@ const DetailUser = () => {
                       <span className="title">{limitTextTitle(item?.post?.title)}</span>{" "}
                       <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                       <div className="info">
-                        <UserAvatarProfileIcon></UserAvatarProfileIcon> <span>·</span> <span>1 tháng trước</span>·
-                        <span>Tp Hồ Chí Minh</span>
+                        <UserAvatarProfileIcon></UserAvatarProfileIcon> <span>·</span> <span>{timeAgo(item.date)}</span>·
+                        <span>{item?.post?.cityValueName}</span>
                       </div>
                     </div>
                   </div>

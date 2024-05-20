@@ -25,10 +25,13 @@ const Header = () => {
     const res = await getAnnounceChat(String(token));
     setBadge(res.data.announceChat);
   };
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (lastJsonMessage?.userId === account?.user?._id && lastJsonMessage?.action === "annouce") {
-      fetchAnnounce();
+      if (lastJsonMessage?.action === "annouce") {
+        fetchAnnounce();
+      }
     }
+    console.log(lastJsonMessage, lastJsonMessage?.action === "annouce", lastJsonMessage?.userId === account?.user?._id);
   }, [lastJsonMessage]);
   useDidMountEffect(() => {
     fetchData();
@@ -142,7 +145,9 @@ const Header = () => {
           {loading ? (
             <Skeleton.Button block={true} active size="large"></Skeleton.Button>
           ) : (
-            <Image src="/images/chotot-logo.png" alt="" width={100} height={35}></Image>
+            <Link href="/">
+              <Image src="/images/chotot-logo.png" alt="" width={100} height={35}></Image>
+            </Link>
           )}
         </div>
         <div className="dropdown-category">

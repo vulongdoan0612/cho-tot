@@ -194,6 +194,12 @@
                 gap: 2px;
                 margin-top: 4px;
                 color: #8c8c8c;
+                text-wrap: nowrap;
+
+                span:last-child{
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
               }
             }
           }

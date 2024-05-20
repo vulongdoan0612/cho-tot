@@ -1,14 +1,7 @@
 import CustomModal from "../CustomModal";
 import CustomButton from "../CustomButton";
 
-const ModalFav = ({
-  modalConfirmSwitchFav,
-  handleCancleModalFav,
-  handleAddFav,
-  selectedItemFav,
-  dataFav,
-  onFinishFav,
-}: any) => {
+const ModalFav = ({ modalConfirmSwitchFav, handleCancleModalFav, handleAddFav, selectedItemFav, dataFav, onFinishFav }: any) => {
   return (
     <CustomModal
       title="DANH MỤC YÊU THÍCH"
@@ -18,24 +11,16 @@ const ModalFav = ({
       centered
       className="modal-fav"
     >
-      <div className="fav-wrapper">
+      <div className="fav-wrapper-modal">
         {dataFav.map((item: string, index: number) => {
           return (
-            <button
-              key={index}
-              onClick={() => handleAddFav(index, item)}
-              className={selectedItemFav.includes(item) ? "active" : ""}
-            >
+            <button key={index} onClick={() => handleAddFav(index, item)} className={selectedItemFav.includes(item) ? "active" : ""}>
               {item}
             </button>
           );
         })}
       </div>
-      <CustomButton
-        type="submit"
-        onClick={onFinishFav}
-        style={{ marginTop: "8px" }}
-      >
+      <CustomButton type="submit" onClick={onFinishFav} style={{ marginTop: "8px" }}>
         Xong
       </CustomButton>
     </CustomModal>

@@ -174,7 +174,7 @@
                   padding: 12px;
                   cursor: pointer;
                   position: relative;
-                  margin-top: 4px;
+                  margin-top: 6px;
                   border-radius: 8px;
                   background-color: #fff;
                   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
@@ -282,6 +282,7 @@
                           }
                         }
                         button {
+                          cursor: pointer;
                           padding-top: 4px;
                           padding-bottom: 4px;
                           padding-left: 16px;

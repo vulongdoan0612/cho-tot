@@ -24,6 +24,9 @@ import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import { useFetchCheckFavPost } from "@/hooks/useFetchCheckFavPost";
 import NotFound from "../404";
 import { createConversation } from "@/services/chat";
+import { formatDistanceToNow, parseISO, parse } from "date-fns";
+import { vi } from "date-fns/locale";
+import timeAgo from "@/utils/timeAgo";
 
 const ContainPD = () => {
   const router = useRouter();
@@ -47,7 +50,7 @@ const ContainPD = () => {
   });
 
   const handleSwitchPhone = () => {
-    setHiddenPhone((prev) => !prev);
+    setHiddenPhone(false);
   };
 
   const handleLessDetail = () => {
@@ -103,9 +106,13 @@ const ContainPD = () => {
       setTimeout(() => {
         setSpin(false);
       }, 500);
-      router.push(`/chat`);
+      router.push(`/chat?currentRoom=${post?.post?.postId}`);
     }
   };
+  const formatTimeToNowInVietnamese = (isoDate: any) => {
+    return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
+  };
+
   return (
     <div className="wrapper-contain">
       {post?.status === "404" ? (
@@ -118,6 +125,9 @@ const ContainPD = () => {
             items={[
               {
                 title: "Chợ tốt xe",
+                onClick: () => {
+                  router.push(`/`);
+                },
               },
               {
                 title: `Ô tô`,
@@ -418,7 +428,7 @@ const ContainPD = () => {
                       </div>
                       <div className="timelapse">
                         <TimeIcon></TimeIcon>
-                        <span className="text">Đăng 7 phút trước</span>
+                        <span className="text">{timeAgo(post?.post?.date)}</span>
                       </div>
                     </div>
                   )}
@@ -441,20 +451,20 @@ const ContainPD = () => {
                           {post?.post?.userInfo?.fullName}
                         </span>
                         <div className="title-bottom">
-                          <div className="rate">
+                          {/* <div className="rate">
                             <StarIcon></StarIcon>{" "}
                             <div className="flex">
                               <span className="star">5</span> <span className="count">(1)</span>
                             </div>
-                          </div>
-                          <hr></hr>
+                          </div> */}
+                          {/* <hr></hr> */}
                           <span className="selled">{post?.post?.userInfo?.selled} đã bán</span>
                           <hr></hr>
                           <span className="selling">{post?.post?.userInfo?.selling} đang bán</span>
                         </div>
                         <div className="title-bottom-2">
-                          <span className="online">Đang hoạt động</span>
-                          <hr></hr>
+                          {/* <span className="online">Đang hoạt động</span> */}
+                          {/* <hr></hr> */}
                           <span className="response">Phản hồi: 78%</span>
                         </div>
                       </div>
@@ -516,7 +526,8 @@ const ContainPD = () => {
                             <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
                             <div className="ellipsis">
                               <div className="dot"></div>
-                              <span>2 tuần trước</span> <div className="dot"></div>
+                              <span>{timeAgo(item.date)}</span>
+                              <div className="dot"></div>
                               <span>{item?.post?.districtValueName}</span>
                             </div>
                           </div>

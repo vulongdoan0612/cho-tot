@@ -13,6 +13,7 @@ import {
 } from "@/services/formPost";
 import { getProfile } from "@/services/getProfile";
 import addDay from "@/utils/addDay";
+import formatISOToCustomDate from "@/utils/convertDate";
 import useDidMountEffect from "@/utils/customUseEffect";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import getWardDistrict from "@/utils/getWardDistrict";
@@ -28,6 +29,8 @@ const MyAds = () => {
   const [inputValue, setInputValue] = useState(1);
   const [spin, setSpin] = useState(false);
   const [data, setData] = useState<any>([]);
+  const [totalPage, setTotalPage] = useState<any>(0);
+
   const [dataHidden, setDataHidden] = useState<any>([]);
   const [dataRefuse, setDataRefuse] = useState<any>([]);
   const [dataCensorship, setDataCensorship] = useState<any>([]);
@@ -39,6 +42,8 @@ const MyAds = () => {
     getDataListHidden();
     getDataListRefuse();
     getDataListCensorship();
+    console.log(data);
+    setInputValue(data?.currentPage);
   }, []);
 
   useEffect(() => {
@@ -77,7 +82,7 @@ const MyAds = () => {
     }
   }, [lastMessage8083]);
   const onChange: InputNumberProps["onChange"] = (newValue) => {
-    setInputValue(15);
+    // setInputValue(15);
   };
 
   const onChangeCheckBox: CheckboxProps["onChange"] = (e) => {
@@ -91,6 +96,7 @@ const MyAds = () => {
 
       if (response.status === 200 && response.data.status === "SUCCESS") {
         setData(response?.data?.data);
+        setTotalPage(response?.data?.totalPage);
       }
     }
   };
@@ -163,7 +169,6 @@ const MyAds = () => {
       }
     }
   };
-  console.log(data);
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -183,7 +188,7 @@ const MyAds = () => {
                           <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                           <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                           <span className="date-post">
-                            Ngày đăng tin: &nbsp;<p> {item?.date}</p>
+                            Ngày đăng tin: &nbsp;<p> {formatISOToCustomDate(item?.date)}</p>
                           </span>
                           <span className="date-expired">
                             Ngày hết hạn: &nbsp;<p> {addDay(item?.date)}</p>
@@ -227,11 +232,16 @@ const MyAds = () => {
                           <div className="slider">
                             <div className="page">
                               <span className="top">
-                                TRANG 40: &nbsp;<p> Mục Xe máy, Tp Hồ Chí Minh</p>
+                                TRANG {item?.currentPage}: &nbsp;<p> {item?.post?.cityValueName}</p>
                               </span>
                               <LetterIIcon></LetterIIcon>
                             </div>
-                            <Slider min={1} max={20} onChange={onChange} value={typeof inputValue === "number" ? inputValue : 0} />
+                            <Slider
+                              min={1}
+                              max={totalPage}
+                              onChange={onChange}
+                              value={typeof item?.currentPage === "number" ? item?.currentPage : 0}
+                            />
                           </div>
                         </div>
                         <div className="service">
@@ -307,7 +317,14 @@ const MyAds = () => {
                               <span className="text">Lượt xem</span>
                               <LetterIIcon></LetterIIcon>
                             </div>
-                            <div className="number-view">141</div>
+                            <div className="number-view">
+                              {" "}
+                              {skeleton && skeletonId === item?.postId ? (
+                                <Skeleton.Button style={{ height: "12px" }} active></Skeleton.Button>
+                              ) : (
+                                <>{item?.view}</>
+                              )}
+                            </div>
                           </div>
                           <div className="slider">
                             <div className="page">
@@ -386,7 +403,14 @@ const MyAds = () => {
                               <span className="text">Lượt xem</span>
                               <LetterIIcon></LetterIIcon>
                             </div>
-                            <div className="number-view">141</div>
+                            <div className="number-view">
+                              {" "}
+                              {skeleton && skeletonId === item?.postId ? (
+                                <Skeleton.Button style={{ height: "12px" }} active></Skeleton.Button>
+                              ) : (
+                                <>{item?.view}</>
+                              )}
+                            </div>
                           </div>
                           <div className="slider">
                             <div className="page">
@@ -459,7 +483,14 @@ const MyAds = () => {
                               <span className="text">Lượt xem</span>
                               <LetterIIcon></LetterIIcon>
                             </div>
-                            <div className="number-view">141</div>
+                            <div className="number-view">
+                              {" "}
+                              {skeleton && skeletonId === item?.postId ? (
+                                <Skeleton.Button style={{ height: "12px" }} active></Skeleton.Button>
+                              ) : (
+                                <>{item?.view}</>
+                              )}
+                            </div>
                           </div>
                           <div className="slider">
                             <div className="page">

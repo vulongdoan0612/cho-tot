@@ -4,7 +4,7 @@ import Page from "@/layout/Page";
 import { fetchAllConversation, fetchAllConversationSummary, fetchConversation } from "@/redux/reducers/chat";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { AppDispatch, RootState } from "@/redux/store";
-import { hiddenFalseMessage, hiddenMessage, postMessage } from "@/services/chat";
+import { getConversation, hiddenFalseMessage, hiddenMessage, postMessage } from "@/services/chat";
 import formatISOToCustomDate from "@/utils/convertDate";
 import formatISOToTime from "@/utils/convertTime";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
@@ -19,6 +19,7 @@ import { CloseIcon, HiddenEyeIcon, UserAvatarIcon, UserAvatarProfileIcon } from 
 import CustomButton from "@/components/CustomButton";
 import combineConversationSummary from "@/hooks/useCombinedConversations";
 import { useRouter } from "next/router";
+import useDidMountEffect from "@/utils/customUseEffect";
 
 const { TextArea } = Input;
 
@@ -37,11 +38,22 @@ const Chat = () => {
   const [skeleton, setSkeleton] = useState(false);
   const [skeleton2, setSkeleton2] = useState(false);
   const [countHidden, setCountHidden] = useState(0);
+  const [conversationFetched, setConversationFetched] = useState(false);
 
+  useFetchAllConversation();
+  useFetchAllConversationSummary();
   const formatTimeToNowInVietnamese = (isoDate: any) => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
-
+  useDidMountEffect(() => {
+    if (router?.query?.currentRoom && allConversationSummary.length > 0 && !conversationFetched) {
+      const currentChat = allConversationSummary.find((item: any) => item.postId === router.query.currentRoom);
+      if (currentChat) {
+        dispatch(fetchConversation({ idRoom: currentChat.idRoom }));
+        setConversationFetched(true);
+      }
+    }
+  }, [router?.query?.currentRoom, allConversationSummary, dispatch, conversationFetched]);
   useEffect(() => {
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchConversation({ idRoom: conversation.idRoom }));
@@ -69,9 +81,6 @@ const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [conversation?.messagesRoom?.message]);
-
-  useFetchAllConversationSummary();
-  useFetchAllConversation();
 
   const handleSearchSit = (e: any) => {
     setSearch(e.target.value);
@@ -110,6 +119,7 @@ const Chat = () => {
       }
     }
   };
+
   const handleHidden = async () => {
     const accessToken = localStorage.getItem("access_token");
     const idRoom = {
@@ -134,9 +144,11 @@ const Chat = () => {
 
     setTypeText("");
   };
+
   const handleSelectRoom = (item: any) => {
     if (hiddenChat) {
     }
+    router.push(`/chat?currentRoom=${item.postId}`);
     dispatch(fetchConversation({ idRoom: item.idRoom }));
     setSkeleton2(true);
     setTimeout(() => {
@@ -268,6 +280,7 @@ const Chat = () => {
     setHiddenChat(false);
     setHiddenChatList([]);
   };
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       {allConversation.length > 0 || typeChat === "hidden" || typeChat === "all" ? (

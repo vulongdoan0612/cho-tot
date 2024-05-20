@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Page from "@/layout/Page";
 import { RootState } from "@/redux/store";
-import { DatePicker, DatePickerProps, Skeleton } from "antd";
+import { DatePicker, DatePickerProps, Skeleton, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import { ArrowInputIcon } from "@/components/CustomIcons";
@@ -43,6 +43,7 @@ const User = () => {
   const [fillFav, setFillFav] = useState(false);
   const [selectItemsFav, setSelectItemsFav] = useState<any>([]);
   const [stateUser, setStateUser] = useState<ICommonState>(defaultCommonState);
+  const [spin, setSpin] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,11 +63,12 @@ const User = () => {
 
   useEffect(() => {
     if (account?.user) {
+      console.log(account?.user?.address?.city);
       setStateUser((prevState) => ({
         ...prevState,
-        cityValue: account?.user?.address?.city,
-        districtValue: account?.user?.address?.district,
-        wardValue: account?.user?.address?.ward,
+        cityValue: account?.user?.address?.cityValue,
+        districtValue: account?.user?.address?.districtValue,
+        wardValue: account?.user?.address?.wardValue,
         detailAddress: account?.user?.address?.detailAddress,
         fullAddress: account?.user?.address?.fullAddress,
       }));
@@ -75,7 +77,7 @@ const User = () => {
 
   useEffect(() => {
     if (account?.user?.address?.city !== null) {
-      const selectedCityId = account?.user?.address?.city;
+      const selectedCityId = account?.user?.address?.cityValue;
       const selectedCity = stateUser.cities.find((city: any) => city.Id === selectedCityId);
       if (selectedCity) {
         setStateUser((prevState) => ({
@@ -84,10 +86,17 @@ const User = () => {
         }));
       }
     }
-  }, [account?.user, account?.user?.address, account?.user?.address?.city, account?.user?.address?.district, account?.user?.address?.ward]);
+  }, [
+    account?.user,
+    account?.user?.address,
+    account?.user?.address?.city,
+    account?.user?.address?.district,
+    account?.user?.address?.ward,
+    stateUser.cities,
+  ]);
   useEffect(() => {
     if (stateUser.districts.length > 0) {
-      const selectedDistrictId = account?.user?.address?.district;
+      const selectedDistrictId = account?.user?.address?.districtValue;
       const selectedDistrict = stateUser?.districts?.find((district: any) => district.Id === selectedDistrictId);
 
       if (selectedDistrict) {
@@ -253,6 +262,9 @@ const User = () => {
             city: city,
             district: district,
             ward: wardName,
+            cityValue: stateUser.cityValue,
+            districtValue: stateUser.districtValue,
+            wardValue: stateUser.wardValue,
             detailAddress: stateUser?.detailAddress,
             fullAddress: stateUser?.fullAddress,
           },
@@ -271,6 +283,11 @@ const User = () => {
         };
         const response = await changeProfile(String(token), updateProfile);
         if (response.status === 200) {
+          setSpin(true);
+          setTimeout(() => {
+            setSpin(false);
+            toast(response.data.message);
+          }, 500);
           setFillIntro(false);
           setFillRemem(false);
           setFillFax(false);
@@ -279,7 +296,6 @@ const User = () => {
           setFillFullAddr(false);
           setFillSex(false);
           setFillBirth(false);
-          toast(response.data.message);
         }
       }
     } catch {
@@ -532,6 +548,8 @@ const User = () => {
       }));
       setFillCCCDLocation(false);
       setFillCCCDFor(false);
+      setFillFullCCCD(false);
+
       setFillCCCD(false);
     }
   };
@@ -655,9 +673,7 @@ const User = () => {
                 )}
               </div>
             </div>
-            {/* {loading ? (
-              <Skeleton.Input block={true} active size="large"></Skeleton.Input>
-            ) : ( */}
+
             <div className="second-line input-arrow  input-need-to-custom" onClick={handleModal}>
               <TextField
                 id="filled-multiline-flexible"
@@ -672,7 +688,7 @@ const User = () => {
               <ArrowInputIcon></ArrowInputIcon>
               {fillFullAddr && <span className="warning">Vui lòng nhập Địa chỉ</span>}
             </div>
-            {/* )} */}
+
             {loading ? (
               <Skeleton.Input block={true} active size="large" style={{ height: "155px" }}></Skeleton.Input>
             ) : (
@@ -867,6 +883,7 @@ const User = () => {
         handleAddFav={handleAddFav}
         onFinishFav={onFinishFav}
       ></ModalFav>
+      <Spin spinning={spin} fullscreen></Spin>
     </Page>
   );
 };

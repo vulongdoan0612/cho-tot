@@ -112,6 +112,7 @@ const FindInAreaDropdown = ({
       setFilterFind(
         cityName ? cityName : cityName && districtName ? districtName : cityName
       );
+      
       updateURL({
         city: idCity,
         district: idDistrict,

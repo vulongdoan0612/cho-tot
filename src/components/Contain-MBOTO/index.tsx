@@ -32,6 +32,9 @@ const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, 
         items={[
           {
             title: "Chợ tốt xe",
+            onClick: () => {
+              router.push(`/`);
+            },
           },
           {
             title: `Ô tô`,

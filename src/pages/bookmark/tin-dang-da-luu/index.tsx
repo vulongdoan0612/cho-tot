@@ -45,14 +45,13 @@ const FavPage = () => {
   };
   const handleChat = async (item: any) => {
     const accessToken: any = localStorage.getItem("access_token");
-    console.log(item);
     const data = {
       postId: item?.postId,
     };
     const res = await createConversation(accessToken, data);
 
     if (res.status === 200) {
-      router.push(`/chat`);
+      router.push(`/chat?currentRoom=${item?.postId}`);
     }
   };
   return (

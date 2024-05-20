@@ -58,6 +58,13 @@ export const getPost = async (accessToken: string, data: any) => {
   };
   return axios(config);
 };
+export const getCurrentPosts = async () => {
+  const config = {
+    method: "GET",
+    url: `/get-posts-current`,
+  };
+  return axios(config);
+};
 export const getPostCheck = async (accessToken: string, data: any) => {
   const config = {
     method: "POST",

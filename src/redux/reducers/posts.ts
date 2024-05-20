@@ -1,5 +1,5 @@
 import { checkFavPost, getFavPost, getFavPostMain } from "@/services/favPost";
-import { getPost, getPosts } from "@/services/formPost";
+import { getCurrentPosts, getPost, getPosts } from "@/services/formPost";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface IState {
@@ -8,6 +8,7 @@ interface IState {
   favPostList: any;
   favPostListMain: any;
   checkFavPost: boolean;
+  currentPosts: any;
 }
 export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) => {
   const { pageSize, current, price, form, sit, fuel, numberBox, city, district, date, km, color, country, model, brand, status, post } =
@@ -41,6 +42,10 @@ export const fetchDataPost = createAsyncThunk("/get-post", async (arg: any) => {
   const res = await getPost(accessToken, getPostId);
   return res?.data;
 });
+export const fetchDataCurrentPost = createAsyncThunk("/get-current-post", async () => {
+  const res = await getCurrentPosts();
+  return res?.data;
+});
 export const fetchDataFavList = createAsyncThunk("/get-fav-list", async () => {
   const accessToken: any = localStorage.getItem("access_token");
 
@@ -67,6 +72,7 @@ const initialState: IState = {
   post: [],
   favPostList: [],
   favPostListMain: [],
+  currentPosts: [],
   checkFavPost: false,
 };
 
@@ -89,6 +95,9 @@ const slicer = createSlice({
     });
     builder.addCase(fetchCheckFavPost.fulfilled, (state, action: any) => {
       state.checkFavPost = action.payload;
+    });
+    builder.addCase(fetchDataCurrentPost.fulfilled, (state, action: any) => {
+      state.currentPosts = action.payload;
     });
   },
 });
