@@ -18,7 +18,6 @@ const FindInAreaDropdown = ({
   idCity,
   idDistrict,
 }: any) => {
-
   const wrapperRef: any = useRef(null);
   const router = useRouter();
   const [districtValue, setDistrictValue] = useState<any>([]);
@@ -44,7 +43,7 @@ const FindInAreaDropdown = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openFind]);
-  
+
   const handleChangeSelect = (status: string, event: any) => {
     setState((prevState: any) => ({
       ...prevState,
@@ -52,9 +51,7 @@ const FindInAreaDropdown = ({
       selectCity: status,
     }));
     event.preventDefault();
-    const selectedCity: any = cities.find((city: any) =>
-      city.Name.includes(status)
-    );
+    const selectedCity: any = cities.find((city: any) => city.Name.includes(status));
     setState((prevState: any) => ({
       ...prevState,
       valueRadio: selectedCity.Name,
@@ -109,10 +106,8 @@ const FindInAreaDropdown = ({
 
   const handleApply = () => {
     try {
-      setFilterFind(
-        cityName ? cityName : cityName && districtName ? districtName : cityName
-      );
-      
+      setFilterFind(cityName ? cityName : cityName && districtName ? districtName : cityName);
+
       updateURL({
         city: idCity,
         district: idDistrict,
@@ -147,7 +142,6 @@ const FindInAreaDropdown = ({
     }
   };
 
-
   return (
     <>
       <div
@@ -157,29 +151,18 @@ const FindInAreaDropdown = ({
       >
         <div className="item-dropdown">
           <div className="header-drop">
-            <Image
-              src="https://static.chotot.com/storage/icons/svg/city.svg"
-              alt=""
-              width={20}
-              preview={false}
-              height={20}
-            ></Image>
+            <Image src="https://static.chotot.com/storage/icons/svg/city.svg" alt="" width={20} preview={false} height={20}></Image>
             <span>Tìm kiếm theo khu vực</span>
           </div>
           <div className="select-city">
             <CustomButtonSelect
-              handleClick={(event: any) =>
-                handleChangeSelect("Hồ Chí Minh", event)
-              }
+              handleClick={(event: any) => handleChangeSelect("Hồ Chí Minh", event)}
               isActive={selectCity.includes("Hồ Chí Minh")}
             >
               Hồ Chí Minh
             </CustomButtonSelect>
 
-            <CustomButtonSelect
-              handleClick={(event: any) => handleChangeSelect("Hà Nội", event)}
-              isActive={selectCity.includes("Hà Nội")}
-            >
+            <CustomButtonSelect handleClick={(event: any) => handleChangeSelect("Hà Nội", event)} isActive={selectCity.includes("Hà Nội")}>
               Hà Nội
             </CustomButtonSelect>
 
@@ -191,10 +174,7 @@ const FindInAreaDropdown = ({
             </CustomButtonSelect>
           </div>
           <div className="select-place">
-            <div
-              className="select-city select-need-custom   input-need-to-custom"
-              onClick={handleOpenSearchCity}
-            >
+            <div className="select-city select-need-custom   input-need-to-custom" onClick={handleOpenSearchCity}>
               <TextField
                 required
                 className="city"
@@ -208,9 +188,7 @@ const FindInAreaDropdown = ({
               <ArrowInputNormalIcon></ArrowInputNormalIcon>
             </div>
             <div
-              className={`select-district select-need-custom input-need-to-custom ${
-                cityName ? "" : "disable-select-district"
-              }`}
+              className={`select-district select-need-custom input-need-to-custom ${cityName ? "" : "disable-select-district"}`}
               onClick={handleOpenSearchDistrict}
             >
               <TextField

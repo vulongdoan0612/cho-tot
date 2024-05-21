@@ -226,6 +226,7 @@ const SellingPage = () => {
       } else if (priceParams.length === 2) {
         lowerPrice = parseInt(priceParams[0]);
         upperPrice = parseInt(priceParams[1]);
+
         setState((prevState: any) => ({
           ...prevState,
           valuePriceMin: lowerPrice,
@@ -241,7 +242,7 @@ const SellingPage = () => {
         ...prevState,
         valuePriceMin: null,
         valuePriceMax: null,
-        inputValueMax: 0,
+        inputValueMax: 2000000000,
         inputValueMin: 0,
       }));
     }
@@ -250,77 +251,77 @@ const SellingPage = () => {
         ...prevState,
         valueRadioSit: 2,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "4") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 4,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "5") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 5,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "6") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 6,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "7") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 7,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "8") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 8,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "9") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 9,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "10") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 10,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "12") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 12,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "14") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 14,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === "16") {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: 16,
         valueRadioAll: router.query.sit,
-        valueRadioModal: router.query.sit,
+        valueRadioModal: `${router.query.sit} chỗ`,
       }));
     } else if (router.query.sit === undefined) {
       setState((prevState: any) => ({
@@ -674,6 +675,8 @@ const SellingPage = () => {
           </div>
         </div>
         <ContainMBOTO
+          filter={filter}
+          setFilter={setFilter}
           districtName={state.districtName}
           cityName={state.cityName}
           spin={spin}
@@ -687,6 +690,7 @@ const SellingPage = () => {
         ></ContainMBOTO>
       </div>
       <ModalFilter
+        setFilterFind={setFilterFind}
         setState={setState}
         handleCancleModal={handleCancleModal}
         state={state}

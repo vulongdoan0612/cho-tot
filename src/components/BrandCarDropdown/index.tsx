@@ -5,7 +5,6 @@ import brandList from "../RenderFormTraffic/carList.json";
 import { useRemoveQuery } from "@/utils/updateQuery";
 import { useRouter } from "next/router";
 const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
-
   const router = useRouter();
   const removeQuery = useRemoveQuery();
   const brandRef: any = useRef(null);
@@ -59,6 +58,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioBrand: "",
+        valueRadioBrandModal: "",
       }));
       setDataRender(brandList);
     } finally {
@@ -79,7 +79,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
     }));
     updateURL({ brand: e.target.value });
   };
-  
+
   return (
     <>
       <div className={`brand-select`} ref={brandRef}>

@@ -1,6 +1,7 @@
 import CustomButton from "@/components/CustomButton";
 import {
   AddressIcon,
+  CameraIcon,
   CarlendarIcon,
   ChatIcon,
   NullContent2Icon,
@@ -14,15 +15,19 @@ import { useFetchDataUser } from "@/hooks/useFetchDataUser";
 import Page from "@/layout/Page";
 import { fetchDataUserProfile } from "@/redux/reducers/profileUser";
 import { AppDispatch, RootState } from "@/redux/store";
+import { updateAvatar, updateBanner } from "@/services/user";
 import formatISOToCustomDate from "@/utils/convertDate";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import timeAgo from "@/utils/timeAgo";
-import { Alert, Breadcrumb, Image, InputNumberProps, Skeleton, Spin, Tabs, TabsProps } from "antd";
+import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+
+import { Alert, Breadcrumb, Image, InputNumberProps, Skeleton, Spin, Tabs, TabsProps, Upload } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
+import { fetchDataUser } from "@/redux/reducers/auth";
 
 const DetailUser = () => {
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
@@ -33,7 +38,12 @@ const DetailUser = () => {
   const [spin, setSpin] = useState(false);
   const [skeleton, setSkeleton] = useState(false);
   const [alertShare, setAlertShare] = useState(false);
+  const [alertAvatar, setAlertAvatar] = useState(false);
+  const [alertAvatar2, setAlertAvatar2] = useState(false);
+  const [alertAvatar4, setAlertAvatar4] = useState(false);
+
   const [developing, setDeveloping] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [inputValue, setInputValue] = useState(1);
   useFetchDataUser({ body: router, setSpin });
@@ -81,6 +91,53 @@ const DetailUser = () => {
   const handleRouterPost = (slug: string, postId: string) => {
     router.push(`/${slug}/${postId}`);
   };
+
+  const handleChange: UploadProps["onChange"] = async (info) => {
+    setAlertAvatar(true);
+    setTimeout(() => {
+      setAlertAvatar(false);
+    }, 3000);
+    const token = localStorage.getItem("access_token");
+    const response = await updateAvatar(String(token), { avatar: info.file.originFileObj as RcFile });
+    if (response?.data?.status === "SUCCESS") {
+      dispatch(fetchDataUserProfile({ userId: router.query.id }));
+      dispatch(fetchDataUser());
+    }
+  };
+  const handleChangeBanner: UploadProps["onChange"] = async (info) => {
+    setAlertAvatar(true);
+    setTimeout(() => {
+      setAlertAvatar(false);
+    }, 3000);
+    const token = localStorage.getItem("access_token");
+    const response = await updateBanner(String(token), { banner: info.file.originFileObj as RcFile });
+    if (response?.data?.status === "SUCCESS") {
+      dispatch(fetchDataUserProfile({ userId: router.query.id }));
+      dispatch(fetchDataUser());
+    }
+  };
+  const beforeUpload = (file: any) => {
+    const isPNG = file.type === "image/png";
+    const isJPGE = file.type === "image/jpeg";
+    const isGIF = file.type === "image/gif";
+    const isJPG = file.type === "image/jpg";
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      setAlertAvatar4(true);
+      setTimeout(() => {
+        setAlertAvatar4(false);
+      }, 3000);
+      return Upload.LIST_IGNORE;
+    }
+
+    if (!isGIF && !isJPGE && !isPNG && !isJPG) {
+      setAlertAvatar2(true);
+      setTimeout(() => {
+        setAlertAvatar2(false);
+      }, 3000);
+    }
+    return isPNG || isJPGE || isGIF || isJPG || Upload.LIST_IGNORE;
+  };
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -91,7 +148,6 @@ const DetailUser = () => {
             <div className="tab-on-view">
               {" "}
               {detailProfileUser?.acceptedPosts?.map((item: any, index: number) => {
-                console.log(item);
                 return (
                   <div key={index} className="tab-item" onClick={() => handleRouterPost(item?.post?.slug, item?.postId)}>
                     <div className="picture">
@@ -193,17 +249,43 @@ const DetailUser = () => {
                 <Skeleton.Button block={true} style={{ height: "125px" }} active size="large"></Skeleton.Button>
               ) : (
                 <div className="background">
-                  <Image src="https://cdn.chotot.com/uac2/26802657_banner" width={302} height={125} alt="" preview={false}></Image>
+                  <div className="content-banner">
+                    {" "}
+                    {detailProfileUser?.user?.banner === null ? (
+                      <div className="null-banner"></div>
+                    ) : (
+                      <Image src={detailProfileUser?.user?.banner} width={302} height={125} alt="" preview={false}></Image>
+                    )}
+                    {account?.user?._id === router?.query?.id ? (
+                      <Upload name="avatar" onChange={handleChangeBanner} listType="picture" beforeUpload={beforeUpload}>
+                        <span className="camera">
+                          <CameraIcon></CameraIcon>
+                        </span>
+                      </Upload>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                   <div className="avatar">
                     {" "}
-                    <Image
-                      src="https://cdn.chotot.com/uac2/26802657"
-                      width={92}
-                      height={92}
-                      preview={false}
-                      alt=""
-                      className="avatar"
-                    ></Image>
+                    <div className="content-avatar">
+                      <Image
+                        src={detailProfileUser?.user?.avatar === null ? "/images/empty-avatar.jpg" : detailProfileUser?.user?.avatar}
+                        width={92}
+                        height={92}
+                        preview={false}
+                        alt=""
+                      ></Image>
+                      {account?.user?._id === router?.query?.id ? (
+                        <Upload name="avatar" onChange={handleChange} fileList={fileList} listType="picture" beforeUpload={beforeUpload}>
+                          <span className="camera">
+                            <CameraIcon></CameraIcon>
+                          </span>
+                        </Upload>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -278,7 +360,10 @@ const DetailUser = () => {
       </div>
       <Spin spinning={spin} fullscreen />
       <Alert message="Đã sao chép liên kết đến trang cá nhân" type="success" className={alertShare ? "show-alert" : ""} />
-      <Alert message="Tính năng đang phát triển" type="success" className={developing ? "show-alert" : ""} />
+      <Alert message="Tính năng đang phát triển" type="success" className={developing ? "show-alert" : ""} />{" "}
+      <Alert message="Bạn chỉ có thể tải lên tệp PNG, JPEG, hoặc GIF!" type="success" className={alertAvatar2 ? "show-alert" : ""} />
+      <Alert message="Ảnh của bạn sẽ được cập nhật trong vài phút." type="success" className={alertAvatar ? "show-alert" : ""} />{" "}
+      <Alert message="Hình ảnh phải nhỏ hơn 2MB!" type="success" className={alertAvatar4 ? "show-alert" : ""} />
     </Page>
   );
 };

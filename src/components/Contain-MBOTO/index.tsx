@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 
-const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, setState, onChangePage, state }: any) => {
+const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, setState, onChangePage, state, setFilter }: any) => {
   const router = useRouter();
   const { query } = router;
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
@@ -85,7 +85,7 @@ const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, 
           {loading ? (
             <Skeleton.Input style={{ height: "68px" }} block={true} active size="large"></Skeleton.Input>
           ) : (
-            <BrandSlide></BrandSlide>
+            <BrandSlide setFilter={setFilter}></BrandSlide>
           )}
           <ItemCar spin={spin} posts={posts}></ItemCar>
           <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} />

@@ -635,8 +635,16 @@
                 text-overflow: ellipsis;
               }
               span {
+                white-space: nowrap;
+
+                text-wrap: nowrap;
+
                 font-size: 11px;
                 margin-top: 2px;
+              }
+              span:last-child{
+                text-overflow: ellipsis;
+                overflow: hidden;
               }
               .dot {
                 color: #9b9b9b;
@@ -654,6 +662,7 @@
               width: 175px;
               .dash {
               }
+              text-wrap: nowrap;
               display: flex;
               font-size: 14px;
               gap: 5px;

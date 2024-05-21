@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Setting from "@/layout/Setting";
 import useDidMountEffect from "@/utils/customUseEffect";
+import limitInputCharacters from "@/utils/limitInput";
 
 const User = () => {
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
@@ -373,9 +374,11 @@ const User = () => {
   };
 
   const handleChangeDetailAddress = (event: any) => {
+    const newValue = limitInputCharacters(event?.target?.value, 50);
+
     setStateUser((prevState) => ({
       ...prevState,
-      detailAddress: event.target.value as string,
+      detailAddress: newValue as string,
     }));
     if (event.target.value !== "") {
       setFillAddrDetail(false);
@@ -580,9 +583,11 @@ const User = () => {
   };
 
   const handleChangeFullName = (event: any) => {
+    const newValue = limitInputCharacters(event?.target?.value, 50);
+
     setStateUser((prevState: any) => ({
       ...prevState,
-      fullName: event.target.value,
+      fullName: newValue,
     }));
   };
 

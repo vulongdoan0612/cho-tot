@@ -1,5 +1,36 @@
 import { axios } from "@/utils/axios";
+export const updateAvatar = async (accessToken: string, data: any) => {
+  const formData = new FormData();
+  formData.append(`avatar`, data?.avatar);
 
+  const config = {
+    method: "PUT",
+    url: `/change-avatar`,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: accessToken,
+    },
+    data: formData,
+  };
+
+  return axios(config);
+};
+export const updateBanner = async (accessToken: string, data: any) => {
+  const formData = new FormData();
+  formData.append(`banner`, data?.banner);
+
+  const config = {
+    method: "PUT",
+    url: `/change-banner`,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: accessToken,
+    },
+    data: formData,
+  };
+
+  return axios(config);
+};
 export const changeProfile = async (accessToken: string, data: any) => {
   const config = {
     method: "put",

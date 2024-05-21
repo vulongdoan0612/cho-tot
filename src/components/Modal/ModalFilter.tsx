@@ -14,9 +14,9 @@ import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
 import { useRouter } from "next/router";
 import ItemModalFilterForm from "../ItemModalFilter/indexForm";
 import { colorsCar, countriesCar, formsCar, fuelCar, numberBox, postCar, sitsCar, statusCar } from "../Contain-MBOTO/_mock";
+import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 
-const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter, filter }: any) => {
-
+const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter, filter, setFilterFind }: any) => {
   const router = useRouter();
   const [modalListAll, setModalListAll] = useState(false);
   const [warnPriceMax, setWarnPriceMax] = useState(false);
@@ -93,9 +93,12 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
       valueRadioAllFormCar: formFilter?.item,
       valueRadioFormCar: formFilter?.item,
     }));
+    const numberBoxFilter: any = numberBox.find((item) => {
+      return item.value === router.query.numberBox;
+    });
     setState((prevState: any) => ({
       ...prevState,
-      valueRadioNumberBox: router.query.numberBox,
+      valueRadioNumberBox: numberBoxFilter?.item,
     }));
     const fuelFilter: any = fuelCar.find((item) => {
       return item.value === router.query.fuel;
@@ -178,7 +181,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
     }
   };
 
-  const onClickRadio = (item: any) => {
+  const onClickRadio = (item: any, value: any) => {
     setState((prevState: any) => ({
       ...prevState,
       valueRadioAll: item,
@@ -186,7 +189,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
     }));
     setFilter((prevFilter: any) => ({
       ...prevFilter,
-      sit: item,
+      sit: value,
     }));
   };
 
@@ -451,7 +454,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
     if (onlyNumbers(event.target.value) || event.target.value === "") {
       setState((prevState: any) => ({
         ...prevState,
-        price: event.target.value,
+        priceMin: event.target.value,
       }));
       if (state.priceMax !== undefined && state.priceMax !== "" && event?.target?.value !== undefined && event?.target?.value !== "") {
         if (Number(event.target.value) < Number(state.priceMax)) {
@@ -465,6 +468,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
           setWarnPriceMin2(true);
         }
       } else if (event.target.value === "" && state.priceMax !== "" && state.priceMax !== undefined) {
+        console.log("vao");
         setFilter((prevFilter: any) => ({
           ...prevFilter,
           price: `max${state.priceMax}`,
@@ -702,6 +706,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
 
   const handleRenew = () => {
     try {
+      setFilterFind("");
       setState((prevState: any) => ({
         ...prevState,
         valueRadioModal: "",
@@ -711,7 +716,15 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
         valueRadioAllCountry: "",
         valueRadioAllModel: "",
         valueRadioAllFormCar: "",
+        selectCity: "",
+        cityName: "",
+        valueRadio: "",
+        valueRadioDistrict: "",
         valueRadioBrandModal: "",
+        districtName: "",
+        idCity: "",
+        idDistrict: "",
+
         date: "",
         dateMax: "",
         kmMax: "",
@@ -751,6 +764,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
   const handleApply = () => {
     try {
       if (!warnPriceMax && !warnPriceMin && !warnKmMin && !warnKmMax && !warnPriceMin2 && !warnPriceMax2) {
+        console.log(filter);
         const queries: any = Object.entries(filter);
         updateQuery(queries);
       }
@@ -760,7 +774,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
       }
     }
   };
-  
+
   return (
     <CustomModal
       className={`wrapper-modal-filter ${hidden ? "hidden-wrapper-modal-filter" : ""}`}
@@ -801,7 +815,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
                   maxRows={1}
                   variant="filled"
                 />{" "}
-                {warnDateMin ? <span>Vui lòng nhập bé hơn</span> : <></>}
+                {warnDateMin ? <span style={{ opacity: "0.7", fontSize: "12px" }}>Vui lòng nhập bé hơn</span> : <></>}
               </div>
               -
               <div className="body input-need-to-custom">
@@ -814,7 +828,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
                   maxRows={1}
                   variant="filled"
                 />{" "}
-                {warnDateMax ? <span>Vui lòng nhập lớn hơn</span> : <></>}
+                {warnDateMax ? <span style={{ opacity: "0.7", fontSize: "12px" }}>Vui lòng nhập lớn hơn</span> : <></>}
               </div>
             </div>
           )}
@@ -836,7 +850,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
                   maxRows={1}
                   variant="filled"
                 />
-                {warnKmMin ? <span>Vui lòng nhập bé hơn</span> : <></>}
+                {warnKmMin ? <span style={{ opacity: "0.7", fontSize: "12px" }}>Vui lòng nhập bé hơn</span> : <></>}
               </div>
               -
               <div className="body input-need-to-custom">
@@ -849,7 +863,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
                   maxRows={1}
                   variant="filled"
                 />{" "}
-                {warnKmMax ? <span>Vui lòng nhập lớn hơn</span> : <></>}
+                {warnKmMax ? <span style={{ opacity: "0.7", fontSize: "12px" }}>Vui lòng nhập lớn hơn</span> : <></>}
               </div>
             </div>
           )}
@@ -867,11 +881,11 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
                   label="Giá tiền tối thiểu"
                   multiline
                   onChange={handleChangePriceMin}
-                  value={state.price}
+                  value={state.priceMin}
                   maxRows={1}
                   variant="filled"
                 />
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", flexDirection: "column", fontSize: "12px", opacity: "0.7" }}>
                   {warnPriceMin ? <span>Vui lòng nhập trên 10tr</span> : <></>}
                   {warnPriceMin2 ? <span>Vui lòng nhập bé hơn</span> : <></>}
                 </div>
@@ -887,7 +901,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
                   maxRows={1}
                   variant="filled"
                 />
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", flexDirection: "column", fontSize: "12px", opacity: "0.7" }}>
                   {" "}
                   {warnPriceMax ? <span>Vui lòng nhập trên 10tr</span> : <></>} {warnPriceMax2 ? <span>Vui lòng nhập lớn hơn</span> : <></>}
                 </div>

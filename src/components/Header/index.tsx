@@ -1,7 +1,7 @@
-import { Badge, Button, Dropdown, MenuProps, Skeleton, Space } from "antd";
+import { Badge, Button, Dropdown, Input, MenuProps, Skeleton, Space } from "antd";
 import Image from "next/image";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import { BarIcon, BellIcon, CartIcon, ChatIcon, ArrowIcon, MangeShopIcon, UploadNewIcon } from "../CustomIcons";
+import { BarIcon, BellIcon, CartIcon, ChatIcon, ArrowIcon, MangeShopIcon, UploadNewIcon, SearchIcon } from "../CustomIcons";
 import AvatarDropdown from "../AvatarDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataUser } from "@/redux/reducers/auth";
@@ -10,15 +10,21 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { countDownLoading, countdownComplete } from "@/redux/reducers/countDownLoading";
 import Link from "next/link";
 import useWebSocket from "react-use-websocket";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAnnounceChat } from "@/services/user";
+import { getKeySearch } from "@/services/formPost";
+import { useRouter } from "next/router";
+import limitInputCharacters from "@/utils/limitInput";
 
 const Header = () => {
   const { account } = useSelector((state: RootState) => state.auth);
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:8085");
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<any>();
   const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
   const [badge, setBadge] = useState(false);
+  const [listSearch, setListSearch] = useState([]);
+  const [openListSearch, setOpenListSearch] = useState(false);
+  const [value, setValue] = useState<any>("");
 
   const fetchAnnounce = async () => {
     const token = localStorage.getItem("access_token");
@@ -31,7 +37,6 @@ const Header = () => {
         fetchAnnounce();
       }
     }
-    console.log(lastJsonMessage, lastJsonMessage?.action === "annouce", lastJsonMessage?.userId === account?.user?._id);
   }, [lastJsonMessage]);
   useDidMountEffect(() => {
     fetchData();
@@ -90,54 +95,70 @@ const Header = () => {
       label: "a danger item",
     },
   ];
+  const router = useRouter();
 
-  const itemsSearch = [
-    {
-      id: 0,
-      name: "Cobol",
-    },
-    {
-      id: 1,
-      name: "JavaScript",
-    },
-    {
-      id: 2,
-      name: "Basic",
-    },
-    {
-      id: 3,
-      name: "PHP",
-    },
-    {
-      id: 4,
-      name: "Java",
-    },
-  ];
-
-  const handleOnSearch = ({ string, results }: any) => {
-    console.log(string, results);
+  const updateURL = (queryParams: any) => {
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: { ...router.query, ...queryParams },
+    });
   };
+  const handleSearchList = async (e: any) => {
+    const newValue = limitInputCharacters(e?.target?.value, 80);
+    setValue(newValue);
 
-  const handleOnHover = (result: any) => {
-    console.log(result);
+    const res = await getKeySearch({ keySearch: newValue });
+    if (res.data.status === "SUCCESS") {
+      if (res.data.titles.length > 0) {
+        setListSearch(res.data.titles);
+        setOpenListSearch(true);
+      } else {
+        setListSearch([]);
+        setOpenListSearch(false);
+      }
+    }
   };
+  const brandRef: any = useRef(null);
 
-  const handleOnSelect = (item: any) => {
-    console.log(item);
+  const handleSearch = async (e: any) => {
+    if (e.key === "Enter") {
+      updateURL({ keySearch: e.target.value });
+      setOpenListSearch(false);
+    }
   };
+  useDidMountEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+    setValue(router?.query?.keySearch);
+  }, [router?.query?.keySearch]);
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (
+        brandRef?.current &&
+        !brandRef?.current?.contains(event.target) &&
+        event?.target?.id !== "search-list" &&
+        event?.target?.id !== "search-item"
+      ) {
+        setOpenListSearch(false);
+      }
+      if (brandRef?.current && brandRef?.current?.contains(event.target) && event?.target?.id === "search-list") {
+        console.log(event.target);
 
-  const handleOnFocus = () => {
-    console.log("Focused");
-  };
-  const formatResult = (item: any) => {
-    return (
-      <>
-        <span style={{ display: "block", textAlign: "left" }}>id: {item.id}</span>
-        <span style={{ display: "block", textAlign: "left" }}>name: {item.name}</span>
-      </>
-    );
-  };
+        setOpenListSearch(true);
+      }
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openListSearch]);
+
+  const handleRoute = (item: string) => {
+    updateURL({ keySearch: item });
+    setOpenListSearch(false);
+  };
   return (
     <header className="header">
       <div className="left">
@@ -164,22 +185,31 @@ const Header = () => {
             </Dropdown>
           )}
         </div>
-        <div></div>
       </div>
       <div className="mid">
         {" "}
         {loading ? (
           <Skeleton.Input active block={true} size="large"></Skeleton.Input>
         ) : (
-          <ReactSearchAutocomplete
-            items={itemsSearch}
-            onSearch={handleOnSearch}
-            onHover={handleOnHover}
-            onSelect={handleOnSelect}
-            onFocus={handleOnFocus}
-            autoFocus
-            formatResult={formatResult}
-          />
+          <>
+            <div className="search-input" ref={brandRef}>
+              <Input placeholder="Tìm kiếm xe" onKeyDown={handleSearch} onChange={handleSearchList} id="search-list" value={value} />
+              <SearchIcon></SearchIcon>
+            </div>
+            {openListSearch ? (
+              <div className="search-list">
+                {listSearch?.map((item, index) => {
+                  return (
+                    <span key={index} onClick={() => handleRoute(item)} id="search-item">
+                      {item}
+                    </span>
+                  );
+                })}
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
         )}
       </div>
       <div className="right">
@@ -187,21 +217,21 @@ const Header = () => {
           <Skeleton.Input active block={true} size="large"></Skeleton.Input>
         ) : (
           <>
-            <Badge count={5}>
-              <BellIcon />
-            </Badge>
+            {/* <Badge count={5}>
+                <BellIcon />
+              </Badge> */}
             <Link href="/chat">
               <Badge dot={badge}>
                 <ChatIcon />
               </Badge>
             </Link>
-            <div className="dropdown-cart">
+            {/* <div className="dropdown-cart">
               <Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <CartIcon />
                 </a>
               </Dropdown>
-            </div>
+            </div> */}
             <div className="mangeShop">
               <MangeShopIcon />
               <a href="/my-ads">
@@ -222,7 +252,7 @@ const Header = () => {
           {loading ? (
             <Skeleton.Button block={true} active size="large" style={{ minWidth: "123px" }}></Skeleton.Button>
           ) : (
-            <Button>
+            <Button style={{ display: "flex", gap: "3px", alignItems: "center" }}>
               <UploadNewIcon></UploadNewIcon>
               <a href="/dang-tin">
                 <span className="text">ĐĂNG TIN</span>

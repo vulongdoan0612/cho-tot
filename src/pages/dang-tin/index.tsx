@@ -3,7 +3,7 @@ import ModalCategorySelect from "@/components/Modal/ModalCategorySelect";
 import Page from "@/layout/Page";
 import getBase64 from "@/utils/getBase64";
 import { TextField } from "@mui/material";
-import { GetProp, Image, Skeleton, Upload, UploadFile, UploadProps } from "antd";
+import { Alert, GetProp, Image, Skeleton, Upload, UploadFile, UploadProps } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RenderOto from "@/components/RenderFormTraffic/RenderFormTraffic";
@@ -15,6 +15,8 @@ const PostSell = () => {
   const router = useRouter();
   const { category } = router.query;
   const { id } = router.query;
+  const [alertAvatar, setAlertAvatar] = useState("");
+
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
@@ -112,7 +114,28 @@ const PostSell = () => {
       setFileList(newFileList);
     }
   };
+  const beforeUpload = (file: any) => {
+    const isPNG = file.type === "image/png";
+    const isJPGE = file.type === "image/jpeg";
+    const isGIF = file.type === "image/gif";
+    const isJPG = file.type === "image/jpg";
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      setAlertAvatar("Hình ảnh phải nhỏ hơn 2MB!");
+      setTimeout(() => {
+        setAlertAvatar("");
+      }, 3000);
+      return Upload.LIST_IGNORE;
+    }
 
+    if (!isGIF && !isJPGE && !isPNG && !isJPG) {
+      setAlertAvatar("Bạn chỉ có thể tải lên tệp PNG, JPEG, hoặc GIF!");
+      setTimeout(() => {
+        setAlertAvatar("");
+      }, 3000);
+    }
+    return isPNG || isJPGE || isGIF || isJPG || Upload.LIST_IGNORE;
+  };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="post-sell-wrapper">
@@ -133,6 +156,7 @@ const PostSell = () => {
               size="large"
             ></Skeleton.Input>
             <Upload
+              beforeUpload={beforeUpload}
               name="image"
               listType="picture-card"
               fileList={fileList}
@@ -213,6 +237,7 @@ const PostSell = () => {
           )}
         </div>
       </div>
+      <Alert message={alertAvatar} type="success" className={alertAvatar !== "" ? "show-alert" : ""} />
       <ModalCategorySelect
         modalCategory={modalCategory}
         handleCancleCategory={handleCancleCategory}

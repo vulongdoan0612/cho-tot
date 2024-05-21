@@ -11,8 +11,26 @@ interface IState {
   currentPosts: any;
 }
 export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) => {
-  const { pageSize, current, price, form, sit, fuel, numberBox, city, district, date, km, color, country, model, brand, status, post } =
-    arg;
+  const {
+    pageSize,
+    current,
+    price,
+    form,
+    sit,
+    fuel,
+    numberBox,
+    city,
+    district,
+    date,
+    km,
+    color,
+    country,
+    model,
+    brand,
+    status,
+    post,
+    keySearch,
+  } = arg;
   const res = await getPosts(
     pageSize,
     current,
@@ -30,7 +48,8 @@ export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) =>
     model,
     brand,
     status,
-    post
+    post,
+    keySearch
   );
   return res?.data;
 });

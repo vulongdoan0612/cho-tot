@@ -7,7 +7,7 @@
     display: flex;
     gap: 2px;
     -webkit-user-select: none;
-    -ms-user-select: none; 
+    -ms-user-select: none;
     user-select: none;
     .buttons-bottom-dropdown-header {
       display: flex;
@@ -676,6 +676,7 @@
       }
     }
     .date-produce {
+      align-items: flex-start;
       padding-top: 4px;
       display: flex;
       padding-left: 16px;

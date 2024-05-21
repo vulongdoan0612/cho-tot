@@ -3,11 +3,11 @@
   .avatar-dropdown-header-wrapper {
     padding: 0px !important;
     .avatar-dropdown-header {
-      height: 500px;
+      height: fit-content;
       width: 298px;
       overflow-y: scroll;
       .user-info {
-        gap: 12px;
+        gap: 10px;
         padding: 12px;
         display: flex;
         align-items: center;

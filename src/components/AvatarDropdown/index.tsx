@@ -1,4 +1,4 @@
-import { Dropdown, MenuProps } from "antd";
+import { Dropdown, Image, MenuProps } from "antd";
 import { ArrowIcon, UserAvatarIcon } from "../CustomIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -22,12 +22,15 @@ const AvatarDropdown = () => {
       label: <DropdownList></DropdownList>,
     },
   ];
-
   return (
     <div className="avatar-dropdown">
       <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
         <a onClick={(e) => e.preventDefault()}>
-          <UserAvatarIcon></UserAvatarIcon>
+          {isAuthenticated && account?.user?.avatar !== null ? (
+            <Image src={account?.user?.avatar} width={24} height={24} preview={false} alt=""></Image>
+          ) : (
+            <UserAvatarIcon></UserAvatarIcon>
+          )}
           {isAuthenticated ? <span className="fullname">{account?.user?.fullname}</span> : <span className="fullname">Tài khoản</span>}
           <ArrowIcon></ArrowIcon>
         </a>

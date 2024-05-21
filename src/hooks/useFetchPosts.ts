@@ -9,7 +9,6 @@ export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: 
     current = 1;
   }, [body]);
   useDidMountEffect(() => {
-    console.log(body.query.district);
     handleFetchPosts();
   }, [current, body]);
   const handleFetchPosts = () => {
@@ -25,6 +24,8 @@ export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: 
         fetchDataPosts({
           pageSize,
           current,
+          keySearch: body.query.keySearch,
+
           price: body.query.price,
           form: body.query.form,
           sit: body.query.sit,

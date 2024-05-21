@@ -558,7 +558,13 @@ const MyAds = () => {
         />
         <div className="user-manage">
           <div className="left">
-            <Image src="https://cdn.chotot.com/uac2/26802657" alt="" width={48} height={48}></Image>
+            <Image
+              src={account?.user?.avatar === null ? "/images/empty-avatar.jpt" : account?.user?.avatar}
+              alt=""
+              preview={false}
+              width={48}
+              height={48}
+            ></Image>
             <div className="name">
               <span>{account?.user?.fullname}</span>
             </div>

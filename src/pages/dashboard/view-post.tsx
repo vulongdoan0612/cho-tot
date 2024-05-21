@@ -2,6 +2,8 @@ import CustomButton from "@/components/CustomButton";
 import Page from "@/layout/Page";
 import { RootState } from "@/redux/store";
 import { getPostCheck } from "@/services/formPost";
+import { add30DaysAndFormat } from "@/utils/addDay2";
+import formatISOToCustomDate from "@/utils/convertDate";
 import useDidMountEffect from "@/utils/customUseEffect";
 import numberWithCommas from "@/utils/numberWithCommas";
 import { Image, Skeleton } from "antd";
@@ -30,7 +32,8 @@ const ViewPostCensor = () => {
       }
     }
   };
-
+  const datePlus30Days = add30DaysAndFormat(data?.date);
+  console.log(datePlus30Days);
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="view-post-wrapper">
@@ -74,7 +77,9 @@ const ViewPostCensor = () => {
             </div>
             <div className="right">
               <span className="title">Thời gian đăng tin</span>
-              <h5>12/04/2024 đến 11/06/2024</h5>
+              <h5>
+                {formatISOToCustomDate(data?.date)} đến {datePlus30Days}
+              </h5>
             </div>
           </div>
         </div>

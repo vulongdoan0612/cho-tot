@@ -17,13 +17,13 @@ import { defaultCommonStateFill } from "./_fill";
 import { colorsCar, countriesCar, formsCar, sitsCar } from "../Contain-MBOTO/_mock";
 
 const RenderOto = ({ handleWarning, fileList }: any) => {
-
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const [stateFill, setStateFill] = useState<ICommonStateFillFormRenderCar>(defaultCommonStateFill);
   const [stateForm, setStateForm] = useState<ICommonStateFormRenderCar>(defaultCommonState);
 
   useEffect(() => {
     const selectedModels = brandList.find((item: any) => item.brand === dataPost?.post?.value)?.models || [];
+    console.log(dataPost);
     setStateForm((prevState) => ({
       ...prevState,
       models: selectedModels,
@@ -38,7 +38,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
       accessories: dataPost?.post?.accessories,
       registry: dataPost?.post?.registry,
       numberBox: dataPost?.post?.numberBox,
-      status: dataPost?.post?.status,
+      status: dataPost?.post?.status === undefined ? "Đã sử dụng" : dataPost?.post?.status,
       form: dataPost?.post?.form,
       price: dataPost?.post?.price,
       km: dataPost?.post?.km,
@@ -187,13 +187,13 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
         km: Number(value),
       }));
     }
-    if (value === 0) {
+    if (value === null || value === 0) {
       setStateForm((prevState) => ({
         ...prevState,
         km: 0,
       }));
     }
-    if (String(value) !== "") {
+    if (String(value) !== "" && value !== 0) {
       setStateFill((prevState: any) => ({
         ...prevState,
         fillKm: false,
@@ -298,8 +298,16 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
         fillStatus: false,
       }));
     }
+    if (status === "Mới") {
+      setStateForm((prevState) => ({
+        ...prevState,
+        owner: "",
+        km: 0,
+        carNumber: "",
+      }));
+    }
   };
-  
+
   return (
     <div className="detail-information-car">
       <span className="title">Thông tin chi tiết</span>
@@ -510,51 +518,55 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
               {stateFill.fillColor && <div className="warning-fill">Vui lòng chọn Màu sắc</div>}
             </FormControl>
           </div>
-          <div className="display-flex">
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "2px",
-                width: "100%",
-              }}
-            >
-              <TextField
-                required
-                id="filled-multiline-flexible"
-                label="Biển số xe"
-                multiline
-                className={`car-number input-need-to-custom ${stateFill.fillCarN ? "warn-border" : ""}`}
-                onChange={handleChangeCarNumber}
-                value={stateForm?.carNumber}
-                maxRows={4}
-                variant="filled"
-              />
-              {stateFill.fillCarN && <div className="warning-fill">Vui lòng chọn Biển số xe</div>}
-            </div>
-            <FormControl sx={{ m: 1, width: "100%" }}>
-              <InputLabel required id="demo-select-small-label" className="city-select-label">
-                Số đời chủ
-              </InputLabel>
-
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={stateForm?.owner}
-                className={stateFill.fillOwner ? "warn-border" : ""}
-                label="Số đời chủ"
-                onChange={handleChangeOwner}
+          {stateForm?.status === "Đã sử dụng" ? (
+            <div className="display-flex">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "2px",
+                  width: "100%",
+                }}
               >
-                <MenuItem key={0} value="1 chủ">
-                  1 chủ
-                </MenuItem>
-                <MenuItem key={1} value="> 1 chủ">
-                  &gt; 1 chủ
-                </MenuItem>
-              </Select>
-              {stateFill.fillOwner && <div className="warning-fill">Vui lòng chọn Số đời chủ</div>}
-            </FormControl>
-          </div>
+                <TextField
+                  required
+                  id="filled-multiline-flexible"
+                  label="Biển số xe"
+                  multiline
+                  className={`car-number input-need-to-custom ${stateFill.fillCarN ? "warn-border" : ""}`}
+                  onChange={handleChangeCarNumber}
+                  value={stateForm?.carNumber}
+                  maxRows={4}
+                  variant="filled"
+                />
+                {stateFill.fillCarN && <div className="warning-fill">Vui lòng chọn Biển số xe</div>}
+              </div>
+              <FormControl sx={{ m: 1, width: "100%" }}>
+                <InputLabel required id="demo-select-small-label" className="city-select-label">
+                  Số đời chủ
+                </InputLabel>
+
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={stateForm?.owner}
+                  className={stateFill.fillOwner ? "warn-border" : ""}
+                  label="Số đời chủ"
+                  onChange={handleChangeOwner}
+                >
+                  <MenuItem key={0} value="1 chủ">
+                    1 chủ
+                  </MenuItem>
+                  <MenuItem key={1} value="> 1 chủ">
+                    &gt; 1 chủ
+                  </MenuItem>
+                </Select>
+                {stateFill.fillOwner && <div className="warning-fill">Vui lòng chọn Số đời chủ</div>}
+              </FormControl>
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="display-flex">
             <div className="accessories">
               <span>Có phụ kiện đi kèm</span>
@@ -586,16 +598,20 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
             </div>
           </div>
         </div>
-        <div className="gap">
-          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <NumberInput
-              value={stateForm?.km}
-              placeholder="Km đã đi"
-              className={`number-input-form ${stateFill.fillKm ? "warn-border" : ""}`}
-              onChangeNumber={onChangeNumber}
-            ></NumberInput>
-            {stateFill.fillKm && <div className="warning-fill">Vui lòng nhập Km đã đi</div>}
-          </div>
+        <div className={`gap ${stateForm?.status === "Mới" ? "status-new" : ""}`}>
+          {stateForm?.status === "Đã sử dụng" ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+              <NumberInput
+                value={stateForm?.km}
+                placeholder="Km đã đi"
+                className={`number-input-form ${stateFill.fillKm ? "warn-border" : ""}`}
+                onChangeNumber={onChangeNumber}
+              ></NumberInput>
+              {stateFill.fillKm && <div className="warning-fill">Vui lòng nhập Km đã đi</div>}
+            </div>
+          ) : (
+            <></>
+          )}
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <NumberInputPrice
               placeholder="Giá xe"

@@ -92,8 +92,17 @@ const ItemCar = ({ posts, spin }: any) => {
                             )}
                           </div>
                           <span className="description" onClick={() => handleRouter(item)}>
-                            {item?.post?.dateCar} <hr></hr>
-                            {item?.post?.km} km <hr></hr>
+                            {item?.post?.dateCar}
+                            {item?.post?.km === 0 ? (
+                              <></>
+                            ) : (
+                              <>
+                                {" "}
+                                <hr></hr>
+                                {item?.post?.km} km
+                              </>
+                            )}
+                            <hr></hr>
                             {item?.post?.fuel}
                             {item?.post?.numberBox}
                           </span>
@@ -108,7 +117,7 @@ const ItemCar = ({ posts, spin }: any) => {
                             <div className="user">
                               <div className="user-left" onClick={() => handleRouter(item)}>
                                 <Image
-                                  src="https://xe.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2FclxH5MAniG0kUVnKN1c1tMwNrFmaqF0UUkuTmovdLWU%2Fpreset%3Ashopava%2Fplain%2F5f2af29c77500dd2140ba1030feed7f9-2812881885288510943.jpg&w=1920&q=75"
+                                  src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
                                   alt=""
                                   width={24}
                                   height={24}

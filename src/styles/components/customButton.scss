@@ -13,6 +13,11 @@
   padding: 9px 19px;
   border-width: 1px;
 }
+.none-click {
+  background-color: rgb(158, 85, 1);
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .custom-button:hover {
   color: #fff;
   background-color: #ffb057;

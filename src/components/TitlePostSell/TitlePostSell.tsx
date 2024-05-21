@@ -17,6 +17,7 @@ import { defaultCommonState } from "./_mock";
 import getCityValueName from "@/utils/getCityValueName";
 import getDistrictValueName from "@/utils/getDistrictValueName";
 import getWardValueName from "@/utils/getWardValueName";
+import limitInputCharacters from "@/utils/limitInput";
 
 const TitlePostSell = ({
   value,
@@ -180,9 +181,11 @@ const TitlePostSell = ({
   }, [dataPost?.post, dataPost?.post?.wardValue]);
 
   const handleChangeTitle = (event: any) => {
+    const newValue = limitInputCharacters(event?.target?.value, 100);
+
     setStatePost((prevState) => ({
       ...prevState,
-      title: event?.target.value,
+      title: newValue,
     }));
     if (event?.target.value !== "") {
       setStateFill((prevState: any) => ({
@@ -282,9 +285,11 @@ const TitlePostSell = ({
   };
 
   const handleChangeDetailAddress = (event: any) => {
+    const newValue = limitInputCharacters(event?.target?.value, 50);
+
     setStatePost((prevState) => ({
       ...prevState,
-      detailAddress: event.target.value as string,
+      detailAddress: newValue as string,
     }));
     if (event.target.value !== "") {
       setFillAddrDetail(false);
@@ -376,13 +381,14 @@ const TitlePostSell = ({
           fillColor: true,
         }));
       }
-      if (carNumber === undefined) {
+      if ((carNumber === undefined || carNumber === "") && status === "Đã sử dụng") {
+        console.log(carNumber, status);
         setStateFill((prevState: any) => ({
           ...prevState,
           fillCarN: true,
         }));
       }
-      if (owner === undefined) {
+      if (owner === undefined && status === "Đã sử dụng") {
         setStateFill((prevState: any) => ({
           ...prevState,
           fillOwner: true,
@@ -454,7 +460,7 @@ const TitlePostSell = ({
           fillIntro: true,
         }));
       }
-      if (km === undefined) {
+      if ((km === undefined || km === 0) && status === "Đã sử dụng") {
         setStateFill((prevState: any) => ({
           ...prevState,
           fillKm: true,
@@ -466,7 +472,7 @@ const TitlePostSell = ({
           fillForm: true,
         }));
       }
-      if (statePost?.person === "") {
+      if (owner === "" && status === "Đã sử dụng") {
         setStateFill((prevState: any) => ({
           ...prevState,
           fillOwner: true,
@@ -489,8 +495,8 @@ const TitlePostSell = ({
         status !== undefined &&
         value !== undefined &&
         color !== undefined &&
-        carNumber !== undefined &&
-        owner !== undefined &&
+        (status === "Mới" ? carNumber === undefined || carNumber === "" : carNumber !== undefined && carNumber !== "") &&
+        (status === "Mới" ? owner === undefined || owner === "" : owner !== undefined && owner !== "") &&
         price !== undefined &&
         country !== undefined &&
         model !== undefined &&
@@ -502,7 +508,7 @@ const TitlePostSell = ({
         dateCar !== "" &&
         statePost?.title !== "" &&
         statePost?.introducing !== "" &&
-        km !== undefined &&
+        (status === "Mới" ? km === undefined || km === 0 : km !== undefined && km !== 0) &&
         form !== undefined &&
         statePost?.person !== "" &&
         statePost?.fullAddress !== undefined &&
@@ -512,8 +518,8 @@ const TitlePostSell = ({
           postId: uuid,
           value,
           color,
-          carNumber,
-          owner,
+          carNumber: status === "Mới" ? "" : carNumber,
+          owner: status === "Mới" ? "" : owner,
           price,
           country,
           model,
@@ -526,7 +532,7 @@ const TitlePostSell = ({
           dateCar,
           title: statePost?.title,
           introducing: statePost?.introducing,
-          km,
+          km: status === "Mới" ? 0 : km,
           form,
           person: statePost?.person,
           detailAddress: statePost?.detailAddress,

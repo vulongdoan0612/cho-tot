@@ -1,6 +1,5 @@
-import { Avatar, Rate } from "antd";
+import { Avatar, Image, Rate } from "antd";
 import { StarIcon } from "../CustomIcons";
-import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -21,7 +20,15 @@ const DropdownList = () => {
         <Link href={`/user/${account?.user?._id}`}>
           <div className="user-info">
             <div className="avatar">
-              <Avatar src={<Image src="/images/vu01.png" alt="avatar" width={100} height={100} />} />
+              <Avatar
+                src={
+                  isAuthenticated && account?.user?.avatar !== null ? (
+                    <Image src={account?.user?.avatar} width={50} height={50} preview={false} alt=""></Image>
+                  ) : (
+                    <Image src="/images/empty-avatar.jpg" width={50} height={50} preview={false} alt=""></Image>
+                  )
+                }
+              />
             </div>
             <div className="right">
               <div className="name">{account?.user?.fullname}</div>
@@ -55,12 +62,12 @@ const DropdownList = () => {
         <div className="container">
           <a href="/bookmark/tin-dang-da-luu">
             <span className="post-save">
-              <Image src="/icons/menu-saved-ad.svg" alt="" width={24} height={24}></Image>
+              <Image preview={false} src="/icons/menu-saved-ad.svg" alt="" width={24} height={24}></Image>
               <span>Tin đăng đã lưu</span>{" "}
             </span>
           </a>
           <span className="search-save">
-            <Image src="/icons/menu-saved-search.svg" alt="" width={24} height={24}></Image>
+            <Image preview={false} src="/icons/menu-saved-search.svg" alt="" width={24} height={24}></Image>
             <span>Tìm kiếm đã lưu</span>{" "}
           </span>
         </div>
@@ -72,12 +79,24 @@ const DropdownList = () => {
         <div className="container">
           <span className="dongtot">
             {" "}
-            <Image src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg" alt="" width={24} height={24}></Image>
+            <Image
+              preview={false}
+              src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg"
+              alt=""
+              width={24}
+              height={24}
+            ></Image>
             <span>Đồng tốt</span>{" "}
           </span>
           <span className="history">
             {" "}
-            <Image src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg" alt="" width={24} height={24}></Image>
+            <Image
+              preview={false}
+              src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg"
+              alt=""
+              width={24}
+              height={24}
+            ></Image>
             <span>Lịch sử giao dịch</span>{" "}
           </span>
         </div>
@@ -91,13 +110,13 @@ const DropdownList = () => {
           <a href="/user/settings/profile">
             <span className="dongtot">
               {" "}
-              <Image src="https://static.chotot.com/storage/icons/svg/setting.svg" alt="" width={24} height={24}></Image>
+              <Image preview={false} src="https://static.chotot.com/storage/icons/svg/setting.svg" alt="" width={24} height={24}></Image>
               <span>Cài đặt tài khoản</span>{" "}
             </span>
           </a>
           <span className="history" onClick={handleLogOut}>
             {" "}
-            <Image src="https://static.chotot.com/storage/icons/svg/logout.svg" alt="" width={24} height={24}></Image>
+            <Image preview={false} src="https://static.chotot.com/storage/icons/svg/logout.svg" alt="" width={24} height={24}></Image>
             <span>Đăng xuất</span>{" "}
           </span>
         </div>

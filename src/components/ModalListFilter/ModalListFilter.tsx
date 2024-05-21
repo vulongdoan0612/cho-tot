@@ -16,10 +16,9 @@ const ModalListFilter = ({
   placeholder,
   setFilter,
 }: any) => {
-
   const [search, setSearch] = useState("");
   const [dataRender, setDataRender] = useState([]);
-  
+
   useEffect(() => {
     setDataRender(data);
     setSearch("");
@@ -105,7 +104,7 @@ const ModalListFilter = ({
     setSearch(value);
     if (typeModal === "sit") {
       const result = data.filter((item: any) => {
-        return item.toString().toLowerCase().includes(value.toString());
+        return item.item.toString().toLowerCase().includes(value.toString());
       });
       setDataRender(result);
     }
@@ -146,7 +145,7 @@ const ModalListFilter = ({
       setValueRadio === "sit"
         ? setState((prevState: any) => ({
             ...prevState,
-            valueRadioModal: item,
+            valueRadioModal: item.item,
           }))
         : typeModal === "brand"
         ? setState((prevState: any) => ({
@@ -179,7 +178,7 @@ const ModalListFilter = ({
       setValueRadio === "sit"
         ? setFilter((prevFilter: any) => ({
             ...prevFilter,
-            sit: item,
+            sit: item.value,
           }))
         : typeModal === "brand"
         ? setFilter((prevFilter: any) => ({
@@ -284,7 +283,7 @@ const ModalListFilter = ({
                     <Radio
                       value={
                         typeModal === "sit"
-                          ? item
+                          ? item.item
                           : typeModal === "brand"
                           ? item.brand
                           : typeModal === "formCar"
@@ -300,7 +299,7 @@ const ModalListFilter = ({
                       {" "}
                       <span className="sit-name">
                         {typeModal === "sit"
-                          ? item
+                          ? item.item
                           : typeModal === "brand"
                           ? item.brand
                           : typeModal === "formCar"

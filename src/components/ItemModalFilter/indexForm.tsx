@@ -3,13 +3,12 @@ import { ArrowDownIcon, ArrowRightIcon } from "../CustomIcons";
 import { useState } from "react";
 
 const ItemModalFilterForm = ({ value, onClickRadio, title, data, onClick }: any) => {
-
   const [state, setState] = useState(true);
 
   const handleClick = () => {
     setState((prev) => !prev);
   };
-  
+  console.log(data);
   return (
     <div className="sit">
       <div className="header" onClick={handleClick}>

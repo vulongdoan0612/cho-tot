@@ -412,6 +412,21 @@ const Chat = () => (
     ></path>
   </svg>
 );
+
+const Camera = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 25"
+    fill="currentColor"
+    aria-hidden="true"
+    className="w-4 h-4"
+    width="16"
+    height="16"
+  >
+    <path d="M12 16.676a3 3 0 100-6 3 3 0 000 6z"></path>
+    <path d="M20.25 7.676h-2.766c-.14 0-.315-.091-.45-.235l-1.216-1.919a.727.727 0 00-.065-.086c-.42-.49-.987-.76-1.597-.76H9.844c-.61 0-1.177.27-1.597.76a.729.729 0 00-.065.086L6.967 7.444c-.104.114-.25.235-.404.235v-.375a.75.75 0 00-.75-.75H4.688a.75.75 0 00-.75.75v.375H3.75a2.252 2.252 0 00-2.25 2.25v8.997a2.252 2.252 0 002.25 2.25h16.5a2.252 2.252 0 002.25-2.25v-9a2.252 2.252 0 00-2.25-2.25zM12 18.176a4.5 4.5 0 110-9 4.5 4.5 0 010 9z"></path>
+  </svg>
+);
 const Cart = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -1040,9 +1055,11 @@ export const LetterIIcon = (props: Partial<CustomIconComponentProps>) => <Icon c
 export const GoogleIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={Google} {...props} />;
 export const ChatIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={Chat} {...props} />;
 export const CartIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={Cart} {...props} />;
+export const CameraIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={Camera} {...props} />;
 export const MangeShopIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={MangeShop} {...props} />;
 export const UploadNewIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={UploadNew} {...props} />;
 export const CloseIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={Close} {...props} />;
+
 export const ArrowInputNormalIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={ArrowInputNormal} {...props} />;
 export const PlusUserIcon = (props: Partial<CustomIconComponentProps>) => <Icon component={PlusUser} {...props} />;
 export const ArrowInputIcon = (props: Partial<CustomIconComponentProps>) => <ArrowInput {...props} />;

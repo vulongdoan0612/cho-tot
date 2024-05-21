@@ -3,7 +3,7 @@ import { useFetchAllConversationSummary } from "@/hooks/useFetchConversationSumm
 import Page from "@/layout/Page";
 import { fetchAllConversation, fetchAllConversationSummary, fetchConversation } from "@/redux/reducers/chat";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState, store } from "@/redux/store";
 import { getConversation, hiddenFalseMessage, hiddenMessage, postMessage } from "@/services/chat";
 import formatISOToCustomDate from "@/utils/convertDate";
 import formatISOToTime from "@/utils/convertTime";
@@ -12,7 +12,7 @@ import { limitTextDescription, limitTextTitle, limitTextTitle2, limitTextUserCha
 import { MenuItem, Select } from "@mui/material";
 import { Badge, Checkbox, Dropdown, Image, Input, MenuProps, Skeleton, Space, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 import { vi } from "date-fns/locale";
 import { CloseIcon, HiddenEyeIcon, UserAvatarIcon, UserAvatarProfileIcon } from "@/components/CustomIcons";
@@ -20,6 +20,8 @@ import CustomButton from "@/components/CustomButton";
 import combineConversationSummary from "@/hooks/useCombinedConversations";
 import { useRouter } from "next/router";
 import useDidMountEffect from "@/utils/customUseEffect";
+import { fetchDataUser } from "@/redux/reducers/auth";
+import { GetServerSideProps } from "next";
 
 const { TextArea } = Input;
 
@@ -28,7 +30,8 @@ const Chat = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
-  const { account } = useSelector((state: RootState) => state.auth);
+  const { account, isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   const conversationRef: any = useRef(null);
   const [search, setSearch] = useState("");
   const [typeChat, setTypeChat] = useState("all");
@@ -45,6 +48,12 @@ const Chat = () => {
   const formatTimeToNowInVietnamese = (isoDate: any) => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
+
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     router.push("/login");
+  //   }
+  // }, [isAuthenticated, router]);
   useDidMountEffect(() => {
     if (router?.query?.currentRoom && allConversationSummary.length > 0 && !conversationFetched) {
       const currentChat = allConversationSummary.find((item: any) => item.postId === router.query.currentRoom);
@@ -280,7 +289,6 @@ const Chat = () => {
     setHiddenChat(false);
     setHiddenChatList([]);
   };
-
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       {allConversation.length > 0 || typeChat === "hidden" || typeChat === "all" ? (
@@ -350,7 +358,13 @@ const Chat = () => {
                                 }
                               >
                                 <Image
-                                  src="https://cdn.chotot.com/vkMHYoSCBX7n4MUSh37LENXErDiWRGgetFYv8TQDDJ8/preset:uac/plain/f30afe9d0990488320541061a6f6846f-6969f96daaa27fa897f83fac5ac43c0da0543089.jpg"
+                                  src={
+                                    account?.user?._id === item?.userSend?._id
+                                      ? item.userReceive?.avatar || "images/empty-avatar.jpg"
+                                      : account?.user?._id === item?.userReceive?._id
+                                      ? item.userSend?.avatar || "images/empty-avatar.jpg"
+                                      : item.userSend?.avatar || "images/empty-avatar.jpg"
+                                  }
                                   alt=""
                                   width={46}
                                   height={46}
@@ -427,7 +441,13 @@ const Chat = () => {
                       ) : (
                         <>
                           <Image
-                            src="https://cdn.chotot.com/vkMHYoSCBX7n4MUSh37LENXErDiWRGgetFYv8TQDDJ8/preset:uac/plain/f30afe9d0990488320541061a6f6846f-6969f96daaa27fa897f83fac5ac43c0da0543089.jpg"
+                            src={
+                              account?.user?._id === conversation?.userSend?._id
+                                ? conversation?.userSendInfo?.avatar || "images/empty-avatar.jpg"
+                                : account?.user?._id === conversation?.userReceiveInfo?._id
+                                ? conversation?.userReceiveInfo?.avatar || "images/empty-avatar.jpg"
+                                : conversation?.userReceiveInfo?.avatar || "images/empty-avatar.jpg"
+                            }
                             alt=""
                             width={30}
                             height={30}
@@ -601,4 +621,6 @@ const Chat = () => {
     </Page>
   );
 };
+
+
 export default Chat;

@@ -58,6 +58,15 @@ export const getPost = async (accessToken: string, data: any) => {
   };
   return axios(config);
 };
+export const getKeySearch = async (data: any) => {
+  console.log(data);
+  const config = {
+    method: "POST",
+    url: `/key-search?keySearch=${data.keySearch}`,
+    data: data,
+  };
+  return axios(config);
+};
 export const getCurrentPosts = async () => {
   const config = {
     method: "GET",
@@ -135,11 +144,12 @@ export const getPosts = async (
   model: string,
   brand: string,
   status: string,
-  post: string
+  post: string,
+  keySearch: string
 ) => {
   const config = {
     method: "POST",
-    url: `/get-posts?pageSize=${pageSize}&currentPage=${currentPage}&price=${price}&form=${form}&sit=${sit}&fuel=${fuel}&numberBox=${numberBox}&city=${city}&district=${district}&date=${date}&km=${km}&color=${color}&country=${country}&model=${model}&brand=${brand}&status=${status}&post=${post}`,
+    url: `/get-posts?pageSize=${pageSize}&currentPage=${currentPage}&price=${price}&form=${form}&sit=${sit}&fuel=${fuel}&numberBox=${numberBox}&city=${city}&district=${district}&date=${date}&km=${km}&color=${color}&country=${country}&model=${model}&brand=${brand}&status=${status}&post=${post}&keySearch=${keySearch}`,
   };
   return axios(config);
 };

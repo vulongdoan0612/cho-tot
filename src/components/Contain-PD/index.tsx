@@ -112,7 +112,7 @@ const ContainPD = () => {
   const formatTimeToNowInVietnamese = (isoDate: any) => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
-
+  console.log(post);
   return (
     <div className="wrapper-contain">
       {post?.status === "404" ? (
@@ -173,44 +173,68 @@ const ContainPD = () => {
                   <div className="title">Thông số chi tiết</div>
                   <div className="status-car">
                     <span className="top">Tình trạng xe</span>
-                    <div className="devide">
-                      <div className="left">
-                        <span>Số Km đã đi</span>
-                        {skeleton ? (
-                          <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
-                        ) : (
-                          <span>{post?.post?.post?.km}</span>
-                        )}
-                      </div>
-                      <div className="right">
-                        <span>Số đời chủ</span>{" "}
-                        {skeleton ? (
-                          <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
-                        ) : (
-                          <span>{post?.post?.post?.owner}</span>
-                        )}
-                      </div>
-                    </div>
-                    <hr></hr>
-                    <div className="devide">
-                      <div className="left">
-                        <span>Loại biển số</span>
-                        {skeleton ? (
-                          <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
-                        ) : (
-                          <span>{post?.post?.post?.carNumber}</span>
-                        )}
-                      </div>
-                      <div className="right">
-                        <span>Kèm phụ kiện</span>
-                        {skeleton ? (
-                          <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
-                        ) : (
-                          <span>{post?.post?.post?.accessories}</span>
-                        )}
-                      </div>
-                    </div>{" "}
-                    <hr></hr>
+                    {post?.post?.post?.status === "Đã sử dụng" ? (
+                      <>
+                        <div className="devide">
+                          <div className="left">
+                            <span>Số Km đã đi</span>
+                            {skeleton ? (
+                              <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
+                            ) : (
+                              <span>{post?.post?.post?.km}</span>
+                            )}
+                          </div>
+                          <div className="right">
+                            <span>Số đời chủ</span>{" "}
+                            {skeleton ? (
+                              <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
+                            ) : (
+                              <span>{post?.post?.post?.owner}</span>
+                            )}
+                          </div>
+                        </div>
+                        <hr></hr>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    {post?.post?.post?.status === "Đã sử dụng" ? (
+                      <>
+                        <div className="devide">
+                          <div className="left">
+                            <span>Loại biển số</span>
+                            {skeleton ? (
+                              <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
+                            ) : (
+                              <span>{post?.post?.post?.carNumber}</span>
+                            )}
+                          </div>
+                          <div className="right">
+                            <span>Kèm phụ kiện</span>
+                            {skeleton ? (
+                              <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
+                            ) : (
+                              <span>{post?.post?.post?.accessories}</span>
+                            )}
+                          </div>
+                        </div>{" "}
+                        <hr></hr>
+                      </>
+                    ) : (
+                      <>
+                        <div className="devide">
+                          <div className="left">
+                            <span>Kèm phụ kiện</span>
+                            {skeleton ? (
+                              <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
+                            ) : (
+                              <span>{post?.post?.post?.accessories}</span>
+                            )}
+                          </div>
+                        </div>{" "}
+                        <hr></hr>
+                      </>
+                    )}
                     <div className="devide">
                       {" "}
                       <div className="left">
@@ -386,8 +410,15 @@ const ContainPD = () => {
                     ) : (
                       <>
                         <span>{post?.post?.post?.dateCar}</span>
-                        <hr />
-                        <span>{post?.post?.post?.km} km</span>
+                        {post?.post?.post?.km !== 0 ? (
+                          <>
+                            {" "}
+                            <hr />
+                            <span>{post?.post?.post?.km} km</span>{" "}
+                          </>
+                        ) : (
+                          <></>
+                        )}
                         <hr /> <span>{post?.post?.post?.activeButton}</span>
                         <hr />
                         <span>{post?.post?.post?.numberBox}</span>
@@ -438,14 +469,7 @@ const ContainPD = () => {
                 ) : (
                   <div className="card-user">
                     <div className="info">
-                      <Image
-                        onClick={handleUser}
-                        src="https://xe.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fuac2%2F23367792&w=1920&q=75"
-                        alt=""
-                        preview={false}
-                        width={32}
-                        height={32}
-                      ></Image>
+                      <Image onClick={handleUser} src={post?.post?.userInfo?.avatar} alt="" preview={false} width={32} height={32}></Image>
                       <div className="right-info">
                         <span className="title" onClick={handleUser}>
                           {post?.post?.userInfo?.fullName}
@@ -465,7 +489,7 @@ const ContainPD = () => {
                         <div className="title-bottom-2">
                           {/* <span className="online">Đang hoạt động</span> */}
                           {/* <hr></hr> */}
-                          <span className="response">Phản hồi: 78%</span>
+                          {/* <span className="response">Phản hồi: 78%</span> */}
                         </div>
                       </div>
                     </div>
@@ -516,7 +540,9 @@ const ContainPD = () => {
                             <div className="infor-rec">
                               <span>
                                 {limitTextDescription(
-                                  `${item?.post?.dateCar} - ${item?.post?.km} km - ${item?.post?.activeButton} - ${item?.post?.numberBox} `
+                                  `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${item?.post?.km} km -`} ${
+                                    item?.post?.activeButton
+                                  } - ${item?.post?.numberBox} `
                                 )}
                               </span>
                             </div>

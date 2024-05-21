@@ -76,9 +76,7 @@ const FilterBy = ({
             {kmMin || kmMax ? (
               <span className="text" onClick={removeKm}>
                 {kmMax ? "" : "Từ"}
-                {kmMin ? "" : "Đến"}{" "}
-                {kmMin ? `${formatNumberWithCommas(kmMin)} km` : ""}{" "}
-                {kmMin && kmMax ? " - " : ""}
+                {kmMin ? "" : "Đến"} {kmMin ? `${formatNumberWithCommas(kmMin)} km` : ""} {kmMin && kmMax ? " - " : ""}
                 {kmMax ? `${formatNumberWithCommas(kmMax)} km` : ""}
                 <DeleteFilterIcon></DeleteFilterIcon>
               </span>
@@ -88,9 +86,7 @@ const FilterBy = ({
             {priceMin || priceMax ? (
               <span className="text" onClick={removePrice}>
                 {priceMax ? "" : "Từ"}
-                {priceMin ? "" : "Đến"}{" "}
-                {priceMin ? `${formatNumberWithCommas(priceMin)} đ` : ""}{" "}
-                {priceMin && priceMax ? " - " : ""}
+                {priceMin ? "" : "Đến"} {priceMin ? `${formatNumberWithCommas(priceMin)} đ` : ""} {priceMin && priceMax ? " - " : ""}
                 {priceMax ? `${formatNumberWithCommas(priceMax)} đ` : ""}
                 <DeleteFilterIcon></DeleteFilterIcon>
               </span>

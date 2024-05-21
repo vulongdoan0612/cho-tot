@@ -139,8 +139,8 @@ const HomePage = () => {
           <div className="vehicle">
             <span className="title">Khám phá danh mục Xe cộ</span>
             <div className="slide">
-                <div className="item">
-              <Link href="/mua-ban-oto">
+              <div className="item">
+                <Link href="/mua-ban-oto">
                   <Image
                     src="https://static.chotot.com/storage/new-logos/VEH/2010.svg"
                     alt=""
@@ -148,8 +148,8 @@ const HomePage = () => {
                     height={48}
                     preview={false}
                   ></Image>
-              </Link>
-                </div>
+                </Link>
+              </div>
               <div className="item">
                 <Image src="https://static.chotot.com/storage/new-logos/VEH/2020.svg" alt="" width={48} height={48} preview={false}></Image>
               </div>{" "}
@@ -194,7 +194,9 @@ const HomePage = () => {
                         <div className="infor-rec">
                           <span>
                             {limitTextDescription(
-                              `${item?.post?.dateCar} - ${item?.post?.km} km - ${item?.post?.activeButton} - ${item?.post?.numberBox} `
+                              `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${item?.post?.km} km`} ${
+                                item?.post?.activeButton
+                              } - ${item?.post?.numberBox} `
                             )}
                           </span>
                         </div>

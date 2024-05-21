@@ -2,9 +2,11 @@ import { Input, Radio, RadioChangeEvent } from "antd";
 import { SearchIcon } from "../CustomIcons";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { useRemoveQuery } from "@/utils/updateQuery";
 
 const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
-  
+  const removeQuery = useRemoveQuery();
+
   const router = useRouter();
   const sitRef: any = useRef(null);
   const [searchSit, setSearchSit] = useState("");
@@ -48,6 +50,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
       setState((prevState: any) => ({
         ...prevState,
         valueRadioSit: "",
+        valueRadioModal: "",
       }));
       setDataRender(data);
     } finally {
@@ -55,6 +58,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
         ...prevState,
         openSit: false,
       }));
+      removeQuery("sit");
     }
   };
 
