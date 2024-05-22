@@ -1,4 +1,4 @@
-import { Breadcrumb, Image, Skeleton, Spin } from "antd";
+import { Alert, Breadcrumb, Image, Skeleton, Spin } from "antd";
 import {
   AddressIcon,
   ArrowSlideNextIcon,
@@ -35,6 +35,7 @@ const ContainPD = () => {
   const [lessDetail, setLessDetail] = useState(false);
   const [spin, setSpin] = useState(false);
   const [skeleton, setSkeleton] = useState(false);
+  const [author, setAuthor] = useState(false);
 
   useFetchPost({ setSpin, body: router });
 
@@ -99,20 +100,24 @@ const ContainPD = () => {
     const data = {
       postId: post?.post?.postId,
     };
-    const res = await createConversation(accessToken, data);
+    if (accessToken !== null) {
+      const res = await createConversation(accessToken, data);
 
-    if (res.status === 200) {
-      setSpin(true);
+      if (res.status === 200) {
+        setSpin(true);
+        setTimeout(() => {
+          setSpin(false);
+        }, 500);
+        router.push(`/chat?currentRoom=${post?.post?.postId}`);
+      }
+    } else {
+      setAuthor(true);
       setTimeout(() => {
-        setSpin(false);
-      }, 500);
-      router.push(`/chat?currentRoom=${post?.post?.postId}`);
+        setAuthor(false);
+      }, 2000);
     }
   };
-  const formatTimeToNowInVietnamese = (isoDate: any) => {
-    return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
-  };
-  console.log(post);
+
   return (
     <div className="wrapper-contain">
       {post?.status === "404" ? (
@@ -567,7 +572,8 @@ const ContainPD = () => {
           </div>
         </>
       )}
-      <Spin spinning={spin} fullscreen={true}></Spin>
+      <Spin spinning={spin} fullscreen={true}></Spin>{" "}
+      <Alert message="Bạn cần phải đăng nhập để nhắn tin với người mua!" type="success" className={author ? "show-alert" : ""} />
     </div>
   );
 };

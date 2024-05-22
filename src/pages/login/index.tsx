@@ -6,9 +6,9 @@ import { requestLogin } from "@/services/authentication";
 import CustomButton from "@/components/CustomButton";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 const Login = () => {
-
   const router = useRouter();
   const [spin, setSpin] = useState(false);
 
@@ -31,6 +31,8 @@ const Login = () => {
 
           if (response?.data?.status === "SUCCESS") {
             localStorage.setItem("access_token", response?.data?.token);
+            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); // Set cookie with security options
+
             setTimeout(() => {
               router.push("/");
             }, 1000);
@@ -48,27 +50,11 @@ const Login = () => {
 
       <div className="modal-login">
         <div className="logo">
-          <Image
-            src="/images/logo-login.png"
-            alt=""
-            width={121}
-            height={44}
-          ></Image>
+          <Image src="/images/logo-login.png" alt="" width={121} height={44}></Image>
         </div>
         <h3>Đăng nhập</h3>
-        <Form
-          name="normal_login"
-          className="login-form"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="phone"
-            className="phone"
-            rules={[
-              { required: true, message: "Vui lòng nhập số điện thoại!" },
-            ]}
-          >
+        <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish}>
+          <Form.Item name="phone" className="phone" rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}>
             <Input placeholder="Số điện thoại" />
           </Form.Item>
           <Form.Item
@@ -111,28 +97,13 @@ const Login = () => {
         <p>Được phát triển bởi</p>
         <div className="logo">
           <a href="https://www.chotot.com" target="_blank">
-            <Image
-              src="/images/chotot-logo-login.png"
-              alt="Chotot Logo"
-              width={55}
-              height={20}
-            />
+            <Image src="/images/chotot-logo-login.png" alt="Chotot Logo" width={55} height={20} />
           </a>
           <a href="https://www.nhatot.com" target="_blank">
-            <Image
-              src="/images/nhatot-logo-login.png"
-              alt="Nhatot Logo"
-              width={90}
-              height={20}
-            />
+            <Image src="/images/nhatot-logo-login.png" alt="Nhatot Logo" width={90} height={20} />
           </a>
           <a href="https://www.vieclamtot.com" target="_blank">
-            <Image
-              src="/images/vieclamtot-logo-login.png"
-              alt="Vieclamtot Logo"
-              width={68}
-              height={20}
-            />
+            <Image src="/images/vieclamtot-logo-login.png" alt="Vieclamtot Logo" width={68} height={20} />
           </a>
         </div>
       </div>

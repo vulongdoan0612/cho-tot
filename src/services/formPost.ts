@@ -58,12 +58,27 @@ export const getPost = async (accessToken: string, data: any) => {
   };
   return axios(config);
 };
-export const getKeySearch = async (data: any) => {
-  console.log(data);
+export const getKeySearch = async ({
+  price,
+  form,
+  sit,
+  fuel,
+  numberBox,
+  city,
+  district,
+  date,
+  km,
+  color,
+  country,
+  model,
+  brand,
+  status,
+  post,
+  keySearch,
+}: any) => {
   const config = {
     method: "POST",
-    url: `/key-search?keySearch=${data.keySearch}`,
-    data: data,
+    url: `/key-search?price=${price}&form=${form}&sit=${sit}&fuel=${fuel}&numberBox=${numberBox}&city=${city}&district=${district}&date=${date}&km=${km}&color=${color}&country=${country}&model=${model}&brand=${brand}&status=${status}&post=${post}&keySearch=${keySearch}`,
   };
   return axios(config);
 };

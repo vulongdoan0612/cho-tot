@@ -6,6 +6,7 @@ import { requestSignUp } from "@/services/authentication";
 import { ToastContainer, toast } from "react-toastify";
 import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 const Register = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const Register = () => {
 
           if (response?.data?.status === "SUCCESS") {
             localStorage.setItem("access_token", response?.data?.token);
+            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); //
             setTimeout(() => {
               router.push("/login");
             }, 1000);

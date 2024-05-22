@@ -3,25 +3,24 @@ import { useFetchAllConversationSummary } from "@/hooks/useFetchConversationSumm
 import Page from "@/layout/Page";
 import { fetchAllConversation, fetchAllConversationSummary, fetchConversation } from "@/redux/reducers/chat";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { AppDispatch, RootState, store } from "@/redux/store";
-import { getConversation, hiddenFalseMessage, hiddenMessage, postMessage } from "@/services/chat";
+import { AppDispatch, RootState, wrapper } from "@/redux/store";
+import {  hiddenFalseMessage, hiddenMessage, postMessage } from "@/services/chat";
 import formatISOToCustomDate from "@/utils/convertDate";
 import formatISOToTime from "@/utils/convertTime";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
-import { limitTextDescription, limitTextTitle, limitTextTitle2, limitTextUserChat } from "@/utils/limitText";
+import { limitTextTitle, limitTextTitle2, limitTextUserChat } from "@/utils/limitText";
 import { MenuItem, Select } from "@mui/material";
-import { Badge, Checkbox, Dropdown, Image, Input, MenuProps, Skeleton, Space, Spin } from "antd";
+import { Badge, Checkbox, Dropdown, Image, Input, MenuProps, Skeleton, Space } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 import { vi } from "date-fns/locale";
-import { CloseIcon, HiddenEyeIcon, UserAvatarIcon, UserAvatarProfileIcon } from "@/components/CustomIcons";
+import {  HiddenEyeIcon, UserAvatarIcon} from "@/components/CustomIcons";
 import CustomButton from "@/components/CustomButton";
 import combineConversationSummary from "@/hooks/useCombinedConversations";
 import { useRouter } from "next/router";
 import useDidMountEffect from "@/utils/customUseEffect";
-import { fetchDataUser } from "@/redux/reducers/auth";
-import { GetServerSideProps } from "next";
+import cookie from "cookie";
 
 const { TextArea } = Input;
 
@@ -48,7 +47,7 @@ const Chat = () => {
   const formatTimeToNowInVietnamese = (isoDate: any) => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
-
+  console.log(isAuthenticated);
   // useEffect(() => {
   //   if (!isAuthenticated) {
   //     router.push("/login");
@@ -214,6 +213,7 @@ const Chat = () => {
       }, 200);
     }
   };
+
   const hiddenFalseByDot = async () => {
     try {
       const accessToken = localStorage.getItem("access_token");
@@ -622,5 +622,22 @@ const Chat = () => {
   );
 };
 
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
 
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {}, 
+  };
+});
 export default Chat;

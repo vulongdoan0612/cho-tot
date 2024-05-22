@@ -17,6 +17,8 @@ const FindInAreaDropdown = ({
   setFilterFind,
   idCity,
   idDistrict,
+  setSearchCity,
+  setSearchDistrict,
 }: any) => {
   const wrapperRef: any = useRef(null);
   const router = useRouter();
@@ -117,6 +119,8 @@ const FindInAreaDropdown = ({
         ...prevState,
         openFind: false,
       }));
+      setSearchCity("");
+      setSearchDistrict("");
     }
   };
 

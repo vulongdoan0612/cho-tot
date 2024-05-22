@@ -19,7 +19,7 @@ import limitInputCharacters from "@/utils/limitInput";
 const Header = () => {
   const { account } = useSelector((state: RootState) => state.auth);
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:8085");
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<AppDispatch>();
   const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
   const [badge, setBadge] = useState(false);
   const [listSearch, setListSearch] = useState([]);
@@ -96,26 +96,63 @@ const Header = () => {
     },
   ];
   const router = useRouter();
-
   const updateURL = (queryParams: any) => {
     router.push({
       pathname: "/mua-ban-oto",
       query: { ...router.query, ...queryParams },
     });
   };
-  const handleSearchList = async (e: any) => {
-    const newValue = limitInputCharacters(e?.target?.value, 80);
-    setValue(newValue);
+  const updateURL2 = (queryParams: any) => {
+    const newQuery = { ...router.query, ...queryParams };
 
-    const res = await getKeySearch({ keySearch: newValue });
-    if (res.data.status === "SUCCESS") {
-      if (res.data.titles.length > 0) {
-        setListSearch(res.data.titles);
-        setOpenListSearch(true);
-      } else {
-        setListSearch([]);
-        setOpenListSearch(false);
+    // Remove keySearch if it's an empty string
+    if (queryParams.keySearch === "") {
+      delete newQuery.keySearch;
+    }
+
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: newQuery,
+    });
+  };
+  const handleSearchList = async (e: any) => {
+    updateURL({ keySearch: e?.target?.value });
+    if (e.target.value !== "") {
+      const newValue = limitInputCharacters(e?.target?.value, 80);
+      setValue(newValue);
+      const data = {
+        keySearch: router.query.keySearch,
+
+        price: router.query.price,
+        form: router.query.form,
+        sit: router.query.sit,
+        fuel: router.query.fuel,
+        numberBox: router.query.numberBox,
+        city: router.query.city,
+        district: router.query.district === "" ? undefined : router.query.district,
+        date: router.query.date,
+        km: router.query.km,
+        color: router.query.color,
+        country: router.query.country,
+        model: router.query.model,
+        brand: router.query.brand,
+        status: router.query.status,
+        post: router.query.post,
+      };
+      const res = await getKeySearch(data);
+      if (res.data.status === "SUCCESS") {
+        if (res.data.titles.length > 0) {
+          setListSearch(res.data.titles);
+          setOpenListSearch(true);
+        } else {
+          setListSearch([]);
+          setOpenListSearch(false);
+        }
       }
+    } else {
+      setValue("");
+
+      updateURL2({ keySearch: "" });
     }
   };
   const brandRef: any = useRef(null);
@@ -193,7 +230,14 @@ const Header = () => {
         ) : (
           <>
             <div className="search-input" ref={brandRef}>
-              <Input placeholder="Tìm kiếm xe" onKeyDown={handleSearch} onChange={handleSearchList} id="search-list" value={value} />
+              <Input
+                autoComplete="off"
+                placeholder="Tìm kiếm xe"
+                onKeyDown={handleSearch}
+                onChange={handleSearchList}
+                id="search-list"
+                value={value}
+              />
               <SearchIcon></SearchIcon>
             </div>
             {openListSearch ? (

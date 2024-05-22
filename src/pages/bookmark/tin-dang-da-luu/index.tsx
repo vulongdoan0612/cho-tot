@@ -3,7 +3,7 @@ import { AddedFavouritePostIcon } from "@/components/CustomIcons";
 import { useFetchFavList } from "@/hooks/useFetchFavList";
 import Page from "@/layout/Page";
 import { fetchDataFavList } from "@/redux/reducers/posts";
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState, wrapper } from "@/redux/store";
 import { createConversation } from "@/services/chat";
 import { removeFavPost } from "@/services/favPost";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import cookie from "cookie";
 
 const FavPage = () => {
   const router = useRouter();
@@ -131,4 +132,22 @@ const FavPage = () => {
     </Page>
   );
 };
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+});
 export default FavPage;

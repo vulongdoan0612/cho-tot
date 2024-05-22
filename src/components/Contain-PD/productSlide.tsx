@@ -8,7 +8,6 @@ import { RootState } from "@/redux/store";
 import { addFavPost, removeFavPost } from "@/services/favPost";
 
 const ProductSlide = ({ post, checkFavPost }: any) => {
-  
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const sliderRef: any = useRef(null);
   const [alertShare, setAlertShare] = useState(false);
@@ -19,7 +18,9 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
   const [fav, setFav] = useState(false);
   const [fav2, setFav2] = useState(false);
   const [blur, setBlur] = useState(false);
+  const [author, setAuthor] = useState(false);
 
+  const router = useRouter();
   const handleShare = () => {
     setAlertShare(true);
     setTimeout(() => {
@@ -103,18 +104,23 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
   };
 
   const handleFav = async (postId: number) => {
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      const updateField = {
-        postId: postId,
-      };
-      await addFavPost(String(token), updateField);
-    }
-    setAlertShare(true);
-    setTimeout(() => {
-      setAlertShare(false);
-    }, 2000);
-    setFav(true);
+     const token = localStorage.getItem("access_token");
+     if (token !== null) {
+       const updateField = {
+         postId: postId,
+       };
+       await addFavPost(String(token), updateField);
+       setAlertShare(true);
+       setTimeout(() => {
+         setAlertShare(false);
+       }, 2000);
+       setFav(true);
+     } else {
+       setAuthor(true);
+       setTimeout(() => {
+         setAuthor(false);
+       }, 2000);
+     }
   };
 
   const handleUnFav = async (postId: string) => {
@@ -123,6 +129,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
       const updateField = {
         postId: postId,
       };
+
       await removeFavPost(String(token), updateField);
     }
     setFav(false);
@@ -159,18 +166,22 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
 
   const handleFav2 = async (postId: number) => {
     const token = localStorage.getItem("access_token");
-    if (token) {
-      console.log(postId);
+    if (token !== null) {
       const updateField = {
         postId: postId,
       };
       await addFavPost(String(token), updateField);
+      setAlertShare(true);
+      setTimeout(() => {
+        setAlertShare(false);
+      }, 2000);
+      setFav2(true);
+    } else {
+      setAuthor(true);
+      setTimeout(() => {
+        setAuthor(false);
+      }, 2000);
     }
-    setAlertShare(true);
-    setTimeout(() => {
-      setAlertShare(false);
-    }, 2000);
-    setFav2(true);
   };
 
   const handleUnFav2 = async (postId: number) => {
@@ -299,6 +310,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
         )}
       </>
       <Alert message="Tin đã được đưa vào danh sách theo dõi" type="success" className={alertShare ? "show-alert" : ""} />
+      <Alert message="Bạn cần phải đăng nhập để thêm vào danh sách yêu thích!" type="success" className={author ? "show-alert" : ""} />
     </div>
   );
 };

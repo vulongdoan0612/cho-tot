@@ -13,12 +13,15 @@ const Selection = ({
   valueRadio,
   setState,
   searchResultDistrict,
+  searchCity,
+  setSearchCity,
+  searchDistrict,
+  setSearchDistrict,
 }: any) => {
-
   const districtRef: any = useRef(null);
   const cityRef: any = useRef(null);
-  const [searchCity, setSearchCity] = useState("");
-  const [searchDistrict, setSearchDistrict] = useState("");
+  // const [searchCity, setSearchCity] = useState("");
+  // const [searchDistrict, setSearchDistrict] = useState("");
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -35,6 +38,7 @@ const Selection = ({
           openFind: false,
           openSearchCity: false,
         }));
+        setSearchCity("");
       }
     };
 
@@ -59,6 +63,7 @@ const Selection = ({
           openFind: false,
           openSearchDistrict: false,
         }));
+        setSearchDistrict("");
       }
     };
 
@@ -88,9 +93,7 @@ const Selection = ({
 
   const handleSearchCity = (event: any) => {
     const { value } = event.target;
-    const result = cities.filter((city: any) =>
-      city.Name.toLowerCase().includes(value.toLowerCase())
-    );
+    const result = cities.filter((city: any) => city.Name.toLowerCase().includes(value.toLowerCase()));
     setSearchCity(value);
     setState((prevState: any) => ({
       ...prevState,
@@ -100,9 +103,7 @@ const Selection = ({
 
   const onChangeRadio = (e: RadioChangeEvent) => {
     try {
-      const selectedCity: any = cities.find((city: any) =>
-        city.Name.includes(e.target.value)
-      );
+      const selectedCity: any = cities.find((city: any) => city.Name.includes(e.target.value));
       setState((prevState: any) => ({
         ...prevState,
         districtName: "",
@@ -129,9 +130,7 @@ const Selection = ({
   };
 
   const onChangeRadioDistrict = (e: RadioChangeEvent) => {
-    const selectedCity: any = districts.find((district: any) =>
-      district.Name.includes(e.target.value)
-    );
+    const selectedCity: any = districts.find((district: any) => district.Name.includes(e.target.value));
     setState((prevState: any) => ({
       ...prevState,
       openSearchDistrict: false,
@@ -150,21 +149,16 @@ const Selection = ({
   const handleSearchDistrict = (event: any) => {
     const { value } = event.target;
     setSearchDistrict(value);
-    const result = districts.filter((district: any) =>
-      district.Name.toLowerCase().includes(value.toLowerCase())
-    );
+    const result = districts.filter((district: any) => district.Name.toLowerCase().includes(value.toLowerCase()));
     setState((prevState: any) => ({
       ...prevState,
       searchResultDistrict: result,
     }));
   };
-  
+
   return (
     <>
-      <div
-        className={`city-select ${openSearchCity ? "visible-city" : ""}`}
-        ref={cityRef}
-      >
+      <div className={`city-select ${openSearchCity ? "visible-city" : ""}`} ref={cityRef}>
         <div className="header-search">
           <div onClick={handleOpenSearchCity} style={{ cursor: "pointer" }}>
             <ArrowBackIcon></ArrowBackIcon>
@@ -175,20 +169,12 @@ const Selection = ({
           {" "}
           <div className="selection">
             <SearchIcon></SearchIcon>
-            <Input
-              placeholder="Nhập tìm tỉnh thành"
-              onChange={handleSearchCity}
-              value={searchCity}
-            />{" "}
+            <Input placeholder="Nhập tìm tỉnh thành" onChange={handleSearchCity} value={searchCity} />{" "}
           </div>
           <div className="cities">
             {searchResult.map((item: any, index: number) => {
               return (
-                <div
-                  key={index}
-                  className="city-item"
-                  onChange={(e: any) => onChangeRadio(e)}
-                >
+                <div key={index} className="city-item" onChange={(e: any) => onChangeRadio(e)}>
                   <Radio.Group value={valueRadio}>
                     <Radio value={item.Name}>
                       {" "}
@@ -201,12 +187,7 @@ const Selection = ({
           </div>
         </div>
       </div>
-      <div
-        className={`district-select ${
-          openSearchDistrict ? "visible-district" : ""
-        }`}
-        ref={districtRef}
-      >
+      <div className={`district-select ${openSearchDistrict ? "visible-district" : ""}`} ref={districtRef}>
         <div className="header-search">
           <div onClick={handleOpenSearchDistrict} style={{ cursor: "pointer" }}>
             <ArrowBackIcon></ArrowBackIcon>
@@ -217,21 +198,14 @@ const Selection = ({
           {" "}
           <div className="selection">
             <SearchIcon></SearchIcon>
-            <Input
-              placeholder="Nhập tìm tỉnh thành"
-              onChange={handleSearchDistrict}
-              value={searchDistrict}
-            />{" "}
+            <Input placeholder="Nhập tìm tỉnh thành" onChange={handleSearchDistrict} value={searchDistrict} />{" "}
           </div>
           <div className="districts">
             {searchResultDistrict &&
               searchResultDistrict?.map((item: any, index: number) => {
                 return (
                   <div key={index} className="district-item">
-                    <Radio.Group
-                      onChange={onChangeRadioDistrict}
-                      value={valueRadioDistrict}
-                    >
+                    <Radio.Group onChange={onChangeRadioDistrict} value={valueRadioDistrict}>
                       <Radio value={item.Name}>
                         {" "}
                         <span className="district-name">{item.Name}</span>

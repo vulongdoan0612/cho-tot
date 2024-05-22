@@ -2,7 +2,7 @@ import CustomButton from "@/components/CustomButton";
 import ModalSuccessChangePassword from "@/components/Modal/ModalSuccessChangePassword";
 import Page from "@/layout/Page";
 import Setting from "@/layout/Setting";
-import { RootState } from "@/redux/store";
+import { RootState, wrapper } from "@/redux/store";
 import { changePassword, logout } from "@/services/authentication";
 import { TextField } from "@mui/material";
 import { Skeleton } from "antd";
@@ -10,19 +10,17 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import cookie from "cookie";
 
 const Account = () => {
-
   const router = useRouter();
-  const { loading } = useSelector(
-    (state: RootState) => state.countDownLoading
-  );
+  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const dispatch = useDispatch();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [modalSucces, setModalSuccess] = useState(false);
-  
+
   const handleChangeConfirmPassword = (event: any) => {
     setConfirmPassword(event.target.value);
   };
@@ -65,7 +63,7 @@ const Account = () => {
     router.push("/");
     logout(dispatch);
   };
-  
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <Setting title="Cài đặt tài khoản" active="3" removeAccount={true}>
@@ -123,11 +121,7 @@ const Account = () => {
             />
           )}
         </div>
-        <CustomButton
-          type="submit"
-          className="save-change change-password"
-          onClick={updatePassword}
-        >
+        <CustomButton type="submit" className="save-change change-password" onClick={updatePassword}>
           Đổi mật khẩu
         </CustomButton>
       </Setting>
@@ -139,4 +133,22 @@ const Account = () => {
     </Page>
   );
 };
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+});
 export default Account;

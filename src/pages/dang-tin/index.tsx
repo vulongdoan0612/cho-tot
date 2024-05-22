@@ -8,8 +8,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RenderOto from "@/components/RenderFormTraffic/RenderFormTraffic";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch, RootState, wrapper } from "@/redux/store";
 import { fetchDataPost } from "@/redux/reducers/postSell";
+import cookie from "cookie";
 
 const PostSell = () => {
   const router = useRouter();
@@ -247,4 +248,22 @@ const PostSell = () => {
     </Page>
   );
 };
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+});
 export default PostSell;

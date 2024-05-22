@@ -93,7 +93,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
           {" "}
           <div className="selection">
             <SearchIcon></SearchIcon>
-            <Input placeholder="Nhập tìm số chỗ" onChange={handleSearchBrand} value={searchBrand} />{" "}
+            <Input placeholder="Nhập tìm hãng xe" onChange={handleSearchBrand} value={searchBrand} />{" "}
           </div>
           <div className="brands">
             {dataRender?.map((item: any, index: any) => {

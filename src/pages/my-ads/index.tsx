@@ -2,7 +2,7 @@ import CustomButton from "@/components/CustomButton";
 import CustomButtonGreen from "@/components/CustomButton/green";
 import { ChangePostIcon, FasterSellIcon, HiddenEyeIcon, LetterIIcon, PlusManageIcon } from "@/components/CustomIcons";
 import Page from "@/layout/Page";
-import { RootState } from "@/redux/store";
+import { RootState, wrapper } from "@/redux/store";
 import {
   getPostCensorshipList,
   getPostCheckList,
@@ -21,6 +21,7 @@ import { Breadcrumb, Checkbox, CheckboxProps, Image, InputNumberProps, Skeleton,
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
+import cookie from "cookie";
 
 const MyAds = () => {
   const { account } = useSelector((state: RootState) => state.auth);
@@ -585,4 +586,23 @@ const MyAds = () => {
     </Page>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+});
 export default MyAds;

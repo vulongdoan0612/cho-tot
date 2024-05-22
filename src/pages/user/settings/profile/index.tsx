@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Page from "@/layout/Page";
-import { RootState } from "@/redux/store";
+import { RootState, wrapper } from "@/redux/store";
 import { DatePicker, DatePickerProps, Skeleton, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import Setting from "@/layout/Setting";
 import useDidMountEffect from "@/utils/customUseEffect";
 import limitInputCharacters from "@/utils/limitInput";
+import cookie from "cookie";
 
 const User = () => {
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
@@ -892,5 +893,22 @@ const User = () => {
     </Page>
   );
 };
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
 
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+});
 export default User;

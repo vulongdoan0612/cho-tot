@@ -10,7 +10,19 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 
-const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, setState, onChangePage, state, setFilter }: any) => {
+const ContainMBOTO = ({
+  posts,
+  spin,
+  pageSize,
+  current,
+  districtName,
+  cityName,
+  setState,
+  onChangePage,
+  state,
+  setFilter,
+  setOpenModal,
+}: any) => {
   const router = useRouter();
   const { query } = router;
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
@@ -23,7 +35,9 @@ const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, 
   useEffect(() => {
     setReCurrent(current);
   }, [current]);
-
+  const handleClick = () => {
+    setOpenModal(true);
+  };
   return (
     <div className="wrapper-contain">
       <Breadcrumb
@@ -76,7 +90,7 @@ const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, 
                 <CustomButtonSelect>Tp Hồ Chí Minh</CustomButtonSelect>
                 <CustomButtonSelect>Hà Nội</CustomButtonSelect>
                 <CustomButtonSelect>Đà Nẵng</CustomButtonSelect>
-                <span className="more">
+                <span className="more" onClick={handleClick}>
                   Xem thêm <ArrowBackIcon></ArrowBackIcon>
                 </span>
               </div>
@@ -85,7 +99,7 @@ const ContainMBOTO = ({ posts, spin, pageSize, current, districtName, cityName, 
           {loading ? (
             <Skeleton.Input style={{ height: "68px" }} block={true} active size="large"></Skeleton.Input>
           ) : (
-            <BrandSlide setFilter={setFilter}></BrandSlide>
+            <BrandSlide setFilter={setFilter} setOpenModal={setOpenModal}></BrandSlide>
           )}
           <ItemCar spin={spin} posts={posts}></ItemCar>
           <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} />

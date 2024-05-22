@@ -1,5 +1,6 @@
 import { getProfile } from "@/services/getProfile";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 
 interface IState {
   isAuthenticated?: boolean;
@@ -15,7 +16,6 @@ const initialState: IState = {
   isAuthenticated: false,
   account: {},
   loading: false,
-  
 };
 
 const slicer = createSlice({
@@ -30,7 +30,7 @@ const slicer = createSlice({
         loading?: boolean;
       }>
     ) => {
-      state.isAuthenticated = action.payload.isAuthenticated;
+      state.isAuthenticated = action.payload.isAuthenticated ?? state.isAuthenticated;
       state.account = action.payload.account;
       state.loading = action.payload.loading;
     },
@@ -47,6 +47,12 @@ const slicer = createSlice({
     builder.addCase(fetchDataUser.rejected, (state) => {
       state.loading = true;
       state.isAuthenticated = false;
+    });
+    builder.addCase(HYDRATE, (state, action: any) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
     });
   },
 });

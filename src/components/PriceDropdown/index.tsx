@@ -152,8 +152,8 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
       openPrice: false,
       inputValueMax: 2000000000,
       inputValueMin: 0,
-      priceMin: '',
-      priceMax: '',
+      priceMin: "",
+      priceMax: "",
       valuePriceMin: null,
       valuePriceMax: null,
     }));
@@ -162,6 +162,10 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
 
   const handleApply = () => {
     try {
+      if (filter.price === "undefined") {
+        filter.price = "max2000000000";
+      }
+      console.log(filter)
       const queries: any = Object.entries(filter);
       updateQuery(queries);
     } finally {

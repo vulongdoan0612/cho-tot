@@ -1,6 +1,6 @@
 import CustomButton from "@/components/CustomButton";
 import Page from "@/layout/Page";
-import { RootState } from "@/redux/store";
+import { RootState, wrapper } from "@/redux/store";
 import { getPostCheck } from "@/services/formPost";
 import { add30DaysAndFormat } from "@/utils/addDay2";
 import formatISOToCustomDate from "@/utils/convertDate";
@@ -10,6 +10,7 @@ import { Image, Skeleton } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import cookie from "cookie";
 
 const ViewPostCensor = () => {
   const router = useRouter();
@@ -122,4 +123,22 @@ const ViewPostCensor = () => {
     </Page>
   );
 };
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+});
 export default ViewPostCensor;

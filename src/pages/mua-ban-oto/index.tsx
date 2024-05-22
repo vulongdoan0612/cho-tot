@@ -31,6 +31,8 @@ const SellingPage = () => {
   const [state, setState] = useState<IFilterHeader>(defaultCommonState);
   const [filterFind, setFilterFind] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [searchCity, setSearchCity] = useState("");
+  const [searchDistrict, setSearchDistrict] = useState("");
   const [filter, setFilter] = useState<any>({
     sit: "",
     brand: "",
@@ -592,11 +594,17 @@ const SellingPage = () => {
                     idCity={state.idCity}
                     idDistrict={state.idDistrict}
                     openFind={state.openFind}
+                    setSearchCity={setSearchCity}
+                    setSearchDistrict={setSearchDistrict}
                   ></FindInAreaDropdown>
                 )}
                 <Selection
                   openFind={state.openFind}
                   setState={setState}
+                  searchCity={searchCity}
+                  setSearchCity={setSearchCity}
+                  searchDistrict={searchDistrict}
+                  setSearchDistrict={setSearchDistrict}
                   searchResultDistrict={state.searchResultDistrict}
                   valueRadioDistrict={state.valueRadioDistrict}
                   valueRadio={state.valueRadio}
@@ -675,6 +683,7 @@ const SellingPage = () => {
           </div>
         </div>
         <ContainMBOTO
+          setOpenModal={setOpenModal}
           filter={filter}
           setFilter={setFilter}
           districtName={state.districtName}

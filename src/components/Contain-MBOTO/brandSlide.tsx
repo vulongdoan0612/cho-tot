@@ -3,7 +3,7 @@ import { Image } from "antd";
 import { useRouter } from "next/router";
 import Slider from "react-slick";
 
-const BrandSlide = ({ setFilter, filter }: any) => {
+const BrandSlide = ({ setFilter, filter, setOpenModal }: any) => {
   const router = useRouter();
   const updateURL = (queryParams: any) => {
     router.push({
@@ -41,6 +41,9 @@ const BrandSlide = ({ setFilter, filter }: any) => {
   };
   const handleLink = (item: string) => {
     updateURL({ brand: item });
+  };
+  const handleClick = () => {
+    setOpenModal(true);
   };
   return (
     <div className="brand">
@@ -85,7 +88,7 @@ const BrandSlide = ({ setFilter, filter }: any) => {
           <Image src="/images/2010_subaru.png" width={48} height={48} alt="" preview={false}></Image>
           <span>Subaru</span>
         </div>
-        <div className="item-brand">
+        <div className="item-brand" onClick={handleClick}>
           <Image src="/icons/other.svg" width={48} height={48} alt="" preview={false}></Image>
           <span>Xem thêm</span>
         </div>
