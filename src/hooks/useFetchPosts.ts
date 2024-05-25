@@ -25,7 +25,6 @@ export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: 
           pageSize,
           current,
           keySearch: body.query.keySearch === "" ? undefined : body.query.keySearch,
-
           price: body.query.price,
           form: body.query.form,
           sit: body.query.sit,

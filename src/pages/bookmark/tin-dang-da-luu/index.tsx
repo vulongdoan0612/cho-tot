@@ -3,7 +3,7 @@ import { AddedFavouritePostIcon } from "@/components/CustomIcons";
 import { useFetchFavList } from "@/hooks/useFetchFavList";
 import Page from "@/layout/Page";
 import { fetchDataFavList } from "@/redux/reducers/posts";
-import { AppDispatch, RootState, wrapper } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { createConversation } from "@/services/chat";
 import { removeFavPost } from "@/services/favPost";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
@@ -64,9 +64,15 @@ const FavPage = () => {
           items={[
             {
               title: "Chợ tốt",
+              onClick: () => {
+                router.push(`/`);
+              },
             },
             {
               title: `Tin đăng đã lưu`,
+              onClick: () => {
+                router.push(`/bookmark/tin-dang-da-luu`);
+              },
             },
           ]}
         />
@@ -132,7 +138,7 @@ const FavPage = () => {
     </Page>
   );
 };
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -146,8 +152,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     };
   }
 
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
+
   return {
-    props: {},
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
   };
-});
+};
 export default FavPage;

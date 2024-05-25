@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Page from "@/layout/Page";
-import { RootState, wrapper } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { DatePicker, DatePickerProps, Skeleton, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
@@ -23,11 +23,13 @@ import Setting from "@/layout/Setting";
 import useDidMountEffect from "@/utils/customUseEffect";
 import limitInputCharacters from "@/utils/limitInput";
 import cookie from "cookie";
+import { useRouter } from "next/router";
 
 const User = () => {
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { account } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [fillAddrCity, setFillAddrCity] = useState(false);
   const [fillAddrWard, setFillAddrWard] = useState(false);
   const [fillAddrDistrict, setFillAddrDistrict] = useState(false);
@@ -65,7 +67,6 @@ const User = () => {
 
   useEffect(() => {
     if (account?.user) {
-      console.log(account?.user?.address?.city);
       setStateUser((prevState) => ({
         ...prevState,
         cityValue: account?.user?.address?.cityValue,
@@ -270,6 +271,7 @@ const User = () => {
             detailAddress: stateUser?.detailAddress,
             fullAddress: stateUser?.fullAddress,
           },
+          fullname: stateUser.fullName,
           introduction: stateUser?.introducing,
           rememberName: stateUser?.rememberName,
           identifyCard: {
@@ -298,6 +300,7 @@ const User = () => {
           setFillFullAddr(false);
           setFillSex(false);
           setFillBirth(false);
+          router.push(`/user/${account?.user?._id}`);
         }
       }
     } catch {
@@ -893,7 +896,7 @@ const User = () => {
     </Page>
   );
 };
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -907,8 +910,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     };
   }
 
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
+
   return {
-    props: {},
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
   };
-});
+};
 export default User;

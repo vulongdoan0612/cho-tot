@@ -8,16 +8,18 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RenderOto from "@/components/RenderFormTraffic/RenderFormTraffic";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState, wrapper } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { fetchDataPost } from "@/redux/reducers/postSell";
 import cookie from "cookie";
+import useDidMountEffect from "@/utils/customUseEffect";
+import NotFound from "@/components/404";
 
 const PostSell = () => {
   const router = useRouter();
   const { category } = router.query;
   const { id } = router.query;
   const [alertAvatar, setAlertAvatar] = useState("");
-
+  const { account, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
@@ -29,7 +31,6 @@ const PostSell = () => {
   const [warning, setWarning] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-
   useEffect(() => {
     setRender(category);
     if (category === "0") {
@@ -69,7 +70,7 @@ const PostSell = () => {
     }
   }, [dataPost]);
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (id) {
       dispatch(fetchDataPost(String(id)));
     }
@@ -121,6 +122,8 @@ const PostSell = () => {
     const isGIF = file.type === "image/gif";
     const isJPG = file.type === "image/jpg";
     const isLt2M = file.size / 1024 / 1024 < 2;
+    const isWEBP = file.type === "image/webp";
+
     if (!isLt2M) {
       setAlertAvatar("Hình ảnh phải nhỏ hơn 2MB!");
       setTimeout(() => {
@@ -129,115 +132,128 @@ const PostSell = () => {
       return Upload.LIST_IGNORE;
     }
 
-    if (!isGIF && !isJPGE && !isPNG && !isJPG) {
+    if (!isGIF && !isJPGE && !isPNG && !isJPG && !isWEBP) {
       setAlertAvatar("Bạn chỉ có thể tải lên tệp PNG, JPEG, hoặc GIF!");
       setTimeout(() => {
         setAlertAvatar("");
       }, 3000);
     }
-    return isPNG || isJPGE || isGIF || isJPG || Upload.LIST_IGNORE;
+    return isPNG || isJPGE || isGIF || isJPG || isWEBP || Upload.LIST_IGNORE;
   };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
-      <div className="post-sell-wrapper">
-        <div className="left">
-          <h5>Hình ảnh và Video sản phẩm</h5>
-          <p className="more-about">
-            Xem thêm về&nbsp;
-            <a href="https://trogiup.chotot.com/nguoi-ban/dang-tin/" target="_blank" rel="noreferrer">
-              Quy định đăng tin của Chợ Tốt
-            </a>
-          </p>
-          <div className="upload">
-            <Skeleton.Input
-              block={true}
-              style={{ height: "221px" }}
-              active
-              className={` ${id !== undefined && loading ? "visible-ske" : "disvisible-ske"}`}
-              size="large"
-            ></Skeleton.Input>
-            <Upload
-              beforeUpload={beforeUpload}
-              name="image"
-              listType="picture-card"
-              fileList={fileList}
-              className={`upload-antd ${fileList.length !== 0 ? "upload-antd-custom" : ""} ${
-                id !== undefined && loading ? "unhidden" : "hidden"
-              } skeleton-custom`}
-              onPreview={handlePreview}
-              onChange={handleChange}
-            >
-              {fileList.length >= 20 ? null : fileList.length !== 0 ? uploadedCustomSmaller : uploadedCustom}
-            </Upload>
-            {previewImage && (
-              <Image
-                wrapperStyle={{ display: "none" }}
-                preview={{
-                  visible: previewOpen,
-                  onVisibleChange: (visible) => setPreviewOpen(visible),
-                  afterOpenChange: (visible) => !visible && setPreviewImage(""),
-                }}
-                alt=""
-                src={previewImage}
+      {dataPost?.userId === account?.user?._id || router.query.id === undefined ? (
+        <div className="post-sell-wrapper">
+          <div className="left">
+            <h5>Hình ảnh và Video sản phẩm</h5>
+            <p className="more-about">
+              Xem thêm về&nbsp;
+              <a href="https://trogiup.chotot.com/nguoi-ban/dang-tin/" target="_blank" rel="noreferrer">
+                Quy định đăng tin của Chợ Tốt
+              </a>
+            </p>
+            {category === "0" ? (
+              <div className="upload">
+                <Skeleton.Input
+                  block={true}
+                  style={{ height: "221px" }}
+                  active
+                  className={` ${id !== undefined && loading ? "visible-ske" : "disvisible-ske"}`}
+                  size="large"
+                ></Skeleton.Input>
+                <Upload
+                  beforeUpload={beforeUpload}
+                  name="image"
+                  listType="picture-card"
+                  fileList={fileList}
+                  className={`upload-antd ${fileList.length !== 0 ? "upload-antd-custom" : ""} ${
+                    id !== undefined && loading ? "unhidden" : "hidden"
+                  } skeleton-custom`}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                >
+                  {fileList.length >= 20 ? null : fileList.length !== 0 ? uploadedCustomSmaller : uploadedCustom}
+                </Upload>
+                {previewImage && (
+                  <Image
+                    wrapperStyle={{ display: "none" }}
+                    preview={{
+                      visible: previewOpen,
+                      onVisibleChange: (visible) => setPreviewOpen(visible),
+                      afterOpenChange: (visible) => !visible && setPreviewImage(""),
+                    }}
+                    alt=""
+                    src={previewImage}
+                  />
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+          <div className="right">
+            {warning ? (
+              <div className="warning">
+                <WarningIcon></WarningIcon>
+                <span className="text">Bạn cần đăng ít nhất 1 ảnh</span>
+              </div>
+            ) : (
+              <></>
+            )}
+
+            <div className="category-select input-need-to-custom" onClick={handleModalCategory}>
+              <TextField
+                className="category"
+                id="filled-multiline-flexible"
+                label="Danh Mục Tin Đăng"
+                value={value}
+                multiline
+                maxRows={4}
+                variant="filled"
               />
+              <ArrowInputIcon></ArrowInputIcon>
+            </div>
+
+            {render === "0" ? (
+              <>
+                <RenderOto handleWarning={() => setWarning(true)} fileList={fileList} id={id} dataPost={dataPost}></RenderOto>
+              </>
+            ) : render === "1" ? (
+              <>xe máy</>
+            ) : render === "2" ? (
+              <>xe tải</>
+            ) : render === "3" ? (
+              <> xe điện</>
+            ) : render === "4" ? (
+              <> xe đạp</>
+            ) : render === "5" ? (
+              <>pt khác</>
+            ) : render === "6" ? (
+              <>pt xe</>
+            ) : (
+              <div className="banner-post">
+                {" "}
+                <Image
+                  src="https://static.chotot.com/storage/chotot-icons/svg/empty-category.svg"
+                  alt=""
+                  width={458}
+                  height={275}
+                  preview={false}
+                ></Image>
+                <span className="title">ĐĂNG NHANH - BÁN GỌN</span>
+                <p className="select">Chọn “danh mục tin đăng” để đăng tin</p>
+              </div>
             )}
           </div>
         </div>
-        <div className="right">
-          {warning ? (
-            <div className="warning">
-              <WarningIcon></WarningIcon>
-              <span className="text">Bạn cần đăng ít nhất 1 ảnh</span>
-            </div>
-          ) : (
-            <></>
-          )}
-
-          <div className="category-select input-need-to-custom" onClick={handleModalCategory}>
-            <TextField
-              className="category"
-              id="filled-multiline-flexible"
-              label="Danh Mục Tin Đăng"
-              value={value}
-              multiline
-              maxRows={4}
-              variant="filled"
-            />
-            <ArrowInputIcon></ArrowInputIcon>
-          </div>
-
-          {render === "0" ? (
-            <>
-              <RenderOto handleWarning={() => setWarning(true)} fileList={fileList} id={id} dataPost={dataPost}></RenderOto>
-            </>
-          ) : render === "1" ? (
-            <>xe máy</>
-          ) : render === "2" ? (
-            <>xe tải</>
-          ) : render === "3" ? (
-            <> xe điện</>
-          ) : render === "4" ? (
-            <> xe đạp</>
-          ) : render === "5" ? (
-            <>pt khác</>
-          ) : render === "6" ? (
-            <>pt xe</>
-          ) : (
-            <div className="banner-post">
-              {" "}
-              <Image
-                src="https://static.chotot.com/storage/chotot-icons/svg/empty-category.svg"
-                alt=""
-                width={458}
-                height={275}
-                preview={false}
-              ></Image>
-              <span className="title">ĐĂNG NHANH - BÁN GỌN</span>
-              <p className="select">Chọn “danh mục tin đăng” để đăng tin</p>
-            </div>
-          )}
-        </div>
-      </div>
+      ) : (
+        <>
+          <span style={{ textAlign: "center", width: "100%", display: "block", fontWeight: "600", paddingTop: "1.5rem" }}>
+            Bài viết không thuộc quyền sở hữu
+          </span>
+          <NotFound></NotFound>
+        </>
+      )}
       <Alert message={alertAvatar} type="success" className={alertAvatar !== "" ? "show-alert" : ""} />
       <ModalCategorySelect
         modalCategory={modalCategory}
@@ -248,7 +264,7 @@ const PostSell = () => {
     </Page>
   );
 };
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -262,8 +278,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     };
   }
 
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
+
   return {
-    props: {},
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
   };
-});
+};
 export default PostSell;

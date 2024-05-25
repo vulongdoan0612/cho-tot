@@ -1,0 +1,221 @@
+.services-wrapper {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(255 255 255);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  margin-top: 0.75rem;
+  .ant-checkbox-wrapper {
+    .ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
+      border-color: #12a154;
+    }
+    .ant-checkbox-checked {
+      .ant-checkbox-inner {
+        background-color: #12a154 !important;
+        border-color: #12a154 !important;
+      }
+    }
+  }
+  .car {
+    padding-top: 1.5rem;
+    .title {
+      padding-left: 0.75rem;
+      font-size: 1rem;
+      font-weight: bold;
+      line-height: 1.25rem;
+    }
+    .right-car {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      padding-top: 1.75rem;
+      padding-bottom: 1rem;
+      display: flex;
+      gap: 1rem;
+      img {
+        object-fit: cover;
+        border-radius: 0.25rem;
+      }
+      .info-car {
+        display: flex;
+        flex-direction: column;
+        .name {
+          font-weight: 600;
+          font-size: 0.85rem;
+          line-height: 1.25rem;
+        }
+        .price {
+          font-weight: 700;
+          color: rgb(208 2 27 / 1);
+        }
+      }
+    }
+  }
+  .combo {
+    border-top: 1px dashed rgb(192 192 192);
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    .warn-pay {
+      cursor: pointer;
+      padding-top: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgb(208 2 27 / 1);
+      a {
+        font-size: 14px;
+
+        font-weight: 600;
+
+        color: rgb(48, 107, 217);
+      }
+    }
+    .title {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+    .desc {
+      color: rgb(140 140 140);
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .item-combo {
+      cursor: pointer;
+      position: relative;
+      width: 448.84px;
+      display: flex;
+      border: 1px solid rgb(232 232 232);
+      border-radius: 0.5rem;
+      .ant-checkbox-wrapper {
+        margin-left: 0.75rem;
+      }
+      .flag {
+        position: absolute;
+        top: -8px;
+        left: -4px;
+        .content {
+          background-color: rgb(18, 161, 84);
+          color: rgb(255 255 255);
+          line-height: 1.25rem;
+          font-weight: 700;
+          font-size: 0.65rem;
+          padding-top: 0.25rem;
+          padding-bottom: 0.25rem;
+          padding-left: 0.75rem;
+          padding-right: 0.75rem;
+        }
+        .flag-small {
+          position: absolute;
+          bottom: -5px;
+          left: 0px;
+          border-style: solid;
+          border-right-color: #000;
+          border-bottom-color: transparent;
+          border-left-color: transparent;
+          border-bottom-width: 1.5px;
+          border-right-width: 1.5px;
+        }
+      }
+      .ant-image {
+        margin-top: 26px;
+        margin-bottom: 26px;
+        margin-right: 0.75rem;
+        margin-left: 0.75rem;
+        display: inline;
+        vertical-align: middle;
+      }
+      .right-info {
+        width: 322px;
+        padding-right: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
+        flex-direction: column;
+        .top {
+          font-weight: 700;
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+          margin-bottom: 0.25rem;
+          display: flex;
+          justify-content: space-between;
+        }
+        .middle {
+          color: rgb(140 140 140);
+          line-height: 1.25rem;
+          font-size: 0.75rem;
+        }
+        .bottom {
+          margin-top: auto;
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+          span {
+            color: rgb(48 107 217);
+            font-weight: 700;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            padding-left: 2px;
+            padding-right: 2px;
+            background-color: rgb(242 246 252);
+          }
+        }
+      }
+    }
+  }
+  .combo-cheap {
+    display: flex;
+    .position {
+      padding-top: 0rem;
+      border-top: none;
+    }
+    padding-bottom: 1.75rem;
+  }
+  margin-bottom: 12px;
+}
+.checkount-number {
+  background-color: rgb(255 255 255);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  .checkount {
+    display: flex;
+    max-width: 940px;
+    margin: auto;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    .disable-custom-green {
+      background-color: rgb(192, 192, 192);
+      border: 1px solid rgb(192, 192, 192);
+    }
+    .left {
+      display: flex;
+      text-align: right;
+      flex-direction: column;
+      span {
+        color: rgb(140 140 140);
+        font-size: 10px;
+      }
+      b {
+        font-weight: 700;
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+    }
+    button {
+      width: 150.23px;
+    }
+  }
+}

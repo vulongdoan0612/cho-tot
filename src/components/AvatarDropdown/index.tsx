@@ -13,7 +13,6 @@ const AvatarDropdown = () => {
   if (account.message === "User not found" && account.status === "ERROR") {
     router.push("/");
     logout(dispatch);
-    console.log("vao");
   }
   const items: MenuProps["items"] = [
     {
@@ -27,7 +26,7 @@ const AvatarDropdown = () => {
       <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
         <a onClick={(e) => e.preventDefault()}>
           {isAuthenticated && account?.user?.avatar !== null ? (
-            <Image src={account?.user?.avatar} width={24} height={24} preview={false} alt=""></Image>
+            <Image src={account?.user?.avatar} width={24} height={24} style={{ objectFit: "cover" }} preview={false} alt=""></Image>
           ) : (
             <UserAvatarIcon></UserAvatarIcon>
           )}

@@ -1,10 +1,4 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import CustomModal from "../CustomModal";
 import CustomButton from "../CustomButton";
 
@@ -38,11 +32,7 @@ const ModalAddressUser = ({
       className="modal-address-user"
     >
       <FormControl sx={{ m: 1, width: "100%" }}>
-        <InputLabel
-          required
-          id="demo-select-small-label"
-          className="city-select-label"
-        >
+        <InputLabel required id="demo-select-small-label" className="city-select-label">
           Tỉnh, Thành phố
         </InputLabel>
         <Select
@@ -60,19 +50,10 @@ const ModalAddressUser = ({
             </MenuItem>
           ))}
         </Select>
-        {fillAddrCity && (
-          <span className="warning">Vui lòng nhập Tỉnh, Thành phố</span>
-        )}
+        {fillAddrCity && <span className="warning">Vui lòng nhập Tỉnh, Thành phố</span>}
       </FormControl>
-      <FormControl
-        sx={{ m: 1, width: "100%" }}
-        disabled={districts.length < 1 ? true : false}
-      >
-        <InputLabel
-          required
-          id="demo-select-small-label"
-          className="city-select-label"
-        >
+      <FormControl sx={{ m: 1, width: "100%" }} disabled={districts.length < 1 ? true : false}>
+        <InputLabel required id="demo-select-small-label" className="city-select-label">
           Quận, Huyện, Thị xã
         </InputLabel>
 
@@ -89,19 +70,10 @@ const ModalAddressUser = ({
             </MenuItem>
           ))}
         </Select>
-        {fillAddrDistrict && (
-          <span className="warning">Vui lòng nhập Quận, Huyện, Thị xã</span>
-        )}
+        {fillAddrDistrict && <span className="warning">Vui lòng nhập Quận, Huyện, Thị xã</span>}
       </FormControl>{" "}
-      <FormControl
-        sx={{ m: 1, width: "100%" }}
-        disabled={wards.length < 1 ? true : false}
-      >
-        <InputLabel
-          id="demo-select-small-label"
-          className="city-select-label"
-          required
-        >
+      <FormControl sx={{ m: 1, width: "100%" }} disabled={wards.length < 1 ? true : false}>
+        <InputLabel id="demo-select-small-label" className="city-select-label" required>
           Phường, Xã, Thị trấn
         </InputLabel>
 
@@ -120,9 +92,7 @@ const ModalAddressUser = ({
             );
           })}
         </Select>
-        {fillAddrWard && (
-          <span className="warning">Vui lòng nhập Phường, Xã, Thị trấn</span>
-        )}
+        {fillAddrWard && <span className="warning">Vui lòng nhập Phường, Xã, Thị trấn</span>}
       </FormControl>
       <FormControl sx={{ m: 1, width: "100%" }}>
         <TextField
@@ -137,15 +107,9 @@ const ModalAddressUser = ({
           maxRows={4}
           variant="filled"
         />
-        {fillAddrDetail && (
-          <span className="warning">Vui lòng nhập Địa chỉ cụ thể</span>
-        )}
+        {fillAddrDetail && <span className="warning">Vui lòng nhập Địa chỉ cụ thể</span>}
       </FormControl>
-      <CustomButton
-        type="submit"
-        onClick={onFinish}
-        style={{ marginTop: "8px" }}
-      >
+      <CustomButton type="submit" onClick={onFinish} style={{ marginTop: "8px" }}>
         Xong
       </CustomButton>
     </CustomModal>

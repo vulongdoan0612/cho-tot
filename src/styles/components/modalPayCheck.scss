@@ -1,0 +1,125 @@
+.modal-paycheck {
+  .ant-modal-content {
+    .ant-modal-close {
+      inset-inline-start: 12px;
+    }
+    .ant-modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid rgb(232 232 232);
+    }
+    padding: 0;
+    .carInfo {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      display: flex;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      img {
+        object-fit: cover;
+        border-radius: 0.25rem;
+      }
+      .info-car {
+        display: flex;
+        text-align: left;
+        flex-direction: column;
+        gap: 1.5rem;
+        .name {
+          color: rgb(34 34 34);
+          font-weight: 600;
+          font-size: 0.85rem;
+          line-height: 1.25rem;
+        }
+        .price {
+          font-weight: 700;
+          color: rgb(208 2 27 / 1);
+        }
+      }
+    }
+    .wrapper-service-info-paycheck {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      padding-bottom: 0.75rem;
+      padding-top: 1rem;
+      .service {
+        justify-content: space-between;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgb(232 232 232);
+        display: flex;
+        gap: 0.5rem;
+        .left {
+          display: flex;
+          gap: 0.5rem;
+          .service-info {
+            width: 100%;
+            text-align: left;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            .title {
+              color: rgb(34 34 34);
+              font-weight: 700;
+              margin-bottom: 0.25rem;
+            }
+            .list-info {
+              margin-left: 1rem;
+              list-style-type: disc;
+              padding-left: 2rem;
+              color: rgb(140 140 140);
+              font-size: 0.875rem;
+              line-height: 1.25rem;
+              margin-bottom: 0;
+            }
+            .price {
+              color: rgb(18 161 84);
+              font-weight: 700;
+              font-size: 1rem;
+              line-height: 1.5rem;
+            }
+          }
+        }
+
+      }
+    }
+    .help {
+      color: rgb(140 140 140);
+      font-size: 0.75rem;
+      line-height: 1rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      padding-bottom: 0.75rem;
+      text-align: left;
+    }
+    hr {
+      border-style: dashed;
+      border-width: 1px;
+      height: 1px;
+      border-top-color: rgb(192 192 192);
+      margin-left: 0.75rem;
+      margin-right: 0.75rem;
+    }
+    .checkout {
+      padding: 0.75rem;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      background-color: rgb(255 255 255);
+      display: flex;
+      button {
+        width: 150.23px;
+      }
+      .total {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        b {
+          font-weight: 700;
+          color: rgb(34 34 34);
+        }
+        span {
+          color: rgb(140 140 140);
+          text-align: right;
+          font-size: 10px;
+        }
+      }
+    }
+  }
+}

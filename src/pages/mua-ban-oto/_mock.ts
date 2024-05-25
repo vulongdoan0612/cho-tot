@@ -21,7 +21,7 @@ export const defaultCommonState = {
   valuePriceMax: 0,
   priceMin: "",
   priceMax: "",
-
+  activeKey: "1",
   valuePriceMin: 0,
   inputValueMin: 0,
   inputValueMax: 2000000000,

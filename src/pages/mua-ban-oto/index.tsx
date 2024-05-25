@@ -19,10 +19,13 @@ import { useFetchPosts } from "@/hooks/useFetchPosts";
 import BrandCarDropdown from "@/components/BrandCarDropdown";
 import useWebSocket from "react-use-websocket";
 import { fetchDataFavListMain, fetchDataPosts } from "@/redux/reducers/posts";
+import { useUpdateQuery } from "@/utils/updateQuery";
 
 const SellingPage = () => {
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
   const router = useRouter();
+  const updateQuery = useUpdateQuery();
+
   const dispatch: AppDispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.postsData);
   const [spin, setSpin] = useState(false);
@@ -48,7 +51,68 @@ const SellingPage = () => {
     price: "",
     km: "",
   });
+  const handleChangeTab = (key: string) => {
+    if (key === "1") {
+      if (!router.isReady) {
+        return;
+      }
+      setState((prevState: any) => ({
+        ...prevState,
+        activeKey: "1",
+      }));
+      setSpin(true);
+      setTimeout(() => {
+        setSpin(false);
+      }, 500);
+      let updatedFilter = { ...filter };
 
+      updatedFilter.post = "all";
+
+      const queries: any = Object.entries(updatedFilter).filter(([_, value]) => value !== "");
+
+      updateQuery(queries);
+    }
+    if (key === "2") {
+      if (!router.isReady) {
+        return;
+      }
+
+      let updatedFilter = { ...filter };
+
+      updatedFilter.post = "ca-nhan";
+
+      const queries: any = Object.entries(updatedFilter).filter(([_, value]) => value !== "");
+      setState((prevState: any) => ({
+        ...prevState,
+        activeKey: "2",
+      }));
+      updateQuery(queries);
+      setSpin(true);
+      setTimeout(() => {
+        setSpin(false);
+      }, 500);
+    }
+    if (key === "3") {
+      if (!router.isReady) {
+        return;
+      }
+
+      let updatedFilter = { ...filter };
+
+      updatedFilter.post = "ban-chuyen";
+
+      const queries: any = Object.entries(updatedFilter).filter(([_, value]) => value !== "");
+      setState((prevState: any) => ({
+        ...prevState,
+        activeKey: "3",
+      }));
+      updateQuery(queries);
+      setSpin(true);
+      setTimeout(() => {
+        setSpin(false);
+      }, 500);
+    }
+  };
   useFetchPosts({
     setCurrent,
     current: current,
@@ -343,7 +407,24 @@ const SellingPage = () => {
       }));
       setFilterFind(selectedCity?.Name);
     }
-
+    if (router.query.post === "ca-nhan") {
+      setState((prevState: any) => ({
+        ...prevState,
+        activeKey: "2",
+      }));
+    }
+    if (router.query.post === "all") {
+      setState((prevState: any) => ({
+        ...prevState,
+        activeKey: "1",
+      }));
+    }
+    if (router.query.post === "ban-chuyen") {
+      setState((prevState: any) => ({
+        ...prevState,
+        activeKey: "3",
+      }));
+    }
     if (router.query.brand !== "" && router.query.brand !== undefined) {
       setState((prevState: any) => ({
         ...prevState,
@@ -364,6 +445,8 @@ const SellingPage = () => {
     router.query.district,
     router.query.sit,
     router.query.brand,
+    router.query.post,
+
     state?.cities,
     router,
   ]);
@@ -683,9 +766,11 @@ const SellingPage = () => {
           </div>
         </div>
         <ContainMBOTO
+          activeKey={state.activeKey}
+          setFilter={setFilter}
+          handleChangeTab={handleChangeTab}
           setOpenModal={setOpenModal}
           filter={filter}
-          setFilter={setFilter}
           districtName={state.districtName}
           cityName={state.cityName}
           spin={spin}

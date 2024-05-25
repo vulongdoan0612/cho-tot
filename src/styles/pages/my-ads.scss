@@ -13,11 +13,11 @@
         font-size: 1.25rem;
         font-weight: 700;
       }
-      .desc{
+      .desc {
         margin-top: 0.5rem;
         margin-bottom: 1rem;
       }
-      button{
+      button {
         width: 200px;
       }
     }
@@ -166,6 +166,10 @@
         justify-content: space-between;
         display: flex;
         flex-direction: column;
+        .isPrioritize {
+          background-color: #ff8800;
+          border: 1px solid #ff8800;
+        }
         .top {
           .flex {
             border-bottom: 2px solid #fff;

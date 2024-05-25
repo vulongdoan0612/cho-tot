@@ -60,14 +60,42 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: `${post?.post?.post?.image.length > 6 ? 6 : 3}`,
+    slidesToShow: post?.post?.post?.image.length > 6 ? 6 : 3,
     className: "slider variable-width",
 
-    slidesToScroll: `${post?.post?.post?.image.length > 6 ? 6 : 3}`,
+    slidesToScroll:
+      post?.post?.post?.image?.length === 7
+        ? 1
+        : post?.post?.post?.image?.length === 8
+        ? 2
+        : post?.post?.post?.image?.length === 9
+        ? 3
+        : post?.post?.post?.image?.length === 10
+        ? 4
+        : post?.post?.post?.image?.length === 11
+        ? 5
+        : post?.post?.post?.image?.length === 12
+        ? 6
+        : post?.post?.post?.image?.length === 13
+        ? 1
+        : post?.post?.post?.image?.length === 14
+        ? 2
+        : post?.post?.post?.image?.length === 15
+        ? 5
+        : post?.post?.post?.image?.length === 16
+        ? 4
+        : post?.post?.post?.image?.length === 17
+        ? 1
+        : post?.post?.post?.image?.length === 18
+        ? 4
+        : post?.post?.post?.image?.length === 19
+        ? 3
+        : post?.post?.post?.image?.length === 20
+        ? 6
+        : 2,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
-
   const handleHoverImage = (src: string, index: number) => {
     setHoveredImageSrc(src);
     setActive(index);
@@ -79,14 +107,21 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
       setHoveredImageSrc(post?.post?.post?.image[newIndex - 1]?.img);
       return newIndex;
     });
-    if (active === 6 || active === 12) {
-      sliderRef.current.slickNext();
+    if (active === 6) {
+      sliderRef?.current?.slickNext();
+    }
+    if (active === 12) {
+      sliderRef?.current?.slickNext();
+    }
+    if (active === 18) {
+      sliderRef?.current?.slickNext();
     }
     if (active === post?.post?.post?.image?.length) {
       setActive(1);
       sliderRef?.current?.slickGoTo(0);
     }
   };
+
   const handlePrevSlide = () => {
     setActive((prevActive) => {
       const newIndex = prevActive - 1 < 0 ? post?.post?.post?.image?.length.length - 1 : prevActive - 1;
@@ -104,23 +139,23 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
   };
 
   const handleFav = async (postId: number) => {
-     const token = localStorage.getItem("access_token");
-     if (token !== null) {
-       const updateField = {
-         postId: postId,
-       };
-       await addFavPost(String(token), updateField);
-       setAlertShare(true);
-       setTimeout(() => {
-         setAlertShare(false);
-       }, 2000);
-       setFav(true);
-     } else {
-       setAuthor(true);
-       setTimeout(() => {
-         setAuthor(false);
-       }, 2000);
-     }
+    const token = localStorage.getItem("access_token");
+    if (token !== null) {
+      const updateField = {
+        postId: postId,
+      };
+      await addFavPost(String(token), updateField);
+      setAlertShare(true);
+      setTimeout(() => {
+        setAlertShare(false);
+      }, 2000);
+      setFav(true);
+    } else {
+      setAuthor(true);
+      setTimeout(() => {
+        setAuthor(false);
+      }, 2000);
+    }
   };
 
   const handleUnFav = async (postId: string) => {
@@ -143,7 +178,6 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
   const handleNextSlide2 = () => {
     setActive2((prevActive) => {
       const newIndex = prevActive + 1 < 0 ? post?.post?.post?.image?.length + 1 : prevActive + 1;
-      console.log(newIndex, post?.post?.post?.image?.length);
       setHoveredImageSrc2(post?.post?.post?.image[newIndex - 1]?.img);
       return newIndex;
     });
@@ -258,7 +292,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
       </div>
 
       <>
-        {post?.post?.post?.image?.length < 6 ? (
+        {post?.post?.post?.image?.length <= 6 ? (
           <>
             {loading ? (
               <Skeleton.Input style={{ height: "106px" }} block={true} active size="large"></Skeleton.Input>

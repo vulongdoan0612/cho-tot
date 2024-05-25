@@ -46,7 +46,7 @@ const HomePage = () => {
 
   const setting2s = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 2,
@@ -170,10 +170,10 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          <div className="recommend">
+          <div className="recommend" >
             {" "}
             <div className="top">
-              <span>Tin đăng tương tự</span>
+              <span>Tin đăng mới nhất</span>
               <div className="see-all">
                 Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
               </div>
@@ -194,7 +194,7 @@ const HomePage = () => {
                         <div className="infor-rec">
                           <span>
                             {limitTextDescription(
-                              `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${item?.post?.km} km`} ${
+                              `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${formatNumberWithCommas(item?.post?.km)} km`} ${
                                 item?.post?.activeButton
                               } - ${item?.post?.numberBox} `
                             )}

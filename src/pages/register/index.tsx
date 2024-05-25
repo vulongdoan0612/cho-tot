@@ -96,17 +96,7 @@ const Register = () => {
             {...tailFormItemLayout}
           >
             <Checkbox>
-              <span>
-                Bằng việc Đăng ký, bạn đã đọc và đồng ý với{" "}
-                <a href="https://trogiup.chotot.com/nguoi-ban/hoat-dong" target="_blank">
-                  Điều khoản sử dụng
-                </a>{" "}
-                và{" "}
-                <a href="https://trogiup.chotot.com/nguoi-ban/chinh-sach-bao-mat-cua-cho-tot" target="_blank">
-                  Chính sách bảo mật
-                </a>{" "}
-                của Chợ Tốt
-              </span>
+              <span>Bằng việc Đăng ký, bạn đã đọc và đồng ý với Điều khoản sử dụng và Chính sách bảo mật của Chợ Tốt</span>
             </Checkbox>
           </Form.Item>
 

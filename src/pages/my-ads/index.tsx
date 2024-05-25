@@ -2,7 +2,7 @@ import CustomButton from "@/components/CustomButton";
 import CustomButtonGreen from "@/components/CustomButton/green";
 import { ChangePostIcon, FasterSellIcon, HiddenEyeIcon, LetterIIcon, PlusManageIcon } from "@/components/CustomIcons";
 import Page from "@/layout/Page";
-import { RootState, wrapper } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import {
   getPostCensorshipList,
   getPostCheckList,
@@ -22,16 +22,18 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 import cookie from "cookie";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const MyAds = () => {
   const { account } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
   const { lastJsonMessage: lastMessage8082 }: any = useWebSocket("ws://localhost:8082");
   const { lastJsonMessage: lastMessage8083 }: any = useWebSocket("ws://localhost:8083");
   const [inputValue, setInputValue] = useState(1);
   const [spin, setSpin] = useState(false);
   const [data, setData] = useState<any>([]);
   const [totalPage, setTotalPage] = useState<any>(0);
-
   const [dataHidden, setDataHidden] = useState<any>([]);
   const [dataRefuse, setDataRefuse] = useState<any>([]);
   const [dataCensorship, setDataCensorship] = useState<any>([]);
@@ -43,7 +45,6 @@ const MyAds = () => {
     getDataListHidden();
     getDataListRefuse();
     getDataListCensorship();
-    console.log(data);
     setInputValue(data?.currentPage);
   }, []);
 
@@ -170,6 +171,11 @@ const MyAds = () => {
       }
     }
   };
+
+  const handleFastSell = (id: string) => {
+    router.push(`/services/${id}`);
+  };
+
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -185,7 +191,11 @@ const MyAds = () => {
                       <div className="left">
                         <Image src={item?.post?.image[0]?.img} alt="" className="image-car" width={144} height={144}></Image>
                         <div className="information">
-                          <span className="title">{item?.post?.title}</span>
+                          <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                            <span className="title" style={{ cursor: "pointer" }}>
+                              {item?.post?.title}
+                            </span>
+                          </Link>
                           <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                           <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                           <span className="date-post">
@@ -247,18 +257,33 @@ const MyAds = () => {
                         </div>
                         <div className="service">
                           <div className="top">
-                            <span className="current">Dịch vụ gần đây</span>
-                            <span className="detail">Xem chi tiết</span>
+                            <span className="current">Dịch vụ đang sử dụng</span>
+                            {/* <span className="detail">Xem chi tiết</span> */}
                           </div>
                           <div className="bottom">
-                            <LetterIIcon></LetterIIcon>
-                            <span>Chưa sử dụng dịch vụ nào</span>
+                            {item?.prioritize === "26.51" ? (
+                              <span style={{ fontWeight: "600" }}>Tin nổi bật + Đẩy tin</span>
+                            ) : item?.prioritize === "14.73" ? (
+                              <span style={{ fontWeight: "600" }}>Đẩy tin thường</span>
+                            ) : item?.prioritize === "15.71" ? (
+                              <span style={{ fontWeight: "600" }}>Tin nổi bật - Nhiều hình ảnh</span>
+                            ) : (
+                              <>
+                                {" "}
+                                <LetterIIcon></LetterIIcon>
+                                <span>Chưa sử dụng dịch vụ nào</span>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="bottom">
-                        <CustomButtonGreen>
-                          <FasterSellIcon></FasterSellIcon>Bán nhanh hơn
+                        <CustomButtonGreen
+                          onClick={() => handleFastSell(item?.postId)}
+                          className={item?.prioritize !== null ? "isPrioritize" : ""}
+                        >
+                          <FasterSellIcon></FasterSellIcon>
+                          {item?.prioritize !== null ? "Thay đổi dịch vụ" : "Bán nhanh hơn"}
                         </CustomButtonGreen>
                       </div>
                     </div>
@@ -551,16 +576,22 @@ const MyAds = () => {
           items={[
             {
               title: "Chợ tốt",
+              onClick: () => {
+                router.push(`/`);
+              },
             },
             {
               title: "Quản lý tin",
+              onClick: () => {
+                router.push(`/my-ads`);
+              },
             },
           ]}
         />
         <div className="user-manage">
           <div className="left">
             <Image
-              src={account?.user?.avatar === null ? "/images/empty-avatar.jpt" : account?.user?.avatar}
+              src={account?.user?.avatar === null ? "/images/empty-avatar.jpg" : account?.user?.avatar}
               alt=""
               preview={false}
               width={48}
@@ -587,7 +618,7 @@ const MyAds = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -601,8 +632,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     };
   }
 
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
+
   return {
-    props: {},
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
   };
-});
+};
 export default MyAds;

@@ -178,7 +178,17 @@ export const getPostHiddenList = async (accessToken: string) => {
   };
   return axios(config);
 };
-
+export const getPostService = async (accessToken: string, data: any) => {
+  const config = {
+    method: "POST",
+    url: `/get-post-service`,
+    headers: {
+      Authorization: accessToken,
+    },
+    data: data,
+  };
+  return axios(config);
+};
 export const unhiddenPost = async (accessToken: string, data: any) => {
   const config = {
     method: "POST",

@@ -1,5 +1,5 @@
 import { checkFavPost, getFavPost, getFavPostMain } from "@/services/favPost";
-import { getCurrentPosts, getPost, getPosts } from "@/services/formPost";
+import { getCurrentPosts, getPost, getPostService, getPosts } from "@/services/formPost";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface IState {
@@ -9,6 +9,7 @@ interface IState {
   favPostListMain: any;
   checkFavPost: boolean;
   currentPosts: any;
+  postService: any;
 }
 export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) => {
   const {
@@ -61,6 +62,14 @@ export const fetchDataPost = createAsyncThunk("/get-post", async (arg: any) => {
   const res = await getPost(accessToken, getPostId);
   return res?.data;
 });
+export const fetchDataPostService = createAsyncThunk("/get-post-service", async (arg: any) => {
+  const accessToken: any = localStorage.getItem("access_token");
+
+  const { postId } = arg;
+  const getPostId = { postId: postId };
+  const res = await getPostService(accessToken, getPostId);
+  return res?.data;
+});
 export const fetchDataCurrentPost = createAsyncThunk("/get-current-post", async () => {
   const res = await getCurrentPosts();
   return res?.data;
@@ -92,6 +101,7 @@ const initialState: IState = {
   favPostList: [],
   favPostListMain: [],
   currentPosts: [],
+  postService: [],
   checkFavPost: false,
 };
 
@@ -105,6 +115,9 @@ const slicer = createSlice({
     });
     builder.addCase(fetchDataPost.fulfilled, (state, action: any) => {
       state.post = action.payload;
+    });
+    builder.addCase(fetchDataPostService.fulfilled, (state, action: any) => {
+      state.postService = action.payload;
     });
     builder.addCase(fetchDataFavList.fulfilled, (state, action: any) => {
       state.favPostList = action.payload;

@@ -6,6 +6,7 @@ import {
   CarlendarIcon,
   ChatIcon,
   GiftIcon,
+  HiddenEyeIcon,
   PercentIcon,
   PhoneIcon,
   StarIcon,
@@ -27,8 +28,10 @@ import { createConversation } from "@/services/chat";
 import { formatDistanceToNow, parseISO, parse } from "date-fns";
 import { vi } from "date-fns/locale";
 import timeAgo from "@/utils/timeAgo";
+import Link from "next/link";
 
 const ContainPD = () => {
+  const { account } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const { post, checkFavPost } = useSelector((state: RootState) => state.postsData);
   const [hiddenPhone, setHiddenPhone] = useState(true);
@@ -117,7 +120,6 @@ const ContainPD = () => {
       }, 2000);
     }
   };
-
   return (
     <div className="wrapper-contain">
       {post?.status === "404" ? (
@@ -474,7 +476,18 @@ const ContainPD = () => {
                 ) : (
                   <div className="card-user">
                     <div className="info">
-                      <Image onClick={handleUser} src={post?.post?.userInfo?.avatar} alt="" preview={false} width={32} height={32}></Image>
+                      <Image
+                        onClick={handleUser}
+                        src={
+                          post?.post?.userInfo?.avatar !== "images/empty-avatar.jpg"
+                            ? post?.post?.userInfo?.avatar
+                            : "/images/empty-avatar.jpg"
+                        }
+                        alt=""
+                        preview={false}
+                        width={32}
+                        height={32}
+                      ></Image>
                       <div className="right-info">
                         <span className="title" onClick={handleUser}>
                           {post?.post?.userInfo?.fullName}
@@ -498,22 +511,44 @@ const ContainPD = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="contact">
-                      <CustomButtonGreen className="phone" onClick={handleSwitchPhone}>
-                        {hiddenPhone ? (
-                          <>
-                            {" "}
-                            <PhoneIcon></PhoneIcon> Gọi điện
-                          </>
-                        ) : (
-                          <b>{post?.post?.userInfo?.phone}</b>
-                        )}
-                      </CustomButtonGreen>
-                      <CustomButtonGreen className="chat" onClick={handleChat}>
-                        <ChatIcon></ChatIcon>
-                        Chat
-                      </CustomButtonGreen>
-                    </div>
+                    {account?.user?._id === post?.post?.userId ? (
+                      <div className="contact">
+                        <Link href="/my-ads">
+                          <CustomButtonGreen className="phone">
+                            <HiddenEyeIcon></HiddenEyeIcon> Đã bán/ Ẩn tin
+                          </CustomButtonGreen>
+                        </Link>
+                        <Link href={`/dang-tin?category=0&id=${post?.post?.postId}`}>
+                          <CustomButtonGreen className="chat">
+                            <Image
+                              src="https://static.chotot.com/storage/chotot-icons/svg/edit-ad.svg"
+                              alt=""
+                              preview={false}
+                              width={24}
+                              height={24}
+                            ></Image>
+                            Sửa tin
+                          </CustomButtonGreen>
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="contact">
+                        <CustomButtonGreen className="phone" onClick={handleSwitchPhone}>
+                          {hiddenPhone ? (
+                            <>
+                              {" "}
+                              <PhoneIcon></PhoneIcon> Gọi điện
+                            </>
+                          ) : (
+                            <b>{post?.post?.userInfo?.phone}</b>
+                          )}
+                        </CustomButtonGreen>
+                        <CustomButtonGreen className="chat" onClick={handleChat}>
+                          <ChatIcon></ChatIcon>
+                          Chat
+                        </CustomButtonGreen>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -521,13 +556,15 @@ const ContainPD = () => {
             {skeleton ? (
               <Skeleton.Button block={true} style={{ height: "386px" }} active size="large"></Skeleton.Button>
             ) : (
-              <div className="recommend">
+              <div className="recommend" style={{ paddingTop: "10px", paddingBottom: "10px" }}>
                 {" "}
                 <div className="top">
                   <span>Tin đăng tương tự</span>
-                  <div className="see-all">
-                    Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
-                  </div>
+                  <Link href={`/mua-ban-oto?city=${post?.post?.post?.cityValue}&district=${post?.post?.post?.districtValue}`}>
+                    <div className="see-all">
+                      Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
+                    </div>
+                  </Link>
                 </div>
                 <div className="slide-rec">
                   <Slider {...settings}>

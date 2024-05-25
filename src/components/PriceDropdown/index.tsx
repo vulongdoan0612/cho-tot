@@ -66,7 +66,6 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
       ...prevState,
       inputValueMin: newValue,
     }));
-    console.log(newValue);
     if (newValue === null) {
       setState((prevState: any) => ({
         ...prevState,
@@ -165,7 +164,6 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
       if (filter.price === "undefined") {
         filter.price = "max2000000000";
       }
-      console.log(filter)
       const queries: any = Object.entries(filter);
       updateQuery(queries);
     } finally {

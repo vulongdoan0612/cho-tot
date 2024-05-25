@@ -23,7 +23,6 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
 
   useEffect(() => {
     const selectedModels = brandList.find((item: any) => item.brand === dataPost?.post?.value)?.models || [];
-    console.log(dataPost);
     setStateForm((prevState) => ({
       ...prevState,
       models: selectedModels,
@@ -535,6 +534,7 @@ const RenderOto = ({ handleWarning, fileList }: any) => {
                   multiline
                   className={`car-number input-need-to-custom ${stateFill.fillCarN ? "warn-border" : ""}`}
                   onChange={handleChangeCarNumber}
+                  style={{ height: "58px" }}
                   value={stateForm?.carNumber}
                   maxRows={4}
                   variant="filled"

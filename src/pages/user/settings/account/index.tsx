@@ -2,7 +2,7 @@ import CustomButton from "@/components/CustomButton";
 import ModalSuccessChangePassword from "@/components/Modal/ModalSuccessChangePassword";
 import Page from "@/layout/Page";
 import Setting from "@/layout/Setting";
-import { RootState, wrapper } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { changePassword, logout } from "@/services/authentication";
 import { TextField } from "@mui/material";
 import { Skeleton } from "antd";
@@ -133,7 +133,7 @@ const Account = () => {
     </Page>
   );
 };
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -147,8 +147,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     };
   }
 
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
+
   return {
-    props: {},
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
   };
-});
+};
 export default Account;

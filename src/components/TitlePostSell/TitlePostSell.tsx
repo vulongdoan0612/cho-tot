@@ -238,7 +238,6 @@ const TitlePostSell = ({
   const handleCityChange = (event: any) => {
     const selectedCityId = event.target.value;
     const selectedCity = statePost?.cities.find((city: any) => city.Id === selectedCityId);
-    console.log(event.target.value);
     if (selectedCity) {
       setStatePost((prevState) => ({
         ...prevState,
@@ -329,17 +328,17 @@ const TitlePostSell = ({
 
       statePost?.wards.forEach((item: any) => {
         if (item.Id === statePost?.wardValue) {
-          wardName = item.Id;
+          wardName = item.Name;
         }
       });
       statePost?.districts.forEach((item: any) => {
         if (item.Id === statePost?.districtValue) {
-          district = item.Id;
+          district = item.Name;
         }
       });
       statePost?.cities.forEach((item: any) => {
         if (item.Id === statePost?.cityValue) {
-          city = item.Id;
+          city = item.Name;
         }
       });
       const concatenatedAddress = `${statePost?.detailAddress} ,${wardName}, ${district}, ${city}`;
@@ -382,7 +381,6 @@ const TitlePostSell = ({
         }));
       }
       if ((carNumber === undefined || carNumber === "") && status === "Đã sử dụng") {
-        console.log(carNumber, status);
         setStateFill((prevState: any) => ({
           ...prevState,
           fillCarN: true,
@@ -548,6 +546,10 @@ const TitlePostSell = ({
           if (fileList.length === 0) {
             handleWarning();
           } else {
+            setStatePost((prevState) => ({
+              ...prevState,
+              spin: true,
+            }));
             const response = await PostFormSellCheck(String(token), {
               postForm,
               image: fileList,
@@ -641,10 +643,7 @@ const TitlePostSell = ({
                 ...prevState,
                 fillAddress: false,
               }));
-              setStatePost((prevState) => ({
-                ...prevState,
-                spin: true,
-              }));
+
               setTimeout(() => {
                 setStatePost((prevState) => ({
                   ...prevState,
@@ -692,6 +691,10 @@ const TitlePostSell = ({
             districtValue: statePost?.districtValue,
             wardValue: statePost?.wardValue,
           };
+          setStatePost((prevState) => ({
+            ...prevState,
+            spin: true,
+          }));
           const response = await EditPostFormSellCheck(String(token), {
             postFormEdit,
             image: { fileList },

@@ -8,8 +8,12 @@ import { useFetchFavListMain } from "@/hooks/useFetchFavListMain";
 import { addFavPost, removeFavPost } from "@/services/favPost";
 import { fetchDataFavListMain } from "@/redux/reducers/posts";
 import { createConversation } from "@/services/chat";
+import { formatDistanceToNow, parseISO } from "date-fns";
+import { vi } from "date-fns/locale";
+import timeAgo from "@/utils/timeAgo";
+import { useFetchPosts } from "@/hooks/useFetchPosts";
 
-const ItemCar = ({ posts, spin }: any) => {
+const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
   const router = useRouter();
   const { favPostListMain } = useSelector((state: RootState) => state.postsData);
   const dispatch: AppDispatch = useDispatch();
@@ -58,6 +62,9 @@ const ItemCar = ({ posts, spin }: any) => {
       router.push(`/chat?currentRoom=${postId}`);
     }
   };
+  // const formatTimeToNowInVietnamese = (isoDate: any) => {
+  //   return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
+  // };
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -65,84 +72,249 @@ const ItemCar = ({ posts, spin }: any) => {
       children: (
         <div className="tab-all-type">
           <div className="wrapper-tabs">
-            {posts &&
-              posts?.data?.map((item: any, index: number) => {
-                const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
-                return (
-                  <div className="tab" key={index}>
-                    <div className="contain">
-                      <Skeleton.Button block active></Skeleton.Button>
-                      <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
-                        <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
-                      </div>
-                      <div className="right-contain-tab">
-                        <Skeleton active />
-                        <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                          <div className="header" onClick={() => handleRouter(item)}>
-                            <span className="title">{item?.post?.title}</span>
-                            {isFavorite ? (
-                              <div className="add-fav">
-                                <AddedFavouritePostIcon
-                                  onClick={() => handleRemoveFavPost(item?.postId)}
-                                  className="fav"
-                                ></AddedFavouritePostIcon>
-                              </div>
-                            ) : (
-                              <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
-                            )}
-                          </div>
-                          <span className="description" onClick={() => handleRouter(item)}>
-                            {item?.post?.dateCar}
-                            {item?.post?.km === 0 ? (
-                              <></>
-                            ) : (
-                              <>
+            {posts?.total > 0 ? (
+              <>
+                {posts &&
+                  posts?.data?.map((item: any, index: number) => {
+                    const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
+                    // const lastTextToNow = item.date ? formatTimeToNowInVietnamese(item.date) : "";
+                    return (
+                      <div className="tab" key={index}>
+                        {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
+                          <div className="contain-prioritize">
+                            <Skeleton.Button block active></Skeleton.Button>
+                            <div
+                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
+                              onClick={() => handleRouter(item)}
+                            >
+                              <Image
+                                className={"left-contain-tab"}
+                                src={item?.post?.image[0]?.img}
+                                preview={false}
+                                alt=""
+                                width={365.19}
+                                height={222}
+                              ></Image>
+                              <div className="image-gallery-right">
                                 {" "}
-                                <hr></hr>
-                                {item?.post?.km} km
-                              </>
-                            )}
-                            <hr></hr>
-                            {item?.post?.fuel}
-                            {item?.post?.numberBox}
-                          </span>
-                          <div className="middle" onClick={() => handleRouter(item)}>
-                            <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                            <span className="address">
-                              <TopPostIcon></TopPostIcon> Tin ưu tiên <hr></hr>
-                              {item?.post?.cityValueName}
-                            </span>
-                          </div>
-                          <div className="footer">
-                            <div className="user">
-                              <div className="user-left" onClick={() => handleRouter(item)}>
                                 <Image
-                                  src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[1]?.img}
+                                  preview={false}
                                   alt=""
-                                  width={24}
-                                  height={24}
-                                ></Image>
-                                <div className="info-user">
-                                  <span className="username">{item?.userInfo?.fullName}</span>
-                                  <div className="sell">
-                                    <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                  width={242.78}
+                                  height={109}
+                                ></Image>{" "}
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[2]?.img}
+                                  preview={false}
+                                  alt=""
+                                  width={119.39}
+                                  height={109}
+                                ></Image>{" "}
+                                <div className="last-img">
+                                  <Image
+                                    className={"left-contain-tab"}
+                                    src={item?.post?.image[3]?.img}
+                                    preview={false}
+                                    alt=""
+                                    width={119.39}
+                                    height={109}
+                                  ></Image>
+                                  <div className="background">+{item.post.image.length - 4}</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="right-contain-tab">
+                              <Skeleton active />
+                              <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
+                                <div className="header" onClick={() => handleRouter(item)}>
+                                  <span className="title">{item?.post?.title}</span>
+                                  {isFavorite ? (
+                                    <div className="add-fav">
+                                      <AddedFavouritePostIcon
+                                        onClick={() => handleRemoveFavPost(item?.postId)}
+                                        className="fav"
+                                      ></AddedFavouritePostIcon>
+                                    </div>
+                                  ) : (
+                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                  )}
+                                </div>
+                                <span className="description" onClick={() => handleRouter(item)}>
+                                  {item?.post?.dateCar}
+                                  {item?.post?.km === 0 ? (
+                                    <></>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <hr></hr>
+                                      {formatNumberWithCommas(item?.post?.km)} km
+                                    </>
+                                  )}
+                                  <hr></hr>
+                                  {item?.post?.fuel}
+                                  {item?.post?.numberBox}
+                                </span>
+                                <div className="middle" onClick={() => handleRouter(item)}>
+                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                  <span className="address">
+                                    {item?.prioritize === "26.51" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                      </span>
+                                    ) : item?.prioritize === "14.73" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                      </span>
+                                    ) : item?.prioritize === "15.71" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                      </span>
+                                    ) : (
+                                      <>{timeAgo(item?.date)}</>
+                                    )}
                                     <hr></hr>
-                                    <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                    {item?.post?.cityValueName}
+                                  </span>
+                                </div>
+                                <div className="footer">
+                                  <div className="user">
+                                    <div className="user-left" onClick={() => handleRouter(item)}>
+                                      <Image
+                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                        alt=""
+                                        width={24}
+                                        height={24}
+                                      ></Image>
+                                      <div className="info-user">
+                                        <span className="username">{item?.userInfo?.fullName}</span>
+                                        <div className="sell">
+                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                          <hr></hr>
+                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button onClick={() => handleChat(item?.postId)}>
+                                      <ChatIcon width={20} height={20}></ChatIcon>
+                                      Chat
+                                    </button>
                                   </div>
                                 </div>
                               </div>
-                              <button onClick={() => handleChat(item?.postId)}>
-                                <ChatIcon width={20} height={20}></ChatIcon>
-                                Chat
-                              </button>
                             </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div className="contain">
+                            <Skeleton.Button block active></Skeleton.Button>
+                            <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
+                              <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
+                            </div>
+                            <div className="right-contain-tab">
+                              <Skeleton active />
+                              <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
+                                <div className="header" onClick={() => handleRouter(item)}>
+                                  <span className="title">{item?.post?.title}</span>
+                                  {isFavorite ? (
+                                    <div className="add-fav">
+                                      <AddedFavouritePostIcon
+                                        onClick={() => handleRemoveFavPost(item?.postId)}
+                                        className="fav"
+                                      ></AddedFavouritePostIcon>
+                                    </div>
+                                  ) : (
+                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                  )}
+                                </div>
+                                <span className="description" onClick={() => handleRouter(item)}>
+                                  {item?.post?.dateCar}
+                                  {item?.post?.km === 0 ? (
+                                    <></>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <hr></hr>
+                                      {formatNumberWithCommas(item?.post?.km)} km
+                                    </>
+                                  )}
+                                  <hr></hr>
+                                  {item?.post?.fuel}
+                                  {item?.post?.numberBox}
+                                </span>
+                                <div className="middle" onClick={() => handleRouter(item)}>
+                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                  <span className="address">
+                                    {item?.prioritize === "26.51" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                      </span>
+                                    ) : item?.prioritize === "14.73" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                      </span>
+                                    ) : item?.prioritize === "15.71" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                      </span>
+                                    ) : (
+                                      <>{timeAgo(item?.date)}</>
+                                    )}
+                                    <hr></hr>
+                                    {item?.post?.cityValueName}
+                                  </span>
+                                </div>
+                                <div className="footer">
+                                  <div className="user">
+                                    <div className="user-left" onClick={() => handleRouter(item)}>
+                                      <Image
+                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                        alt=""
+                                        width={24}
+                                        height={24}
+                                      ></Image>
+                                      <div className="info-user">
+                                        <span className="username">{item?.userInfo?.fullName}</span>
+                                        <div className="sell">
+                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                          <hr></hr>
+                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button onClick={() => handleChat(item?.postId)}>
+                                      <ChatIcon width={20} height={20}></ChatIcon>
+                                      Chat
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
+                    );
+                  })}
+              </>
+            ) : (
+              <div className="null-post" style={{ paddingTop: "20px" }}>
+                <Image
+                  src="https://static.chotot.com/storage/ads-dashboard/svg/empty-frame.svg"
+                  alt=""
+                  width={308}
+                  height={200}
+                  preview={false}
+                ></Image>
+                <span className="title">Không tìm thấy tin đăng</span>
+                <span className="desc">Hiện tại không có tin đăng nào cho trạng thái lọc này</span>
+                {/* <CustomButton>Đăng tin</CustomButton> */}
+              </div>
+            )}
           </div>
         </div>
       ),
@@ -150,18 +322,514 @@ const ItemCar = ({ posts, spin }: any) => {
     {
       key: "2",
       label: "Cá nhân",
-      children: <div className="tab-personal">Cá nhân</div>,
+      children: (
+        <div className="tab-all-type">
+          <div className="wrapper-tabs">
+            {posts?.total > 0 ? (
+              <>
+                {posts &&
+                  posts?.data?.map((item: any, index: number) => {
+                    const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
+                    // const lastTextToNow = item.date ? formatTimeToNowInVietnamese(item.date) : "";
+                    return (
+                      <div className="tab" key={index}>
+                        {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
+                          <div className="contain-prioritize">
+                            <Skeleton.Button block active></Skeleton.Button>
+                            <div
+                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
+                              onClick={() => handleRouter(item)}
+                            >
+                              <Image
+                                className={"left-contain-tab"}
+                                src={item?.post?.image[0]?.img}
+                                preview={false}
+                                alt=""
+                                width={365.19}
+                                height={222}
+                              ></Image>
+                              <div className="image-gallery-right">
+                                {" "}
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[1]?.img}
+                                  preview={false}
+                                  alt=""
+                                  width={242.78}
+                                  height={109}
+                                ></Image>{" "}
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[2]?.img}
+                                  preview={false}
+                                  alt=""
+                                  width={119.39}
+                                  height={109}
+                                ></Image>{" "}
+                                <div className="last-img">
+                                  <Image
+                                    className={"left-contain-tab"}
+                                    src={item?.post?.image[3]?.img}
+                                    preview={false}
+                                    alt=""
+                                    width={119.39}
+                                    height={109}
+                                  ></Image>
+                                  <div className="background">+{item.post.image.length - 4}</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="right-contain-tab">
+                              <Skeleton active />
+                              <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
+                                <div className="header" onClick={() => handleRouter(item)}>
+                                  <span className="title">{item?.post?.title}</span>
+                                  {isFavorite ? (
+                                    <div className="add-fav">
+                                      <AddedFavouritePostIcon
+                                        onClick={() => handleRemoveFavPost(item?.postId)}
+                                        className="fav"
+                                      ></AddedFavouritePostIcon>
+                                    </div>
+                                  ) : (
+                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                  )}
+                                </div>
+                                <span className="description" onClick={() => handleRouter(item)}>
+                                  {item?.post?.dateCar}
+                                  {item?.post?.km === 0 ? (
+                                    <></>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <hr></hr>
+                                      {formatNumberWithCommas(item?.post?.km)} km
+                                    </>
+                                  )}
+                                  <hr></hr>
+                                  {item?.post?.fuel}
+                                  {item?.post?.numberBox}
+                                </span>
+                                <div className="middle" onClick={() => handleRouter(item)}>
+                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                  <span className="address">
+                                    {item?.prioritize === "26.51" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                      </span>
+                                    ) : item?.prioritize === "14.73" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                      </span>
+                                    ) : item?.prioritize === "15.71" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                      </span>
+                                    ) : (
+                                      <>{timeAgo(item?.date)}</>
+                                    )}
+                                    <hr></hr>
+                                    {item?.post?.cityValueName}
+                                  </span>
+                                </div>
+                                <div className="footer">
+                                  <div className="user">
+                                    <div className="user-left" onClick={() => handleRouter(item)}>
+                                      <Image
+                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                        alt=""
+                                        width={24}
+                                        height={24}
+                                      ></Image>
+                                      <div className="info-user">
+                                        <span className="username">{item?.userInfo?.fullName}</span>
+                                        <div className="sell">
+                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                          <hr></hr>
+                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button onClick={() => handleChat(item?.postId)}>
+                                      <ChatIcon width={20} height={20}></ChatIcon>
+                                      Chat
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="contain">
+                            <Skeleton.Button block active></Skeleton.Button>
+                            <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
+                              <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
+                            </div>
+                            <div className="right-contain-tab">
+                              <Skeleton active />
+                              <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
+                                <div className="header" onClick={() => handleRouter(item)}>
+                                  <span className="title">{item?.post?.title}</span>
+                                  {isFavorite ? (
+                                    <div className="add-fav">
+                                      <AddedFavouritePostIcon
+                                        onClick={() => handleRemoveFavPost(item?.postId)}
+                                        className="fav"
+                                      ></AddedFavouritePostIcon>
+                                    </div>
+                                  ) : (
+                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                  )}
+                                </div>
+                                <span className="description" onClick={() => handleRouter(item)}>
+                                  {item?.post?.dateCar}
+                                  {item?.post?.km === 0 ? (
+                                    <></>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <hr></hr>
+                                      {formatNumberWithCommas(item?.post?.km)} km
+                                    </>
+                                  )}
+                                  <hr></hr>
+                                  {item?.post?.fuel}
+                                  {item?.post?.numberBox}
+                                </span>
+                                <div className="middle" onClick={() => handleRouter(item)}>
+                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                  <span className="address">
+                                    {item?.prioritize === "26.51" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                      </span>
+                                    ) : item?.prioritize === "14.73" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                      </span>
+                                    ) : item?.prioritize === "15.71" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                      </span>
+                                    ) : (
+                                      <>{timeAgo(item?.date)}</>
+                                    )}
+                                    <hr></hr>
+                                    {item?.post?.cityValueName}
+                                  </span>
+                                </div>
+                                <div className="footer">
+                                  <div className="user">
+                                    <div className="user-left" onClick={() => handleRouter(item)}>
+                                      <Image
+                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                        alt=""
+                                        width={24}
+                                        height={24}
+                                      ></Image>
+                                      <div className="info-user">
+                                        <span className="username">{item?.userInfo?.fullName}</span>
+                                        <div className="sell">
+                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                          <hr></hr>
+                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button onClick={() => handleChat(item?.postId)}>
+                                      <ChatIcon width={20} height={20}></ChatIcon>
+                                      Chat
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+              </>
+            ) : (
+              <div className="null-post" style={{ paddingTop: "20px" }}>
+                <Image
+                  src="https://static.chotot.com/storage/ads-dashboard/svg/empty-frame.svg"
+                  alt=""
+                  width={308}
+                  height={200}
+                  preview={false}
+                ></Image>
+                <span className="title">Không tìm thấy tin đăng</span>
+                <span className="desc">Hiện tại không có tin đăng nào cho trạng thái lọc này</span>
+                {/* <CustomButton>Đăng tin</CustomButton> */}
+              </div>
+            )}
+          </div>
+        </div>
+      ),
     },
     {
       key: "3",
       label: "Bán chuyên",
-      children: <div className="tab-proffesional">Bán chuyên</div>,
+      children: (
+        <div className="tab-all-type">
+          <div className="wrapper-tabs">
+            {posts?.total > 0 ? (
+              <>
+                {posts &&
+                  posts?.data?.map((item: any, index: number) => {
+                    const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
+                    // const lastTextToNow = item.date ? formatTimeToNowInVietnamese(item.date) : "";
+                    return (
+                      <div className="tab" key={index}>
+                        {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
+                          <div className="contain-prioritize">
+                            <Skeleton.Button block active></Skeleton.Button>
+                            <div
+                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
+                              onClick={() => handleRouter(item)}
+                            >
+                              <Image
+                                className={"left-contain-tab"}
+                                src={item?.post?.image[0]?.img}
+                                preview={false}
+                                alt=""
+                                width={365.19}
+                                height={222}
+                              ></Image>
+                              <div className="image-gallery-right">
+                                {" "}
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[1]?.img}
+                                  preview={false}
+                                  alt=""
+                                  width={242.78}
+                                  height={109}
+                                ></Image>{" "}
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[2]?.img}
+                                  preview={false}
+                                  alt=""
+                                  width={119.39}
+                                  height={109}
+                                ></Image>{" "}
+                                <div className="last-img">
+                                  <Image
+                                    className={"left-contain-tab"}
+                                    src={item?.post?.image[3]?.img}
+                                    preview={false}
+                                    alt=""
+                                    width={119.39}
+                                    height={109}
+                                  ></Image>
+                                  <div className="background">+{item.post.image.length - 4}</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="right-contain-tab">
+                              <Skeleton active />
+                              <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
+                                <div className="header" onClick={() => handleRouter(item)}>
+                                  <span className="title">{item?.post?.title}</span>
+                                  {isFavorite ? (
+                                    <div className="add-fav">
+                                      <AddedFavouritePostIcon
+                                        onClick={() => handleRemoveFavPost(item?.postId)}
+                                        className="fav"
+                                      ></AddedFavouritePostIcon>
+                                    </div>
+                                  ) : (
+                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                  )}
+                                </div>
+                                <span className="description" onClick={() => handleRouter(item)}>
+                                  {item?.post?.dateCar}
+                                  {item?.post?.km === 0 ? (
+                                    <></>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <hr></hr>
+                                      {formatNumberWithCommas(item?.post?.km)} km
+                                    </>
+                                  )}
+                                  <hr></hr>
+                                  {item?.post?.fuel}
+                                  {item?.post?.numberBox}
+                                </span>
+                                <div className="middle" onClick={() => handleRouter(item)}>
+                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                  <span className="address">
+                                    {item?.prioritize === "26.51" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                      </span>
+                                    ) : item?.prioritize === "14.73" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                      </span>
+                                    ) : item?.prioritize === "15.71" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                      </span>
+                                    ) : (
+                                      <>{timeAgo(item?.date)}</>
+                                    )}
+                                    <hr></hr>
+                                    {item?.post?.cityValueName}
+                                  </span>
+                                </div>
+                                <div className="footer">
+                                  <div className="user">
+                                    <div className="user-left" onClick={() => handleRouter(item)}>
+                                      <Image
+                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                        alt=""
+                                        width={24}
+                                        height={24}
+                                      ></Image>
+                                      <div className="info-user">
+                                        <span className="username">{item?.userInfo?.fullName}</span>
+                                        <div className="sell">
+                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                          <hr></hr>
+                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button onClick={() => handleChat(item?.postId)}>
+                                      <ChatIcon width={20} height={20}></ChatIcon>
+                                      Chat
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="contain">
+                            <Skeleton.Button block active></Skeleton.Button>
+                            <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
+                              <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
+                            </div>
+                            <div className="right-contain-tab">
+                              <Skeleton active />
+                              <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
+                                <div className="header" onClick={() => handleRouter(item)}>
+                                  <span className="title">{item?.post?.title}</span>
+                                  {isFavorite ? (
+                                    <div className="add-fav">
+                                      <AddedFavouritePostIcon
+                                        onClick={() => handleRemoveFavPost(item?.postId)}
+                                        className="fav"
+                                      ></AddedFavouritePostIcon>
+                                    </div>
+                                  ) : (
+                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                  )}
+                                </div>
+                                <span className="description" onClick={() => handleRouter(item)}>
+                                  {item?.post?.dateCar}
+                                  {item?.post?.km === 0 ? (
+                                    <></>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <hr></hr>
+                                      {formatNumberWithCommas(item?.post?.km)} km
+                                    </>
+                                  )}
+                                  <hr></hr>
+                                  {item?.post?.fuel}
+                                  {item?.post?.numberBox}
+                                </span>
+                                <div className="middle" onClick={() => handleRouter(item)}>
+                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                  <span className="address">
+                                    {item?.prioritize === "26.51" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                      </span>
+                                    ) : item?.prioritize === "14.73" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                      </span>
+                                    ) : item?.prioritize === "15.71" ? (
+                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                        {" "}
+                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                      </span>
+                                    ) : (
+                                      <>{timeAgo(item?.date)}</>
+                                    )}
+                                    <hr></hr>
+                                    {item?.post?.cityValueName}
+                                  </span>
+                                </div>
+                                <div className="footer">
+                                  <div className="user">
+                                    <div className="user-left" onClick={() => handleRouter(item)}>
+                                      <Image
+                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                        alt=""
+                                        width={24}
+                                        height={24}
+                                      ></Image>
+                                      <div className="info-user">
+                                        <span className="username">{item?.userInfo?.fullName}</span>
+                                        <div className="sell">
+                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                          <hr></hr>
+                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <button onClick={() => handleChat(item?.postId)}>
+                                      <ChatIcon width={20} height={20}></ChatIcon>
+                                      Chat
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+              </>
+            ) : (
+              <div className="null-post" style={{ paddingTop: "20px" }}>
+                <Image
+                  src="https://static.chotot.com/storage/ads-dashboard/svg/empty-frame.svg"
+                  alt=""
+                  width={308}
+                  height={200}
+                  preview={false}
+                ></Image>
+                <span className="title">Không tìm thấy tin đăng</span>
+                <span className="desc">Hiện tại không có tin đăng nào cho trạng thái lọc này</span>
+                {/* <CustomButton>Đăng tin</CustomButton> */}
+              </div>
+            )}
+          </div>
+        </div>
+      ),
     },
   ];
 
   return (
     <div className="wrapper-item-car">
-      <Tabs defaultActiveKey="1" items={items} className="tab-ads" />
+      <Tabs items={items} activeKey={activeKey} onChange={handleChangeTab} className="tab-ads" />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import Page from "./Page";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 interface PropsPage {
   loadingData?: boolean;
   children: React.ReactNode;
@@ -13,6 +14,8 @@ interface PropsPage {
 }
 const Setting = (props: PropsPage) => {
   const { loadingData, children, style, title, active, removeAccount } = props;
+  const router = useRouter();
+
   const page = useMemo(() => {
     return <>{children}</>;
   }, [loadingData, children]);
@@ -27,6 +30,9 @@ const Setting = (props: PropsPage) => {
         items={[
           {
             title: "Chợ tốt",
+            onClick: () => {
+              router.push(`/`);
+            },
           },
           {
             title: `Trang cá nhân của ${account?.user?.fullname}`,

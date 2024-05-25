@@ -1,6 +1,6 @@
 import CustomButton from "@/components/CustomButton";
 import Page from "@/layout/Page";
-import { RootState, wrapper } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { getPostCheck } from "@/services/formPost";
 import { add30DaysAndFormat } from "@/utils/addDay2";
 import formatISOToCustomDate from "@/utils/convertDate";
@@ -34,7 +34,6 @@ const ViewPostCensor = () => {
     }
   };
   const datePlus30Days = add30DaysAndFormat(data?.date);
-  console.log(datePlus30Days);
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="view-post-wrapper">
@@ -123,7 +122,7 @@ const ViewPostCensor = () => {
     </Page>
   );
 };
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -137,8 +136,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     };
   }
 
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
+
   return {
-    props: {},
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
   };
-});
+};
 export default ViewPostCensor;

@@ -87,7 +87,11 @@
         }
 
         .sex {
+          height: 48px;
           width: 100%;
+          .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+            padding-bottom: 0px !important;
+          }
         }
 
         .birth-date {

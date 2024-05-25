@@ -180,8 +180,6 @@ const Header = () => {
         setOpenListSearch(false);
       }
       if (brandRef?.current && brandRef?.current?.contains(event.target) && event?.target?.id === "search-list") {
-        console.log(event.target);
-
         setOpenListSearch(true);
       }
     };
@@ -296,12 +294,12 @@ const Header = () => {
           {loading ? (
             <Skeleton.Button block={true} active size="large" style={{ minWidth: "123px" }}></Skeleton.Button>
           ) : (
-            <Button style={{ display: "flex", gap: "3px", alignItems: "center" }}>
-              <UploadNewIcon></UploadNewIcon>
-              <a href="/dang-tin">
+            <a href="/dang-tin">
+              <Button style={{ display: "flex", gap: "3px", alignItems: "center" }}>
+                <UploadNewIcon></UploadNewIcon>
                 <span className="text">ĐĂNG TIN</span>
-              </a>
-            </Button>
+              </Button>
+            </a>
           )}
         </div>
       </div>

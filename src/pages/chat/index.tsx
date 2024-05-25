@@ -3,8 +3,8 @@ import { useFetchAllConversationSummary } from "@/hooks/useFetchConversationSumm
 import Page from "@/layout/Page";
 import { fetchAllConversation, fetchAllConversationSummary, fetchConversation } from "@/redux/reducers/chat";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { AppDispatch, RootState, wrapper } from "@/redux/store";
-import {  hiddenFalseMessage, hiddenMessage, postMessage } from "@/services/chat";
+import { AppDispatch, RootState } from "@/redux/store";
+import { hiddenFalseMessage, hiddenMessage, postMessage } from "@/services/chat";
 import formatISOToCustomDate from "@/utils/convertDate";
 import formatISOToTime from "@/utils/convertTime";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
@@ -12,10 +12,10 @@ import { limitTextTitle, limitTextTitle2, limitTextUserChat } from "@/utils/limi
 import { MenuItem, Select } from "@mui/material";
 import { Badge, Checkbox, Dropdown, Image, Input, MenuProps, Skeleton, Space } from "antd";
 import { useEffect, useRef, useState } from "react";
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 import { vi } from "date-fns/locale";
-import {  HiddenEyeIcon, UserAvatarIcon} from "@/components/CustomIcons";
+import { HiddenEyeIcon, UserAvatarIcon } from "@/components/CustomIcons";
 import CustomButton from "@/components/CustomButton";
 import combineConversationSummary from "@/hooks/useCombinedConversations";
 import { useRouter } from "next/router";
@@ -47,21 +47,24 @@ const Chat = () => {
   const formatTimeToNowInVietnamese = (isoDate: any) => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
-  console.log(isAuthenticated);
   // useEffect(() => {
   //   if (!isAuthenticated) {
   //     router.push("/login");
   //   }
   // }, [isAuthenticated, router]);
   useDidMountEffect(() => {
+    const token = localStorage.getItem("access_token");
+
     if (router?.query?.currentRoom && allConversationSummary.length > 0 && !conversationFetched) {
       const currentChat = allConversationSummary.find((item: any) => item.postId === router.query.currentRoom);
-      if (currentChat) {
+      if (currentChat && token) {
         dispatch(fetchConversation({ idRoom: currentChat.idRoom }));
         setConversationFetched(true);
+      } else {
+        window.location.href = "/login";
       }
     }
-  }, [router?.query?.currentRoom, allConversationSummary, dispatch, conversationFetched]);
+  }, [router?.query?.currentRoom, allConversationSummary, dispatch, conversationFetched, conversation]);
   useEffect(() => {
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchConversation({ idRoom: conversation.idRoom }));
@@ -154,15 +157,14 @@ const Chat = () => {
   };
 
   const handleSelectRoom = (item: any) => {
-    if (hiddenChat) {
-    }
-    router.push(`/chat?currentRoom=${item.postId}`);
     dispatch(fetchConversation({ idRoom: item.idRoom }));
     setSkeleton2(true);
     setTimeout(() => {
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
       setSkeleton2(false);
     }, 200);
+    router.push(`/chat?currentRoom=${item.postId}`);
+    // router.push(`/chat?currentRoom=${item.idRoom}`, undefined, { shallow: true }); // Thay đổi URL với tùy chọn shallow
   };
   const handleSendRec = async (e: any) => {
     const messageText = e.target.getAttribute("data-value");
@@ -622,7 +624,7 @@ const Chat = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -636,8 +638,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     };
   }
 
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
+
   return {
-    props: {}, 
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
   };
-});
+};
 export default Chat;

@@ -1,4 +1,4 @@
-import { Breadcrumb, Pagination, Skeleton } from "antd";
+import { Breadcrumb, Image, Pagination, Skeleton } from "antd";
 import CustomButtonSelect from "../CustomButtonSelect";
 import { ArrowBackIcon } from "../CustomIcons";
 
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
+import CustomButton from "../CustomButton";
 
 const ContainMBOTO = ({
   posts,
@@ -22,12 +23,19 @@ const ContainMBOTO = ({
   state,
   setFilter,
   setOpenModal,
+  handleChangeTab,
+  activeKey,
 }: any) => {
   const router = useRouter();
   const { query } = router;
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [reCurrent, setReCurrent] = useState(1);
-
+  const updateURL = (queryParams: any) => {
+    router.push({
+      pathname: "/mua-ban-oto",
+      query: { ...router.query, ...queryParams },
+    });
+  };
   useEffect(() => {
     setReCurrent(1);
   }, [query]);
@@ -37,6 +45,9 @@ const ContainMBOTO = ({
   }, [current]);
   const handleClick = () => {
     setOpenModal(true);
+  };
+  const handleLink = (item: string) => {
+    updateURL({ city: item, district: "" });
   };
   return (
     <div className="wrapper-contain">
@@ -87,9 +98,9 @@ const ContainMBOTO = ({
             <div className="recommend">
               <div className="title-recommend">Gợi ý khu vực</div>
               <div className="recommend-place">
-                <CustomButtonSelect>Tp Hồ Chí Minh</CustomButtonSelect>
-                <CustomButtonSelect>Hà Nội</CustomButtonSelect>
-                <CustomButtonSelect>Đà Nẵng</CustomButtonSelect>
+                <CustomButtonSelect handleClick={() => handleLink("79")}>Tp Hồ Chí Minh</CustomButtonSelect>
+                <CustomButtonSelect handleClick={() => handleLink("01")}>Hà Nội</CustomButtonSelect>
+                <CustomButtonSelect handleClick={() => handleLink("48")}>Đà Nẵng</CustomButtonSelect>
                 <span className="more" onClick={handleClick}>
                   Xem thêm <ArrowBackIcon></ArrowBackIcon>
                 </span>
@@ -101,8 +112,16 @@ const ContainMBOTO = ({
           ) : (
             <BrandSlide setFilter={setFilter} setOpenModal={setOpenModal}></BrandSlide>
           )}
-          <ItemCar spin={spin} posts={posts}></ItemCar>
-          <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} />
+          <ItemCar
+            activeKey={activeKey}
+            spin={spin}
+            postBy={state.postBy}
+            posts={posts}
+            handleChangeTab={handleChangeTab}
+            setFilter={setFilter}
+          ></ItemCar>
+
+          {posts.total > 0 ? <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} /> : <></>}
         </div>
         <RightFilterMBOTO setState={setState}></RightFilterMBOTO>
       </div>

@@ -82,6 +82,7 @@ export interface ICommonState {
 export interface IFilterHeader {
   searchResult: any;
   cities: any;
+  activeKey: any;
   districts: any;
   searchResultDistrict: any;
   cityName: string;

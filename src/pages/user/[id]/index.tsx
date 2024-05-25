@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 import { fetchDataUser } from "@/redux/reducers/auth";
+import Link from "next/link";
 
 const DetailUser = () => {
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
@@ -121,6 +122,8 @@ const DetailUser = () => {
     const isJPGE = file.type === "image/jpeg";
     const isGIF = file.type === "image/gif";
     const isJPG = file.type === "image/jpg";
+    const isWEBP = file.type === "image/webp";
+
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       setAlertAvatar4(true);
@@ -130,13 +133,13 @@ const DetailUser = () => {
       return Upload.LIST_IGNORE;
     }
 
-    if (!isGIF && !isJPGE && !isPNG && !isJPG) {
+    if (!isGIF && !isJPGE && !isPNG && !isJPG && !isWEBP) {
       setAlertAvatar2(true);
       setTimeout(() => {
         setAlertAvatar2(false);
       }, 3000);
     }
-    return isPNG || isJPGE || isGIF || isJPG || Upload.LIST_IGNORE;
+    return isPNG || isJPGE || isGIF || isJPG || isWEBP || Upload.LIST_IGNORE;
   };
   const items: TabsProps["items"] = [
     {
@@ -171,13 +174,17 @@ const DetailUser = () => {
                 <>
                   <NullContentIcon></NullContentIcon>
                   <h5>Bạn chưa có tin đăng nào</h5>
-                  <CustomButton>ĐĂNG TIN NGAY</CustomButton>
+                  <Link href="/dang-tin">
+                    <CustomButton>ĐĂNG TIN NGAY</CustomButton>
+                  </Link>
                 </>
               ) : (
                 <>
                   <NullContent2Icon></NullContent2Icon>
                   <h5>Bạn chưa có tin đăng nào</h5>
-                  <CustomButton>ĐĂNG TIN NGAY</CustomButton>
+                  <Link href="/dang-tin">
+                    <CustomButton>ĐĂNG TIN NGAY</CustomButton>
+                  </Link>
                 </>
               )}
             </div>
@@ -214,7 +221,9 @@ const DetailUser = () => {
             <div className="null-content">
               <NullContentIcon></NullContentIcon>
               <h5>Bạn chưa có tin đăng nào</h5>
-              <CustomButton>ĐĂNG TIN NGAY</CustomButton>
+              <Link href="/dang-tin">
+                <CustomButton>ĐĂNG TIN NGAY</CustomButton>
+              </Link>
             </div>
           )}
         </>
@@ -236,9 +245,15 @@ const DetailUser = () => {
           items={[
             {
               title: "Chợ tốt",
+              onClick: () => {
+                router.push(`/`);
+              },
             },
             {
               title: `Trang cá nhân ${detailProfileUser?.user?.fullname}`,
+              onClick: () => {
+                router.push(`/user/${router.query.id}`);
+              },
             },
           ]}
         />
@@ -257,7 +272,7 @@ const DetailUser = () => {
                       <Image src={detailProfileUser?.user?.banner} width={302} height={125} alt="" preview={false}></Image>
                     )}
                     {account?.user?._id === router?.query?.id ? (
-                      <Upload name="avatar" onChange={handleChangeBanner} listType="picture" beforeUpload={beforeUpload}>
+                      <Upload showUploadList={false} onChange={handleChangeBanner} beforeUpload={beforeUpload}>
                         <span className="camera">
                           <CameraIcon></CameraIcon>
                         </span>
@@ -336,20 +351,24 @@ const DetailUser = () => {
                   )}
                 </span>
               </div>{" "}
-              <div className="item-info">
-                <AddressIcon></AddressIcon>
-                <span style={{ display: "flex", textWrap: "nowrap", gap: "4px" }}>
-                  Địa chỉ:
-                  {skeleton ? (
-                    <Skeleton.Button style={{ height: "16.09px", width: "160px" }} block={true} active size="large"></Skeleton.Button>
-                  ) : (
-                    <>
-                      &nbsp;
-                      {detailProfileUser?.user?.address?.district}, {detailProfileUser?.user?.address?.city}
-                    </>
-                  )}
-                </span>
-              </div>
+              {detailProfileUser?.user?.address?.district !== undefined && detailProfileUser?.user?.address?.city !== undefined ? (
+                <div className="item-info">
+                  <AddressIcon></AddressIcon>
+                  <div style={{ display: "flex", textWrap: "nowrap", gap: "4px" }}>
+                    Địa chỉ:
+                    {skeleton ? (
+                      <Skeleton.Button style={{ height: "16.09px", width: "160px" }} block={true} active size="large"></Skeleton.Button>
+                    ) : (
+                      <>
+                        &nbsp;
+                        {limitTextDescription(`${detailProfileUser?.user?.address?.district},${detailProfileUser?.user?.address?.city}`)}
+                      </>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="right">

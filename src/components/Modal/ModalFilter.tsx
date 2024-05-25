@@ -468,7 +468,6 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
           setWarnPriceMin2(true);
         }
       } else if (event.target.value === "" && state.priceMax !== "" && state.priceMax !== undefined) {
-        console.log("vao");
         setFilter((prevFilter: any) => ({
           ...prevFilter,
           price: `max${state.priceMax}`,
@@ -764,7 +763,6 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
   const handleApply = () => {
     try {
       if (!warnPriceMax && !warnPriceMin && !warnKmMin && !warnKmMax && !warnPriceMin2 && !warnPriceMax2) {
-        console.log(filter);
         const queries: any = Object.entries(filter);
         updateQuery(queries);
       }

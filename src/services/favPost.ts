@@ -12,7 +12,6 @@ export const addFavPost = async (accessToken: string, data: any) => {
   return axios(config);
 };
 export const checkFavPost = async (accessToken: string, postId: any) => {
-  console.log(postId);
   const config = {
     method: "POST",
     url: "/check-fav-post",

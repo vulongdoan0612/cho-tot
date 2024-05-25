@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { ArrowDownIcon } from "../CustomIcons";
-import { cities, formsCar, fuelCar, numberBox, prices,sitsCar } from "./_mock";
+import { cities, formsCar, fuelCar, numberBox, prices, sitsCar } from "./_mock";
 import { useRouter } from "next/router";
 
 const RightFilterMBOTO = ({ setState }: any) => {
-
   const [filterSeeMoreForm, setFilterSeeMoreForm] = useState(false);
   const [filterSeeMoreSit, setFilterSeeMoreSit] = useState(false);
   const [filterSeeMoreCity, setFilterSeeMoreCity] = useState(false);
@@ -65,6 +64,9 @@ const RightFilterMBOTO = ({ setState }: any) => {
   const queryPrice = (item: string) => {
     updateURL({ price: item });
   };
+  const queryStatus = (item: string) => {
+    updateURL({ status: item });
+  };
 
   const queryForm = (item: string) => {
     updateURL({ form: item });
@@ -96,9 +98,9 @@ const RightFilterMBOTO = ({ setState }: any) => {
   const queryCity = (item: string) => {
     updateURL({ city: item });
   };
-  
+
   return (
-    <div className="right-contain">
+    <div className="right-contain" style={{ paddingBottom: "10px" }}>
       {!router.query.status && (
         <div className="filter-status">
           <span onClick={handleFilterStatus} className="title-filter prevent-select">
@@ -106,8 +108,8 @@ const RightFilterMBOTO = ({ setState }: any) => {
           </span>
           {filterStatus && (
             <div className="list">
-              <span>Đã sử dụng</span>
-              <span>Mới</span>
+              <span onClick={() => queryStatus("da-su-dung")}>Đã sử dụng</span>
+              <span onClick={() => queryStatus("moi")}>Mới</span>
             </div>
           )}
         </div>
