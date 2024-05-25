@@ -72,7 +72,7 @@ const DetailUser = () => {
         dispatch(fetchDataUserProfile({ userId: router.query.id }));
       }
     }
-  }, [account?.user?._id, dispatch, lastJsonMessage, router.query.id]);
+  }, [lastJsonMessage]);
 
   const onChange: InputNumberProps["onChange"] = (newValue) => {
     setInputValue(15);

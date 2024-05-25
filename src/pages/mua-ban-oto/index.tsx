@@ -155,7 +155,7 @@ const SellingPage = () => {
         );
       }
     }
-  }, [current, dispatch, lastJsonMessage, pageSize, router.isReady, router.query.brand, router.query.city, router.query.color, router.query.country, router.query.date, router.query.district, router.query.form, router.query.fuel, router.query.km, router.query.model, router.query.numberBox, router.query.post, router.query.price, router.query.sit, router.query.status]);
+  }, [lastJsonMessage]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -462,7 +462,7 @@ const SellingPage = () => {
       }));
       setFilterFind(selectedDistrict?.Name || state.cityName);
     }
-  }, [state?.districts, router.query.district, router, state.cityName]);
+  }, [state?.districts, router.query.district, router]);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -37,7 +37,7 @@ const BrandCarDropdown = ({ openBrand, setState, valueRadioBrand }: any) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openBrand, setState]);
+  }, [openBrand]);
 
   useEffect(() => {
     setDataRender(brandList);

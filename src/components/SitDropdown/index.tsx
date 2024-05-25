@@ -37,7 +37,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [setState, state.openSit]);
+  }, [state.openSit]);
 
   const handleRenew = () => {
     try {

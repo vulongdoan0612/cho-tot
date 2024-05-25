@@ -120,7 +120,7 @@ const TitlePostSell = ({
         }
       }
     }
-  }, [account?.user?.address?.districtValue, id, statePost?.districts]);
+  }, [statePost?.districts]);
 
   useEffect(() => {
     if (id) {
@@ -167,7 +167,7 @@ const TitlePostSell = ({
         }
       }
     }
-  }, [dataPost?.post?.districtValue, id, statePost?.districts]);
+  }, [statePost?.districts]);
 
   useEffect(() => {
     if (dataPost?.post) {

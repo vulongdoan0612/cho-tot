@@ -44,7 +44,7 @@ const FindInAreaDropdown = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openFind, setState]);
+  }, [openFind]);
 
   const handleChangeSelect = (status: string, event: any) => {
     setState((prevState: any) => ({
