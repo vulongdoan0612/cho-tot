@@ -1,5 +1,14 @@
 import Icon from "@ant-design/icons";
-import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
+export interface CustomIconComponentProps {
+  width: string | number;
+  height: string | number;
+  fill: string;
+  viewBox?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  id?: string;
+  onClick?: (param: any) => void;
+}
 const Favourite = () => (
   <svg data-type="monochrome" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px" height="20px" fill="none">
     <g fill="currentColor">
