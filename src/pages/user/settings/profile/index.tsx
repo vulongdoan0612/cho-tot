@@ -109,7 +109,7 @@ const User = () => {
         }));
       }
     }
-  }, [stateUser.districts]);
+  }, [account?.user?.address?.districtValue, stateUser.districts]);
 
   useDidMountEffect(() => {
     setStateUser((prevState) => ({

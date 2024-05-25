@@ -19,7 +19,7 @@ const Setting = (props: PropsPage) => {
 
   const page = useMemo(() => {
     return <>{children}</>;
-  }, [loadingData, children]);
+  }, [children]);
   const { account } = useSelector((state: RootState) => state.auth);
 
   return (

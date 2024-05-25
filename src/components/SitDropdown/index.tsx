@@ -10,8 +10,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
   const router = useRouter();
   const sitRef: any = useRef(null);
   const [searchSit, setSearchSit] = useState("");
-  const [dataRender, setDataRender] = useState<any>([]);
-  const data = [2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, "Khác"];
+  const [dataRender, setDataRender] = useState<any>([2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, "Khác"]);
 
   const updateURL = (queryParams: any) => {
     router.push({
@@ -19,10 +18,6 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
       query: { ...router.query, ...queryParams },
     });
   };
-
-  useEffect(() => {
-    setDataRender(data);
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -42,7 +37,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [state.openSit]);
+  }, [setState, state.openSit]);
 
   const handleRenew = () => {
     try {
@@ -52,7 +47,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
         valueRadioSit: "",
         valueRadioModal: "",
       }));
-      setDataRender(data);
+      setDataRender([2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, "Khác"]);
     } finally {
       setState((prevState: any) => ({
         ...prevState,
@@ -65,7 +60,7 @@ const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
   const handleSearchSit = (event: any) => {
     const { value } = event.target;
     setSearchSit(value);
-    const result = data.filter((sit: any) => {
+    const result = dataRender.filter((sit: any) => {
       return sit.toString().includes(value);
     });
     setDataRender(result);

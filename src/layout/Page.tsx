@@ -15,7 +15,7 @@ const Page = (props: PropsPage) => {
   const { loadingData, children, style } = props;
   const page = useMemo(() => {
     return <>{children}</>;
-  }, [loadingData, children]);
+  }, [children]);
   return (
     <>
       <ToastContainer></ToastContainer>

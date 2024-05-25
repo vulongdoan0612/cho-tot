@@ -166,7 +166,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
       price: String(router.query.price),
     }));
     setModels(filterModel);
-  }, [router]);
+  }, [router, setFilter, setState]);
 
   const handleCancleModalListAll = () => {
     setModalListAll(false);

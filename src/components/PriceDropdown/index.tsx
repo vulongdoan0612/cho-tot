@@ -27,7 +27,7 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openPrice]);
+  }, [openPrice, setState]);
 
   const onChange: any["onChange"] = (newValue: any) => {
     setState((prevState: any) => ({

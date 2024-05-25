@@ -46,7 +46,7 @@ const Selection = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openFind, openSearchCity]);
+  }, [openFind, openSearchCity, setSearchCity, setState]);
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -71,7 +71,7 @@ const Selection = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openFind, openSearchDistrict]);
+  }, [openFind, openSearchDistrict, setSearchDistrict, setState]);
 
   const handleOpenSearchCity = () => {
     setState((prevState: any) => ({

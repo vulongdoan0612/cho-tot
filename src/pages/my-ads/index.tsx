@@ -72,7 +72,7 @@ const MyAds = () => {
         getDataListCensorship();
       }
     }
-  }, [lastMessage8082]);
+  }, [account?.user?._id, lastMessage8082]);
   useEffect(() => {
     if (lastMessage8083?.action === "update-view-post" && account?.user?._id === lastMessage8083.userId) {
       setSkeleton(true);
@@ -82,7 +82,7 @@ const MyAds = () => {
       setSkeletonId(lastMessage8083?.postId);
       getDataListPost();
     }
-  }, [lastMessage8083]);
+  }, [account?.user?._id, lastMessage8083]);
   const onChange: InputNumberProps["onChange"] = (newValue) => {
     // setInputValue(15);
   };

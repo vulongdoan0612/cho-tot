@@ -88,7 +88,7 @@ const Chat = () => {
         }, 200);
       }
     }
-  }, [lastJsonMessage]);
+  }, [account, allConversation, allConversationSummary, conversation.idRoom, dispatch, lastJsonMessage, search, typeChat]);
 
   useEffect(() => {
     scrollToBottom();
