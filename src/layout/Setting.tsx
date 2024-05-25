@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 interface PropsPage {
   loadingData?: boolean;
   children: React.ReactNode;
@@ -47,13 +48,13 @@ const Setting = (props: PropsPage) => {
         <div className="left">
           <div className="left-content">
             <ul>
-              <a href="/user/settings/profile">
+              <Link href="/user/settings/profile">
                 <li className={`${active === "1" ? "bold" : ""}`}>Thông tin cá nhân</li>
-              </a>
+              </Link>
               <li>Liên kết mạng xã hội</li>
-              <a href="/user/settings/account">
+              <Link href="/user/settings/account">
                 <li className={`${active === "3" ? "bold" : ""}`}>Cài đặt tài khoản</li>
-              </a>
+              </Link>
               <li>Quản lý lịch sử đăng nhập</li>
             </ul>
           </div>

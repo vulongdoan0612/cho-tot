@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import cookie from "cookie";
+import Link from "next/link";
 
 const ViewPostCensor = () => {
   const router = useRouter();
@@ -115,7 +116,7 @@ const ViewPostCensor = () => {
         <div className="third-part">
           <CustomButton className="sell-button">Bán</CustomButton>
           <CustomButton className="manage-button">
-            <a href="/my-ads">Quản lý tin</a>
+            <Link href="/my-ads">Quản lý tin</Link>
           </CustomButton>
         </div>
       </div>

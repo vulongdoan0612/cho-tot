@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 const Register = () => {
   const router = useRouter();
@@ -118,7 +119,7 @@ const Register = () => {
           </button>
         </div>
         <p className="register-account">
-          Đã có tài khoản? <a href="/login">Đăng nhập ngay</a>
+          Đã có tài khoản? <Link href="/login">Đăng nhập ngay</Link>
         </p>
       </div>
       <div className="produce-by">

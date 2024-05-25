@@ -50,7 +50,7 @@ const DropdownList = () => {
         <div className="sign-in">
           <span className="avatar"></span>
           <span className="text">
-            <a href="/login">Đăng nhập</a> / <a href="/register">Đăng ký</a>
+            <Link href="/login">Đăng nhập</Link> / <Link href="/register">Đăng ký</Link>
           </span>
         </div>
       )}
@@ -60,12 +60,12 @@ const DropdownList = () => {
           <span>Tiện ích</span>
         </div>
         <div className="container">
-          <a href="/bookmark/tin-dang-da-luu">
+          <Link href="/bookmark/tin-dang-da-luu">
             <span className="post-save">
               <Image preview={false} src="/icons/menu-saved-ad.svg" alt="" width={24} height={24}></Image>
               <span>Tin đăng đã lưu</span>{" "}
             </span>
-          </a>
+          </Link>
           <span className="search-save">
             <Image preview={false} src="/icons/menu-saved-search.svg" alt="" width={24} height={24}></Image>
             <span>Tìm kiếm đã lưu</span>{" "}
@@ -107,13 +107,13 @@ const DropdownList = () => {
           <span>Khác</span>
         </div>
         <div className="container">
-          <a href="/user/settings/profile">
+          <Link href="/user/settings/profile">
             <span className="dongtot">
               {" "}
               <Image preview={false} src="https://static.chotot.com/storage/icons/svg/setting.svg" alt="" width={24} height={24}></Image>
               <span>Cài đặt tài khoản</span>{" "}
             </span>
-          </a>
+          </Link>
           <span className="history" onClick={handleLogOut}>
             {" "}
             <Image preview={false} src="https://static.chotot.com/storage/icons/svg/logout.svg" alt="" width={24} height={24}></Image>

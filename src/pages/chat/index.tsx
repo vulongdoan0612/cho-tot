@@ -21,6 +21,7 @@ import combineConversationSummary from "@/hooks/useCombinedConversations";
 import { useRouter } from "next/router";
 import useDidMountEffect from "@/utils/customUseEffect";
 import cookie from "cookie";
+import Link from "next/link";
 
 const { TextArea } = Input;
 
@@ -464,7 +465,7 @@ const Chat = () => {
                       )}
                     </div>
                     <Dropdown menu={{ items }} trigger={["click"]} className="dropdown-chat">
-                      <a onClick={(e) => e.preventDefault()}>
+                      <div onClick={(e) => e.preventDefault()}>
                         <Space>
                           <Image
                             src="https://chat.chotot.com/icons/moreVertical.svg"
@@ -475,7 +476,7 @@ const Chat = () => {
                             style={{ cursor: "pointer" }}
                           ></Image>
                         </Space>
-                      </a>
+                      </div>
                     </Dropdown>
                   </div>
                   <div className="car-info">
@@ -615,9 +616,9 @@ const Chat = () => {
           </Image>
           <h5>Bạn chưa có cuộc trò chuyện nào!</h5>
           <p>Trải nghiệm chat để làm rõ thông tin về mặt hàng trước khi bắt đầu thực hiện mua bán</p>
-          <a href="/">
+          <Link href="/">
             <CustomButton>Về trang chủ</CustomButton>
-          </a>
+          </Link>
         </div>
       )}
     </Page>

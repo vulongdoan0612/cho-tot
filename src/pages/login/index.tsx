@@ -7,6 +7,7 @@ import CustomButton from "@/components/CustomButton";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -90,7 +91,7 @@ const Login = () => {
           </button>
         </div>
         <p className="register-account">
-          Chưa có tài khoản? <a href="/register">Đăng ký tài khoản mới</a>
+          Chưa có tài khoản? <Link href="/register">Đăng ký tài khoản mới</Link>
         </p>
       </div>
       <div className="produce-by">

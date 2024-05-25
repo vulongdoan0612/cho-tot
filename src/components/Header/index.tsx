@@ -66,26 +66,26 @@ const Header = () => {
     {
       key: "1",
       label: (
-        <a target="_blank" rel="noopener noreferrer">
+        <Link href="/" target="_blank" rel="noopener noreferrer">
           1st menu item
-        </a>
+        </Link>
       ),
     },
     {
       key: "2",
       label: (
-        <a target="_blank" rel="noopener noreferrer">
+        <Link href="/" target="_blank" rel="noopener noreferrer">
           2nd menu item (disabled)
-        </a>
+        </Link>
       ),
       disabled: true,
     },
     {
       key: "3",
       label: (
-        <a target="_blank" rel="noopener noreferrer">
+        <Link href="/" target="_blank" rel="noopener noreferrer">
           3rd menu item (disabled)
-        </a>
+        </Link>
       ),
       disabled: true,
     },
@@ -211,12 +211,12 @@ const Header = () => {
             <Skeleton.Input block={true} active size="large"></Skeleton.Input>
           ) : (
             <Dropdown menu={{ items }}>
-              <a onClick={(e) => e.preventDefault()}>
+              <Link href="/" onClick={(e) => e.preventDefault()}>
                 <BarIcon></BarIcon>
 
                 <Space>Danh mục</Space>
                 <ArrowIcon></ArrowIcon>
-              </a>
+              </Link>
             </Dropdown>
           )}
         </div>
@@ -276,9 +276,9 @@ const Header = () => {
             </div> */}
             <div className="mangeShop">
               <MangeShopIcon />
-              <a href="/my-ads">
+              <Link href="/my-ads">
                 <span className="text">Quản lý tin</span>
-              </a>
+              </Link>
             </div>
           </>
         )}
@@ -294,12 +294,12 @@ const Header = () => {
           {loading ? (
             <Skeleton.Button block={true} active size="large" style={{ minWidth: "123px" }}></Skeleton.Button>
           ) : (
-            <a href="/dang-tin">
+            <Link href="/dang-tin">
               <Button style={{ display: "flex", gap: "3px", alignItems: "center" }}>
                 <UploadNewIcon></UploadNewIcon>
                 <span className="text">ĐĂNG TIN</span>
               </Button>
-            </a>
+            </Link>
           )}
         </div>
       </div>

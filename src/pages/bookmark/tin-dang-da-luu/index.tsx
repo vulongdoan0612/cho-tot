@@ -87,9 +87,9 @@ const FavPage = () => {
                 Hãy bấm nút &nbsp;
                 <Image src="/icons/save-ad.svg" alt="" height={22} width={22}></Image>&nbsp; ở tin đăng để lưu và xem lại sau.
               </span>
-              <a href="/mua-ban-oto">
+              <Link href="/mua-ban-oto">
                 <CustomButton>Bắt đầu tìm kiếm</CustomButton>
-              </a>
+              </Link>
             </div>
           ) : (
             <>
