@@ -131,7 +131,6 @@ a:active {
   background-color: white !important;
 }
 .Mui-focused {
-  border-color: #f80 !important;
 }
 .css-phksla-MuiInputBase-root-MuiFilledInput-root::before {
   border-bottom: none !important;
@@ -157,6 +156,9 @@ a:active {
 .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
   .MuiOutlinedInput-notchedOutline {
   }
+}
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #f80 !important;
 }
 .css-fvipm8.Mui-focused .MuiOutlinedInput-notchedOutline {
   border: 1px solid silver !important;
