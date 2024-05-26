@@ -1,7 +1,6 @@
 import { fetchDataPost, fetchDataPostService } from "@/redux/reducers/posts";
 import { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 export const useFetchPostService = ({ body }: any) => {
