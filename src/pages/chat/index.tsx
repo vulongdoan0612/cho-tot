@@ -25,7 +25,7 @@ import Link from "next/link";
 const { TextArea } = Input;
 
 const Chat = () => {
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:8085");
+  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
