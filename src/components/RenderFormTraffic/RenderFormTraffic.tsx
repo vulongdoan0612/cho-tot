@@ -9,12 +9,12 @@ import NumberInputPrice from "../NumberInputPrice/NumberInputPrice";
 import TitlePostSell from "../TitlePostSell/TitlePostSell";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { defaultCommonState } from "./mock";
 import { ICommonStateFillFormRenderCar, ICommonStateFormRenderCar } from "@/interfaces/User";
 import moment from "moment";
 import { onlyNumbers } from "@/utils/onlyNumbers";
 import { defaultCommonStateFill } from "./fill";
 import { colorsCar, countriesCar, formsCar, sitsCar } from "../Contain-MBOTO/mock";
+import { defaultCommonState } from "./mock";
 
 const RenderOto = ({ handleWarning, fileList }: any) => {
   const { dataPost } = useSelector((state: RootState) => state.postSell);

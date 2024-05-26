@@ -12,7 +12,7 @@ import ModalAddressUser from "@/components/Modal/ModalAddressUser";
 import ModalCCCCD from "@/components/Modal/ModalCCCD";
 import ModalFav from "@/components/Modal/ModalFav";
 import { ICommonState } from "@/interfaces/User";
-import { defaultCommonState } from "./mock";
+import { defaultCommonState } from "../../../../components/_mock/mock";
 import dataFav from "./dataFav.json";
 import CustomButton from "@/components/CustomButton";
 import { setAuthenticate } from "@/redux/reducers/auth";
