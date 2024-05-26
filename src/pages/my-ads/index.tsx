@@ -14,7 +14,6 @@ import {
 import { getProfile } from "@/services/getProfile";
 import addDay from "@/utils/addDay";
 import formatISOToCustomDate from "@/utils/convertDate";
-import { useEffect } from "react";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import getWardDistrict from "@/utils/getWardDistrict";
 import { Breadcrumb, Checkbox, CheckboxProps, Image, InputNumberProps, Skeleton, Slider, Spin, Tabs, TabsProps } from "antd";
