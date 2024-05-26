@@ -25,7 +25,7 @@ import Link from "next/link";
 const { TextArea } = Input;
 
 const Chat = () => {
-  const { lastJsonMessage }: any = useWebSocket("ws://localhost:8085");
+  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:8085");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
@@ -66,6 +66,7 @@ const Chat = () => {
     }
   }, [router?.query?.currentRoom, allConversationSummary, dispatch, conversationFetched, conversation]);
   useEffect(() => {
+    console.log(lastJsonMessage);
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchConversation({ idRoom: conversation.idRoom }));
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
