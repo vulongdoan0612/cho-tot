@@ -156,8 +156,10 @@ a:active {
 }
 .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
   .MuiOutlinedInput-notchedOutline {
-    border: none !important;
   }
+}
+.css-fvipm8.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border: none !important;
 }
 .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
   top: 20px !important;
