@@ -7,7 +7,7 @@ interface IState {
 
 const initialState: IState = {
   countdownDuration: 500,
-  loading: true,
+  loading: false,
 };
 
 const slicer = createSlice({
@@ -18,7 +18,7 @@ const slicer = createSlice({
       state.countdownDuration = action.payload;
     },
     countdownComplete: (state) => {
-      state.loading = true;
+      state.loading = false;
     },
   },
 });
