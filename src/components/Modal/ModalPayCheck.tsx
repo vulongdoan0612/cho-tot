@@ -6,7 +6,7 @@ import { RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { useEffect, useState } from "react";
 import { getConfig, postPayment } from "@/services/payment";
-import useDidMountEffect from "@/utils/customUseEffect";
+import { useEffect } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useRouter } from "next/router";
 

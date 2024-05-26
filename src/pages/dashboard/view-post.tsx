@@ -4,7 +4,7 @@ import { RootState } from "@/redux/store";
 import { getPostCheck } from "@/services/formPost";
 import { add30DaysAndFormat } from "@/utils/addDay2";
 import formatISOToCustomDate from "@/utils/convertDate";
-import useDidMountEffect from "@/utils/customUseEffect";
+import { useEffect } from "react";
 import numberWithCommas from "@/utils/numberWithCommas";
 import { Image, Skeleton } from "antd";
 import { useRouter } from "next/router";

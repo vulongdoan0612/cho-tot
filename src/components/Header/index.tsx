@@ -5,7 +5,7 @@ import { BarIcon, BellIcon, CartIcon, ChatIcon, ArrowIcon, MangeShopIcon, Upload
 import AvatarDropdown from "../AvatarDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataUser } from "@/redux/reducers/auth";
-import useDidMountEffect from "@/utils/customUseEffect";
+import { useEffect } from "react";
 import { AppDispatch, RootState } from "@/redux/store";
 import { countDownLoading, countdownComplete } from "@/redux/reducers/countDownLoading";
 import Link from "next/link";

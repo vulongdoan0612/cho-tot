@@ -19,7 +19,7 @@ import { HiddenEyeIcon, UserAvatarIcon } from "@/components/CustomIcons";
 import CustomButton from "@/components/CustomButton";
 import combineConversationSummary from "@/hooks/useCombinedConversations";
 import { useRouter } from "next/router";
-import useDidMountEffect from "@/utils/customUseEffect";
+import { useEffect } from "react";
 import cookie from "cookie";
 import Link from "next/link";
 

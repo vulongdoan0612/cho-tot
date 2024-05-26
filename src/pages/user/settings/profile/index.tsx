@@ -20,7 +20,7 @@ import { changeProfile } from "@/services/user";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Setting from "@/layout/Setting";
-import useDidMountEffect from "@/utils/customUseEffect";
+import { useEffect } from "react";
 import limitInputCharacters from "@/utils/limitInput";
 import cookie from "cookie";
 import { useRouter } from "next/router";

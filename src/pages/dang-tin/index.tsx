@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchDataPost } from "@/redux/reducers/postSell";
 import cookie from "cookie";
-import useDidMountEffect from "@/utils/customUseEffect";
+import { useEffect } from "react";
 import NotFound from "@/components/404";
 
 const PostSell = () => {
