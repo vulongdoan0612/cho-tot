@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 export const useFetchPost = ({ setSpin, body }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchPost();
   }, [body]);
   const handleFetchPost = () => {
