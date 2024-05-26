@@ -18,7 +18,7 @@ const slicer = createSlice({
       state.countdownDuration = action.payload;
     },
     countdownComplete: (state) => {
-      state.loading = false;
+      state.loading = true;
     },
   },
 });
