@@ -31,7 +31,7 @@ const Header = () => {
     const res = await getAnnounceChat(String(token));
     setBadge(res.data.announceChat);
   };
-  useDidMountEffect(() => {
+  useEffect(() => {
     if (lastJsonMessage?.userId === account?.user?._id && lastJsonMessage?.action === "annouce") {
       if (lastJsonMessage?.action === "annouce") {
         fetchAnnounce();
@@ -163,7 +163,7 @@ const Header = () => {
       setOpenListSearch(false);
     }
   };
-  useDidMountEffect(() => {
+  useEffect(() => {
     if (!router.isReady) {
       return;
     }

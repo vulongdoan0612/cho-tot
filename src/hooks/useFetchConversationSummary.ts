@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 export const useFetchAllConversationSummary = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchAllConversationSummary();
   }, []);
   const handleFetchAllConversationSummary = () => {

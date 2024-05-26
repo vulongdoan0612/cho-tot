@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux";
 
 export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: any) => {
   const dispatch: AppDispatch = useDispatch();
-  useDidMountEffect(() => {
+  useEffect(() => {
     current = 1;
   }, [body]);
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchPosts();
   }, [current, body]);
   const handleFetchPosts = () => {

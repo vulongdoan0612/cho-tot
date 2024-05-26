@@ -40,7 +40,7 @@ const MyAds = () => {
   const [skeleton, setSkeleton] = useState(false);
   const [skeletonId, setSkeletonId] = useState("");
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     getDataListPost();
     getDataListHidden();
     getDataListRefuse();

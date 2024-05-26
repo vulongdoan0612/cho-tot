@@ -70,7 +70,7 @@ const PostSell = () => {
     }
   }, [dataPost]);
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     if (id) {
       dispatch(fetchDataPost(String(id)));
     }

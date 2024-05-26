@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 export const useFetchDataUser = ({ body, setSpin }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     setSpin(true);
     setTimeout(() => {
       setSpin(false);

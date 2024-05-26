@@ -20,7 +20,7 @@ const ViewPostCensor = () => {
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [data, setData] = useState<any>([]);
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     getDataPost();
   }, [router.query]);
 

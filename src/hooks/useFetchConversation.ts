@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 export const useFetchAllConversation = () => {
   const dispatch: AppDispatch = useDispatch();
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchAllConversation();
   }, []);
   const handleFetchAllConversation = () => {

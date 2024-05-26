@@ -53,7 +53,7 @@ const Chat = () => {
   //     router.push("/login");
   //   }
   // }, [isAuthenticated, router]);
-  useDidMountEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("access_token");
 
     if (router?.query?.currentRoom && allConversationSummary.length > 0 && !conversationFetched) {

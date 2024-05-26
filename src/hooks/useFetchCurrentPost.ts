@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 export const useFetchCurrentPost = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchCurrentPost();
   }, []);
   const handleFetchCurrentPost = () => {

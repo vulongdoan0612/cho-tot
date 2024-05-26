@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 export const useFetchPostService = ({ body }: any) => {
   const dispatch: AppDispatch = useDispatch();
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchPostService();
   }, [body]);
   const handleFetchPostService = () => {

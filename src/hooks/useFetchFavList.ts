@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 export const useFetchFavList = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchFavList();
   }, []);
   const handleFetchFavList = () => {

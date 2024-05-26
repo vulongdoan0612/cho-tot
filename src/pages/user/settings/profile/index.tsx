@@ -111,7 +111,7 @@ const User = () => {
     }
   }, [stateUser.districts]);
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     setStateUser((prevState) => ({
       ...prevState,
       fullAddress: "",

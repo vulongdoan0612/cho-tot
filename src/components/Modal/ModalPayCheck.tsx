@@ -29,7 +29,7 @@ const ModalPayCheck = ({ modal, handleCancleModal, price, setAlertAvatar, setSpi
     };
     document.body.appendChild(script);
   };
-  useDidMountEffect(() => {
+  useEffect(() => {
     if (!window.paypal) {
       addPayPalScript();
     } else {

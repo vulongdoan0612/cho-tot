@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 export const useFetchCheckFavPost = ({ body }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     handleFetchCheckFavPost();
   }, [body]);
   const handleFetchCheckFavPost = () => {
