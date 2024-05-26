@@ -895,30 +895,30 @@ const User = () => {
     </Page>
   );
 };
-// export const getServerSideProps = async (context: any) => {
-//   const cookies = context.req.headers.cookie;
-//   const parsedCookies = cookies ? cookie.parse(cookies) : {};
-//   const token = parsedCookies["access_token"];
+export const getServerSideProps = async (context: any) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
 
-//   if (!token) {
-//     return {
-//       redirect: {
-//         destination: `/login`,
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!token) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false,
+      },
+    };
+  }
 
-//   // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-//   // Ví dụ:
-//   // const data = await fetchDataFromServer(token);
+  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
+  // Ví dụ:
+  // const data = await fetchDataFromServer(token);
 
-//   return {
-//     props: {
-//       // Truyền dữ liệu cần thiết xuống component
-//       // Ví dụ:
-//       // data: data
-//     },
-//   };
-// };
+  return {
+    props: {
+      // Truyền dữ liệu cần thiết xuống component
+      // Ví dụ:
+      // data: data
+    },
+  };
+};
 export default User;
