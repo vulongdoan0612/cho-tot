@@ -7,7 +7,7 @@ interface IState {
 
 const initialState: IState = {
   countdownDuration: 500,
-  loading: false,
+  loading: true,
 };
 
 const slicer = createSlice({
