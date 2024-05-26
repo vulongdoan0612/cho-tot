@@ -13,7 +13,7 @@ import { Spin } from "antd";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import { ICommonStateFormRenderCarPost } from "@/interfaces/User";
-import { defaultCommonState } from "./_mock";
+import { defaultCommonState } from "./mock";
 import getCityValueName from "@/utils/getCityValueName";
 import getDistrictValueName from "@/utils/getDistrictValueName";
 import getWardValueName from "@/utils/getWardValueName";

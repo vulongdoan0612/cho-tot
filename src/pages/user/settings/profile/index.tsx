@@ -12,7 +12,7 @@ import ModalAddressUser from "@/components/Modal/ModalAddressUser";
 import ModalCCCCD from "@/components/Modal/ModalCCCD";
 import ModalFav from "@/components/Modal/ModalFav";
 import { ICommonState } from "@/interfaces/User";
-import { defaultCommonState } from "./_mock";
+import { defaultCommonState } from "./mock";
 import dataFav from "./dataFav.json";
 import CustomButton from "@/components/CustomButton";
 import { setAuthenticate } from "@/redux/reducers/auth";
@@ -109,7 +109,7 @@ const User = () => {
         }));
       }
     }
-  }, [account?.user?.address?.districtValue, stateUser.districts]);
+  }, [stateUser.districts]);
 
   useDidMountEffect(() => {
     setStateUser((prevState) => ({

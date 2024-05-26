@@ -13,7 +13,7 @@ import FilterBy from "../ItemModalFilter/indexFilter";
 import { useRemoveQuery, useUpdateQuery } from "@/utils/updateQuery";
 import { useRouter } from "next/router";
 import ItemModalFilterForm from "../ItemModalFilter/indexForm";
-import { colorsCar, countriesCar, formsCar, fuelCar, numberBox, postCar, sitsCar, statusCar } from "../Contain-MBOTO/_mock";
+import { colorsCar, countriesCar, formsCar, fuelCar, numberBox, postCar, sitsCar, statusCar } from "../Contain-MBOTO/mock";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 
 const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter, filter, setFilterFind }: any) => {
