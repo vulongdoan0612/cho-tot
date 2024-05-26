@@ -38,7 +38,7 @@ const Header = () => {
       }
     }
   }, [lastJsonMessage]);
-  useDidMountEffect(() => {
+  useEffect(() => {
     fetchData();
     startCountdown();
   }, []);
