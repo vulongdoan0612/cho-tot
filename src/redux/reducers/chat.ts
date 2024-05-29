@@ -1,5 +1,6 @@
 import { getAllConversation, getConversation, getConversationSummary, postMessage } from "@/services/chat";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import useWebSocket from "react-use-websocket";
 
 interface IState {
   conversation: any;
@@ -13,6 +14,7 @@ export const fetchConversation = createAsyncThunk("/get-chat", async (arg: any) 
   const { idRoom } = arg;
   const postData = { idRoom: idRoom };
   const res = await getConversation(String(token), postData);
+
   return res?.data;
 });
 

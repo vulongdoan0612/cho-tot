@@ -25,7 +25,8 @@ import Link from "next/link";
 const { TextArea } = Input;
 
 const Chat = () => {
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:8085");
+  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
@@ -47,6 +48,7 @@ const Chat = () => {
   const formatTimeToNowInVietnamese = (isoDate: any) => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
+
   // useEffect(() => {
   //   if (!isAuthenticated) {
   //     router.push("/login");
@@ -66,7 +68,6 @@ const Chat = () => {
     }
   }, [router?.query?.currentRoom, allConversationSummary, dispatch, conversationFetched, conversation]);
   useEffect(() => {
-    console.log(lastJsonMessage);
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchConversation({ idRoom: conversation.idRoom }));
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
@@ -125,7 +126,9 @@ const Chat = () => {
       const token = localStorage.getItem("access_token");
       try {
         const data = { text: typeText, idRoom: conversation.idRoom };
-        await postMessage(String(token), data);
+        const res = await postMessage(String(token), data);
+        if (res.status === 200) {
+        }
       } finally {
         setTypeText("");
       }
@@ -152,7 +155,7 @@ const Chat = () => {
   const handleSend = async () => {
     const token = localStorage.getItem("access_token");
     const data = { text: typeText, idRoom: conversation.idRoom };
-    await postMessage(String(token), data);
+    const res = await postMessage(String(token), data);
 
     setTypeText("");
   };
@@ -171,7 +174,7 @@ const Chat = () => {
     const messageText = e.target.getAttribute("data-value");
     const token = localStorage.getItem("access_token");
     const data = { text: messageText, idRoom: conversation.idRoom };
-    await postMessage(String(token), data);
+    const res = await postMessage(String(token), data);
 
     setTypeText("");
   };

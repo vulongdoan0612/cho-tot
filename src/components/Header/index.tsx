@@ -17,7 +17,7 @@ import limitInputCharacters from "@/utils/limitInput";
 
 const Header = () => {
   const { account } = useSelector((state: RootState) => state.auth);
-  const { lastJsonMessage }: any = useWebSocket("ws://localhost:8085");
+  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
   const dispatch = useDispatch<AppDispatch>();
   const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
   const [badge, setBadge] = useState(false);
@@ -31,6 +31,7 @@ const Header = () => {
     setBadge(res.data.announceChat);
   };
   useEffect(() => {
+    console.log(lastJsonMessage?.userId === account?.user?._id, lastJsonMessage?.action === "annouce");
     if (lastJsonMessage?.userId === account?.user?._id && lastJsonMessage?.action === "annouce") {
       if (lastJsonMessage?.action === "annouce") {
         fetchAnnounce();

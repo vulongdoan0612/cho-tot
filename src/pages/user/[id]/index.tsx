@@ -31,7 +31,7 @@ import { fetchDataUser } from "@/redux/reducers/auth";
 import Link from "next/link";
 
 const DetailUser = () => {
-  const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
+  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
   const router = useRouter();
   const { detailProfileUser } = useSelector((state: RootState) => state.detailProfileUser);
   const dispatch: AppDispatch = useDispatch();

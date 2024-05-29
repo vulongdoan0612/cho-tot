@@ -22,7 +22,7 @@ import { fetchDataFavListMain, fetchDataPosts } from "@/redux/reducers/posts";
 import { useUpdateQuery } from "@/utils/updateQuery";
 
 const SellingPage = () => {
-  const { lastJsonMessage }: any = useWebSocket("ws://localhost:8082");
+  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
   const router = useRouter();
   const updateQuery = useUpdateQuery();
 
