@@ -167,7 +167,11 @@ const ServicesPost = () => {
                 </b>
               </div>
               <CustomButtonGreen
-                className={`${selectedCheckbox === 0 || postService?.post?.post?.image?.length < 5 ? "disable-custom-green" : ""}`}
+                className={`${
+                  selectedCheckbox === 0 || (postService?.post?.post?.image?.length < 5 && selectedCheckbox !== 2)
+                    ? "disable-custom-green"
+                    : ""
+                }`}
                 onClick={handlePaycheck}
               >
                 Thanh toán

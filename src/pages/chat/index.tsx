@@ -122,7 +122,8 @@ const Chat = () => {
   };
 
   const onEnter = async (e: any) => {
-    if (e.key === "Enter") {
+    console.log(typeText);
+    if (e.key === "Enter" && typeText !== "") {
       const token = localStorage.getItem("access_token");
       try {
         const data = { text: typeText, idRoom: conversation.idRoom };
