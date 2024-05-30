@@ -275,17 +275,6 @@ const Chat = () => {
               <HiddenEyeIcon></HiddenEyeIcon>Ẩn hội thoại
             </div>
           )}
-          {/* {conversation?.hidden ? (
-            <div onClick={hiddenFalseByDot}>
-              {" "}
-              <HiddenEyeIcon></HiddenEyeIcon>Bỏ ẩn hội thoại
-            </div>
-          ) : (
-            <div onClick={hiddenByDot}>
-              {" "}
-              <HiddenEyeIcon></HiddenEyeIcon>Ẩn hội thoại
-            </div>
-          )} */}
         </span>
       ),
       key: "1",
