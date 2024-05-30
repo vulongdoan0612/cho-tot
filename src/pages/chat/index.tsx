@@ -25,7 +25,7 @@ import Link from "next/link";
 const { TextArea } = Input;
 
 const Chat = () => {
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
@@ -40,6 +40,7 @@ const Chat = () => {
   const [skeleton2, setSkeleton2] = useState(false);
   const [countHidden, setCountHidden] = useState(0);
   const [conversationFetched, setConversationFetched] = useState(false);
+  const [skeletonChat, setSkeletonChat] = useState(false);
 
   useFetchAllConversation();
   useFetchAllConversationSummary();
@@ -122,12 +123,13 @@ const Chat = () => {
     if (e.key === "Enter") {
       const trimmedText = typeText.trim();
       if (trimmedText !== "") {
+        setTypeText("");
+        setSkeletonChat(true);
         const token = localStorage.getItem("access_token");
-        try {
-          const data = { text: trimmedText, idRoom: conversation.idRoom };
-          await postMessage(String(token), data);
-        } finally {
-          setTypeText("");
+        const data = { text: trimmedText, idRoom: conversation.idRoom };
+        const res = await postMessage(String(token), data);
+        if (res.status === 200) {
+          setSkeletonChat(false);
         }
       }
     }
@@ -152,10 +154,14 @@ const Chat = () => {
   };
 
   const handleSend = async () => {
+    setTypeText("");
+    setSkeletonChat(true);
     const token = localStorage.getItem("access_token");
     const data = { text: typeText, idRoom: conversation.idRoom };
-    await postMessage(String(token), data);
-    setTypeText("");
+    const res = await postMessage(String(token), data);
+    if (res.status === 200) {
+      setSkeletonChat(false);
+    }
   };
 
   const handleSelectRoom = (item: any) => {
@@ -169,11 +175,15 @@ const Chat = () => {
   };
 
   const handleSendRec = async (e: any) => {
+    setTypeText("");
+    setSkeletonChat(true);
     const messageText = e.target.getAttribute("data-value");
     const token = localStorage.getItem("access_token");
     const data = { text: messageText, idRoom: conversation.idRoom };
-    await postMessage(String(token), data);
-    setTypeText("");
+    const res = await postMessage(String(token), data);
+    if (res.status === 200) {
+      setSkeletonChat(false);
+    }
   };
 
   const handleHiddenChat = () => {
@@ -511,6 +521,9 @@ const Chat = () => {
                         );
                       })}
                     </>
+                  )}
+                  {skeletonChat && (
+                    <Skeleton.Input style={{ height: "52.19px", width: "281px" }} className="send" active={true}></Skeleton.Input>
                   )}
                 </div>
                 <div className="bottom">
