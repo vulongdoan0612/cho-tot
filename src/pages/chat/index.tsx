@@ -155,7 +155,7 @@ const Chat = () => {
   const handleSend = async () => {
     const token = localStorage.getItem("access_token");
     const data = { text: typeText, idRoom: conversation.idRoom };
-    const res = await postMessage(String(token), data);
+  await postMessage(String(token), data);
 
     setTypeText("");
   };
@@ -174,7 +174,7 @@ const Chat = () => {
     const messageText = e.target.getAttribute("data-value");
     const token = localStorage.getItem("access_token");
     const data = { text: messageText, idRoom: conversation.idRoom };
-    const res = await postMessage(String(token), data);
+  await postMessage(String(token), data);
 
     setTypeText("");
   };
