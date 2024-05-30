@@ -25,7 +25,7 @@ import Link from "next/link";
 const { TextArea } = Input;
 
 const Chat = () => {
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
 
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -117,15 +117,19 @@ const Chat = () => {
   };
 
   const onEnter = async (e: any) => {
-    if (e.key === "Enter" && typeText !== "") {
-      const token = localStorage.getItem("access_token");
-      try {
-        const data = { text: typeText, idRoom: conversation.idRoom };
-        const res = await postMessage(String(token), data);
-        if (res.status === 200) {
+    if (e.key === "Enter") {
+      const trimmedText = typeText.trim();
+      if (trimmedText !== "") {
+        const token = localStorage.getItem("access_token");
+        try {
+          const data = { text: trimmedText, idRoom: conversation.idRoom };
+          const res = await postMessage(String(token), data);
+          if (res.status === 200) {
+            // Handle successful response if needed
+          }
+        } finally {
+          setTypeText("");
         }
-      } finally {
-        setTypeText("");
       }
     }
   };
@@ -555,7 +559,7 @@ const Chat = () => {
                       onChange={(e) => handleChangeText(e)}
                       onKeyDown={onEnter}
                     />
-                    {typeText !== "" ? (
+                    {typeText.trim() !== "" ? (
                       <Image
                         src="https://static.chotot.com/storage/chotot-icons/svg/send-orange.svg"
                         width={25}

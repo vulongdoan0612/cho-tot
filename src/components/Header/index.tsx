@@ -17,7 +17,7 @@ import limitInputCharacters from "@/utils/limitInput";
 
 const Header = () => {
   const { account } = useSelector((state: RootState) => state.auth);
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const dispatch = useDispatch<AppDispatch>();
   const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
   const [badge, setBadge] = useState(false);
