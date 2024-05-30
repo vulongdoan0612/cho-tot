@@ -66,17 +66,17 @@ const Chat = () => {
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchConversation({ idRoom: conversation.idRoom }));
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-      combineConversationSummary(allConversation, allConversationSummary, account);
+      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
     }
     if (lastJsonMessage?.idRoom !== conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-      combineConversationSummary(allConversation, allConversationSummary, account);
+      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
     }
     if (lastJsonMessage?.action === "create-room") {
       if (lastJsonMessage?.userSend === account?.user?._id || lastJsonMessage?.userReceive === account?.user?._id) {
         dispatch(fetchConversation({ idRoom: conversation.idRoom }));
         dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-        combineConversationSummary(allConversation, allConversationSummary, account);
+        combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
         dispatch(fetchAllConversation({ search: search, typeChat: typeChat }));
         setSkeleton(true);
         setTimeout(() => {
@@ -105,7 +105,7 @@ const Chat = () => {
     setTypeChat(e.target.value);
     dispatch(fetchAllConversation({ search: typeText, typeChat: e.target.value }));
     dispatch(fetchAllConversationSummary({ typeChat: e.target.value }));
-    combineConversationSummary(allConversation, allConversationSummary, account);
+    combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
     setSkeleton(true);
     setTimeout(() => {
       setSkeleton(false);
@@ -138,7 +138,7 @@ const Chat = () => {
     await hiddenMessage(String(accessToken), idRoom);
     dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
     dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-    combineConversationSummary(allConversation, allConversationSummary, account);
+    combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
     setHiddenChat(false);
     setHiddenChatList([]);
     setCountHidden(0);
@@ -150,7 +150,7 @@ const Chat = () => {
   const handleSend = async () => {
     const token = localStorage.getItem("access_token");
     const data = { text: typeText, idRoom: conversation.idRoom };
-  await postMessage(String(token), data);
+    await postMessage(String(token), data);
 
     setTypeText("");
   };
@@ -169,7 +169,7 @@ const Chat = () => {
     const messageText = e.target.getAttribute("data-value");
     const token = localStorage.getItem("access_token");
     const data = { text: messageText, idRoom: conversation.idRoom };
-  await postMessage(String(token), data);
+    await postMessage(String(token), data);
 
     setTypeText("");
   };
@@ -207,7 +207,7 @@ const Chat = () => {
       setHiddenChat(false);
       dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
       dispatch(fetchAllConversationSummary(typeChat));
-      combineConversationSummary(allConversation, allConversationSummary, account);
+      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
       setSkeleton(true);
       setTimeout(() => {
         setSkeleton(false);
@@ -222,7 +222,7 @@ const Chat = () => {
     } finally {
       dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
       dispatch(fetchAllConversationSummary(typeChat));
-      combineConversationSummary(allConversation, allConversationSummary, account);
+      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
       setSkeleton(true);
       setTimeout(() => {
         setSkeleton(false);
@@ -279,9 +279,10 @@ const Chat = () => {
     setHiddenChat(false);
     setHiddenChatList([]);
   };
+  console.log(allConversation);
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
-      {allConversation.length > 0 || typeChat === "hidden" || typeChat === "all" ? (
+      {allConversation.filteredUpdatedPosts.length > 0 || typeChat === "hidden" || typeChat === "all" ? (
         <div className="chat-wrapper">
           <div className="left">
             {hiddenChat ? (
@@ -328,61 +329,63 @@ const Chat = () => {
               <Skeleton.Input style={{ height: "506.5px", width: "372.39px" }} block={true} active size="large"></Skeleton.Input>
             ) : (
               <div className="list-room">
-                {combineConversationSummary(allConversation, allConversationSummary, account).length > 0 ? (
+                {allConversation.filteredUpdatedPosts.length > 0 ? (
                   <>
                     {" "}
-                    {combineConversationSummary(allConversation, allConversationSummary, account)?.map((item: any, index: string) => {
-                      const lastTextToNow = item.lastTextToNow ? formatTimeToNowInVietnamese(item.lastTextToNow) : "";
-                      return (
-                        <div className="item-room" key={index} onClick={() => handleSelectRoom(item)}>
-                          <div className="left-item-room">
-                            {hiddenChat ? <Checkbox onChange={(e) => onChangeHiddenChat(e, item)}></Checkbox> : <></>}
-                            <div className="avatar">
-                              <Badge
-                                dot={
-                                  account?.user?._id === item?.userSend?._id
-                                    ? item.userReceivePop
-                                    : account?.user?._id === item?.userReceive?._id
-                                    ? item.userSendPop
-                                    : item.userSendPop
-                                }
-                              >
-                                <Image
-                                  src={
+                    {combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account)?.map(
+                      (item: any, index: string) => {
+                        const lastTextToNow = item.lastTextToNow ? formatTimeToNowInVietnamese(item.lastTextToNow) : "";
+                        return (
+                          <div className="item-room" key={index} onClick={() => handleSelectRoom(item)}>
+                            <div className="left-item-room">
+                              {hiddenChat ? <Checkbox onChange={(e) => onChangeHiddenChat(e, item)}></Checkbox> : <></>}
+                              <div className="avatar">
+                                <Badge
+                                  dot={
                                     account?.user?._id === item?.userSend?._id
-                                      ? item.userReceive?.avatar || "images/empty-avatar.jpg"
+                                      ? item.userReceivePop
                                       : account?.user?._id === item?.userReceive?._id
-                                      ? item.userSend?.avatar || "images/empty-avatar.jpg"
-                                      : item.userSend?.avatar || "images/empty-avatar.jpg"
+                                      ? item.userSendPop
+                                      : item.userSendPop
                                   }
-                                  alt=""
-                                  width={46}
-                                  height={46}
-                                  preview={false}
-                                ></Image>
-                              </Badge>
+                                >
+                                  <Image
+                                    src={
+                                      account?.user?._id === item?.userSend?._id
+                                        ? item.userReceive?.avatar || "images/empty-avatar.jpg"
+                                        : account?.user?._id === item?.userReceive?._id
+                                        ? item.userSend?.avatar || "images/empty-avatar.jpg"
+                                        : item.userSend?.avatar || "images/empty-avatar.jpg"
+                                    }
+                                    alt=""
+                                    width={46}
+                                    height={46}
+                                    preview={false}
+                                  ></Image>
+                                </Badge>
+                              </div>
+                              <div className="car-info">
+                                <span className="username">
+                                  {account?.user?._id === item?.userSend?._id ? (
+                                    <>{limitTextUserChat(item?.userReceive?.fullname)}</>
+                                  ) : account?.user?._id === item?.userSend?.id ? (
+                                    <>{limitTextUserChat(item?.userSend?.fullname)}</>
+                                  ) : (
+                                    <>{limitTextUserChat(item?.userSend?.fullname)}</>
+                                  )}
+                                  <span className="time"> - {lastTextToNow}</span>
+                                </span>
+                                <span className="descript">{limitTextTitle(item?.post?.title)}</span>
+                                <span className="text">{item.lastText || "No messages yet"}</span>
+                              </div>
                             </div>
-                            <div className="car-info">
-                              <span className="username">
-                                {account?.user?._id === item?.userSend?._id ? (
-                                  <>{limitTextUserChat(item?.userReceive?.fullname)}</>
-                                ) : account?.user?._id === item?.userSend?.id ? (
-                                  <>{limitTextUserChat(item?.userSend?.fullname)}</>
-                                ) : (
-                                  <>{limitTextUserChat(item?.userSend?.fullname)}</>
-                                )}
-                                <span className="time"> - {lastTextToNow}</span>
-                              </span>
-                              <span className="descript">{limitTextTitle(item?.post?.title)}</span>
-                              <span className="text">{item.lastText || "No messages yet"}</span>
+                            <div className="car">
+                              <Image src={item?.post?.image[0]?.img} width={60} height={60} alt="" preview={false}></Image>
                             </div>
                           </div>
-                          <div className="car">
-                            <Image src={item?.post?.image[0]?.img} width={60} height={60} alt="" preview={false}></Image>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      }
+                    )}
                   </>
                 ) : (
                   <div className="null-chat">Không có đoạn chat nào</div>
@@ -403,7 +406,7 @@ const Chat = () => {
               </>
             ) : (
               <>
-                {combineConversationSummary(allConversation, allConversationSummary, account).length > 0 ? (
+                {combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account).length > 0 ? (
                   <div className="hidden-chat">
                     <button onClick={handleHiddenChat}>
                       <HiddenEyeIcon></HiddenEyeIcon>Ẩn hội thoại
@@ -432,11 +435,11 @@ const Chat = () => {
                         <>
                           <Image
                             src={
-                              account?.user?._id === conversation?.userSend?._id
-                                ? conversation?.userSendInfo?.avatar || "images/empty-avatar.jpg"
-                                : account?.user?._id === conversation?.userReceiveInfo?._id
+                              account?.user?._id === conversation?.userSendInfo?._id
                                 ? conversation?.userReceiveInfo?.avatar || "images/empty-avatar.jpg"
-                                : conversation?.userReceiveInfo?.avatar || "images/empty-avatar.jpg"
+                                : account?.user?._id === conversation?.userReceiveInfo?._id
+                                ? conversation?.userSendInfo?.avatar || "images/empty-avatar.jpg"
+                                : conversation?.userSendInfo?.avatar || "images/empty-avatar.jpg"
                             }
                             alt=""
                             width={30}
