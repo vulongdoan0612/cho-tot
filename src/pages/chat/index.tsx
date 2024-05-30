@@ -30,7 +30,7 @@ const Chat = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
-  const { account, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { account } = useSelector((state: RootState) => state.auth);
 
   const conversationRef: any = useRef(null);
   const [search, setSearch] = useState("");
@@ -49,11 +49,6 @@ const Chat = () => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     router.push("/login");
-  //   }
-  // }, [isAuthenticated, router]);
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
