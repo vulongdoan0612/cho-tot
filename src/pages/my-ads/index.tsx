@@ -23,7 +23,6 @@ import useWebSocket from "react-use-websocket";
 import cookie from "cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import useDidMountEffect from "@/utils/customUseEffect";
 
 const MyAds = () => {
   const { account } = useSelector((state: RootState) => state.auth);

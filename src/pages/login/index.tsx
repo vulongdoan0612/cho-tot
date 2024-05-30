@@ -14,6 +14,7 @@ const Login = () => {
   const [spin, setSpin] = useState(false);
 
   const onFinish = async (values: any) => {
+    setSpin(true);
     try {
       const dataLogin = {
         phone: values.phone,
@@ -22,7 +23,6 @@ const Login = () => {
       const response = await requestLogin(dataLogin);
       if (response?.status === 200) {
         if (response?.data?.status) {
-          setSpin(true);
           setTimeout(() => {
             setSpin(false);
           }, 1000);
@@ -108,7 +108,7 @@ const Login = () => {
           </a>
         </div>
       </div>
-      <Spin spinning={spin} />
+      <Spin spinning={spin} fullscreen/>
     </div>
   );
 };
