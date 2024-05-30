@@ -35,6 +35,7 @@ const ViewPostCensor = () => {
     }
   };
   const datePlus30Days = add30DaysAndFormat(data?.date);
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="view-post-wrapper">
@@ -137,15 +138,8 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
     props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
     },
   };
 };

@@ -8,6 +8,7 @@ const ItemModalFilterForm = ({ value, onClickRadio, title, data, onClick }: any)
   const handleClick = () => {
     setState((prev) => !prev);
   };
+  
   return (
     <div className="sit">
       <div className="header" onClick={handleClick}>

@@ -13,6 +13,7 @@ const CustomModal = ({
   footer,
   ...props
 }: ICustomModalProps) => {
+  
   return (
     <Modal
       {...omit(props, "className")}

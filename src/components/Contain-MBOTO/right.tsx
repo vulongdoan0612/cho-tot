@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { ArrowDownIcon } from "../CustomIcons";
 import { cities, formsCar, fuelCar, numberBox, prices, sitsCar } from "./mock";
 import { useRouter } from "next/router";

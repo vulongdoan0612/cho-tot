@@ -1,5 +1,4 @@
 import { Avatar, Image, Rate } from "antd";
-import { StarIcon } from "../CustomIcons";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";

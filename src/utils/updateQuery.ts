@@ -7,7 +7,6 @@ export const useUpdateQuery = () => {
       console.error("useRouter() can only be used within a Next.js component.");
       return;
     }
-
     const { pathname, query } = router;
     queries.forEach(([key, value]) => {
       if (value !== "undefined" && value !== "") {
@@ -16,7 +15,6 @@ export const useUpdateQuery = () => {
         delete query[key];
       }
     });
-
     const updatedQuery = new URLSearchParams(query as any).toString();
     router.push({
       pathname,
@@ -33,14 +31,10 @@ export const useRemoveQuery = () => {
       console.error("useRouter() can only be used within a Next.js component.");
       return;
     }
-
     const { pathname, query } = router;
-
     if (query[key]) {
       delete query[key];
-
       const updatedQuery = new URLSearchParams(query as any).toString();
-
       router.push({
         pathname,
         search: updatedQuery,

@@ -9,6 +9,7 @@ export const useFetchAllConversationSummary = () => {
   useEffect(() => {
     handleFetchAllConversationSummary();
   }, []);
+  
   const handleFetchAllConversationSummary = () => {
     try {
       dispatch(fetchAllConversationSummary({ typeChat: "all" }));

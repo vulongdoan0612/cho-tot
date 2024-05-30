@@ -133,14 +133,11 @@
       }
     }
     .category-select {
-      // padding-bottom: 2.5rem;
       position: relative;
       cursor: pointer !important;
       .MuiFormControl-root {
         pointer-events: none;
         width: 100%;
-        .MuiInputBase-root {
-        }
       }
       .anticon {
         top: 30%;
@@ -172,9 +169,6 @@
           gap: 16px;
         }
         .car-number {
-          // .MuiInputBase-root {
-          //   height: 100%;
-          // }
           width: 100%;
         }
         .accessories {

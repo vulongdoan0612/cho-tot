@@ -147,15 +147,8 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
     props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
     },
   };
 };

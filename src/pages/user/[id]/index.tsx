@@ -6,7 +6,6 @@ import {
   ChatIcon,
   NullContent2Icon,
   NullContentIcon,
-  PlusIcon,
   PlusUserIcon,
   ShareIcon,
   UserAvatarProfileIcon,
@@ -21,7 +20,6 @@ import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import timeAgo from "@/utils/timeAgo";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-
 import { Alert, Breadcrumb, Image, InputNumberProps, Skeleton, Spin, Tabs, TabsProps, Upload } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -42,9 +40,7 @@ const DetailUser = () => {
   const [alertAvatar, setAlertAvatar] = useState(false);
   const [alertAvatar2, setAlertAvatar2] = useState(false);
   const [alertAvatar4, setAlertAvatar4] = useState(false);
-
   const [developing, setDeveloping] = useState(false);
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [inputValue, setInputValue] = useState(1);
   useFetchDataUser({ body: router, setSpin });
@@ -74,9 +70,6 @@ const DetailUser = () => {
     }
   }, [lastJsonMessage]);
 
-  const onChange: InputNumberProps["onChange"] = (newValue) => {
-    setInputValue(15);
-  };
   const handleShare = () => {
     navigator.clipboard.writeText(`http://localhost:3000${router.asPath}`);
     setAlertShare(true);
@@ -292,7 +285,7 @@ const DetailUser = () => {
                         alt=""
                       ></Image>
                       {account?.user?._id === router?.query?.id ? (
-                        <Upload name="avatar" onChange={handleChange} fileList={fileList} listType="picture" beforeUpload={beforeUpload}>
+                        <Upload name="avatar" onChange={handleChange} fileList={[]} listType="picture" beforeUpload={beforeUpload}>
                           <span className="camera">
                             <CameraIcon></CameraIcon>
                           </span>
@@ -373,7 +366,7 @@ const DetailUser = () => {
           </div>
           <div className="right">
             {" "}
-            <Tabs defaultActiveKey="1" items={items} onChange={onChange} className="tab-ads" />
+            <Tabs defaultActiveKey="1" items={items} className="tab-ads" />
           </div>
         </div>
       </div>

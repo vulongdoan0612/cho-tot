@@ -6,7 +6,6 @@ function addDays(date: any, days: number) {
 
 function formatVietnameseDate(date: any) {
   const daysOfWeek = ["Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
-
   const dayOfWeek = daysOfWeek[date.getDay()];
   const day = date.getDate().toString().padStart(2, "0");
   const month = (date.getMonth() + 1).toString().padStart(2, "0");

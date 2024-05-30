@@ -18,7 +18,7 @@ const PostSell = () => {
   const { category } = router.query;
   const { id } = router.query;
   const [alertAvatar, setAlertAvatar] = useState("");
-  const { account, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { account } = useSelector((state: RootState) => state.auth);
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
@@ -29,7 +29,9 @@ const PostSell = () => {
   const [modalCategory, setModalCategory] = useState(false);
   const [warning, setWarning] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
   type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
   useEffect(() => {
     setRender(category);
     if (category === "0") {
@@ -115,6 +117,7 @@ const PostSell = () => {
       setFileList(newFileList);
     }
   };
+
   const beforeUpload = (file: any) => {
     const isPNG = file.type === "image/png";
     const isJPGE = file.type === "image/jpeg";
@@ -139,6 +142,7 @@ const PostSell = () => {
     }
     return isPNG || isJPGE || isGIF || isJPG || isWEBP || Upload.LIST_IGNORE;
   };
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       {dataPost?.userId === account?.user?._id || router.query.id === undefined ? (
@@ -276,16 +280,8 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
-
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
     props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
     },
   };
 };

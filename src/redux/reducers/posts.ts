@@ -11,6 +11,7 @@ interface IState {
   currentPosts: any;
   postService: any;
 }
+
 export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) => {
   const {
     pageSize,

@@ -3,7 +3,6 @@ import { ArrowDownIcon, ArrowRightIcon } from "../CustomIcons";
 import { useState } from "react";
 
 const ItemModalFilterModels = ({ value, onClickRadio, title, data, onClick, valueRadioBrandModal }: any) => {
-
   const [state, setState] = useState(true);
   
   const handleClick = () => {

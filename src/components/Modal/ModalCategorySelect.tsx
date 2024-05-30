@@ -5,7 +5,6 @@ const ModalCategorySelect = ({
   handleCancleCategory,
   handleSelectCategory,
 }: any) => {
-
   const trafficList = [
     "Ô tô",
     "Xe máy",

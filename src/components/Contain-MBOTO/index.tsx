@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
-import CustomButton from "../CustomButton";
 
 const ContainMBOTO = ({
   posts,
@@ -26,17 +25,18 @@ const ContainMBOTO = ({
   handleChangeTab,
   activeKey,
 }: any) => {
-  
   const router = useRouter();
   const { query } = router;
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [reCurrent, setReCurrent] = useState(1);
+
   const updateURL = (queryParams: any) => {
     router.push({
       pathname: "/mua-ban-oto",
       query: { ...router.query, ...queryParams },
     });
   };
+
   useEffect(() => {
     setReCurrent(1);
   }, [query]);
@@ -44,12 +44,15 @@ const ContainMBOTO = ({
   useEffect(() => {
     setReCurrent(current);
   }, [current]);
+
   const handleClick = () => {
     setOpenModal(true);
   };
+
   const handleLink = (item: string) => {
     updateURL({ city: item, district: "" });
   };
+  
   return (
     <div className="wrapper-contain">
       <Breadcrumb
@@ -111,7 +114,7 @@ const ContainMBOTO = ({
           {loading ? (
             <Skeleton.Input style={{ height: "68px" }} block={true} active size="large"></Skeleton.Input>
           ) : (
-            <BrandSlide setFilter={setFilter} setOpenModal={setOpenModal}></BrandSlide>
+            <BrandSlide setOpenModal={setOpenModal}></BrandSlide>
           )}
           <ItemCar
             activeKey={activeKey}

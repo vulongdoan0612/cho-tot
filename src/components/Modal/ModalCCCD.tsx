@@ -18,7 +18,6 @@ const ModalCCCCD = ({
   fillCCCDLocation,
   cccd,
 }: any) => {
-
   const { loading } = useSelector(
     (state: RootState) => state.countDownLoading
   );

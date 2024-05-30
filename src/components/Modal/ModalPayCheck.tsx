@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 
 const ModalPayCheck = ({ modal, handleCancleModal, price, setAlertAvatar, setSpin }: any) => {
   const { postService } = useSelector((state: RootState) => state.postsData);
-
   const [paidFor, setPaidFor] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -28,6 +27,7 @@ const ModalPayCheck = ({ modal, handleCancleModal, price, setAlertAvatar, setSpi
     };
     document.body.appendChild(script);
   };
+
   useEffect(() => {
     if (!window.paypal) {
       addPayPalScript();
@@ -51,6 +51,7 @@ const ModalPayCheck = ({ modal, handleCancleModal, price, setAlertAvatar, setSpi
       setPaidFor(true);
     }
   };
+
   if (paidFor) {
     setAlertAvatar("Chúc mừng bạn đã thanh toán dịch vụ chúng tôi thành công !");
     setTimeout(() => {
@@ -62,12 +63,14 @@ const ModalPayCheck = ({ modal, handleCancleModal, price, setAlertAvatar, setSpi
     }, 3000);
     setSpin(true);
   }
+
   if (error !== null) {
     setAlertAvatar(error);
     setTimeout(() => {
       setAlertAvatar("");
     }, 3000);
   }
+
   return (
     <CustomModal
       title="Xác nhận đơn hàng"
@@ -104,17 +107,6 @@ const ModalPayCheck = ({ modal, handleCancleModal, price, setAlertAvatar, setSpi
               <div className="price">{price === 1 ? "675.000" : price === 2 ? "375.000" : price === 3 ? "400.000" : "0"} đ</div>
             </div>
           </div>
-          {/* <div className="right">
-            <span>
-              <Image
-                src="https://static.chotot.com.vn/storage/default_images/project/pty/trash.svg"
-                width={24}
-                height={24}
-                alt=""
-                preview={false}
-              ></Image>
-            </span>
-          </div> */}
         </div>
       </div>
       <div className="help">Đối với tin đăng thuộc Gói Pro không được duyệt, Chợ Tốt hoàn trả tin đăng vào Gói Pro của khách hàng.</div>
@@ -157,7 +149,6 @@ const ModalPayCheck = ({ modal, handleCancleModal, price, setAlertAvatar, setSpi
             onCancel={() => console.log("Cancle")}
           />
         )}
-        {/* <CustomButtonGreen>Thanh toán</CustomButtonGreen> */}
       </div>
     </CustomModal>
   );

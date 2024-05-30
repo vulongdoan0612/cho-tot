@@ -1,6 +1,5 @@
-import { getAllConversation, getConversation, getConversationSummary, postMessage } from "@/services/chat";
+import { getAllConversation, getConversation, getConversationSummary } from "@/services/chat";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import useWebSocket from "react-use-websocket";
 
 interface IState {
   conversation: any;

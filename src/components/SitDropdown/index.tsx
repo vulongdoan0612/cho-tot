@@ -6,7 +6,6 @@ import { useRemoveQuery } from "@/utils/updateQuery";
 
 const SitDropdown = ({ setState, valueRadioSit, state }: any) => {
   const removeQuery = useRemoveQuery();
-
   const router = useRouter();
   const sitRef: any = useRef(null);
   const [searchSit, setSearchSit] = useState("");

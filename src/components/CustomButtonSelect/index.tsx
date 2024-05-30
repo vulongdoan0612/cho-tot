@@ -1,4 +1,4 @@
-const CustomButtonSelect = ({ children, handleClick, index, isActive, onClick }: any) => {
+const CustomButtonSelect = ({ children, handleClick, index, isActive}: any) => {
   return (
     <button
       onClick={handleClick}

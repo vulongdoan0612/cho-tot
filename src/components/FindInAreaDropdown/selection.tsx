@@ -20,8 +20,6 @@ const Selection = ({
 }: any) => {
   const districtRef: any = useRef(null);
   const cityRef: any = useRef(null);
-  // const [searchCity, setSearchCity] = useState("");
-  // const [searchDistrict, setSearchDistrict] = useState("");
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {

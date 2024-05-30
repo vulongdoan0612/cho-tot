@@ -20,6 +20,7 @@ const FindInAreaDropdown = ({
   setSearchCity,
   setSearchDistrict,
 }: any) => {
+  
   const wrapperRef: any = useRef(null);
   const router = useRouter();
   const [districtValue, setDistrictValue] = useState<any>([]);

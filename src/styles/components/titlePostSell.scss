@@ -1,26 +1,29 @@
 .title-post-sell-wrapper {
   display: flex;
   flex-direction: column;
-  .title {
-  }
+
   .title-field {
     margin-bottom: 12px;
     margin-top: 16px;
     display: flex;
     flex-direction: column;
     gap: 5px;
+
     span {
       font-size: 0.75rem;
       margin-left: 1rem;
     }
   }
+
   .introducing {
     .text-area {
       width: 100%;
     }
+
     .MuiFormControl-root {
       width: 100%;
       height: auto !important;
+
       .MuiInputBase-root {
         height: auto !important;
         white-space: wrap !important;
@@ -33,9 +36,11 @@
       }
     }
   }
+
   .title-infor {
     margin-bottom: 16px;
   }
+
   .you-are {
     display: block;
     font-size: 0.625rem;
@@ -44,18 +49,22 @@
     font-weight: 700;
     margin-bottom: 8px;
   }
+
   .display-flex {
     display: flex;
     gap: 1rem;
   }
+
   .address {
     cursor: pointer;
     position: relative;
+
     .MuiFormControl-root {
       cursor: pointer;
       pointer-events: none;
       width: 100%;
     }
+
     .anticon {
       z-index: 23232;
       top: 50%;
@@ -66,11 +75,13 @@
     margin-top: 32px;
     margin-bottom: 32px;
   }
+
   .finish {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
   }
+
   .preview {
     color: #f80 !important;
     background: transparent !important;

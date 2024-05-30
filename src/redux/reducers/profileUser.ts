@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface IState {
   detailProfileUser: any;
 }
+
 export const fetchDataUserProfile = createAsyncThunk("/get-posts", async (arg: any) => {
   const { userId } = arg;
   const postData = { userId: userId };

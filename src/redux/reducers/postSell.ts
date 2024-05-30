@@ -1,5 +1,4 @@
 import { getPostCheck } from "@/services/formPost";
-import { getProfile } from "@/services/getProfile";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IState {

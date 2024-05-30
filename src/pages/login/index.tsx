@@ -32,8 +32,7 @@ const Login = () => {
 
           if (response?.data?.status === "SUCCESS") {
             localStorage.setItem("access_token", response?.data?.token);
-            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); // Set cookie with security options
-
+            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); 
             setTimeout(() => {
               router.push("/");
             }, 1000);

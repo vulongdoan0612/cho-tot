@@ -123,7 +123,6 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
       valueRadioCountry: countryFilter?.item,
       valueRadioAllCountry: countryFilter?.item,
     }));
-
     setState((prevState: any) => ({
       ...prevState,
       valueRadioModel: router.query.model,
@@ -172,6 +171,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
     setModalListAll(false);
     setHidden(false);
   };
+
   const handleModalListAll = (type: string) => {
     try {
       setTypeModal(type);
@@ -521,7 +521,6 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
         price: "",
       }));
     }
-
     if (Number(event.target.value) < 10000000) {
       setWarnPriceMax(true);
     } else {
@@ -539,6 +538,7 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
       sit: "",
     }));
   };
+
   const removeBrand = () => {
     setState((prevState: any) => ({
       ...prevState,
@@ -723,7 +723,6 @@ const ModalFilter = ({ handleCancleModal, state, setState, openModal, setFilter,
         districtName: "",
         idCity: "",
         idDistrict: "",
-
         date: "",
         dateMax: "",
         kmMax: "",

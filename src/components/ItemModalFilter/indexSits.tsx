@@ -10,7 +10,6 @@ const ItemModalFilterSits = ({
   data,
   onClick,
 }: any) => {
-
   const [state, setState] = useState(true);
   
   const handleClick = () => {
@@ -61,7 +60,6 @@ const ItemModalFilterSits = ({
           </div>
           <span
             className="see-all"
-            //   onClick={() => handleModalListAll("sit")}
             onClick={onClick}
           >
             Xem tất cả số chỗ <ArrowRightIcon></ArrowRightIcon>

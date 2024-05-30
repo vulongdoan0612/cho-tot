@@ -9,7 +9,6 @@ const ItemModalFilterBrand = ({
   data,
   onClick,
 }: any) => {
-
   const [state, setState] = useState(true);
   
   const handleClick = () => {

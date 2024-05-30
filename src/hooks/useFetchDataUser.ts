@@ -13,6 +13,7 @@ export const useFetchDataUser = ({ body, setSpin }: any) => {
     }, 500);
     handleFetchDataUser();
   }, [body]);
+  
   const handleFetchDataUser = () => {
     try {
       if (!body.isReady) {

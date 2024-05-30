@@ -3,8 +3,10 @@ import { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export const useFetchPosts = ({ setSpin, setCurrent, current, pageSize, body }: any) => {
+export const useFetchPosts = ({ setSpin, current, pageSize, body }: any) => {
+
   const dispatch: AppDispatch = useDispatch();
+
   useEffect(() => {
     current = 1;
   }, [body]);

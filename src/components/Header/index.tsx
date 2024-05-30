@@ -1,7 +1,6 @@
 import { Badge, Button, Dropdown, Input, MenuProps, Skeleton, Space } from "antd";
 import Image from "next/image";
-import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import { BarIcon, BellIcon, CartIcon, ChatIcon, ArrowIcon, MangeShopIcon, UploadNewIcon, SearchIcon } from "../CustomIcons";
+import { BarIcon, ChatIcon, ArrowIcon, MangeShopIcon, UploadNewIcon, SearchIcon } from "../CustomIcons";
 import AvatarDropdown from "../AvatarDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataUser } from "@/redux/reducers/auth";
@@ -16,6 +15,8 @@ import { useRouter } from "next/router";
 import limitInputCharacters from "@/utils/limitInput";
 
 const Header = () => {
+  const router = useRouter();
+  const brandRef: any = useRef(null);
   const { account } = useSelector((state: RootState) => state.auth);
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const dispatch = useDispatch<AppDispatch>();
@@ -30,14 +31,15 @@ const Header = () => {
     const res = await getAnnounceChat(String(token));
     setBadge(res.data.announceChat);
   };
+
   useEffect(() => {
-    console.log(lastJsonMessage?.userId === account?.user?._id, lastJsonMessage?.action === "annouce");
     if (lastJsonMessage?.userId === account?.user?._id && lastJsonMessage?.action === "annouce") {
       if (lastJsonMessage?.action === "annouce") {
         fetchAnnounce();
       }
     }
   }, [lastJsonMessage]);
+
   useEffect(() => {
     fetchData();
     startCountdown();
@@ -95,26 +97,25 @@ const Header = () => {
       label: "a danger item",
     },
   ];
-  const router = useRouter();
+
   const updateURL = (queryParams: any) => {
     router.push({
       pathname: "/mua-ban-oto",
       query: { ...router.query, ...queryParams },
     });
   };
+
   const updateURL2 = (queryParams: any) => {
     const newQuery = { ...router.query, ...queryParams };
-
-    // Remove keySearch if it's an empty string
     if (queryParams.keySearch === "") {
       delete newQuery.keySearch;
     }
-
     router.push({
       pathname: "/mua-ban-oto",
       query: newQuery,
     });
   };
+
   const handleSearchList = async (e: any) => {
     updateURL({ keySearch: e?.target?.value });
     if (e.target.value !== "") {
@@ -122,7 +123,6 @@ const Header = () => {
       setValue(newValue);
       const data = {
         keySearch: router.query.keySearch,
-
         price: router.query.price,
         form: router.query.form,
         sit: router.query.sit,
@@ -151,11 +151,9 @@ const Header = () => {
       }
     } else {
       setValue("");
-
       updateURL2({ keySearch: "" });
     }
   };
-  const brandRef: any = useRef(null);
 
   const handleSearch = async (e: any) => {
     if (e.key === "Enter") {
@@ -163,12 +161,14 @@ const Header = () => {
       setOpenListSearch(false);
     }
   };
+
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
     setValue(router?.query?.keySearch);
   }, [router?.query?.keySearch]);
+
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
@@ -194,6 +194,7 @@ const Header = () => {
     updateURL({ keySearch: item });
     setOpenListSearch(false);
   };
+
   return (
     <header className="header">
       <div className="left">
@@ -259,21 +260,11 @@ const Header = () => {
           <Skeleton.Input active block={true} size="large"></Skeleton.Input>
         ) : (
           <>
-            {/* <Badge count={5}>
-                <BellIcon />
-              </Badge> */}
             <Link href="/chat">
               <Badge dot={badge}>
                 <ChatIcon />
               </Badge>
             </Link>
-            {/* <div className="dropdown-cart">
-              <Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }}>
-                <a onClick={(e) => e.preventDefault()}>
-                  <CartIcon />
-                </a>
-              </Dropdown>
-            </div> */}
             <div className="mangeShop">
               <MangeShopIcon />
               <Link href="/my-ads">
@@ -282,7 +273,6 @@ const Header = () => {
             </div>
           </>
         )}
-
         <div className="avatar">
           {loading ? (
             <Skeleton.Button active block={true} size="large" style={{ minWidth: "72px" }}></Skeleton.Button>

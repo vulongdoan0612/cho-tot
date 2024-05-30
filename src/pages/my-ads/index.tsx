@@ -29,7 +29,6 @@ const MyAds = () => {
   const router = useRouter();
   const { lastJsonMessage: lastMessage8082 }: any = useWebSocket("ws://localhost:443");
   const { lastJsonMessage: lastMessage8083 }: any = useWebSocket("ws://localhost:443");
-
   const [inputValue, setInputValue] = useState(1);
   const [spin, setSpin] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -73,6 +72,7 @@ const MyAds = () => {
       }
     }
   }, [lastMessage8082]);
+
   useEffect(() => {
     if (lastMessage8083?.action === "update-view-post" && account?.user?._id === lastMessage8083.userId) {
       setSkeleton(true);
@@ -83,6 +83,7 @@ const MyAds = () => {
       getDataListPost();
     }
   }, [lastMessage8083]);
+
   const onChange: InputNumberProps["onChange"] = (newValue) => {
     // setInputValue(15);
   };
@@ -258,7 +259,6 @@ const MyAds = () => {
                         <div className="service">
                           <div className="top">
                             <span className="current">Dịch vụ đang sử dụng</span>
-                            {/* <span className="detail">Xem chi tiết</span> */}
                           </div>
                           <div className="bottom">
                             {item?.prioritize === "26.51" ? (
@@ -334,7 +334,6 @@ const MyAds = () => {
                         </div>
                       </div>
                     </div>
-
                     <div className="right">
                       <div className="top">
                         <div className="flex">
@@ -632,15 +631,8 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
     props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
     },
   };
 };

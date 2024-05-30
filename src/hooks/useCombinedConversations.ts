@@ -1,6 +1,3 @@
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
-
 const combineConversationSummary = (allConversation: any, allConversationSummary: any, account: any) => {
   const combinedConversations = allConversationSummary.map((summary: any) => {
     const convo = allConversation?.find((convo: any) => convo?.idRoom === summary.idRoom);
@@ -12,7 +9,6 @@ const combineConversationSummary = (allConversation: any, allConversationSummary
       hidden = summary?.hiddenReceive || false;
     }
 
-    // Ẩn data nếu hidden là true
     if (hidden) {
       return null;
     }
@@ -25,7 +21,6 @@ const combineConversationSummary = (allConversation: any, allConversationSummary
       lastTextToNow: summary?.lastTextToNow,
     };
   });
-  console.log(combinedConversations.filter((conversation: any) => conversation !== null));
   return combinedConversations.filter((conversation: any) => conversation !== null);
 };
 

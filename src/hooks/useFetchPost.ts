@@ -1,6 +1,5 @@
 import { fetchDataPost } from "@/redux/reducers/posts";
 import { AppDispatch } from "@/redux/store";
-import useDidMountEffect from "@/utils/customUseEffect";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
@@ -10,6 +9,7 @@ export const useFetchPost = ({ setSpin, body }: any) => {
   useEffect(() => {
     handleFetchPost();
   }, [body]);
+
   const handleFetchPost = () => {
     try {
       if (!body.isReady) {

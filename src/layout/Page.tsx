@@ -1,9 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import NextAdapterPages from "next-query-params/pages";
 import React, { useMemo } from "react";
 import { ToastContainer } from "react-toastify";
-import { QueryParamProvider } from "use-query-params";
 
 interface PropsPage {
   loadingData?: boolean;
@@ -12,7 +10,7 @@ interface PropsPage {
 }
 
 const Page = (props: PropsPage) => {
-  const { loadingData, children, style } = props;
+  const { children, style } = props;
   const page = useMemo(() => {
     return <>{children}</>;
   }, [children]);

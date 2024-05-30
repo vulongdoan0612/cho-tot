@@ -9,6 +9,7 @@ export const useFetchFavListMain = () => {
   useEffect(() => {
     handleFetchFavListMain();
   }, []);
+  
   const handleFetchFavListMain = () => {
     try {
       dispatch(fetchDataFavListMain());

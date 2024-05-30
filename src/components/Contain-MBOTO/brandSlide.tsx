@@ -3,7 +3,7 @@ import { Image } from "antd";
 import { useRouter } from "next/router";
 import Slider from "react-slick";
 
-const BrandSlide = ({ setFilter, filter, setOpenModal }: any) => {
+const BrandSlide = ({ setOpenModal }: any) => {
   const router = useRouter();
   const updateURL = (queryParams: any) => {
     router.push({

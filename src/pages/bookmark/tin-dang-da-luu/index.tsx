@@ -44,6 +44,7 @@ const FavPage = () => {
       }
     }
   };
+
   const handleChat = async (item: any) => {
     const accessToken: any = localStorage.getItem("access_token");
     const data = {
@@ -55,6 +56,7 @@ const FavPage = () => {
       router.push(`/chat?currentRoom=${item?.postId}`);
     }
   };
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="fav-wrapper">
@@ -152,16 +154,8 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
-    props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
-    },
+    props: {},
   };
 };
 export default FavPage;

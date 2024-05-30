@@ -25,7 +25,6 @@ const SellingPage = () => {
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const router = useRouter();
   const updateQuery = useUpdateQuery();
-
   const dispatch: AppDispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.postsData);
   const [spin, setSpin] = useState(false);
@@ -51,6 +50,7 @@ const SellingPage = () => {
     price: "",
     km: "",
   });
+
   const handleChangeTab = (key: string) => {
     if (key === "1") {
       if (!router.isReady) {
@@ -65,22 +65,17 @@ const SellingPage = () => {
         setSpin(false);
       }, 500);
       let updatedFilter = { ...filter };
-
       updatedFilter.post = "all";
-
       const queries: any = Object.entries(updatedFilter).filter(([_, value]) => value !== "");
-
       updateQuery(queries);
     }
+
     if (key === "2") {
       if (!router.isReady) {
         return;
       }
-
       let updatedFilter = { ...filter };
-
       updatedFilter.post = "ca-nhan";
-
       const queries: any = Object.entries(updatedFilter).filter(([_, value]) => value !== "");
       setState((prevState: any) => ({
         ...prevState,
@@ -98,9 +93,7 @@ const SellingPage = () => {
       }
 
       let updatedFilter = { ...filter };
-
       updatedFilter.post = "ban-chuyen";
-
       const queries: any = Object.entries(updatedFilter).filter(([_, value]) => value !== "");
       setState((prevState: any) => ({
         ...prevState,
@@ -113,8 +106,8 @@ const SellingPage = () => {
       }, 500);
     }
   };
+
   useFetchPosts({
-    setCurrent,
     current: current,
     pageSize: pageSize,
     body: router,
@@ -477,7 +470,6 @@ const SellingPage = () => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -575,6 +567,7 @@ const SellingPage = () => {
   const onChangePage = (page: number) => {
     setCurrent(page);
   };
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="selling-wrapper">
@@ -792,7 +785,6 @@ const SellingPage = () => {
         setFilter={setFilter}
         filter={filter}
       ></ModalFilter>
-      {/* <Spin spinning={spin} fullscreen={true}></Spin> */}
     </Page>
   );
 };

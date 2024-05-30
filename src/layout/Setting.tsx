@@ -1,5 +1,4 @@
 import { Breadcrumb } from "antd";
-import Page from "./Page";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useMemo } from "react";
@@ -14,7 +13,7 @@ interface PropsPage {
   removeAccount?: boolean;
 }
 const Setting = (props: PropsPage) => {
-  const { loadingData, children, style, title, active, removeAccount } = props;
+  const { children, title, active, removeAccount } = props;
   const router = useRouter();
 
   const page = useMemo(() => {

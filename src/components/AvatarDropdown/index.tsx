@@ -21,6 +21,7 @@ const AvatarDropdown = () => {
       label: <DropdownList></DropdownList>,
     },
   ];
+  
   return (
     <div className="avatar-dropdown">
       <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">

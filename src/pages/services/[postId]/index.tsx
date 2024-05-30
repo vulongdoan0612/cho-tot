@@ -1,14 +1,12 @@
 import CustomButtonGreen from "@/components/CustomButton/green";
-import { LetterIIcon } from "@/components/CustomIcons";
 import ModalPayCheck from "@/components/Modal/ModalPayCheck";
-import { useFetchPost } from "@/hooks/useFetchPost";
 import { useFetchPostService } from "@/hooks/useFetchPostService";
 import Page from "@/layout/Page";
 import { RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
-import { Alert, Checkbox, CheckboxProps, Image, Spin } from "antd";
+import { Alert, Checkbox,  Image, Spin } from "antd";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { useSelector } from "react-redux";
 import cookie from "cookie";
 import NotFound from "@/components/404";
@@ -17,7 +15,6 @@ import Link from "next/link";
 const ServicesPost = () => {
   const { postService } = useSelector((state: RootState) => state.postsData);
   const { account } = useSelector((state: RootState) => state.auth);
-
   const router = useRouter();
   const [selectedCheckbox, setSelectedCheckbox] = useState(1);
   const [modal, setModal] = useState(false);
@@ -26,13 +23,10 @@ const ServicesPost = () => {
 
   useFetchPostService({ body: router });
 
-  // Hàm để xử lý khi hộp kiểm được thay đổi
   const onChangeCheckBox = (index: number) => {
     if (selectedCheckbox === index) {
-      // Nếu hộp kiểm đã được chọn, bỏ chọn nó
       setSelectedCheckbox(0);
     } else {
-      // Chọn hộp kiểm mới
       setSelectedCheckbox(index);
     }
   };
@@ -44,6 +38,7 @@ const ServicesPost = () => {
   const handleCancleModal = () => {
     setModal(false);
   };
+
   return (
     <Page style={{ backgroundColor: "#f4f4f4", position: "relative" }}>
       {postService?.post?.userId !== account?.user?._id ? (
@@ -206,15 +201,8 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
     props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
     },
   };
 };

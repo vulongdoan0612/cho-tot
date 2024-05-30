@@ -687,7 +687,6 @@ const User = () => {
                 id="filled-multiline-flexible"
                 label="Địa chỉ"
                 className={`fullname ${fillFullAddr ? "warn-border" : ""}`}
-                // onChange={handleAddress}
                 value={stateUser?.fullAddress}
                 multiline
                 maxRows={4}
@@ -733,7 +732,7 @@ const User = () => {
                 </>
               )}
               <p className="text">
-                https://www.chotot.com/user/<span>dsadasdsadasd</span>
+                https://www.chotot.com/user/<span></span>
               </p>
               <p className="des">Tên gợi nhớ sau khi được cập nhật sẽ không thể thay đổi trong vòng 60 ngày tới.</p>
             </div>
@@ -909,15 +908,8 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
     props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
     },
   };
 };

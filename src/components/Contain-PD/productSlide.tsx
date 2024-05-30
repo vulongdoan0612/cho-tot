@@ -17,16 +17,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
   const [active2, setActive2] = useState(1);
   const [fav, setFav] = useState(false);
   const [fav2, setFav2] = useState(false);
-  const [blur, setBlur] = useState(false);
   const [author, setAuthor] = useState(false);
-
-  const router = useRouter();
-  const handleShare = () => {
-    setAlertShare(true);
-    setTimeout(() => {
-      setAlertShare(false);
-    }, 2000);
-  };
 
   useEffect(() => {
     if (checkFavPost.status) {
@@ -248,7 +239,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
                   {fav && <AddedFavouritePostIcon onClick={() => handleUnFav(post?.post?.postId)} className="fav"></AddedFavouritePostIcon>}
                 </div>
                 <Image
-                  className={`${blur ? "blur-image" : ""} image-main-slide`}
+                  className={`image-main-slide`}
                   src={hoveredImageSrc ? hoveredImageSrc : post?.post?.post?.image[0]?.img}
                   preview={false}
                   width={656}
@@ -277,7 +268,7 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
                   )}
                 </div>
                 <Image
-                  className={`${blur ? "blur-image" : ""} image-main-slide`}
+                  className={`image-main-slide`}
                   src={hoveredImageSrc2 ? hoveredImageSrc2 : post?.post?.post?.image[0]?.img}
                   preview={false}
                   width={656}

@@ -26,12 +26,10 @@ const { TextArea } = Input;
 
 const Chat = () => {
   const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
-
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
   const { account } = useSelector((state: RootState) => state.auth);
-
   const conversationRef: any = useRef(null);
   const [search, setSearch] = useState("");
   const [typeChat, setTypeChat] = useState("all");
@@ -45,6 +43,7 @@ const Chat = () => {
 
   useFetchAllConversation();
   useFetchAllConversationSummary();
+
   const formatTimeToNowInVietnamese = (isoDate: any) => {
     return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
   };
@@ -62,21 +61,24 @@ const Chat = () => {
       }
     }
   }, [router?.query?.currentRoom, allConversationSummary, dispatch, conversationFetched, conversation]);
+
   useEffect(() => {
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchConversation({ idRoom: conversation.idRoom }));
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
+      combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
     }
+
     if (lastJsonMessage?.idRoom !== conversation.idRoom && lastJsonMessage?.action === "post-message") {
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
+      combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
     }
+
     if (lastJsonMessage?.action === "create-room") {
       if (lastJsonMessage?.userSend === account?.user?._id || lastJsonMessage?.userReceive === account?.user?._id) {
         dispatch(fetchConversation({ idRoom: conversation.idRoom }));
         dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-        combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
+        combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
         dispatch(fetchAllConversation({ search: search, typeChat: typeChat }));
         setSkeleton(true);
         setTimeout(() => {
@@ -105,7 +107,7 @@ const Chat = () => {
     setTypeChat(e.target.value);
     dispatch(fetchAllConversation({ search: typeText, typeChat: e.target.value }));
     dispatch(fetchAllConversationSummary({ typeChat: e.target.value }));
-    combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
+    combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
     setSkeleton(true);
     setTimeout(() => {
       setSkeleton(false);
@@ -123,10 +125,7 @@ const Chat = () => {
         const token = localStorage.getItem("access_token");
         try {
           const data = { text: trimmedText, idRoom: conversation.idRoom };
-          const res = await postMessage(String(token), data);
-          if (res.status === 200) {
-            // Handle successful response if needed
-          }
+          await postMessage(String(token), data);
         } finally {
           setTypeText("");
         }
@@ -142,7 +141,7 @@ const Chat = () => {
     await hiddenMessage(String(accessToken), idRoom);
     dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
     dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-    combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
+    combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
     setHiddenChat(false);
     setHiddenChatList([]);
     setCountHidden(0);
@@ -151,11 +150,11 @@ const Chat = () => {
       setSkeleton(false);
     }, 200);
   };
+
   const handleSend = async () => {
     const token = localStorage.getItem("access_token");
     const data = { text: typeText, idRoom: conversation.idRoom };
     await postMessage(String(token), data);
-
     setTypeText("");
   };
 
@@ -167,14 +166,13 @@ const Chat = () => {
       setSkeleton2(false);
     }, 200);
     router.push(`/chat?currentRoom=${item.postId}`);
-    // router.push(`/chat?currentRoom=${item.idRoom}`, undefined, { shallow: true }); // Thay đổi URL với tùy chọn shallow
   };
+
   const handleSendRec = async (e: any) => {
     const messageText = e.target.getAttribute("data-value");
     const token = localStorage.getItem("access_token");
     const data = { text: messageText, idRoom: conversation.idRoom };
     await postMessage(String(token), data);
-
     setTypeText("");
   };
 
@@ -185,11 +183,10 @@ const Chat = () => {
   const onChangeHiddenChat = (e: any, item: any) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      setHiddenChatList([...hiddenChatList, { idRoom: item.idRoom, userReceive: item.userReceive, userSend: item.userSend }]); // Thêm idRoom vào hiddenChatList
-
+      setHiddenChatList([...hiddenChatList, { idRoom: item.idRoom, userReceive: item.userReceive, userSend: item.userSend }]);
       setCountHidden(countHidden + 1);
     } else {
-      setHiddenChatList(hiddenChatList.filter((roomId: string) => roomId !== item.idRoom)); // Loại bỏ idRoom khỏi hiddenChatList
+      setHiddenChatList(hiddenChatList.filter((roomId: string) => roomId !== item.idRoom));
 
       setCountHidden(countHidden - 1);
     }
@@ -200,9 +197,9 @@ const Chat = () => {
     setCountHidden(0);
     setHiddenChatList([]);
   };
+
   const hiddenByDot = async () => {
     try {
-      // setHiddenChatList([...hiddenChatList, { idRoom: item.idRoom, userReceive: item.userReceive, userSend: item.userSend }]);
       const accessToken = localStorage.getItem("access_token");
       await hiddenMessage(String(accessToken), {
         hiddenChatList: [{ idRoom: conversation.idRoom, userReceive: conversation.userReceive, userSend: conversation.userSend }],
@@ -211,7 +208,7 @@ const Chat = () => {
       setHiddenChat(false);
       dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
       dispatch(fetchAllConversationSummary(typeChat));
-      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
+      combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
       setSkeleton(true);
       setTimeout(() => {
         setSkeleton(false);
@@ -226,13 +223,14 @@ const Chat = () => {
     } finally {
       dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
       dispatch(fetchAllConversationSummary(typeChat));
-      combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account);
+      combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
       setSkeleton(true);
       setTimeout(() => {
         setSkeleton(false);
       }, 200);
     }
   };
+
   const handleSeeProfile = () => {
     if (account?.user?._id === conversation.userReceive) {
       router.push(`/user/${conversation.userSend}`);
@@ -283,10 +281,9 @@ const Chat = () => {
     setHiddenChat(false);
     setHiddenChatList([]);
   };
-  console.log(allConversation);
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
-      {allConversation.filteredUpdatedPosts.length > 0 || typeChat === "hidden" || typeChat === "all" ? (
+      {allConversation?.filteredUpdatedPosts?.length > 0 || typeChat === "hidden" || typeChat === "all" ? (
         <div className="chat-wrapper">
           <div className="left">
             {hiddenChat ? (
@@ -333,10 +330,10 @@ const Chat = () => {
               <Skeleton.Input style={{ height: "506.5px", width: "372.39px" }} block={true} active size="large"></Skeleton.Input>
             ) : (
               <div className="list-room">
-                {allConversation.filteredUpdatedPosts.length > 0 ? (
+                {allConversation?.filteredUpdatedPosts?.length > 0 ? (
                   <>
                     {" "}
-                    {combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account)?.map(
+                    {combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account)?.map(
                       (item: any, index: string) => {
                         const lastTextToNow = item.lastTextToNow ? formatTimeToNowInVietnamese(item.lastTextToNow) : "";
                         return (
@@ -410,7 +407,7 @@ const Chat = () => {
               </>
             ) : (
               <>
-                {combineConversationSummary(allConversation.filteredUpdatedPosts, allConversationSummary, account).length > 0 ? (
+                {combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account).length > 0 ? (
                   <div className="hidden-chat">
                     <button onClick={handleHiddenChat}>
                       <HiddenEyeIcon></HiddenEyeIcon>Ẩn hội thoại
@@ -633,16 +630,8 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  // Lấy dữ liệu từ máy chủ dựa trên token hoặc các thông tin khác nếu cần
-  // Ví dụ:
-  // const data = await fetchDataFromServer(token);
-
   return {
-    props: {
-      // Truyền dữ liệu cần thiết xuống component
-      // Ví dụ:
-      // data: data
-    },
+    props: {},
   };
 };
 export default Chat;

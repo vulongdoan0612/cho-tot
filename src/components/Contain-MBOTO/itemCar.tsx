@@ -8,12 +8,10 @@ import { useFetchFavListMain } from "@/hooks/useFetchFavListMain";
 import { addFavPost, removeFavPost } from "@/services/favPost";
 import { fetchDataFavListMain } from "@/redux/reducers/posts";
 import { createConversation } from "@/services/chat";
-import { formatDistanceToNow, parseISO } from "date-fns";
-import { vi } from "date-fns/locale";
 import timeAgo from "@/utils/timeAgo";
-import { useFetchPosts } from "@/hooks/useFetchPosts";
 
 const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
+
   const router = useRouter();
   const { favPostListMain } = useSelector((state: RootState) => state.postsData);
   const dispatch: AppDispatch = useDispatch();
@@ -62,9 +60,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
       router.push(`/chat?currentRoom=${postId}`);
     }
   };
-  // const formatTimeToNowInVietnamese = (isoDate: any) => {
-  //   return formatDistanceToNow(parseISO(isoDate), { addSuffix: true, locale: vi });
-  // };
+
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -77,7 +73,6 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                 {posts &&
                   posts?.data?.map((item: any, index: number) => {
                     const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
-                    // const lastTextToNow = item.date ? formatTimeToNowInVietnamese(item.date) : "";
                     return (
                       <div className="tab" key={index}>
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
@@ -312,7 +307,6 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                 ></Image>
                 <span className="title">Không tìm thấy tin đăng</span>
                 <span className="desc">Hiện tại không có tin đăng nào cho trạng thái lọc này</span>
-                {/* <CustomButton>Đăng tin</CustomButton> */}
               </div>
             )}
           </div>
@@ -330,7 +324,6 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                 {posts &&
                   posts?.data?.map((item: any, index: number) => {
                     const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
-                    // const lastTextToNow = item.date ? formatTimeToNowInVietnamese(item.date) : "";
                     return (
                       <div className="tab" key={index}>
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
@@ -565,7 +558,6 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                 ></Image>
                 <span className="title">Không tìm thấy tin đăng</span>
                 <span className="desc">Hiện tại không có tin đăng nào cho trạng thái lọc này</span>
-                {/* <CustomButton>Đăng tin</CustomButton> */}
               </div>
             )}
           </div>
@@ -583,7 +575,6 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                 {posts &&
                   posts?.data?.map((item: any, index: number) => {
                     const isFavorite = favPostListMain?.favPost?.postFavList?.some((favItem: any) => favItem.postId === item.postId);
-                    // const lastTextToNow = item.date ? formatTimeToNowInVietnamese(item.date) : "";
                     return (
                       <div className="tab" key={index}>
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
@@ -818,7 +809,6 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                 ></Image>
                 <span className="title">Không tìm thấy tin đăng</span>
                 <span className="desc">Hiện tại không có tin đăng nào cho trạng thái lọc này</span>
-                {/* <CustomButton>Đăng tin</CustomButton> */}
               </div>
             )}
           </div>
