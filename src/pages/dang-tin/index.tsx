@@ -19,7 +19,8 @@ const PostSell = () => {
   const { id } = router.query;
   const [alertAvatar, setAlertAvatar] = useState("");
   const { account } = useSelector((state: RootState) => state.auth);
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
+  // const { loading } = useSelector((state: RootState) => state.countDownLoading);
+  const [loading, setLoading] = useState(true);
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -73,7 +74,7 @@ const PostSell = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchDataPost(String(id)));
+      dispatch(fetchDataPost({ id, setLoading }));
     }
   }, [id]);
 
@@ -142,10 +143,9 @@ const PostSell = () => {
     }
     return isPNG || isJPGE || isGIF || isJPG || isWEBP || Upload.LIST_IGNORE;
   };
-
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
-      {dataPost?.userId === account?.user?._id || router.query.id === undefined ? (
+      {(account?.user !== undefined && dataPost?.userId === account?.user?._id) || router.query.id !== undefined ? (
         <div className="post-sell-wrapper">
           <div className="left">
             <h5>Hình ảnh và Video sản phẩm</h5>
