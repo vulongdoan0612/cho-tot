@@ -9,19 +9,23 @@ import { addFavPost, removeFavPost } from "@/services/favPost";
 import { fetchDataFavListMain } from "@/redux/reducers/posts";
 import { createConversation } from "@/services/chat";
 import timeAgo from "@/utils/timeAgo";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
-
   const router = useRouter();
   const { favPostListMain } = useSelector((state: RootState) => state.postsData);
   const dispatch: AppDispatch = useDispatch();
+  const [skele, setSkele] = useState(false);
 
   useFetchFavListMain();
 
-  const handleRouter = (item: any) => {
-    router.push(`/${item?.post?.slug}/${item?.postId}`);
-  };
-
+  useEffect(() => {
+    setSkele(true);
+    setTimeout(() => {
+      setSkele(false);
+    }, 200);
+  }, []);
   const handleRemoveFavPost = async (postId: string) => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -78,122 +82,144 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
                           <div className="contain-prioritize">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <div
-                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
-                              onClick={() => handleRouter(item)}
-                            >
-                              <Image
-                                className={"left-contain-tab"}
-                                src={item?.post?.image[0]?.img}
-                                preview={false}
-                                alt=""
-                                width={365.19}
-                                height={222}
-                              ></Image>
-                              <div className="image-gallery-right">
-                                {" "}
+                            <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                              <div
+                                className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
+                                // onClick={() => handleRouter(item)}
+                              >
                                 <Image
                                   className={"left-contain-tab"}
-                                  src={item?.post?.image[1]?.img}
+                                  src={item?.post?.image[0]?.img}
                                   preview={false}
                                   alt=""
-                                  width={242.78}
-                                  height={109}
-                                ></Image>{" "}
-                                <Image
-                                  className={"left-contain-tab"}
-                                  src={item?.post?.image[2]?.img}
-                                  preview={false}
-                                  alt=""
-                                  width={119.39}
-                                  height={109}
-                                ></Image>{" "}
-                                <div className="last-img">
+                                  width={365.19}
+                                  height={222}
+                                ></Image>
+                                <div className="image-gallery-right">
+                                  {" "}
                                   <Image
                                     className={"left-contain-tab"}
-                                    src={item?.post?.image[3]?.img}
+                                    src={item?.post?.image[1]?.img}
+                                    preview={false}
+                                    alt=""
+                                    width={242.78}
+                                    height={109}
+                                  ></Image>{" "}
+                                  <Image
+                                    className={"left-contain-tab"}
+                                    src={item?.post?.image[2]?.img}
                                     preview={false}
                                     alt=""
                                     width={119.39}
                                     height={109}
-                                  ></Image>
-                                  <div className="background">+{item.post.image.length - 4}</div>
+                                  ></Image>{" "}
+                                  <div className="last-img">
+                                    <Image
+                                      className={"left-contain-tab"}
+                                      src={item?.post?.image[3]?.img}
+                                      preview={false}
+                                      alt=""
+                                      width={119.39}
+                                      height={109}
+                                    ></Image>
+                                    <div className="background">+{item.post.image.length - 4}</div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </Link>
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <div className="header" onClick={() => handleRouter(item)}>
-                                  <span className="title">{item?.post?.title}</span>
-                                  {isFavorite ? (
-                                    <div className="add-fav">
-                                      <AddedFavouritePostIcon
-                                        onClick={() => handleRemoveFavPost(item?.postId)}
-                                        className="fav"
-                                      ></AddedFavouritePostIcon>
-                                    </div>
-                                  ) : (
-                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
-                                  )}
-                                </div>
-                                <span className="description" onClick={() => handleRouter(item)}>
-                                  {item?.post?.dateCar}
-                                  {item?.post?.km === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {" "}
-                                      <hr></hr>
-                                      {formatNumberWithCommas(item?.post?.km)} km
-                                    </>
-                                  )}
-                                  <hr></hr>
-                                  {item?.post?.fuel}
-                                  {item?.post?.numberBox}
-                                </span>
-                                <div className="middle" onClick={() => handleRouter(item)}>
-                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                                  <span className="address">
-                                    {item?.prioritize === "26.51" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
-                                      </span>
-                                    ) : item?.prioritize === "14.73" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
-                                      </span>
-                                    ) : item?.prioritize === "15.71" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
-                                      </span>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="header"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="title">{item?.post?.title}</span>
+                                    {isFavorite ? (
+                                      <div className="add-fav">
+                                        <AddedFavouritePostIcon
+                                          onClick={() => handleRemoveFavPost(item?.postId)}
+                                          className="fav"
+                                        ></AddedFavouritePostIcon>
+                                      </div>
                                     ) : (
-                                      <>{timeAgo(item?.date)}</>
+                                      <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                    )}
+                                  </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <span
+                                    className="description"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    {item?.post?.dateCar}
+                                    {item?.post?.km === 0 ? (
+                                      <></>
+                                    ) : (
+                                      <>
+                                        {" "}
+                                        <hr></hr>
+                                        {formatNumberWithCommas(item?.post?.km)} km
+                                      </>
                                     )}
                                     <hr></hr>
-                                    {item?.post?.cityValueName}
+                                    {item?.post?.fuel}
+                                    {item?.post?.numberBox}
                                   </span>
-                                </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="middle"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                    <span className="address">
+                                      {item?.prioritize === "26.51" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                        </span>
+                                      ) : item?.prioritize === "14.73" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                        </span>
+                                      ) : item?.prioritize === "15.71" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                        </span>
+                                      ) : (
+                                        <>{timeAgo(item?.date)}</>
+                                      )}
+                                      <hr></hr>
+                                      {item?.post?.cityValueName}
+                                    </span>
+                                  </div>
+                                </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <div className="user-left" onClick={() => handleRouter(item)}>
-                                      <Image
-                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
-                                        alt=""
-                                        width={24}
-                                        height={24}
-                                      ></Image>
-                                      <div className="info-user">
-                                        <span className="username">{item?.userInfo?.fullName}</span>
-                                        <div className="sell">
-                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
-                                          <hr></hr>
-                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                      <div
+                                        className="user-left"
+                                        // onClick={() => handleRouter(item)}
+                                      >
+                                        <Image
+                                          src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                          alt=""
+                                          width={24}
+                                          height={24}
+                                        ></Image>
+                                        <div className="info-user">
+                                          <span className="username">{item?.userInfo?.fullName}</span>
+                                          <div className="sell">
+                                            <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                            <hr></hr>
+                                            <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
+                                    </Link>
                                     <button onClick={() => handleChat(item?.postId)}>
                                       <ChatIcon width={20} height={20}></ChatIcon>
                                       Chat
@@ -206,82 +232,113 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         ) : (
                           <div className="contain">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
-                              <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
+                            <div
+                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}
+                              // onClick={() => handleRouter(item)}
+                            >
+                              <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[0]?.img}
+                                  alt=""
+                                  width={128}
+                                  height={128}
+                                ></Image>
+                              </Link>
                             </div>
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <div className="header" onClick={() => handleRouter(item)}>
-                                  <span className="title">{item?.post?.title}</span>
-                                  {isFavorite ? (
-                                    <div className="add-fav">
-                                      <AddedFavouritePostIcon
-                                        onClick={() => handleRemoveFavPost(item?.postId)}
-                                        className="fav"
-                                      ></AddedFavouritePostIcon>
-                                    </div>
-                                  ) : (
-                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
-                                  )}
-                                </div>
-                                <span className="description" onClick={() => handleRouter(item)}>
-                                  {item?.post?.dateCar}
-                                  {item?.post?.km === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {" "}
-                                      <hr></hr>
-                                      {formatNumberWithCommas(item?.post?.km)} km
-                                    </>
-                                  )}
-                                  <hr></hr>
-                                  {item?.post?.fuel}
-                                  {item?.post?.numberBox}
-                                </span>
-                                <div className="middle" onClick={() => handleRouter(item)}>
-                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                                  <span className="address">
-                                    {item?.prioritize === "26.51" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
-                                      </span>
-                                    ) : item?.prioritize === "14.73" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
-                                      </span>
-                                    ) : item?.prioritize === "15.71" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
-                                      </span>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="header"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="title">{item?.post?.title}</span>
+                                    {isFavorite ? (
+                                      <div className="add-fav">
+                                        <AddedFavouritePostIcon
+                                          onClick={() => handleRemoveFavPost(item?.postId)}
+                                          className="fav"
+                                        ></AddedFavouritePostIcon>
+                                      </div>
                                     ) : (
-                                      <>{timeAgo(item?.date)}</>
+                                      <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                    )}
+                                  </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <span
+                                    className="description"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    {item?.post?.dateCar}
+                                    {item?.post?.km === 0 ? (
+                                      <></>
+                                    ) : (
+                                      <>
+                                        {" "}
+                                        <hr></hr>
+                                        {formatNumberWithCommas(item?.post?.km)} km
+                                      </>
                                     )}
                                     <hr></hr>
-                                    {item?.post?.cityValueName}
+                                    {item?.post?.fuel}
+                                    {item?.post?.numberBox}
                                   </span>
-                                </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="middle"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                    <span className="address">
+                                      {item?.prioritize === "26.51" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                        </span>
+                                      ) : item?.prioritize === "14.73" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                        </span>
+                                      ) : item?.prioritize === "15.71" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                        </span>
+                                      ) : (
+                                        <>{timeAgo(item?.date)}</>
+                                      )}
+                                      <hr></hr>
+                                      {item?.post?.cityValueName}
+                                    </span>
+                                  </div>
+                                </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <div className="user-left" onClick={() => handleRouter(item)}>
-                                      <Image
-                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
-                                        alt=""
-                                        width={24}
-                                        height={24}
-                                      ></Image>
-                                      <div className="info-user">
-                                        <span className="username">{item?.userInfo?.fullName}</span>
-                                        <div className="sell">
-                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
-                                          <hr></hr>
-                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                      <div
+                                        className="user-left"
+                                        // onClick={() => handleRouter(item)}
+                                      >
+                                        <Image
+                                          src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                          alt=""
+                                          width={24}
+                                          height={24}
+                                        ></Image>
+                                        <div className="info-user">
+                                          <span className="username">{item?.userInfo?.fullName}</span>
+                                          <div className="sell">
+                                            <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                            <hr></hr>
+                                            <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
+                                    </Link>
                                     <button onClick={() => handleChat(item?.postId)}>
                                       <ChatIcon width={20} height={20}></ChatIcon>
                                       Chat
@@ -329,122 +386,144 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
                           <div className="contain-prioritize">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <div
-                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
-                              onClick={() => handleRouter(item)}
-                            >
-                              <Image
-                                className={"left-contain-tab"}
-                                src={item?.post?.image[0]?.img}
-                                preview={false}
-                                alt=""
-                                width={365.19}
-                                height={222}
-                              ></Image>
-                              <div className="image-gallery-right">
-                                {" "}
+                            <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                              <div
+                                className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
+                                // onClick={() => handleRouter(item)}
+                              >
                                 <Image
                                   className={"left-contain-tab"}
-                                  src={item?.post?.image[1]?.img}
+                                  src={item?.post?.image[0]?.img}
                                   preview={false}
                                   alt=""
-                                  width={242.78}
-                                  height={109}
-                                ></Image>{" "}
-                                <Image
-                                  className={"left-contain-tab"}
-                                  src={item?.post?.image[2]?.img}
-                                  preview={false}
-                                  alt=""
-                                  width={119.39}
-                                  height={109}
-                                ></Image>{" "}
-                                <div className="last-img">
+                                  width={365.19}
+                                  height={222}
+                                ></Image>
+                                <div className="image-gallery-right">
+                                  {" "}
                                   <Image
                                     className={"left-contain-tab"}
-                                    src={item?.post?.image[3]?.img}
+                                    src={item?.post?.image[1]?.img}
+                                    preview={false}
+                                    alt=""
+                                    width={242.78}
+                                    height={109}
+                                  ></Image>{" "}
+                                  <Image
+                                    className={"left-contain-tab"}
+                                    src={item?.post?.image[2]?.img}
                                     preview={false}
                                     alt=""
                                     width={119.39}
                                     height={109}
-                                  ></Image>
-                                  <div className="background">+{item.post.image.length - 4}</div>
+                                  ></Image>{" "}
+                                  <div className="last-img">
+                                    <Image
+                                      className={"left-contain-tab"}
+                                      src={item?.post?.image[3]?.img}
+                                      preview={false}
+                                      alt=""
+                                      width={119.39}
+                                      height={109}
+                                    ></Image>
+                                    <div className="background">+{item.post.image.length - 4}</div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </Link>
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <div className="header" onClick={() => handleRouter(item)}>
-                                  <span className="title">{item?.post?.title}</span>
-                                  {isFavorite ? (
-                                    <div className="add-fav">
-                                      <AddedFavouritePostIcon
-                                        onClick={() => handleRemoveFavPost(item?.postId)}
-                                        className="fav"
-                                      ></AddedFavouritePostIcon>
-                                    </div>
-                                  ) : (
-                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
-                                  )}
-                                </div>
-                                <span className="description" onClick={() => handleRouter(item)}>
-                                  {item?.post?.dateCar}
-                                  {item?.post?.km === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {" "}
-                                      <hr></hr>
-                                      {formatNumberWithCommas(item?.post?.km)} km
-                                    </>
-                                  )}
-                                  <hr></hr>
-                                  {item?.post?.fuel}
-                                  {item?.post?.numberBox}
-                                </span>
-                                <div className="middle" onClick={() => handleRouter(item)}>
-                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                                  <span className="address">
-                                    {item?.prioritize === "26.51" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
-                                      </span>
-                                    ) : item?.prioritize === "14.73" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
-                                      </span>
-                                    ) : item?.prioritize === "15.71" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
-                                      </span>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="header"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="title">{item?.post?.title}</span>
+                                    {isFavorite ? (
+                                      <div className="add-fav">
+                                        <AddedFavouritePostIcon
+                                          onClick={() => handleRemoveFavPost(item?.postId)}
+                                          className="fav"
+                                        ></AddedFavouritePostIcon>
+                                      </div>
                                     ) : (
-                                      <>{timeAgo(item?.date)}</>
+                                      <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                    )}
+                                  </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <span
+                                    className="description"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    {item?.post?.dateCar}
+                                    {item?.post?.km === 0 ? (
+                                      <></>
+                                    ) : (
+                                      <>
+                                        {" "}
+                                        <hr></hr>
+                                        {formatNumberWithCommas(item?.post?.km)} km
+                                      </>
                                     )}
                                     <hr></hr>
-                                    {item?.post?.cityValueName}
+                                    {item?.post?.fuel}
+                                    {item?.post?.numberBox}
                                   </span>
-                                </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="middle"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                    <span className="address">
+                                      {item?.prioritize === "26.51" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                        </span>
+                                      ) : item?.prioritize === "14.73" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                        </span>
+                                      ) : item?.prioritize === "15.71" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                        </span>
+                                      ) : (
+                                        <>{timeAgo(item?.date)}</>
+                                      )}
+                                      <hr></hr>
+                                      {item?.post?.cityValueName}
+                                    </span>
+                                  </div>
+                                </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <div className="user-left" onClick={() => handleRouter(item)}>
-                                      <Image
-                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
-                                        alt=""
-                                        width={24}
-                                        height={24}
-                                      ></Image>
-                                      <div className="info-user">
-                                        <span className="username">{item?.userInfo?.fullName}</span>
-                                        <div className="sell">
-                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
-                                          <hr></hr>
-                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                      <div
+                                        className="user-left"
+                                        // onClick={() => handleRouter(item)}
+                                      >
+                                        <Image
+                                          src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                          alt=""
+                                          width={24}
+                                          height={24}
+                                        ></Image>
+                                        <div className="info-user">
+                                          <span className="username">{item?.userInfo?.fullName}</span>
+                                          <div className="sell">
+                                            <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                            <hr></hr>
+                                            <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
+                                    </Link>
                                     <button onClick={() => handleChat(item?.postId)}>
                                       <ChatIcon width={20} height={20}></ChatIcon>
                                       Chat
@@ -457,82 +536,113 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         ) : (
                           <div className="contain">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
-                              <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
+                            <div
+                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}
+                              // onClick={() => handleRouter(item)}
+                            >
+                              <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[0]?.img}
+                                  alt=""
+                                  width={128}
+                                  height={128}
+                                ></Image>
+                              </Link>
                             </div>
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <div className="header" onClick={() => handleRouter(item)}>
-                                  <span className="title">{item?.post?.title}</span>
-                                  {isFavorite ? (
-                                    <div className="add-fav">
-                                      <AddedFavouritePostIcon
-                                        onClick={() => handleRemoveFavPost(item?.postId)}
-                                        className="fav"
-                                      ></AddedFavouritePostIcon>
-                                    </div>
-                                  ) : (
-                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
-                                  )}
-                                </div>
-                                <span className="description" onClick={() => handleRouter(item)}>
-                                  {item?.post?.dateCar}
-                                  {item?.post?.km === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {" "}
-                                      <hr></hr>
-                                      {formatNumberWithCommas(item?.post?.km)} km
-                                    </>
-                                  )}
-                                  <hr></hr>
-                                  {item?.post?.fuel}
-                                  {item?.post?.numberBox}
-                                </span>
-                                <div className="middle" onClick={() => handleRouter(item)}>
-                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                                  <span className="address">
-                                    {item?.prioritize === "26.51" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
-                                      </span>
-                                    ) : item?.prioritize === "14.73" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
-                                      </span>
-                                    ) : item?.prioritize === "15.71" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
-                                      </span>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="header"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="title">{item?.post?.title}</span>
+                                    {isFavorite ? (
+                                      <div className="add-fav">
+                                        <AddedFavouritePostIcon
+                                          onClick={() => handleRemoveFavPost(item?.postId)}
+                                          className="fav"
+                                        ></AddedFavouritePostIcon>
+                                      </div>
                                     ) : (
-                                      <>{timeAgo(item?.date)}</>
+                                      <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                    )}
+                                  </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <span
+                                    className="description"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    {item?.post?.dateCar}
+                                    {item?.post?.km === 0 ? (
+                                      <></>
+                                    ) : (
+                                      <>
+                                        {" "}
+                                        <hr></hr>
+                                        {formatNumberWithCommas(item?.post?.km)} km
+                                      </>
                                     )}
                                     <hr></hr>
-                                    {item?.post?.cityValueName}
+                                    {item?.post?.fuel}
+                                    {item?.post?.numberBox}
                                   </span>
-                                </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="middle"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                    <span className="address">
+                                      {item?.prioritize === "26.51" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                        </span>
+                                      ) : item?.prioritize === "14.73" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                        </span>
+                                      ) : item?.prioritize === "15.71" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                        </span>
+                                      ) : (
+                                        <>{timeAgo(item?.date)}</>
+                                      )}
+                                      <hr></hr>
+                                      {item?.post?.cityValueName}
+                                    </span>
+                                  </div>
+                                </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <div className="user-left" onClick={() => handleRouter(item)}>
-                                      <Image
-                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
-                                        alt=""
-                                        width={24}
-                                        height={24}
-                                      ></Image>
-                                      <div className="info-user">
-                                        <span className="username">{item?.userInfo?.fullName}</span>
-                                        <div className="sell">
-                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
-                                          <hr></hr>
-                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                      <div
+                                        className="user-left"
+                                        // onClick={() => handleRouter(item)}
+                                      >
+                                        <Image
+                                          src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                          alt=""
+                                          width={24}
+                                          height={24}
+                                        ></Image>
+                                        <div className="info-user">
+                                          <span className="username">{item?.userInfo?.fullName}</span>
+                                          <div className="sell">
+                                            <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                            <hr></hr>
+                                            <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
+                                    </Link>
                                     <button onClick={() => handleChat(item?.postId)}>
                                       <ChatIcon width={20} height={20}></ChatIcon>
                                       Chat
@@ -580,122 +690,144 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
                           <div className="contain-prioritize">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <div
-                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
-                              onClick={() => handleRouter(item)}
-                            >
-                              <Image
-                                className={"left-contain-tab"}
-                                src={item?.post?.image[0]?.img}
-                                preview={false}
-                                alt=""
-                                width={365.19}
-                                height={222}
-                              ></Image>
-                              <div className="image-gallery-right">
-                                {" "}
+                            <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                              <div
+                                className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
+                                // onClick={() => handleRouter(item)}
+                              >
                                 <Image
                                   className={"left-contain-tab"}
-                                  src={item?.post?.image[1]?.img}
+                                  src={item?.post?.image[0]?.img}
                                   preview={false}
                                   alt=""
-                                  width={242.78}
-                                  height={109}
-                                ></Image>{" "}
-                                <Image
-                                  className={"left-contain-tab"}
-                                  src={item?.post?.image[2]?.img}
-                                  preview={false}
-                                  alt=""
-                                  width={119.39}
-                                  height={109}
-                                ></Image>{" "}
-                                <div className="last-img">
+                                  width={365.19}
+                                  height={222}
+                                ></Image>
+                                <div className="image-gallery-right">
+                                  {" "}
                                   <Image
                                     className={"left-contain-tab"}
-                                    src={item?.post?.image[3]?.img}
+                                    src={item?.post?.image[1]?.img}
+                                    preview={false}
+                                    alt=""
+                                    width={242.78}
+                                    height={109}
+                                  ></Image>{" "}
+                                  <Image
+                                    className={"left-contain-tab"}
+                                    src={item?.post?.image[2]?.img}
                                     preview={false}
                                     alt=""
                                     width={119.39}
                                     height={109}
-                                  ></Image>
-                                  <div className="background">+{item.post.image.length - 4}</div>
+                                  ></Image>{" "}
+                                  <div className="last-img">
+                                    <Image
+                                      className={"left-contain-tab"}
+                                      src={item?.post?.image[3]?.img}
+                                      preview={false}
+                                      alt=""
+                                      width={119.39}
+                                      height={109}
+                                    ></Image>
+                                    <div className="background">+{item.post.image.length - 4}</div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </Link>
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <div className="header" onClick={() => handleRouter(item)}>
-                                  <span className="title">{item?.post?.title}</span>
-                                  {isFavorite ? (
-                                    <div className="add-fav">
-                                      <AddedFavouritePostIcon
-                                        onClick={() => handleRemoveFavPost(item?.postId)}
-                                        className="fav"
-                                      ></AddedFavouritePostIcon>
-                                    </div>
-                                  ) : (
-                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
-                                  )}
-                                </div>
-                                <span className="description" onClick={() => handleRouter(item)}>
-                                  {item?.post?.dateCar}
-                                  {item?.post?.km === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {" "}
-                                      <hr></hr>
-                                      {formatNumberWithCommas(item?.post?.km)} km
-                                    </>
-                                  )}
-                                  <hr></hr>
-                                  {item?.post?.fuel}
-                                  {item?.post?.numberBox}
-                                </span>
-                                <div className="middle" onClick={() => handleRouter(item)}>
-                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                                  <span className="address">
-                                    {item?.prioritize === "26.51" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
-                                      </span>
-                                    ) : item?.prioritize === "14.73" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
-                                      </span>
-                                    ) : item?.prioritize === "15.71" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
-                                      </span>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="header"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="title">{item?.post?.title}</span>
+                                    {isFavorite ? (
+                                      <div className="add-fav">
+                                        <AddedFavouritePostIcon
+                                          onClick={() => handleRemoveFavPost(item?.postId)}
+                                          className="fav"
+                                        ></AddedFavouritePostIcon>
+                                      </div>
                                     ) : (
-                                      <>{timeAgo(item?.date)}</>
+                                      <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                    )}
+                                  </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <span
+                                    className="description"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    {item?.post?.dateCar}
+                                    {item?.post?.km === 0 ? (
+                                      <></>
+                                    ) : (
+                                      <>
+                                        {" "}
+                                        <hr></hr>
+                                        {formatNumberWithCommas(item?.post?.km)} km
+                                      </>
                                     )}
                                     <hr></hr>
-                                    {item?.post?.cityValueName}
+                                    {item?.post?.fuel}
+                                    {item?.post?.numberBox}
                                   </span>
-                                </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="middle"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                    <span className="address">
+                                      {item?.prioritize === "26.51" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                        </span>
+                                      ) : item?.prioritize === "14.73" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                        </span>
+                                      ) : item?.prioritize === "15.71" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                        </span>
+                                      ) : (
+                                        <>{timeAgo(item?.date)}</>
+                                      )}
+                                      <hr></hr>
+                                      {item?.post?.cityValueName}
+                                    </span>
+                                  </div>
+                                </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <div className="user-left" onClick={() => handleRouter(item)}>
-                                      <Image
-                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
-                                        alt=""
-                                        width={24}
-                                        height={24}
-                                      ></Image>
-                                      <div className="info-user">
-                                        <span className="username">{item?.userInfo?.fullName}</span>
-                                        <div className="sell">
-                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
-                                          <hr></hr>
-                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                      <div
+                                        className="user-left"
+                                        // onClick={() => handleRouter(item)}
+                                      >
+                                        <Image
+                                          src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                          alt=""
+                                          width={24}
+                                          height={24}
+                                        ></Image>
+                                        <div className="info-user">
+                                          <span className="username">{item?.userInfo?.fullName}</span>
+                                          <div className="sell">
+                                            <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                            <hr></hr>
+                                            <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
+                                    </Link>
                                     <button onClick={() => handleChat(item?.postId)}>
                                       <ChatIcon width={20} height={20}></ChatIcon>
                                       Chat
@@ -708,82 +840,113 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         ) : (
                           <div className="contain">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`} onClick={() => handleRouter(item)}>
-                              <Image className={"left-contain-tab"} src={item?.post?.image[0]?.img} alt="" width={128} height={128}></Image>
+                            <div
+                              className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}
+                              // onClick={() => handleRouter(item)}
+                            >
+                              <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Image
+                                  className={"left-contain-tab"}
+                                  src={item?.post?.image[0]?.img}
+                                  alt=""
+                                  width={128}
+                                  height={128}
+                                ></Image>
+                              </Link>
                             </div>
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <div className="header" onClick={() => handleRouter(item)}>
-                                  <span className="title">{item?.post?.title}</span>
-                                  {isFavorite ? (
-                                    <div className="add-fav">
-                                      <AddedFavouritePostIcon
-                                        onClick={() => handleRemoveFavPost(item?.postId)}
-                                        className="fav"
-                                      ></AddedFavouritePostIcon>
-                                    </div>
-                                  ) : (
-                                    <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
-                                  )}
-                                </div>
-                                <span className="description" onClick={() => handleRouter(item)}>
-                                  {item?.post?.dateCar}
-                                  {item?.post?.km === 0 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {" "}
-                                      <hr></hr>
-                                      {formatNumberWithCommas(item?.post?.km)} km
-                                    </>
-                                  )}
-                                  <hr></hr>
-                                  {item?.post?.fuel}
-                                  {item?.post?.numberBox}
-                                </span>
-                                <div className="middle" onClick={() => handleRouter(item)}>
-                                  <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                                  <span className="address">
-                                    {item?.prioritize === "26.51" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
-                                      </span>
-                                    ) : item?.prioritize === "14.73" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        <TopPostIcon></TopPostIcon> Đẩy tin thường
-                                      </span>
-                                    ) : item?.prioritize === "15.71" ? (
-                                      <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
-                                        {" "}
-                                        <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
-                                      </span>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="header"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="title">{item?.post?.title}</span>
+                                    {isFavorite ? (
+                                      <div className="add-fav">
+                                        <AddedFavouritePostIcon
+                                          onClick={() => handleRemoveFavPost(item?.postId)}
+                                          className="fav"
+                                        ></AddedFavouritePostIcon>
+                                      </div>
                                     ) : (
-                                      <>{timeAgo(item?.date)}</>
+                                      <FavouriteIcon onClick={() => handleAddFavPost(item?.postId)}></FavouriteIcon>
+                                    )}
+                                  </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <span
+                                    className="description"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    {item?.post?.dateCar}
+                                    {item?.post?.km === 0 ? (
+                                      <></>
+                                    ) : (
+                                      <>
+                                        {" "}
+                                        <hr></hr>
+                                        {formatNumberWithCommas(item?.post?.km)} km
+                                      </>
                                     )}
                                     <hr></hr>
-                                    {item?.post?.cityValueName}
+                                    {item?.post?.fuel}
+                                    {item?.post?.numberBox}
                                   </span>
-                                </div>
+                                </Link>
+                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <div
+                                    className="middle"
+                                    // onClick={() => handleRouter(item)}
+                                  >
+                                    <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                                    <span className="address">
+                                      {item?.prioritize === "26.51" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật + Đẩy tin
+                                        </span>
+                                      ) : item?.prioritize === "14.73" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          <TopPostIcon></TopPostIcon> Đẩy tin thường
+                                        </span>
+                                      ) : item?.prioritize === "15.71" ? (
+                                        <span style={{ fontWeight: "600", display: "flex", alignItems: "center", alignContent: "stretch" }}>
+                                          {" "}
+                                          <TopPostIcon></TopPostIcon> Tin nổi bật - Nhiều hình ảnh
+                                        </span>
+                                      ) : (
+                                        <>{timeAgo(item?.date)}</>
+                                      )}
+                                      <hr></hr>
+                                      {item?.post?.cityValueName}
+                                    </span>
+                                  </div>
+                                </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <div className="user-left" onClick={() => handleRouter(item)}>
-                                      <Image
-                                        src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
-                                        alt=""
-                                        width={24}
-                                        height={24}
-                                      ></Image>
-                                      <div className="info-user">
-                                        <span className="username">{item?.userInfo?.fullName}</span>
-                                        <div className="sell">
-                                          <span className="selled">{item?.userInfo?.selled} đã bán</span>
-                                          <hr></hr>
-                                          <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                      <div
+                                        className="user-left"
+                                        // onClick={() => handleRouter(item)}
+                                      >
+                                        <Image
+                                          src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
+                                          alt=""
+                                          width={24}
+                                          height={24}
+                                        ></Image>
+                                        <div className="info-user">
+                                          <span className="username">{item?.userInfo?.fullName}</span>
+                                          <div className="sell">
+                                            <span className="selled">{item?.userInfo?.selled} đã bán</span>
+                                            <hr></hr>
+                                            <span className="selling">{item?.userInfo?.selling} đang bán</span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
+                                    </Link>
                                     <button onClick={() => handleChat(item?.postId)}>
                                       <ChatIcon width={20} height={20}></ChatIcon>
                                       Chat

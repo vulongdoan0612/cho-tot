@@ -18,6 +18,8 @@ import getCityValueName from "@/utils/getCityValueName";
 import getDistrictValueName from "@/utils/getDistrictValueName";
 import getWardValueName from "@/utils/getWardValueName";
 import limitInputCharacters from "@/utils/limitInput";
+import dynamic from "next/dynamic";
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const TitlePostSell = ({
   value,
@@ -51,6 +53,21 @@ const TitlePostSell = ({
   const [fillAddrDistrict, setFillAddrDistrict] = useState(false);
   const [fillAddrDetail, setFillAddrDetail] = useState(false);
 
+  const config2 = {
+    useSearch: false,
+    minHeight: 200,
+    spellcheck: false,
+    toolbarAdaptive: false,
+    toolbarSticky: false,
+    showCharsCounter: false,
+    showWordsCounter: false,
+    showXPathInStatusbar: false,
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    minWidth: null,
+    buttons: "bold,italic,underline,eraser,ul,ol,font,fontsize,lineHeight,hr,indent",
+    placeholder: "Giới thiệu",
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -180,6 +197,12 @@ const TitlePostSell = ({
     }
   }, [dataPost?.post, dataPost?.post?.wardValue]);
 
+  const isEmptyHTML = (input: any) => {
+    const tempDiv: any = document.createElement("div");
+    tempDiv.innerHTML = input;
+    return !tempDiv.textContent.trim() && !tempDiv.querySelector("img, video, audio, iframe, object, embed");
+  };
+
   const handleChangeTitle = (event: any) => {
     const newValue = limitInputCharacters(event?.target?.value, 100);
 
@@ -195,12 +218,12 @@ const TitlePostSell = ({
     }
   };
 
-  const handleChangeIntroducing = (event: any) => {
+  const contentFieldChanagedReason = (data: any) => {
     setStatePost((prevState) => ({
       ...prevState,
-      introducing: event?.target.value,
+      introducing: data,
     }));
-    if (event?.target.value !== "") {
+    if (!isEmptyHTML(data)) {
       setStateFill((prevState: any) => ({
         ...prevState,
         fillIntro: false,
@@ -452,7 +475,7 @@ const TitlePostSell = ({
           fillTitle: true,
         }));
       }
-      if (statePost?.introducing === "") {
+      if (isEmptyHTML(statePost?.introducing)) {
         setStateFill((prevState: any) => ({
           ...prevState,
           fillIntro: true,
@@ -810,7 +833,6 @@ const TitlePostSell = ({
       console.log("error", err);
     }
   };
-
   return (
     <div className="title-post-sell-wrapper">
       <span className="title">Tiêu đề tin đăng và Mô tả chi tiết</span>
@@ -829,7 +851,7 @@ const TitlePostSell = ({
         {stateFill.fillTitle && <div className="warning-fill"> Vui lòng nhập Tiêu đề tin đăng</div>}
       </div>
       <div className="introducing" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-        <TextField
+        {/* <TextField
           id="filled-multiline-flexible"
           label="Giới thiệu"
           className={`text-area ${stateFill.fillIntro ? "warn-border" : ""}`}
@@ -838,7 +860,16 @@ const TitlePostSell = ({
           onChange={handleChangeIntroducing}
           maxRows={4}
           variant="filled"
-        />{" "}
+        />{" "} */}
+        <div className={`text-area ${stateFill.fillIntro ? "warn-border" : ""}`}>
+          <JoditEditor
+            config={config2}
+            value={statePost?.introducing}
+            onBlur={(c: any) => {
+              contentFieldChanagedReason(c);
+            }}
+          />
+        </div>
         <span>0/50 kí tự</span>
         {stateFill.fillIntro && <div className="warning-fill">Vui lòng nhập Giới thiệu</div>}
       </div>

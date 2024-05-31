@@ -55,10 +55,9 @@ const HomePage = () => {
     variableWidth: true,
     className: "slider variable-width",
   };
+
   useFetchCurrentPost();
-  const handleRouterRec = (rec: string, postId: string) => {
-    router.push(`/${rec}/${postId}`);
-  };
+
   const handleShow = () => {
     setShowMore((prev) => !prev);
   };
@@ -139,79 +138,135 @@ const HomePage = () => {
           <div className="vehicle">
             <span className="title">Khám phá danh mục Xe cộ</span>
             <div className="slide">
-              <div className="item">
-                <Link href="/mua-ban-oto">
+              <div className="wrap-item">
+                <div className="item">
+                  <Link href="/mua-ban-oto">
+                    <Image
+                      src="https://static.chotot.com/storage/new-logos/VEH/2010.svg"
+                      alt=""
+                      width={48}
+                      height={48}
+                      preview={false}
+                    ></Image>{" "}
+                  </Link>
+                </div>
+                <span>Ô tô</span>
+              </div>
+              <div className="wrap-item">
+                <div className="item">
                   <Image
-                    src="https://static.chotot.com/storage/new-logos/VEH/2010.svg"
+                    src="https://static.chotot.com/storage/new-logos/VEH/2020.svg"
                     alt=""
                     width={48}
                     height={48}
                     preview={false}
                   ></Image>
-                </Link>
+                </div>{" "}
+                <span>Xe máy</span>
               </div>
-              <div className="item">
-                <Image src="https://static.chotot.com/storage/new-logos/VEH/2020.svg" alt="" width={48} height={48} preview={false}></Image>
-              </div>{" "}
-              <div className="item">
-                <Image src="https://static.chotot.com/storage/new-logos/VEH/2050.svg" alt="" width={48} height={48} preview={false}></Image>
-              </div>{" "}
-              <div className="item">
-                <Image src="https://static.chotot.com/storage/new-logos/VEH/2090.svg" alt="" width={48} height={48} preview={false}></Image>
-              </div>{" "}
-              <div className="item">
-                <Image src="https://static.chotot.com/storage/new-logos/VEH/2060.svg" alt="" width={48} height={48} preview={false}></Image>
-              </div>{" "}
-              <div className="item">
-                <Image src="https://static.chotot.com/storage/new-logos/VEH/2080.svg" alt="" width={48} height={48} preview={false}></Image>
-              </div>{" "}
-              <div className="item">
-                <Image src="https://static.chotot.com/storage/new-logos/VEH/2030.svg" alt="" width={48} height={48} preview={false}></Image>
+              <div className="wrap-item">
+                <div className="item">
+                  <Image
+                    src="https://static.chotot.com/storage/new-logos/VEH/2050.svg"
+                    alt=""
+                    width={48}
+                    height={48}
+                    preview={false}
+                  ></Image>
+                </div>{" "}
+                <span>Xe tải, xe ben</span>
+              </div>
+              <div className="wrap-item">
+                <div className="item">
+                  <Image
+                    src="https://static.chotot.com/storage/new-logos/VEH/2090.svg"
+                    alt=""
+                    width={48}
+                    height={48}
+                    preview={false}
+                  ></Image>
+                </div>{" "}
+                <span>Xe điện</span>
+              </div>
+              <div className="wrap-item">
+                <div className="item">
+                  <Image
+                    src="https://static.chotot.com/storage/new-logos/VEH/2060.svg"
+                    alt=""
+                    width={48}
+                    height={48}
+                    preview={false}
+                  ></Image>
+                </div>{" "}
+                <span>Xe đạp</span>
+              </div>
+              <div className="wrap-item">
+                <div className="item">
+                  <Image
+                    src="https://static.chotot.com/storage/new-logos/VEH/2080.svg"
+                    alt=""
+                    width={48}
+                    height={48}
+                    preview={false}
+                  ></Image>
+                </div>{" "}
+                <span>Phương tiện khác</span>
+              </div>
+              <div className="wrap-item">
+                <div className="item">
+                  <Image
+                    src="https://static.chotot.com/storage/new-logos/VEH/2030.svg"
+                    alt=""
+                    width={48}
+                    height={48}
+                    preview={false}
+                  ></Image>
+                </div>
+                <span>Phụ tùng xe</span>
               </div>
             </div>
           </div>
-          <div className="recommend" >
+          <div className="recommend">
             {" "}
             <div className="top">
               <span>Tin đăng mới nhất</span>
-              <div className="see-all">
-                Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
-              </div>
+              <Link href="/mua-ban-oto">
+                <div className="see-all">
+                  Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
+                </div>
+              </Link>
             </div>
             <div className="slide-rec">
               <Slider {...setting2s}>
                 {currentPosts?.latestPosts?.map((item: any, index: number) => {
                   return (
-                    <div
-                      className="rec-item"
-                      style={{ width: 200 }}
-                      key={index}
-                      onClick={() => handleRouterRec(item?.post?.slug, item.postId)}
-                    >
-                      <div>
-                        <Image src={item?.post?.image[0]?.img} alt="" preview={false} height={175} width={175}></Image>
-                        <span className="title-rec">{limitTextTitle(item?.post?.title)}</span>
-                        <div className="infor-rec">
-                          <span>
-                            {limitTextDescription(
-                              `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${formatNumberWithCommas(item?.post?.km)} km`} ${
-                                item?.post?.activeButton
-                              } - ${item?.post?.numberBox} `
-                            )}
-                          </span>
+                    <Link key={index} href={`/${item?.post?.slug}/${item.postId}`}>
+                      <div className="rec-item" style={{ width: 200 }}>
+                        <div>
+                          <Image src={item?.post?.image[0]?.img} alt="" preview={false} height={175} width={175}></Image>
+                          <span className="title-rec">{limitTextTitle(item?.post?.title)}</span>
+                          <div className="infor-rec">
+                            <span>
+                              {limitTextDescription(
+                                `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${formatNumberWithCommas(item?.post?.km)} km`} ${
+                                  item?.post?.activeButton
+                                } - ${item?.post?.numberBox} `
+                              )}
+                            </span>
+                          </div>
+                          <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                         </div>
-                        <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                      </div>
-                      <div className="bottom-rec">
-                        <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
-                        <div className="ellipsis">
-                          <div className="dot"></div>
-                          <span>{timeAgo(item.date)}</span>
-                          <div className="dot"></div>
-                          <span>{item?.post?.districtValueName}</span>
+                        <div className="bottom-rec">
+                          <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
+                          <div className="ellipsis">
+                            <div className="dot"></div>
+                            <span>{timeAgo(item.date)}</span>
+                            <div className="dot"></div>
+                            <span>{item?.post?.districtValueName}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </Slider>

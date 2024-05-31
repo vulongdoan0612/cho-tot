@@ -203,6 +203,7 @@
             flex-direction: column;
             .picture {
               img {
+                object-fit: cover;
                 border-radius: 2px;
               }
             }

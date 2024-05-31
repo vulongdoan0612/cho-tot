@@ -29,7 +29,7 @@ import { fetchDataUser } from "@/redux/reducers/auth";
 import Link from "next/link";
 
 const DetailUser = () => {
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const router = useRouter();
   const { detailProfileUser } = useSelector((state: RootState) => state.detailProfileUser);
   const dispatch: AppDispatch = useDispatch();
@@ -308,7 +308,7 @@ const DetailUser = () => {
               {skeleton ? (
                 <Skeleton.Button block={true} style={{ height: "18.39px" }} active size="large"></Skeleton.Button>
               ) : (
-                <span>{detailProfileUser?.user?.introduction}</span>
+                <span dangerouslySetInnerHTML={{ __html: detailProfileUser?.user?.introduction }}></span>
               )}
               {account?.user?._id === router?.query?.id ? (
                 <>

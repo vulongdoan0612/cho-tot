@@ -1,6 +1,9 @@
 .selling-wrapper {
   background-color: #f4f4f4;
   .header {
+    position: sticky;
+    top: 60px;
+    z-index: 3;
     justify-content: center;
     background: #fff;
     align-items: center;
@@ -713,6 +716,9 @@
         background-color: #f4f4f4;
       }
       .text {
+        display: flex;
+        align-items: center;
+        gap: 3px;
         height: 32px;
         cursor: pointer;
         padding: 6px 10px;

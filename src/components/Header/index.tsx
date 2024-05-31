@@ -260,15 +260,16 @@ const Header = () => {
           <Skeleton.Input active block={true} size="large"></Skeleton.Input>
         ) : (
           <>
-            <Link href="/chat">
-              <Badge dot={badge}>
-                <ChatIcon />
-              </Badge>
-            </Link>
+            <div className="chat">
+              <Link href="/chat">
+                <Badge dot={badge}>
+                  <ChatIcon />
+                </Badge>
+              </Link>
+            </div>
             <div className="mangeShop">
-              <MangeShopIcon />
               <Link href="/my-ads">
-                <span className="text">Quản lý tin</span>
+                <MangeShopIcon />
               </Link>
             </div>
           </>

@@ -234,7 +234,7 @@ const PostSell = () => {
             ) : render === "6" ? (
               <>pt xe</>
             ) : (
-              <div className="banner-post">
+              <div className="banner-post" style={{ paddingTop: "30px" }}>
                 {" "}
                 <Image
                   src="https://static.chotot.com/storage/chotot-icons/svg/empty-category.svg"
@@ -281,8 +281,7 @@ export const getServerSideProps = async (context: any) => {
     };
   }
   return {
-    props: {
-    },
+    props: {},
   };
 };
 export default PostSell;

@@ -15,7 +15,6 @@ import { ICommonState } from "@/interfaces/User";
 import { defaultCommonState } from "../../../../components/_mock/mock";
 import dataFav from "./dataFav.json";
 import CustomButton from "@/components/CustomButton";
-import { setAuthenticate } from "@/redux/reducers/auth";
 import { changeProfile } from "@/services/user";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
@@ -23,11 +22,12 @@ import Setting from "@/layout/Setting";
 import limitInputCharacters from "@/utils/limitInput";
 import cookie from "cookie";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const User = () => {
   const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { account } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
   const router = useRouter();
   const [fillAddrCity, setFillAddrCity] = useState(false);
   const [fillAddrWard, setFillAddrWard] = useState(false);
@@ -47,6 +47,32 @@ const User = () => {
   const [selectItemsFav, setSelectItemsFav] = useState<any>([]);
   const [stateUser, setStateUser] = useState<ICommonState>(defaultCommonState);
   const [spin, setSpin] = useState(false);
+
+  const contentFieldChanagedReason = (data: any) => {
+    setStateUser((prevState: any) => ({
+      ...prevState,
+      introducing: data,
+    }));
+    if (data !== "") {
+      setFillIntro(false);
+    }
+  };
+
+  const config2 = {
+    useSearch: false,
+    minHeight: 200,
+    spellcheck: false,
+    toolbarAdaptive: false,
+    toolbarSticky: false,
+    showCharsCounter: false,
+    showWordsCounter: false,
+    showXPathInStatusbar: false,
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    minWidth: null,
+    buttons: "bold,italic,underline,eraser,ul,ol,font,fontsize,lineHeight,hr,indent",
+    placeholder: "Giới thiệu",
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -594,16 +620,6 @@ const User = () => {
     }));
   };
 
-  const handleChangeIntroducing = (event: any) => {
-    setStateUser((prevState: any) => ({
-      ...prevState,
-      introducing: event.target.value,
-    }));
-    if (event.target.value !== "") {
-      setFillIntro(false);
-    }
-  };
-
   const handleChangeRemember = (event: any) => {
     setStateUser((prevState: any) => ({
       ...prevState,
@@ -700,7 +716,7 @@ const User = () => {
               <Skeleton.Input block={true} active size="large" style={{ height: "155px" }}></Skeleton.Input>
             ) : (
               <div className="introducing">
-                <TextField
+                {/* <TextField
                   id="filled-multiline-flexible"
                   label="Giới thiệu"
                   className={`text-area ${fillIntro ? "warn-border" : ""}`}
@@ -709,7 +725,16 @@ const User = () => {
                   onChange={handleChangeIntroducing}
                   maxRows={4}
                   variant="filled"
-                />
+                /> */}
+                <div className={`text-area ${fillIntro ? "warn-border" : ""}`}>
+                  <JoditEditor
+                    config={config2}
+                    value={stateUser.introducing}
+                    onBlur={(c: any) => {
+                      contentFieldChanagedReason(c);
+                    }}
+                  />
+                </div>
                 {fillIntro && <span className="warning">Vui lòng nhập Giới thiệu</span>}
               </div>
             )}
@@ -909,8 +934,7 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {
-    },
+    props: {},
   };
 };
 export default User;

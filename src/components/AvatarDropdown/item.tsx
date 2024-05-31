@@ -65,10 +65,10 @@ const DropdownList = () => {
               <span>Tin đăng đã lưu</span>{" "}
             </span>
           </Link>
-          <span className="search-save">
+          {/* <span className="search-save">
             <Image preview={false} src="/icons/menu-saved-search.svg" alt="" width={24} height={24}></Image>
             <span>Tìm kiếm đã lưu</span>{" "}
-          </span>
+          </span> */}
         </div>
       </div>
       <div className="service-fee">
@@ -76,7 +76,7 @@ const DropdownList = () => {
           <span>Dịch vụ trả phí</span>
         </div>
         <div className="container">
-          <span className="dongtot">
+          {/* <span className="dongtot">
             {" "}
             <Image
               preview={false}
@@ -86,18 +86,20 @@ const DropdownList = () => {
               height={24}
             ></Image>
             <span>Đồng tốt</span>{" "}
-          </span>
-          <span className="history">
-            {" "}
-            <Image
-              preview={false}
-              src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
-            <span>Lịch sử giao dịch</span>{" "}
-          </span>
+          </span> */}
+          <Link href="/history" style={{ paddingTop: "8px", paddingBottom: "8px" }}>
+            <span className="history">
+              {" "}
+              <Image
+                preview={false}
+                src="https://st.chotot.com/storage/chotot-icons/svg/circle-list.svg"
+                alt=""
+                width={24}
+                height={24}
+              ></Image>
+              <span>Lịch sử giao dịch</span>{" "}
+            </span>
+          </Link>
         </div>
       </div>
 
@@ -106,7 +108,7 @@ const DropdownList = () => {
           <span>Khác</span>
         </div>
         <div className="container">
-          <Link href="/user/settings/profile">
+          <Link href="/user/settings/profile" style={{ paddingTop: "8px", paddingBottom: "8px" }}>
             <span className="dongtot">
               {" "}
               <Image preview={false} src="https://static.chotot.com/storage/icons/svg/setting.svg" alt="" width={24} height={24}></Image>

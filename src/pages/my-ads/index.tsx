@@ -27,9 +27,8 @@ import { useRouter } from "next/router";
 const MyAds = () => {
   const { account } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
-  const { lastJsonMessage: lastMessage8082 }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
-  const { lastJsonMessage: lastMessage8083 }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
-  const [inputValue, setInputValue] = useState(1);
+  const { lastJsonMessage: lastMessage8082 }: any = useWebSocket("ws://localhost:443");
+  const { lastJsonMessage: lastMessage8083 }: any = useWebSocket("ws://localhost:443");
   const [spin, setSpin] = useState(false);
   const [data, setData] = useState<any>([]);
   const [totalPage, setTotalPage] = useState<any>(0);
@@ -44,7 +43,6 @@ const MyAds = () => {
     getDataListHidden();
     getDataListRefuse();
     getDataListCensorship();
-    setInputValue(data?.currentPage);
   }, []);
 
   useEffect(() => {
@@ -326,7 +324,7 @@ const MyAds = () => {
                           <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                           <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                           <span className="date-post">
-                            Ngày đăng tin: &nbsp;<p> {item?.date}</p>
+                            Ngày đăng tin: &nbsp;<p> {formatISOToCustomDate(item?.date)}</p>
                           </span>
                           <span className="date-expired">
                             Ngày hết hạn: &nbsp;<p> {addDay(item?.date)}</p>
@@ -411,7 +409,7 @@ const MyAds = () => {
                           <span className="price"> {formatNumberWithCommas(item?.post?.price)} đ</span>
                           <span className="address">{getWardDistrict(item?.post?.fullAddress)}</span>
                           <span className="date-post">
-                            Ngày đăng tin: &nbsp;<p> {item?.date}</p>
+                            Ngày đăng tin: &nbsp;<p> {formatISOToCustomDate(item?.date)}</p>
                           </span>
                           <span className="date-expired">
                             Ngày hết hạn: &nbsp;<p> {addDay(item?.date)}</p>
@@ -601,13 +599,13 @@ const MyAds = () => {
             </div>
           </div>
           <div className="right-wrapper">
-            <div className="right">
+            {/* <div className="right">
               <Image src="https://static.chotot.com/storage/react-common/dongTot.svg" alt="alt" width={16} height={16}></Image>
               <span className="balance">Số dư: 0</span>
               <button>
                 <PlusManageIcon></PlusManageIcon>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} className="tab-ads" />

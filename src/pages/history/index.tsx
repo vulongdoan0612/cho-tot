@@ -13,20 +13,19 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import cookie from "cookie";
+import { getPostCheckList } from "@/services/formPost";
+import { useFetchHistory } from "@/hooks/useFetchHistory";
+import timeAgo from "@/utils/timeAgo";
+import formatISOToCustomDate from "@/utils/convertDate";
+import CustomButtonGreen from "@/components/CustomButton/green";
 
-const FavPage = () => {
+const History = () => {
+  const { paymentHistory } = useSelector((state: RootState) => state.payment);
   const router = useRouter();
-  const { favPostList } = useSelector((state: RootState) => state.postsData);
   const dispatch: AppDispatch = useDispatch();
   const [favList, setFavList] = useState([]);
-  useFetchFavList();
 
-  useEffect(() => {
-    if (favPostList && favPostList.favouritePosts) {
-      const initialFavList = favPostList.favouritePosts.map(() => true);
-      setFavList(initialFavList);
-    }
-  }, [favPostList]);
+  useFetchHistory();
 
   const handleToggleFav = async (index: any, postId: string) => {
     const newFavList: any = [...favList];
@@ -56,7 +55,6 @@ const FavPage = () => {
       router.push(`/chat?currentRoom=${item?.postId}`);
     }
   };
-
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="fav-wrapper">
@@ -71,63 +69,60 @@ const FavPage = () => {
               },
             },
             {
-              title: `Tin đăng đã lưu`,
+              title: `Lịch sử giao dịch`,
               onClick: () => {
-                router.push(`/bookmark/tin-dang-da-luu`);
+                router.push(`/history`);
               },
             },
           ]}
         />
-        <div className="count">
-          Tin đăng đã lưu ({favPostList?.favouritePosts?.length === undefined ? "0" : favPostList?.favouritePosts?.length} / 100)
-        </div>
+        <div className="count">Lịch sử giao dịch</div>
         <div className="fav-list">
-          {favPostList?.favouritePosts?.length === undefined ? (
-            <div className="null-fav-list">
-              <span className="top">Bạn chưa lưu tin đăng nào!</span>
-              <span className="mid">
-                Hãy bấm nút &nbsp;
-                <Image src="/icons/save-ad.svg" alt="" height={22} width={22}></Image>&nbsp; ở tin đăng để lưu và xem lại sau.
-              </span>
-              <Link href="/mua-ban-oto">
-                <CustomButton>Bắt đầu tìm kiếm</CustomButton>
-              </Link>
-            </div>
-          ) : (
+          {paymentHistory?.payments?.length > 0 ? (
             <>
               {" "}
-              {favPostList?.favouritePosts?.map((item: any, index: any) => {
+              {paymentHistory?.payments?.map((item: any, index: any) => {
+                console.log(item);
                 return (
                   <div className="fav-item" key={index}>
-                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                    <Link href={`/${item?.formPostCheck?.post?.slug}/${item?.postId}`}>
                       <div className="fav-left">
-                        <Image src={item?.post?.image[0]?.img} alt="" preview={false} width={100} height={100}></Image>
+                        <Image src={item?.formPostCheck?.post?.image[0]?.img} alt="" preview={false} width={100} height={100}></Image>
                       </div>
                     </Link>
                     <div className="fav-right">
-                      <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                      <Link href={`/${item?.formPostCheck?.post?.slug}/${item?.formPostCheck?.postId}`}>
                         <div className="top">
-                          <div className="title">{item?.post?.title}</div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <div className="title">{item?.formPostCheck?.post?.title}</div>
+                            <span>
+                              Ngày thanh toán: <b>{formatISOToCustomDate(item?.time)}</b>
+                            </span>
+                          </div>
                           <div className="info">
                             {" "}
-                            {item?.post?.dateCar} - {item?.post?.status !== "Mới" ? `${item?.post?.km} km -` : ""}{" "}
-                            {item?.post?.activeButton} - {item?.post?.numberBox}
+                            {item?.formPostCheck?.post?.dateCar} -
+                            {item?.formPostCheck?.post?.status !== "Mới"
+                              ? `${
+                                  item?.formPostCheck?.post?.km !== 0
+                                    ? ` ${formatNumberWithCommas(item?.formPostCheck?.post?.km)} km -`
+                                    : ""
+                                }`
+                              : ""}{" "}
+                            {item?.formPostCheck?.post?.activeButton} - {item?.formPostCheck?.post?.numberBox}
                           </div>
-                          <div className="price">{formatNumberWithCommas(item?.post?.price)} đ</div>
+                          <div className="price">{formatNumberWithCommas(item?.formPostCheck?.post?.price)} đ</div>
                         </div>
                       </Link>
                       <div className="bottom">
                         <div className="address">
-                          {item?.userInfo?.fullName} - 1 giờ trước - {item?.post?.districtValueName}
+                          {item?.formPostCheck?.userInfo?.fullName} - {timeAgo(item?.formPostCheck?.date)} -{" "}
+                          {item?.formPostCheck?.post?.districtValueName}
                         </div>
                         <div className="chat">
-                          <button onClick={() => handleChat(item)}>
-                            <Image src="/images/chat.png" alt="" preview={false} width={20} height={20}></Image>
-                            Chat
-                          </button>{" "}
-                          <div className="add-fav">
-                            <AddedFavouritePostIcon onClick={() => handleToggleFav(index, item.postId)} className="fav" />
-                          </div>
+                          <CustomButtonGreen style={{ background: "#12a154", color: "#fff", fontWeight: "600", borderColor: "#12a154" }}>
+                            {item?.amount === "14.73" ? "375.000" : item?.amount === "15.71" ? "400.000" : "675.000"} đ
+                          </CustomButtonGreen>
                         </div>
                       </div>
                     </div>
@@ -135,6 +130,13 @@ const FavPage = () => {
                 );
               })}
             </>
+          ) : (
+            <div className="null-fav-list">
+              <span className="top">Bạn chưa thực hiện giao dịch nào!</span>
+              <Link href="/my-ads">
+                <CustomButton>Bắt đầu thực hiện giao dịch</CustomButton>
+              </Link>
+            </div>
           )}
         </div>
       </div>
@@ -159,4 +161,4 @@ export const getServerSideProps = async (context: any) => {
     props: {},
   };
 };
-export default FavPage;
+export default History;

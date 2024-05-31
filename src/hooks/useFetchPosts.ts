@@ -18,10 +18,6 @@ export const useFetchPosts = ({ setSpin, current, pageSize, body }: any) => {
       if (!body.isReady) {
         return;
       }
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
       dispatch(
         fetchDataPosts({
           pageSize,

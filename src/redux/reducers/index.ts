@@ -5,6 +5,7 @@ import postSell from "./postSell";
 import postsData from "./posts";
 import detailProfileUser from "./profileUser";
 import chat from "./chat";
+import payment from "./payment";
 
 const rootReducer = combineReducers({
   auth,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   postsData,
   detailProfileUser,
   chat,
+  payment
 });
 
 export default rootReducer;

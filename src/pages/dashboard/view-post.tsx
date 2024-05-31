@@ -92,30 +92,36 @@ const ViewPostCensor = () => {
             <div className="left">
               <div className="title">
                 <span className="name">Đẩy tin thường</span>
-                <span className="price">16.000 đ</span>
+                <span className="price">375.000 đ</span>
               </div>
-              <div className="add">+ Chọn</div>
+              <Link href={`/services/${data?.postId}`}>
+                <div className="add">+ Chọn</div>
+              </Link>
             </div>
             <div className="mid">
               {" "}
               <div className="title">
-                <span className="name">Tin ưu tiên</span>
-                <span className="price">65.000 đ</span>
+                <span className="name">Tin nhiều hình ảnh</span>
+                <span className="price">400.000 đ</span>
               </div>
-              <div className="add">+ Chọn</div>
+              <Link href={`/services/${data?.postId}`}>
+                <div className="add">+ Chọn</div>
+              </Link>{" "}
             </div>{" "}
             <div className="right">
               {" "}
               <div className="title">
                 <span className="name">Tin nổi bật - Nhiều hình ảnh</span>
-                <span className="price">35.000 đ</span>
+                <span className="price">675.000 đ</span>
               </div>
-              <div className="add">+ Chọn</div>
+              <Link href={`/services/${data?.postId}`}>
+                <div className="add">+ Chọn</div>
+              </Link>{" "}
             </div>
           </div>
         </div>
         <div className="third-part">
-          <CustomButton className="sell-button">Bán</CustomButton>
+          {/* <CustomButton className="sell-button">Bán</CustomButton> */}
           <CustomButton className="manage-button">
             <Link href="/my-ads">Quản lý tin</Link>
           </CustomButton>
@@ -139,8 +145,7 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {
-    },
+    props: {},
   };
 };
 export default ViewPostCensor;

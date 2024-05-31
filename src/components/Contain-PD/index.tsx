@@ -169,7 +169,7 @@ const ContainPD = () => {
                     <Skeleton.Input style={{ height: "92px" }} block={true} active size="large"></Skeleton.Input>
                   ) : (
                     <>
-                      <span className="desc">{post?.post?.post?.introducing}</span>
+                      <span className="desc" dangerouslySetInnerHTML={{ __html: post?.post?.post?.introducing }}></span>
                       <span className={` ${hiddenPhone ? "switch-phone" : "unhidden-phone"}`} onClick={handleSwitchPhone}>
                         Nhấn để hiện số: {hiddenPhone ? "098993***" : <b>{post?.post?.userInfo?.phone}</b>}
                       </span>
@@ -421,7 +421,7 @@ const ContainPD = () => {
                           <>
                             {" "}
                             <hr />
-                            <span>{post?.post?.post?.km} km</span>{" "}
+                            <span>{formatNumberWithCommas(post?.post?.post?.km)} km</span>{" "}
                           </>
                         ) : (
                           <></>
@@ -553,58 +553,64 @@ const ContainPD = () => {
                 )}
               </div>
             </div>
-            {skeleton ? (
-              <Skeleton.Button block={true} style={{ height: "386px" }} active size="large"></Skeleton.Button>
-            ) : (
-              <div className="recommend" style={{ paddingTop: "10px", paddingBottom: "10px" }}>
-                {" "}
-                <div className="top">
-                  <span>Tin đăng tương tự</span>
-                  <Link href={`/mua-ban-oto?city=${post?.post?.post?.cityValue}&district=${post?.post?.post?.districtValue}`}>
-                    <div className="see-all">
-                      Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
-                    </div>
-                  </Link>
-                </div>
-                <div className="slide-rec">
-                  <Slider {...settings}>
-                    {post?.relatedPosts?.map((item: any, index: number) => {
-                      return (
-                        <div
-                          className="rec-item"
-                          style={{ width: 200 }}
-                          key={index}
-                          onClick={() => handleRouterRec(item?.post?.slug, item.postId)}
-                        >
-                          <div>
-                            <Image src={item?.post?.image[0]?.img} alt="" preview={false} height={175} width={175}></Image>
-                            <span className="title-rec">{limitTextTitle(item?.post?.title)}</span>
-                            <div className="infor-rec">
-                              <span>
-                                {limitTextDescription(
-                                  `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${item?.post?.km} km -`} ${
-                                    item?.post?.activeButton
-                                  } - ${item?.post?.numberBox} `
-                                )}
-                              </span>
-                            </div>
-                            <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                          </div>
-                          <div className="bottom-rec">
-                            <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
-                            <div className="ellipsis">
-                              <div className="dot"></div>
-                              <span>{timeAgo(item.date)}</span>
-                              <div className="dot"></div>
-                              <span>{item?.post?.districtValueName}</span>
-                            </div>
-                          </div>
+            {post?.relatedPosts?.length > 0 ? (
+              <>
+                {skeleton ? (
+                  <Skeleton.Button block={true} style={{ height: "386px" }} active size="large"></Skeleton.Button>
+                ) : (
+                  <div className="recommend" style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+                    {" "}
+                    <div className="top">
+                      <span>Tin đăng tương tự</span>
+                      <Link href={`/mua-ban-oto?city=${post?.post?.post?.cityValue}&district=${post?.post?.post?.districtValue}`}>
+                        <div className="see-all">
+                          Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
                         </div>
-                      );
-                    })}
-                  </Slider>
-                </div>
-              </div>
+                      </Link>
+                    </div>
+                    <div className="slide-rec">
+                      <Slider {...settings}>
+                        {post?.relatedPosts?.map((item: any, index: number) => {
+                          return (
+                            <div
+                              className="rec-item"
+                              style={{ width: 200 }}
+                              key={index}
+                              onClick={() => handleRouterRec(item?.post?.slug, item.postId)}
+                            >
+                              <div>
+                                <Image src={item?.post?.image[0]?.img} alt="" preview={false} height={175} width={175}></Image>
+                                <span className="title-rec">{limitTextTitle(item?.post?.title)}</span>
+                                <div className="infor-rec">
+                                  <span>
+                                    {limitTextDescription(
+                                      `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${item?.post?.km} km -`} ${
+                                        item?.post?.activeButton
+                                      } - ${item?.post?.numberBox} `
+                                    )}
+                                  </span>
+                                </div>
+                                <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
+                              </div>
+                              <div className="bottom-rec">
+                                <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
+                                <div className="ellipsis">
+                                  <div className="dot"></div>
+                                  <span>{timeAgo(item.date)}</span>
+                                  <div className="dot"></div>
+                                  <span>{item?.post?.districtValueName}</span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </Slider>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <></>
             )}
           </div>
         </>

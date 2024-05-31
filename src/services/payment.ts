@@ -13,11 +13,21 @@ export const getConfig = async (accessToken: string) => {
 export const postPayment = async (accessToken: string, data: any) => {
   const config = {
     method: "POST",
-    url: `payment-info`,
+    url: `/payment-info`,
     headers: {
       Authorization: accessToken,
     },
     data: data,
+  };
+  return axios(config);
+};
+export const historyPayment = async (accessToken: string) => {
+  const config = {
+    method: "POST",
+    url: `/history`,
+    headers: {
+      Authorization: accessToken,
+    },
   };
   return axios(config);
 };

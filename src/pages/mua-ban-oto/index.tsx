@@ -22,12 +22,13 @@ import { fetchDataFavListMain, fetchDataPosts } from "@/redux/reducers/posts";
 import { useUpdateQuery } from "@/utils/updateQuery";
 
 const SellingPage = () => {
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const router = useRouter();
   const updateQuery = useUpdateQuery();
   const dispatch: AppDispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.postsData);
   const [spin, setSpin] = useState(false);
+
   const [pageSize, setPagesize] = useState(7);
   const [current, setCurrent] = useState(1);
   const [state, setState] = useState<IFilterHeader>(defaultCommonState);
@@ -111,19 +112,14 @@ const SellingPage = () => {
     current: current,
     pageSize: pageSize,
     body: router,
-    setSpin,
   });
 
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
-    setSpin(true);
     if (lastJsonMessage) {
       if (lastJsonMessage.action === "refuse" || lastJsonMessage.action === "delete" || lastJsonMessage.action === "accept") {
-        setTimeout(() => {
-          setSpin(false);
-        }, 500);
         dispatch(fetchDataFavListMain());
         dispatch(
           fetchDataPosts({
@@ -439,7 +435,6 @@ const SellingPage = () => {
     router.query.sit,
     router.query.brand,
     router.query.post,
-
     state?.cities,
     router,
   ]);
@@ -566,6 +561,10 @@ const SellingPage = () => {
 
   const onChangePage = (page: number) => {
     setCurrent(page);
+    setSpin(true);
+    setTimeout(() => {
+      setSpin(false);
+    }, 500);
   };
 
   return (

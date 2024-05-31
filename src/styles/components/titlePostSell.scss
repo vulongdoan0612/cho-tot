@@ -16,25 +16,30 @@
   }
 
   .introducing {
-    .text-area {
-      width: 100%;
-    }
-
-    .MuiFormControl-root {
-      width: 100%;
-      height: auto !important;
-
-      .MuiInputBase-root {
-        height: auto !important;
-        white-space: wrap !important;
-
-        .MuiInputBase-input {
-          max-height: 200px !important;
-          min-height: 120px !important;
-          height: auto !important;
-        }
+    .warn-border {
+      .jodit-container {
+        border-color: #e5193b !important;
       }
     }
+    // .text-area {
+    //   width: 100%;
+    // }
+
+    // .MuiFormControl-root {
+    //   width: 100%;
+    //   height: auto !important;
+
+    //   .MuiInputBase-root {
+    //     height: auto !important;
+    //     white-space: wrap !important;
+
+    //     .MuiInputBase-input {
+    //       max-height: 200px !important;
+    //       min-height: 120px !important;
+    //       height: auto !important;
+    //     }
+    //   }
+    // }
   }
 
   .title-infor {
