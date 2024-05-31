@@ -27,7 +27,6 @@ const ContainMBOTO = ({
 }: any) => {
   const router = useRouter();
   const { query } = router;
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [reCurrent, setReCurrent] = useState(1);
 
   const updateURL = (queryParams: any) => {
@@ -91,31 +90,22 @@ const ContainMBOTO = ({
       />
       <div className="main-contain">
         <div className="left-contain">
-          {loading ? (
-            <Skeleton.Button block={true} active size="large"></Skeleton.Button>
-          ) : (
-            <div className="title-main">Mua bán xe ô tô, xe hơi giá tốt cập nhật tháng 04/2024</div>
-          )}
-          {loading ? (
-            <Skeleton.Input style={{ height: "92px" }} block={true} active size="large"></Skeleton.Input>
-          ) : (
-            <div className="recommend">
-              <div className="title-recommend">Gợi ý khu vực</div>
-              <div className="recommend-place">
-                <CustomButtonSelect handleClick={() => handleLink("79")}>Tp Hồ Chí Minh</CustomButtonSelect>
-                <CustomButtonSelect handleClick={() => handleLink("01")}>Hà Nội</CustomButtonSelect>
-                <CustomButtonSelect handleClick={() => handleLink("48")}>Đà Nẵng</CustomButtonSelect>
-                <span className="more" onClick={handleClick}>
-                  Xem thêm <ArrowBackIcon></ArrowBackIcon>
-                </span>
-              </div>
+          <div className="title-main">Mua bán xe ô tô, xe hơi giá tốt cập nhật tháng 04/2024</div>
+
+          <div className="recommend">
+            <div className="title-recommend">Gợi ý khu vực</div>
+            <div className="recommend-place">
+              <CustomButtonSelect handleClick={() => handleLink("79")}>Tp Hồ Chí Minh</CustomButtonSelect>
+              <CustomButtonSelect handleClick={() => handleLink("01")}>Hà Nội</CustomButtonSelect>
+              <CustomButtonSelect handleClick={() => handleLink("48")}>Đà Nẵng</CustomButtonSelect>
+              <span className="more" onClick={handleClick}>
+                Xem thêm <ArrowBackIcon></ArrowBackIcon>
+              </span>
             </div>
-          )}
-          {loading ? (
-            <Skeleton.Input style={{ height: "68px" }} block={true} active size="large"></Skeleton.Input>
-          ) : (
-            <BrandSlide setOpenModal={setOpenModal}></BrandSlide>
-          )}
+          </div>
+
+          <BrandSlide setOpenModal={setOpenModal}></BrandSlide>
+
           <ItemCar
             activeKey={activeKey}
             spin={spin}
