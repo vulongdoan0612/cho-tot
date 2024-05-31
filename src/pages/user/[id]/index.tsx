@@ -34,15 +34,14 @@ const DetailUser = () => {
   const { detailProfileUser } = useSelector((state: RootState) => state.detailProfileUser);
   const dispatch: AppDispatch = useDispatch();
   const { account } = useSelector((state: RootState) => state.auth);
-  const [spin, setSpin] = useState(false);
-  const [skeleton, setSkeleton] = useState(false);
+  const [spin, setSpin] = useState(true);
+  const [skeleton, setSkeleton] = useState(true);
   const [alertShare, setAlertShare] = useState(false);
   const [alertAvatar, setAlertAvatar] = useState(false);
   const [alertAvatar2, setAlertAvatar2] = useState(false);
   const [alertAvatar4, setAlertAvatar4] = useState(false);
   const [developing, setDeveloping] = useState(false);
 
-  const [inputValue, setInputValue] = useState(1);
   useFetchDataUser({ body: router, setSpin });
 
   useEffect(() => {
@@ -59,13 +58,13 @@ const DetailUser = () => {
         setSpin(false);
       }, 500);
       if (lastJsonMessage.action === "refuse" && account?.user?._id === lastJsonMessage?.userId) {
-        dispatch(fetchDataUserProfile({ userId: router.query.id }));
+        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
       }
       if (lastJsonMessage.action === "delete" && account?.user?._id === lastJsonMessage?.userId) {
-        dispatch(fetchDataUserProfile({ userId: router.query.id }));
+        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
       }
       if (lastJsonMessage.action === "accept" && account?.user?._id === lastJsonMessage?.userId) {
-        dispatch(fetchDataUserProfile({ userId: router.query.id }));
+        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
       }
     }
   }, [lastJsonMessage]);
@@ -95,7 +94,7 @@ const DetailUser = () => {
     const response = await updateAvatar(String(token), { avatar: info.file.originFileObj as RcFile });
     if (response?.data?.status === "SUCCESS") {
       dispatch(fetchDataUserProfile({ userId: router.query.id }));
-      dispatch(fetchDataUser());
+      dispatch(fetchDataUser({ setSpin }));
     }
   };
   const handleChangeBanner: UploadProps["onChange"] = async (info) => {
@@ -107,7 +106,7 @@ const DetailUser = () => {
     const response = await updateBanner(String(token), { banner: info.file.originFileObj as RcFile });
     if (response?.data?.status === "SUCCESS") {
       dispatch(fetchDataUserProfile({ userId: router.query.id }));
-      dispatch(fetchDataUser());
+      dispatch(fetchDataUser({ setSpin }));
     }
   };
   const beforeUpload = (file: any) => {
@@ -253,7 +252,7 @@ const DetailUser = () => {
         <div className="contain-detail-user">
           <div className="left">
             <div className="avatar-top">
-              {skeleton ? (
+              {spin ? (
                 <Skeleton.Button block={true} style={{ height: "125px" }} active size="large"></Skeleton.Button>
               ) : (
                 <div className="background">
@@ -299,32 +298,39 @@ const DetailUser = () => {
               )}
             </div>
             <div className="info">
-              {skeleton ? (
+              {spin ? (
                 <Skeleton.Button block={true} style={{ height: "20.69px" }} active size="large"></Skeleton.Button>
               ) : (
                 <span className="username">{detailProfileUser?.user?.fullname}</span>
               )}
               {/* <span className="rate">Chưa có đánh giá</span> */}
-              {skeleton ? (
-                <Skeleton.Button block={true} style={{ height: "18.39px" }} active size="large"></Skeleton.Button>
-              ) : (
-                <span dangerouslySetInnerHTML={{ __html: detailProfileUser?.user?.introduction }}></span>
-              )}
-              {account?.user?._id === router?.query?.id ? (
-                <>
-                  {" "}
-                  <CustomButton onClick={handleShare}>
-                    <ShareIcon></ShareIcon>Chia sẻ trang của bạn
-                  </CustomButton>{" "}
-                  <CustomButton className="edit" onClick={handleEdit}>
-                    Chỉnh sửa trang cá nhân
-                  </CustomButton>
-                </>
+              {spin ? (
+                <Skeleton.Button
+                  block={true}
+                  style={{ height: `${account?.user?._id === router?.query?.id ? "76px" : "34.5px"}` }}
+                  active
+                  size="large"
+                ></Skeleton.Button>
               ) : (
                 <>
-                  <CustomButton onClick={handleFollow}>
-                    <PlusUserIcon></PlusUserIcon>Theo dõi
-                  </CustomButton>
+                  <span dangerouslySetInnerHTML={{ __html: detailProfileUser?.user?.introduction }}></span>
+                  {account?.user?._id === router?.query?.id ? (
+                    <>
+                      {" "}
+                      <CustomButton onClick={handleShare}>
+                        <ShareIcon></ShareIcon>Chia sẻ trang của bạn
+                      </CustomButton>{" "}
+                      <CustomButton className="edit" onClick={handleEdit}>
+                        Chỉnh sửa trang cá nhân
+                      </CustomButton>
+                    </>
+                  ) : (
+                    <>
+                      <CustomButton onClick={handleFollow}>
+                        <PlusUserIcon></PlusUserIcon>Theo dõi
+                      </CustomButton>
+                    </>
+                  )}
                 </>
               )}
             </div>
@@ -337,7 +343,7 @@ const DetailUser = () => {
                 <CarlendarIcon></CarlendarIcon>
                 <span style={{ display: "flex", textWrap: "nowrap", gap: "4px" }}>
                   Đã tham gia:
-                  {skeleton ? (
+                  {spin ? (
                     <Skeleton.Button style={{ height: "16.09px", width: "160px" }} block={true} active size="large"></Skeleton.Button>
                   ) : (
                     <>&nbsp;{formatISOToCustomDate(account?.user?.dateJoin)}</>
@@ -349,7 +355,7 @@ const DetailUser = () => {
                   <AddressIcon></AddressIcon>
                   <div style={{ display: "flex", textWrap: "nowrap", gap: "4px" }}>
                     Địa chỉ:
-                    {skeleton ? (
+                    {spin ? (
                       <Skeleton.Button style={{ height: "16.09px", width: "160px" }} block={true} active size="large"></Skeleton.Button>
                     ) : (
                       <>
@@ -364,13 +370,16 @@ const DetailUser = () => {
               )}
             </div>
           </div>
-          <div className="right">
-            {" "}
-            <Tabs defaultActiveKey="1" items={items} className="tab-ads" />
-          </div>
+          {spin ? (
+            <Spin spinning={spin}></Spin>
+          ) : (
+            <div className="right">
+              {" "}
+              <Tabs defaultActiveKey="1" items={items} className="tab-ads" />
+            </div>
+          )}
         </div>
       </div>
-      <Spin spinning={spin} fullscreen />
       <Alert message="Đã sao chép liên kết đến trang cá nhân" type="success" className={alertShare ? "show-alert" : ""} />
       <Alert message="Tính năng đang phát triển" type="success" className={developing ? "show-alert" : ""} />{" "}
       <Alert message="Bạn chỉ có thể tải lên tệp PNG, JPEG, hoặc GIF!" type="success" className={alertAvatar2 ? "show-alert" : ""} />

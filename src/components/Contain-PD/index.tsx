@@ -9,7 +9,6 @@ import {
   HiddenEyeIcon,
   PercentIcon,
   PhoneIcon,
-  StarIcon,
   TimeIcon,
 } from "../CustomIcons";
 import CustomButtonGreen from "../CustomButton/green";
@@ -25,8 +24,6 @@ import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import { useFetchCheckFavPost } from "@/hooks/useFetchCheckFavPost";
 import NotFound from "../404";
 import { createConversation } from "@/services/chat";
-import { formatDistanceToNow, parseISO, parse } from "date-fns";
-import { vi } from "date-fns/locale";
 import timeAgo from "@/utils/timeAgo";
 import Link from "next/link";
 
@@ -36,18 +33,10 @@ const ContainPD = () => {
   const { post, checkFavPost } = useSelector((state: RootState) => state.postsData);
   const [hiddenPhone, setHiddenPhone] = useState(true);
   const [lessDetail, setLessDetail] = useState(false);
-  const [spin, setSpin] = useState(false);
-  const [skeleton, setSkeleton] = useState(false);
+  const [spin, setSpin] = useState(true);
   const [author, setAuthor] = useState(false);
 
   useFetchPost({ setSpin, body: router });
-
-  useEffect(() => {
-    setSkeleton(true);
-    setTimeout(() => {
-      setSkeleton(false);
-    }, 500);
-  }, [router]);
 
   useFetchCheckFavPost({
     body: router,
@@ -107,10 +96,7 @@ const ContainPD = () => {
       const res = await createConversation(accessToken, data);
 
       if (res.status === 200) {
-        setSpin(true);
-        setTimeout(() => {
-          setSpin(false);
-        }, 500);
+        setSpin(false);
         router.push(`/chat?currentRoom=${post?.post?.postId}`);
       }
     } else {
@@ -162,10 +148,10 @@ const ContainPD = () => {
           <div className="main-contain">
             <div className="top-main">
               <div className="left-contain">
-                <ProductSlide post={post} checkFavPost={checkFavPost}></ProductSlide>
+                <ProductSlide post={post} checkFavPost={checkFavPost} spin={spin}></ProductSlide>
                 <div className="intro-desc">
                   <span className="title">Mô tả chi tiết</span>
-                  {skeleton ? (
+                  {spin ? (
                     <Skeleton.Input style={{ height: "92px" }} block={true} active size="large"></Skeleton.Input>
                   ) : (
                     <>
@@ -185,7 +171,7 @@ const ContainPD = () => {
                         <div className="devide">
                           <div className="left">
                             <span>Số Km đã đi</span>
-                            {skeleton ? (
+                            {spin ? (
                               <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                             ) : (
                               <span>{post?.post?.post?.km}</span>
@@ -193,7 +179,7 @@ const ContainPD = () => {
                           </div>
                           <div className="right">
                             <span>Số đời chủ</span>{" "}
-                            {skeleton ? (
+                            {spin ? (
                               <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                             ) : (
                               <span>{post?.post?.post?.owner}</span>
@@ -210,7 +196,7 @@ const ContainPD = () => {
                         <div className="devide">
                           <div className="left">
                             <span>Loại biển số</span>
-                            {skeleton ? (
+                            {spin ? (
                               <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                             ) : (
                               <span>{post?.post?.post?.carNumber}</span>
@@ -218,7 +204,7 @@ const ContainPD = () => {
                           </div>
                           <div className="right">
                             <span>Kèm phụ kiện</span>
-                            {skeleton ? (
+                            {spin ? (
                               <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                             ) : (
                               <span>{post?.post?.post?.accessories}</span>
@@ -232,7 +218,7 @@ const ContainPD = () => {
                         <div className="devide">
                           <div className="left">
                             <span>Kèm phụ kiện</span>
-                            {skeleton ? (
+                            {spin ? (
                               <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                             ) : (
                               <span>{post?.post?.post?.accessories}</span>
@@ -246,7 +232,7 @@ const ContainPD = () => {
                       {" "}
                       <div className="left">
                         <span>Còn hạn đăng kiểm</span>
-                        {skeleton ? (
+                        {spin ? (
                           <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                         ) : (
                           <span>{post?.post?.post?.registry}</span>
@@ -254,7 +240,7 @@ const ContainPD = () => {
                       </div>
                       <div className="right">
                         <span>Xuất xứ</span>
-                        {skeleton ? (
+                        {spin ? (
                           <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                         ) : (
                           <span>{post?.post?.post?.country}</span>
@@ -265,7 +251,7 @@ const ContainPD = () => {
                     <div className="devide">
                       <div className="left">
                         <span>Tình trạng</span>
-                        {skeleton ? (
+                        {spin ? (
                           <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                         ) : (
                           <span>{post?.post?.post?.status}</span>
@@ -282,7 +268,7 @@ const ContainPD = () => {
                       <div className="devide">
                         <div className="left">
                           <span>Hãng</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>{post?.post?.post?.value}</span>
@@ -290,7 +276,7 @@ const ContainPD = () => {
                         </div>
                         <div className="right">
                           <span>Dòng xe</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>{post?.post?.post?.model}</span>
@@ -301,7 +287,7 @@ const ContainPD = () => {
                       <div className="devide">
                         <div className="left">
                           <span>Năm sản xuất</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>{post?.post?.post?.dateCar}</span>
@@ -309,7 +295,7 @@ const ContainPD = () => {
                         </div>
                         <div className="right">
                           <span>Hộp số</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>{post?.post?.post?.numberBox}</span>
@@ -321,7 +307,7 @@ const ContainPD = () => {
                         {" "}
                         <div className="left">
                           <span>Nhiên liệu</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>{post?.post?.post?.activeButton}</span>
@@ -329,7 +315,7 @@ const ContainPD = () => {
                         </div>
                         <div className="right">
                           <span>Kiểu dáng</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>{post?.post?.post?.form}</span>
@@ -340,7 +326,7 @@ const ContainPD = () => {
                       <div className="devide">
                         <div className="left">
                           <span>Số chỗ</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>{post?.post?.post?.sit}</span>
@@ -348,7 +334,7 @@ const ContainPD = () => {
                         </div>
                         <div className="right">
                           <span>Trọng lượng</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>&gt; 1 tấn</span>
@@ -359,7 +345,7 @@ const ContainPD = () => {
                       <div className="devide">
                         <div className="left">
                           <span>Trọng tải</span>
-                          {skeleton ? (
+                          {spin ? (
                             <Skeleton.Input style={{ height: "16px", width: "250px" }} block={true} active size="large"></Skeleton.Input>
                           ) : (
                             <span>2</span>
@@ -405,14 +391,14 @@ const ContainPD = () => {
               <div className="right-contain">
                 <div className="card-detail">
                   <h1 className="title">
-                    {skeleton ? (
+                    {spin ? (
                       <Skeleton.Button block={true} style={{ height: "27px" }} active size="large"></Skeleton.Button>
                     ) : (
                       <> {post?.post?.post?.title}</>
                     )}
                   </h1>
                   <div className="infor">
-                    {skeleton ? (
+                    {spin ? (
                       <Skeleton.Button block={true} style={{ height: "16.094px" }} active size="large"></Skeleton.Button>
                     ) : (
                       <>
@@ -433,7 +419,7 @@ const ContainPD = () => {
                     )}
                   </div>
                   <div className="price">
-                    {skeleton ? (
+                    {spin ? (
                       <Skeleton.Button block={true} style={{ height: "139.19px" }} active size="large"></Skeleton.Button>
                     ) : (
                       <>
@@ -453,7 +439,7 @@ const ContainPD = () => {
                       </>
                     )}
                   </div>
-                  {skeleton ? (
+                  {spin ? (
                     <Skeleton.Button block={true} style={{ height: "59.19px" }} active size="large"></Skeleton.Button>
                   ) : (
                     <div className="address">
@@ -471,7 +457,7 @@ const ContainPD = () => {
                     </div>
                   )}
                 </div>
-                {skeleton ? (
+                {spin ? (
                   <Skeleton.Button block={true} style={{ height: "179.69px" }} active size="large"></Skeleton.Button>
                 ) : (
                   <div className="card-user">
@@ -555,7 +541,7 @@ const ContainPD = () => {
             </div>
             {post?.relatedPosts?.length > 0 ? (
               <>
-                {skeleton ? (
+                {spin ? (
                   <Skeleton.Button block={true} style={{ height: "386px" }} active size="large"></Skeleton.Button>
                 ) : (
                   <div className="recommend" style={{ paddingTop: "10px", paddingBottom: "10px" }}>

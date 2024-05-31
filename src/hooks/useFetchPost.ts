@@ -15,12 +15,10 @@ export const useFetchPost = ({ setSpin, body }: any) => {
       if (!body.isReady) {
         return;
       }
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
+
       dispatch(
         fetchDataPost({
+          setSpin,
           postId: body.query.postId,
         })
       );

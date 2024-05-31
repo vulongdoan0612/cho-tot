@@ -7,9 +7,13 @@ interface IState {
   account?: any;
   loading?: boolean;
 }
-export const fetchDataUser = createAsyncThunk("/get-profile", async () => {
+export const fetchDataUser = createAsyncThunk("/get-profile", async (arg?: any) => {
+  const { setSke } = arg;
   const token = localStorage.getItem("access_token");
   const res = await getProfile(String(token));
+  if (res.status === 200) {
+    setSke(false);
+  }
   return res.data;
 });
 const initialState: IState = {

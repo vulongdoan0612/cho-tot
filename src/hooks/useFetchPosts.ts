@@ -3,8 +3,7 @@ import { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export const useFetchPosts = ({ setSpin, current, pageSize, body }: any) => {
-
+export const useFetchPosts = ({ current, pageSize, body, setSpin }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -15,11 +14,13 @@ export const useFetchPosts = ({ setSpin, current, pageSize, body }: any) => {
   }, [current, body]);
   const handleFetchPosts = () => {
     try {
+      setSpin(true);
       if (!body.isReady) {
         return;
       }
       dispatch(
         fetchDataPosts({
+          setSpin,
           pageSize,
           current,
           keySearch: body.query.keySearch === "" ? undefined : body.query.keySearch,

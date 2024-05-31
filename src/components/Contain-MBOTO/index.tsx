@@ -52,7 +52,7 @@ const ContainMBOTO = ({
   const handleLink = (item: string) => {
     updateURL({ city: item, district: "" });
   };
-  
+
   return (
     <div className="wrapper-contain">
       <Breadcrumb
@@ -124,8 +124,12 @@ const ContainMBOTO = ({
             handleChangeTab={handleChangeTab}
             setFilter={setFilter}
           ></ItemCar>
-
-          {posts.total > 0 ? <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} /> : <></>}
+          {!spin && (
+            <>
+              {" "}
+              {posts.total > 0 ? <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} /> : <></>}
+            </>
+          )}
         </div>
         <RightFilterMBOTO setState={setState}></RightFilterMBOTO>
       </div>

@@ -152,6 +152,18 @@
         }
       }
     }
+    .ant-spin {
+      display: flex;
+      border-radius: 6px;
+      height: 100%;
+      background: #d6d6d6;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      .ant-spin-dot-item {
+        background-color: #000;
+      }
+    }
     .right {
       border-radius: 0.5rem;
       border: 1px solid rgb(232 232 232);

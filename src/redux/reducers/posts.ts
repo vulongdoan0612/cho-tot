@@ -14,6 +14,7 @@ interface IState {
 
 export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) => {
   const {
+    setSpin,
     pageSize,
     current,
     price,
@@ -53,14 +54,20 @@ export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) =>
     post,
     keySearch
   );
+  if (res.status === 200) {
+    setSpin(false);
+  }
   return res?.data;
 });
 export const fetchDataPost = createAsyncThunk("/get-post", async (arg: any) => {
   const accessToken: any = localStorage.getItem("access_token");
 
-  const { postId } = arg;
+  const { setSpin, postId } = arg;
   const getPostId = { postId: postId };
   const res = await getPost(accessToken, getPostId);
+  if (res.status === 200) {
+    setSpin(false);
+  }
   return res?.data;
 });
 export const fetchDataPostService = createAsyncThunk("/get-post-service", async (arg: any) => {
@@ -75,10 +82,13 @@ export const fetchDataCurrentPost = createAsyncThunk("/get-current-post", async 
   const res = await getCurrentPosts();
   return res?.data;
 });
-export const fetchDataFavList = createAsyncThunk("/get-fav-list", async () => {
+export const fetchDataFavList = createAsyncThunk("/get-fav-list", async (arg: any) => {
   const accessToken: any = localStorage.getItem("access_token");
-
+  const { setLoading } = arg;
   const res = await getFavPost(accessToken);
+  if (res.status === 200) {
+    setLoading(false);
+  }
   return res?.data;
 });
 export const fetchDataFavListMain = createAsyncThunk("/get-fav-list-main", async () => {

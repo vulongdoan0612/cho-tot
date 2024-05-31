@@ -7,8 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { addFavPost, removeFavPost } from "@/services/favPost";
 
-const ProductSlide = ({ post, checkFavPost }: any) => {
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
+const ProductSlide = ({ post, checkFavPost, spin }: any) => {
   const sliderRef: any = useRef(null);
   const [alertShare, setAlertShare] = useState(false);
   const [hoveredImageSrc, setHoveredImageSrc] = useState("");
@@ -223,11 +222,12 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
   return (
     <div className="slide-car">
       <div className="gallery">
-        {post?.post?.post?.image?.length > 6 ? (
+        {spin ? (
+          <Skeleton.Input style={{ height: "421px" }} block={true} active size="large"></Skeleton.Input>
+        ) : (
           <>
-            {loading ? (
-              <Skeleton.Input style={{ height: "92px" }} block={true} active size="large"></Skeleton.Input>
-            ) : (
+            {" "}
+            {post?.post?.post?.image?.length > 6 ? (
               <>
                 {" "}
                 <span className="count">
@@ -248,12 +248,6 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
                 ></Image>
                 <SampleNextArrow className="next-icon" onClick={handlePrevSlide} />
               </>
-            )}
-          </>
-        ) : (
-          <>
-            {loading ? (
-              <Skeleton.Input style={{ height: "421px" }} block={true} active size="large"></Skeleton.Input>
             ) : (
               <>
                 {" "}
@@ -281,59 +275,50 @@ const ProductSlide = ({ post, checkFavPost }: any) => {
           </>
         )}
       </div>
-
-      <>
-        {post?.post?.post?.image?.length <= 6 ? (
-          <>
-            {loading ? (
-              <Skeleton.Input style={{ height: "106px" }} block={true} active size="large"></Skeleton.Input>
-            ) : (
-              <div className="slider-less">
-                {post?.post?.post?.image.map((item: any, index: number) => {
-                  return (
-                    <div className="slider-item" key={index}>
-                      <Image
-                        // style={{ width: 110 }}
-                        key={index}
-                        className={active2 === index + 1 ? "active" : ""}
-                        preview={false}
-                        src={item.img}
-                        alt=""
-                        width={106}
-                        height={106}
-                        onMouseEnter={() => handleHoverImage2(item.img, index + 1)}
-                      ></Image>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            {loading ? (
-              <Skeleton.Input style={{ height: "106px" }} block={true} active size="large"></Skeleton.Input>
-            ) : (
-              <Slider {...settings} className="slider" ref={sliderRef}>
-                {post?.post?.post?.image.map((item: any, index: number) => {
-                  return (
+      {spin ? (
+        <Skeleton.Input style={{ height: "106px" }} block={true} active size="large"></Skeleton.Input>
+      ) : (
+        <>
+          {post?.post?.post?.image?.length <= 6 ? (
+            <div className="slider-less">
+              {post?.post?.post?.image.map((item: any, index: number) => {
+                return (
+                  <div className="slider-item" key={index}>
                     <Image
+                      // style={{ width: 110 }}
                       key={index}
-                      className={active === index + 1 ? "active" : ""}
+                      className={active2 === index + 1 ? "active" : ""}
                       preview={false}
                       src={item.img}
                       alt=""
                       width={106}
                       height={106}
-                      onMouseEnter={() => handleHoverImage(item.img, index + 1)}
+                      onMouseEnter={() => handleHoverImage2(item.img, index + 1)}
                     ></Image>
-                  );
-                })}
-              </Slider>
-            )}
-          </>
-        )}
-      </>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <Slider {...settings} className="slider" ref={sliderRef}>
+              {post?.post?.post?.image.map((item: any, index: number) => {
+                return (
+                  <Image
+                    key={index}
+                    className={active === index + 1 ? "active" : ""}
+                    preview={false}
+                    src={item.img}
+                    alt=""
+                    width={106}
+                    height={106}
+                    onMouseEnter={() => handleHoverImage(item.img, index + 1)}
+                  ></Image>
+                );
+              })}
+            </Slider>
+          )}
+        </>
+      )}
       <Alert message="Tin đã được đưa vào danh sách theo dõi" type="success" className={alertShare ? "show-alert" : ""} />
       <Alert message="Bạn cần phải đăng nhập để thêm vào danh sách yêu thích!" type="success" className={author ? "show-alert" : ""} />
     </div>

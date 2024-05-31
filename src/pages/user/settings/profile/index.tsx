@@ -26,7 +26,6 @@ import dynamic from "next/dynamic";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const User = () => {
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const { account } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const [fillAddrCity, setFillAddrCity] = useState(false);
@@ -267,6 +266,7 @@ const User = () => {
         stateUser.sex !== "" &&
         stateUser.birth !== ""
       ) {
+        setSpin(true);
         let wardName = "";
         let city = "";
         let district = "";
@@ -312,11 +312,6 @@ const User = () => {
         };
         const response = await changeProfile(String(token), updateProfile);
         if (response.status === 200) {
-          setSpin(true);
-          setTimeout(() => {
-            setSpin(false);
-            toast(response.data.message);
-          }, 500);
           setFillIntro(false);
           setFillRemem(false);
           setFillFax(false);
@@ -325,7 +320,11 @@ const User = () => {
           setFillFullAddr(false);
           setFillSex(false);
           setFillBirth(false);
-          router.push(`/user/${account?.user?._id}`);
+          setTimeout(() => {
+            toast(response.data.message);
+            setSpin(false);
+            router.push(`/user/${account?.user?._id}`);
+          }, 500);
         }
       }
     } catch {
@@ -660,7 +659,7 @@ const User = () => {
             <div className="first-line input-need-to-custom">
               {" "}
               <div className="fullname ">
-                {loading ? (
+                {account?.user === undefined ? (
                   <Skeleton.Input block={true} active size="large"></Skeleton.Input>
                 ) : (
                   <TextField
@@ -677,7 +676,7 @@ const User = () => {
                 )}
               </div>
               <div className={`phone ${account?.user?.phone ? "phone-exit" : "phone-not-exit"}`}>
-                {loading ? (
+                {account?.user === undefined ? (
                   <Skeleton.Input block={true} active size="large"></Skeleton.Input>
                 ) : (
                   <>
@@ -697,22 +696,25 @@ const User = () => {
                 )}
               </div>
             </div>
+            {account?.user === undefined ? (
+              <Skeleton.Input block={true} active size="large" style={{ height: "48px" }}></Skeleton.Input>
+            ) : (
+              <div className="second-line input-arrow  input-need-to-custom" onClick={handleModal}>
+                <TextField
+                  id="filled-multiline-flexible"
+                  label="Địa chỉ"
+                  className={`fullname ${fillFullAddr ? "warn-border" : ""}`}
+                  value={stateUser?.fullAddress}
+                  multiline
+                  maxRows={4}
+                  variant="filled"
+                />
+                <ArrowInputIcon></ArrowInputIcon>
+                {fillFullAddr && <span className="warning">Vui lòng nhập Địa chỉ</span>}
+              </div>
+            )}
 
-            <div className="second-line input-arrow  input-need-to-custom" onClick={handleModal}>
-              <TextField
-                id="filled-multiline-flexible"
-                label="Địa chỉ"
-                className={`fullname ${fillFullAddr ? "warn-border" : ""}`}
-                value={stateUser?.fullAddress}
-                multiline
-                maxRows={4}
-                variant="filled"
-              />
-              <ArrowInputIcon></ArrowInputIcon>
-              {fillFullAddr && <span className="warning">Vui lòng nhập Địa chỉ</span>}
-            </div>
-
-            {loading ? (
+            {account?.user === undefined ? (
               <Skeleton.Input block={true} active size="large" style={{ height: "155px" }}></Skeleton.Input>
             ) : (
               <div className="introducing">
@@ -739,7 +741,7 @@ const User = () => {
               </div>
             )}
             <div className="remember-name input-need-to-custom">
-              {loading ? (
+              {account?.user === undefined ? (
                 <Skeleton.Input block={true} active size="large"></Skeleton.Input>
               ) : (
                 <>
@@ -777,7 +779,7 @@ const User = () => {
                 variant="filled"
               />
             </div>{" "}
-            {loading ? (
+            {account?.user === undefined ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
               <>
@@ -796,7 +798,7 @@ const User = () => {
                 </div>
               </>
             )}
-            {loading ? (
+            {account?.user === undefined ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
               <div className="fax-number input-need-to-custom">
@@ -813,7 +815,7 @@ const User = () => {
                 {fillFax && <span className="warning">Vui lòng nhập Mã số thuế</span>}
               </div>
             )}
-            {loading ? (
+            {account?.user === undefined ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
               <div className="second-line input-arrow  input-need-to-custom" onClick={handleModalFav}>
@@ -831,7 +833,7 @@ const User = () => {
                 {fillFav && <span className="warning">Vui lòng chọn Danh mục yêu thích</span>}
               </div>
             )}
-            {loading ? (
+            {account?.user === undefined ? (
               <Skeleton.Input block={true} active size="large"></Skeleton.Input>
             ) : (
               <div className="bottom">

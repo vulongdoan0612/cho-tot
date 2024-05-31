@@ -28,7 +28,6 @@ const SellingPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const { posts } = useSelector((state: RootState) => state.postsData);
   const [spin, setSpin] = useState(false);
-
   const [pageSize, setPagesize] = useState(7);
   const [current, setCurrent] = useState(1);
   const [state, setState] = useState<IFilterHeader>(defaultCommonState);
@@ -61,10 +60,7 @@ const SellingPage = () => {
         ...prevState,
         activeKey: "1",
       }));
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
+
       let updatedFilter = { ...filter };
       updatedFilter.post = "all";
       const queries: any = Object.entries(updatedFilter).filter(([_, value]) => value !== "");
@@ -83,10 +79,6 @@ const SellingPage = () => {
         activeKey: "2",
       }));
       updateQuery(queries);
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
     }
     if (key === "3") {
       if (!router.isReady) {
@@ -101,10 +93,6 @@ const SellingPage = () => {
         activeKey: "3",
       }));
       updateQuery(queries);
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
     }
   };
 
@@ -112,6 +100,7 @@ const SellingPage = () => {
     current: current,
     pageSize: pageSize,
     body: router,
+    setSpin,
   });
 
   useEffect(() => {
@@ -564,7 +553,7 @@ const SellingPage = () => {
     setSpin(true);
     setTimeout(() => {
       setSpin(false);
-    }, 500);
+    }, 1500);
   };
 
   return (

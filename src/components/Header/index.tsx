@@ -20,7 +20,7 @@ const Header = () => {
   const { account } = useSelector((state: RootState) => state.auth);
   const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
   const dispatch = useDispatch<AppDispatch>();
-  const { countdownDuration, loading } = useSelector((state: RootState) => state.countDownLoading);
+  const [ske, setSke] = useState(true);
   const [badge, setBadge] = useState(false);
   const [listSearch, setListSearch] = useState([]);
   const [openListSearch, setOpenListSearch] = useState(false);
@@ -42,22 +42,16 @@ const Header = () => {
 
   useEffect(() => {
     fetchData();
-    startCountdown();
   }, []);
-
-  const startCountdown = () => {
-    setTimeout(() => {
-      dispatch(countDownLoading(0));
-      dispatch(countdownComplete());
-    }, countdownDuration);
-  };
 
   const fetchData = async () => {
     const token = localStorage.getItem("access_token");
     try {
       if (token) {
         fetchAnnounce();
-        dispatch(fetchDataUser());
+        dispatch(fetchDataUser({ setSke }));
+      } else {
+        setSke(false);
       }
     } catch {
       console.log("error");
@@ -199,7 +193,7 @@ const Header = () => {
     <header className="header">
       <div className="left">
         <div>
-          {loading ? (
+          {ske ? (
             <Skeleton.Button block={true} active size="large"></Skeleton.Button>
           ) : (
             <Link href="/">
@@ -208,7 +202,7 @@ const Header = () => {
           )}
         </div>
         <div className="dropdown-category">
-          {loading ? (
+          {ske ? (
             <Skeleton.Input block={true} active size="large"></Skeleton.Input>
           ) : (
             <Dropdown menu={{ items }}>
@@ -224,7 +218,7 @@ const Header = () => {
       </div>
       <div className="mid">
         {" "}
-        {loading ? (
+        {ske ? (
           <Skeleton.Input active block={true} size="large"></Skeleton.Input>
         ) : (
           <>
@@ -256,7 +250,7 @@ const Header = () => {
         )}
       </div>
       <div className="right">
-        {loading ? (
+        {ske ? (
           <Skeleton.Input active block={true} size="large"></Skeleton.Input>
         ) : (
           <>
@@ -275,14 +269,14 @@ const Header = () => {
           </>
         )}
         <div className="avatar">
-          {loading ? (
+          {ske ? (
             <Skeleton.Button active block={true} size="large" style={{ minWidth: "72px" }}></Skeleton.Button>
           ) : (
             <AvatarDropdown></AvatarDropdown>
           )}
         </div>
         <div>
-          {loading ? (
+          {ske ? (
             <Skeleton.Button block={true} active size="large" style={{ minWidth: "123px" }}></Skeleton.Button>
           ) : (
             <Link href="/dang-tin">

@@ -1,19 +1,12 @@
 import CustomButton from "@/components/CustomButton";
-import { AddedFavouritePostIcon } from "@/components/CustomIcons";
-import { useFetchFavList } from "@/hooks/useFetchFavList";
 import Page from "@/layout/Page";
-import { fetchDataFavList } from "@/redux/reducers/posts";
 import { AppDispatch, RootState } from "@/redux/store";
-import { createConversation } from "@/services/chat";
-import { removeFavPost } from "@/services/favPost";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { Breadcrumb, Image } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import cookie from "cookie";
-import { getPostCheckList } from "@/services/formPost";
 import { useFetchHistory } from "@/hooks/useFetchHistory";
 import timeAgo from "@/utils/timeAgo";
 import formatISOToCustomDate from "@/utils/convertDate";
@@ -22,39 +15,9 @@ import CustomButtonGreen from "@/components/CustomButton/green";
 const History = () => {
   const { paymentHistory } = useSelector((state: RootState) => state.payment);
   const router = useRouter();
-  const dispatch: AppDispatch = useDispatch();
-  const [favList, setFavList] = useState([]);
 
   useFetchHistory();
 
-  const handleToggleFav = async (index: any, postId: string) => {
-    const newFavList: any = [...favList];
-    newFavList[index] = !newFavList[index];
-    setFavList(newFavList);
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      const updateField = {
-        postId: postId,
-      };
-      try {
-        await removeFavPost(String(token), updateField);
-      } finally {
-        dispatch(fetchDataFavList());
-      }
-    }
-  };
-
-  const handleChat = async (item: any) => {
-    const accessToken: any = localStorage.getItem("access_token");
-    const data = {
-      postId: item?.postId,
-    };
-    const res = await createConversation(accessToken, data);
-
-    if (res.status === 200) {
-      router.push(`/chat?currentRoom=${item?.postId}`);
-    }
-  };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
       <div className="fav-wrapper">
