@@ -9,21 +9,26 @@ interface IState {
 }
 export const fetchConversation = createAsyncThunk("/get-chat", async (arg?: any) => {
   const token = localStorage.getItem("access_token");
-
-  const { idRoom, setSkeletonChat } = arg;
+  const { idRoom, setSkeletonChat, setSkeleton2 } = arg;
+  setSkeleton2(true);
   const postData = { idRoom: idRoom };
   const res = await getConversation(String(token), postData);
   if (res.status === 200) {
     setSkeletonChat(false);
+    setSkeleton2(false);
   }
   return res?.data;
 });
 
 export const fetchAllConversation = createAsyncThunk("/get-all-chat", async (arg: any) => {
-  const { search, typeChat } = arg;
+  const { search, typeChat, setSkeleton } = arg;
+  setSkeleton(true);
   const token = localStorage.getItem("access_token");
   const data = { search: search, typeChat: typeChat };
   const res = await getAllConversation(String(token), data);
+  if (res.status === 200) {
+    setSkeleton(false);
+  }
   return res?.data;
 });
 

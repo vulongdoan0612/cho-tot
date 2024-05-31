@@ -43,7 +43,7 @@ const Chat = () => {
   const [conversationFetched, setConversationFetched] = useState(false);
   const [skeletonChat, setSkeletonChat] = useState(false);
 
-  useFetchAllConversation();
+  useFetchAllConversation({ setSkeleton });
   useFetchAllConversationSummary();
 
   const formatTimeToNowInVietnamese = (isoDate: any) => {
@@ -82,10 +82,6 @@ const Chat = () => {
         dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
         combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
         dispatch(fetchAllConversation({ search: search, typeChat: typeChat }));
-        setSkeleton(true);
-        setTimeout(() => {
-          setSkeleton(false);
-        }, 200);
       }
     }
   }, [lastJsonMessage]);
@@ -107,13 +103,9 @@ const Chat = () => {
 
   const handleTypeChange = (e: any) => {
     setTypeChat(e.target.value);
-    dispatch(fetchAllConversation({ search: typeText, typeChat: e.target.value }));
+    dispatch(fetchAllConversation({ search: typeText, typeChat: e.target.value, setSkeleton }));
     dispatch(fetchAllConversationSummary({ typeChat: e.target.value }));
     combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
-    setSkeleton(true);
-    setTimeout(() => {
-      setSkeleton(false);
-    }, 200);
   };
 
   const handleChangeText = (e: any) => {
@@ -141,16 +133,12 @@ const Chat = () => {
       hiddenChatList,
     };
     await hiddenMessage(String(accessToken), idRoom);
-    dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
+    dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat, setSkeleton }));
     dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
     combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
     setHiddenChat(false);
     setHiddenChatList([]);
     setCountHidden(0);
-    setSkeleton(true);
-    setTimeout(() => {
-      setSkeleton(false);
-    }, 200);
   };
 
   const handleSend = async () => {
@@ -162,12 +150,8 @@ const Chat = () => {
   };
 
   const handleSelectRoom = (item: any) => {
-    dispatch(fetchConversation({ idRoom: item.idRoom, setSkeletonChat }));
-    setSkeleton2(true);
-    setTimeout(() => {
-      dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
-      setSkeleton2(false);
-    }, 200);
+    dispatch(fetchConversation({ idRoom: item.idRoom, setSkeletonChat, setSkeleton2 }));
+    dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
     router.push(`/chat?currentRoom=${item.postId}`);
   };
 
@@ -210,13 +194,9 @@ const Chat = () => {
       });
     } finally {
       setHiddenChat(false);
-      dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
+      dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat, setSkeleton }));
       dispatch(fetchAllConversationSummary(typeChat));
       combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
-      setSkeleton(true);
-      setTimeout(() => {
-        setSkeleton(false);
-      }, 200);
     }
   };
 
@@ -225,13 +205,9 @@ const Chat = () => {
       const accessToken = localStorage.getItem("access_token");
       await hiddenFalseMessage(String(accessToken), { idRoom: conversation.idRoom });
     } finally {
-      dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat }));
+      dispatch(fetchAllConversation({ search: typeText, typeChat: typeChat, setSkeleton }));
       dispatch(fetchAllConversationSummary(typeChat));
       combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
-      setSkeleton(true);
-      setTimeout(() => {
-        setSkeleton(false);
-      }, 200);
     }
   };
 
@@ -362,6 +338,7 @@ const Chat = () => {
                                         ? item.userSend?.avatar || "images/empty-avatar.jpg"
                                         : item.userSend?.avatar || "images/empty-avatar.jpg"
                                     }
+                                    style={{ objectFit: "cover" }}
                                     alt=""
                                     width={46}
                                     height={46}

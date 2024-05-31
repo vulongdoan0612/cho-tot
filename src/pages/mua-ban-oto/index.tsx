@@ -551,7 +551,7 @@ const SellingPage = () => {
   const onChangePage = (page: number) => {
     setCurrent(page);
     window.scrollTo({
-      top: 0,
+      top: 258,
       behavior: "smooth", // Cuộn mượt mà, có thể bỏ dòng này nếu không cần
     });
   };

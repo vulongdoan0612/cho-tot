@@ -691,7 +691,7 @@ const User = () => {
                       variant="filled"
                       defaultValue={account?.user?.phone}
                     />
-                    {account?.user?.phone ? <span className="change-phone">Thay đổi</span> : <></>}
+                    {/* {account?.user?.phone ? <span className="change-phone">Thay đổi</span> : <></>} */}
                   </>
                 )}
               </div>

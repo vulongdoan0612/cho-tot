@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 
 const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
   const router = useRouter();
+  const { account } = useSelector((state: RootState) => state.auth);
   const { favPostListMain } = useSelector((state: RootState) => state.postsData);
   const [spinFirst, setSpinFirst] = useState(true);
   const dispatch: AppDispatch = useDispatch();
@@ -226,10 +227,14 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                             </div>
                                           </div>
                                         </Link>
-                                        <button onClick={() => handleChat(item?.postId)}>
-                                          <ChatIcon width={20} height={20}></ChatIcon>
-                                          Chat
-                                        </button>
+                                        {item?.userId !== account?.user?._id ? (
+                                          <button onClick={() => handleChat(item?.postId)}>
+                                            <ChatIcon width={20} height={20}></ChatIcon>
+                                            Chat
+                                          </button>
+                                        ) : (
+                                          <></>
+                                        )}
                                       </div>
                                     </div>
                                   </div>
@@ -351,10 +356,14 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                             </div>
                                           </div>
                                         </Link>
-                                        <button onClick={() => handleChat(item?.postId)}>
-                                          <ChatIcon width={20} height={20}></ChatIcon>
-                                          Chat
-                                        </button>
+                                        {item?.userId !== account?.user?._id ? (
+                                          <button onClick={() => handleChat(item?.postId)}>
+                                            <ChatIcon width={20} height={20}></ChatIcon>
+                                            Chat
+                                          </button>
+                                        ) : (
+                                          <></>
+                                        )}
                                       </div>
                                     </div>
                                   </div>
@@ -538,10 +547,14 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         </div>
                                       </div>
                                     </Link>
-                                    <button onClick={() => handleChat(item?.postId)}>
-                                      <ChatIcon width={20} height={20}></ChatIcon>
-                                      Chat
-                                    </button>
+                                    {item?.userId !== account?.user?._id ? (
+                                      <button onClick={() => handleChat(item?.postId)}>
+                                        <ChatIcon width={20} height={20}></ChatIcon>
+                                        Chat
+                                      </button>
+                                    ) : (
+                                      <></>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -657,10 +670,14 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         </div>
                                       </div>
                                     </Link>
-                                    <button onClick={() => handleChat(item?.postId)}>
-                                      <ChatIcon width={20} height={20}></ChatIcon>
-                                      Chat
-                                    </button>
+                                    {item?.userId !== account?.user?._id ? (
+                                      <button onClick={() => handleChat(item?.postId)}>
+                                        <ChatIcon width={20} height={20}></ChatIcon>
+                                        Chat
+                                      </button>
+                                    ) : (
+                                      <></>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -842,10 +859,14 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         </div>
                                       </div>
                                     </Link>
-                                    <button onClick={() => handleChat(item?.postId)}>
-                                      <ChatIcon width={20} height={20}></ChatIcon>
-                                      Chat
-                                    </button>
+                                    {item?.userId !== account?.user?._id ? (
+                                      <button onClick={() => handleChat(item?.postId)}>
+                                        <ChatIcon width={20} height={20}></ChatIcon>
+                                        Chat
+                                      </button>
+                                    ) : (
+                                      <></>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -961,10 +982,14 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         </div>
                                       </div>
                                     </Link>
-                                    <button onClick={() => handleChat(item?.postId)}>
-                                      <ChatIcon width={20} height={20}></ChatIcon>
-                                      Chat
-                                    </button>
+                                    {item?.userId !== account?.user?._id ? (
+                                      <button onClick={() => handleChat(item?.postId)}>
+                                        <ChatIcon width={20} height={20}></ChatIcon>
+                                        Chat
+                                      </button>
+                                    ) : (
+                                      <></>
+                                    )}
                                   </div>
                                 </div>
                               </div>
