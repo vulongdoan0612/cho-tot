@@ -1,13 +1,10 @@
-import { Breadcrumb, Image, Pagination, Skeleton } from "antd";
+import { Breadcrumb, Pagination } from "antd";
 import CustomButtonSelect from "../CustomButtonSelect";
 import { ArrowBackIcon } from "../CustomIcons";
-
 import RightFilterMBOTO from "./right";
 import BrandSlide from "./brandSlide";
 import ItemCar from "./itemCar";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 
 const ContainMBOTO = ({

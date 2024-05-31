@@ -550,10 +550,10 @@ const SellingPage = () => {
 
   const onChangePage = (page: number) => {
     setCurrent(page);
-    setSpin(true);
-    setTimeout(() => {
-      setSpin(false);
-    }, 1500);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Cuộn mượt mà, có thể bỏ dòng này nếu không cần
+    });
   };
 
   return (
