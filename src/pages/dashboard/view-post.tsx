@@ -17,9 +17,8 @@ const ViewPostCensor = () => {
   const router = useRouter();
   const { id } = router.query;
   const { edit } = router.query;
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [data, setData] = useState<any>([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getDataPost();
   }, [router.query]);
@@ -30,6 +29,7 @@ const ViewPostCensor = () => {
       const response = await getPostCheck(String(token), { postId: id });
 
       if (response.status === 200) {
+        setLoading(false);
         setData(response?.data?.postCheck);
       }
     }

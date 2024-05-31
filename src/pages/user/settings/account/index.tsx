@@ -7,20 +7,24 @@ import { changePassword, logout } from "@/services/authentication";
 import { TextField } from "@mui/material";
 import { Skeleton } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import cookie from "cookie";
 
 const Account = () => {
   const router = useRouter();
-  const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const dispatch = useDispatch();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [modalSucces, setModalSuccess] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
   const handleChangeConfirmPassword = (event: any) => {
     setConfirmPassword(event.target.value);
   };
@@ -148,8 +152,7 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {
-    },
+    props: {},
   };
 };
 export default Account;

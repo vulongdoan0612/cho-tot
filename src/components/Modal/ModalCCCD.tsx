@@ -18,10 +18,6 @@ const ModalCCCCD = ({
   fillCCCDLocation,
   cccd,
 }: any) => {
-  const { loading } = useSelector(
-    (state: RootState) => state.countDownLoading
-  );
-  
   return (
     <CustomModal
       title="CMND/ CCCD/ HỘ CHIẾU"
@@ -31,31 +27,21 @@ const ModalCCCCD = ({
       centered
       className="modal-cccd"
     >
-      {loading ? (
-        <Skeleton.Input block={true} active size="large"></Skeleton.Input>
-      ) : (
-        <div className="cccd input-need-to-custom">
-          <TextField
-            className="fullname"
-            id="filled-multiline-flexible"
-            label="CMND/ CCCD/ Hộ Chiếu"
-            multiline
-            value={cccd}
-            onChange={handleCCCD}
-            maxRows={4}
-            variant="filled"
-          />
-          {fillCCCD && (
-            <span className="warning">Vui lòng nhập CMND/ CCCD/ Hộ Chiếu</span>
-          )}
-        </div>
-      )}
-      <div className="date input-need-to-custom">
-        <DatePicker
-          onChange={onChangeDate}
-          placeholder={"Ngày cấp"}
-          value={date}
+      <div className="cccd input-need-to-custom">
+        <TextField
+          className="fullname"
+          id="filled-multiline-flexible"
+          label="CMND/ CCCD/ Hộ Chiếu"
+          multiline
+          value={cccd}
+          onChange={handleCCCD}
+          maxRows={4}
+          variant="filled"
         />
+        {fillCCCD && <span className="warning">Vui lòng nhập CMND/ CCCD/ Hộ Chiếu</span>}
+      </div>
+      <div className="date input-need-to-custom">
+        <DatePicker onChange={onChangeDate} placeholder={"Ngày cấp"} value={date} />
         {fillCCCDFor && <span className="warning">Vui lòng nhập ngày cấp</span>}
       </div>{" "}
       <div className="date-release input-need-to-custom">
@@ -69,15 +55,9 @@ const ModalCCCCD = ({
           maxRows={4}
           variant="filled"
         />
-        {fillCCCDLocation && (
-          <span className="warning">Vui lòng nhập nơi cấp</span>
-        )}
+        {fillCCCDLocation && <span className="warning">Vui lòng nhập nơi cấp</span>}
       </div>
-      <CustomButton
-        type="submit"
-        onClick={onFinishCCCD}
-        style={{ marginTop: "8px" }}
-      >
+      <CustomButton type="submit" onClick={onFinishCCCD} style={{ marginTop: "8px" }}>
         Xong
       </CustomButton>
     </CustomModal>
