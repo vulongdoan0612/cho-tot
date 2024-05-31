@@ -7,13 +7,15 @@ interface IState {
   postMessage: any;
   allConversationSummary: any;
 }
-export const fetchConversation = createAsyncThunk("/get-chat", async (arg: any) => {
+export const fetchConversation = createAsyncThunk("/get-chat", async (arg?: any) => {
   const token = localStorage.getItem("access_token");
 
-  const { idRoom } = arg;
+  const { idRoom, setSkeletonChat } = arg;
   const postData = { idRoom: idRoom };
   const res = await getConversation(String(token), postData);
-
+  if (res.status === 200) {
+    setSkeletonChat(false);
+  }
   return res?.data;
 });
 
