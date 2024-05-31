@@ -5,7 +5,6 @@ import AvatarDropdown from "../AvatarDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDataUser } from "@/redux/reducers/auth";
 import { AppDispatch, RootState } from "@/redux/store";
-import { countDownLoading, countdownComplete } from "@/redux/reducers/countDownLoading";
 import Link from "next/link";
 import useWebSocket from "react-use-websocket";
 import { useEffect, useRef, useState } from "react";

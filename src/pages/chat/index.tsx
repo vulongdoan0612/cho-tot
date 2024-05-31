@@ -31,6 +31,7 @@ const Chat = () => {
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
   const { account } = useSelector((state: RootState) => state.auth);
   const conversationRef: any = useRef(null);
+  const endOfMessagesRef = useRef(null);
   const [search, setSearch] = useState("");
   const [typeChat, setTypeChat] = useState("all");
   const [typeText, setTypeText] = useState("");
@@ -91,7 +92,7 @@ const Chat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [conversation?.messagesRoom?.message]);
+  }, [conversation?.messagesRoom?.message, skeletonChat]);
 
   const handleSearchSit = (e: any) => {
     setSearch(e.target.value);
@@ -520,10 +521,14 @@ const Chat = () => {
                           </>
                         );
                       })}
+                      {skeletonChat ? (
+                        <div className="send" style={{ height: "52.19px", width: "281px", borderRadius: "8px" }} ref={endOfMessagesRef}>
+                          <Skeleton.Input style={{ height: "52.19px", width: "281px", borderRadius: "8px" }} active={true}></Skeleton.Input>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </>
-                  )}
-                  {skeletonChat && (
-                    <Skeleton.Input style={{ height: "52.19px", width: "281px" }} className="send" active={true}></Skeleton.Input>
                   )}
                 </div>
                 <div className="bottom">
