@@ -31,7 +31,6 @@ const Chat = () => {
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
   const { account } = useSelector((state: RootState) => state.auth);
   const conversationRef: any = useRef(null);
-  const endOfMessagesRef = useRef(null);
   const [search, setSearch] = useState("");
   const [typeChat, setTypeChat] = useState("all");
   const [typeText, setTypeText] = useState("");
@@ -56,7 +55,7 @@ const Chat = () => {
     if (router?.query?.currentRoom && allConversationSummary.length > 0 && !conversationFetched) {
       const currentChat = allConversationSummary.find((item: any) => item.postId === router.query.currentRoom);
       if (currentChat && token) {
-        dispatch(fetchConversation({ idRoom: currentChat.idRoom, setSkeletonChat }));
+        dispatch(fetchConversation({ idRoom: currentChat.idRoom, setSkeletonChat, setSkeleton2 }));
         setConversationFetched(true);
       } else {
         window.location.href = "/login";
@@ -66,7 +65,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
-      dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat }));
+      dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat, setSkeleton2 }));
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
       combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
     }
@@ -78,7 +77,7 @@ const Chat = () => {
 
     if (lastJsonMessage?.action === "create-room") {
       if (lastJsonMessage?.userSend === account?.user?._id || lastJsonMessage?.userReceive === account?.user?._id) {
-        dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat }));
+        dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat, setSkeleton2 }));
         dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
         combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
         dispatch(fetchAllConversation({ search: search, typeChat: typeChat }));
