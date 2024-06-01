@@ -1,4 +1,4 @@
-import { Checkbox, Form, Input, Spin } from "antd";
+import { Alert, Checkbox, Form, Input, Spin } from "antd";
 import Image from "next/image";
 import { FacebookIcon, GoogleIcon } from "@/components/CustomIcons";
 import { useRouter } from "next/router";
@@ -12,6 +12,7 @@ import Link from "next/link";
 const Register = () => {
   const router = useRouter();
   const [spin, setSpin] = useState(false);
+  const [alertAvatar, setAlertAvatar] = useState("");
 
   const onFinish = async (values: any) => {
     try {
@@ -50,6 +51,12 @@ const Register = () => {
         offset: 8,
       },
     },
+  };
+  const handleUpgrade = () => {
+    setAlertAvatar("Chức năng đang phát triển !");
+    setTimeout(() => {
+      setAlertAvatar("");
+    }, 3000);
   };
   return (
     <div className="login-wrapper">
@@ -106,10 +113,10 @@ const Register = () => {
           <hr></hr>
         </div>
         <div className="login-method">
-          <button className="facebook">
+          <button className="facebook" onClick={handleUpgrade} style={{ cursor: "pointer" }}>
             <FacebookIcon></FacebookIcon> <span>Facebook</span>
           </button>
-          <button className="google">
+          <button className="google" onClick={handleUpgrade} style={{ cursor: "pointer" }}>
             <GoogleIcon></GoogleIcon> <span>Google</span>
           </button>
         </div>
@@ -132,6 +139,7 @@ const Register = () => {
         </div>
       </div>
       <Spin spinning={spin} fullscreen />
+      <Alert message={alertAvatar} type="success" className={alertAvatar !== "" ? "show-alert" : ""} />
     </div>
   );
 };

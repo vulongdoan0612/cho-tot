@@ -1,4 +1,4 @@
-import { Form, Input, Spin } from "antd";
+import { Alert, Form, Input, Spin } from "antd";
 import Image from "next/image";
 import { FacebookIcon, GoogleIcon } from "@/components/CustomIcons";
 import { useRouter } from "next/router";
@@ -12,6 +12,7 @@ import Link from "next/link";
 const Login = () => {
   const router = useRouter();
   const [spin, setSpin] = useState(false);
+  const [alertAvatar, setAlertAvatar] = useState("");
 
   const onFinish = async (values: any) => {
     setSpin(true);
@@ -32,7 +33,7 @@ const Login = () => {
 
           if (response?.data?.status === "SUCCESS") {
             localStorage.setItem("access_token", response?.data?.token);
-            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); 
+            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" });
             setTimeout(() => {
               router.push("/");
             }, 1000);
@@ -43,11 +44,15 @@ const Login = () => {
       console.log("Sai mật khẩu hoặc tài khoản không tồn tại.", error);
     }
   };
-
+  const handleUpgrade = () => {
+    setAlertAvatar("Chức năng đang phát triển !");
+    setTimeout(() => {
+      setAlertAvatar("");
+    }, 3000);
+  };
   return (
     <div className={`login-wrapper ${spin ? "spinning" : ""}`}>
       <ToastContainer></ToastContainer>
-
       <div className="modal-login">
         <div className="logo">
           <Image src="/images/logo-login.png" alt="" width={121} height={44}></Image>
@@ -67,9 +72,9 @@ const Login = () => {
             <Input.Password type="password" placeholder="Mật khẩu" />
           </Form.Item>
           <Form.Item className="forgot-password">
-            <a className="login-form-forgot" href="">
+            <span className="login-form-forgot" style={{ cursor: "pointer" }} onClick={handleUpgrade}>
               Quên mật khẩu
-            </a>
+            </span>
           </Form.Item>
 
           <Form.Item className="submit">
@@ -82,10 +87,11 @@ const Login = () => {
           <hr></hr>
         </div>
         <div className="login-method">
-          <button className="facebook">
+          <button className="facebook" onClick={handleUpgrade} style={{ cursor: "pointer" }}>
+            {" "}
             <FacebookIcon></FacebookIcon> <span>Facebook</span>
           </button>
-          <button className="google">
+          <button className="google" onClick={handleUpgrade} style={{ cursor: "pointer" }}>
             <GoogleIcon></GoogleIcon> <span>Google</span>
           </button>
         </div>
@@ -107,7 +113,8 @@ const Login = () => {
           </a>
         </div>
       </div>
-      <Spin spinning={spin} fullscreen/>
+      <Spin spinning={spin} fullscreen />
+      <Alert message={alertAvatar} type="success" className={alertAvatar !== "" ? "show-alert" : ""} />
     </div>
   );
 };
