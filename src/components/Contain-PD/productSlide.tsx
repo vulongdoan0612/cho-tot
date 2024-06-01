@@ -2,9 +2,6 @@ import { Alert, Image, Skeleton } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import { AddFavouritePostIcon, AddedFavouritePostIcon, ArrowSlideNextIcon, ArrowSlidePrevIcon } from "../CustomIcons";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { addFavPost, removeFavPost } from "@/services/favPost";
 
 const ProductSlide = ({ post, checkFavPost, spin }: any) => {
@@ -17,6 +14,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
   const [fav, setFav] = useState(false);
   const [fav2, setFav2] = useState(false);
   const [author, setAuthor] = useState(false);
+  const [currentSlideNumber, setCurrentSlideNumber] = useState(0);
 
   useEffect(() => {
     if (checkFavPost.status) {
@@ -49,10 +47,9 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
   const settings: any = {
     dots: false,
     infinite: false,
-    speed: 500,
+    speed: 100,
     slidesToShow: post?.post?.post?.image.length > 6 ? 6 : 3,
     className: "slider variable-width",
-
     slidesToScroll:
       post?.post?.post?.image?.length === 7
         ? 1
@@ -67,24 +64,24 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
         : post?.post?.post?.image?.length === 12
         ? 6
         : post?.post?.post?.image?.length === 13
-        ? 1
+        ? 6
         : post?.post?.post?.image?.length === 14
-        ? 2
+        ? 6
         : post?.post?.post?.image?.length === 15
-        ? 5
+        ? 6
         : post?.post?.post?.image?.length === 16
-        ? 4
+        ? 6
         : post?.post?.post?.image?.length === 17
-        ? 1
+        ? 6
         : post?.post?.post?.image?.length === 18
-        ? 4
+        ? 6
         : post?.post?.post?.image?.length === 19
-        ? 3
+        ? 6
         : post?.post?.post?.image?.length === 20
         ? 6
         : 2,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    // nextArrow: <SampleNextArrow />,
+    // prevArrow: <SamplePrevArrow />,
   };
   const handleHoverImage = (src: string, index: number) => {
     setHoveredImageSrc(src);
@@ -97,14 +94,109 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       setHoveredImageSrc(post?.post?.post?.image[newIndex - 1]?.img);
       return newIndex;
     });
-    if (active === 6) {
-      sliderRef?.current?.slickNext();
+    console.log(currentSlideNumber);
+    if (post?.post?.post?.image?.length === 7) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 8) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 9) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 10) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 11) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 12) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 13) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 12) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 14) {
+      if (active === 6 || active === 12) {
+        sliderRef?.current?.slickNext();
+      }
+      if (currentSlideNumber === 7) {
+        if (active === 13) {
+          sliderRef?.current?.slickNext();
+        }
+      }
+    } //
+
+    if (post?.post?.post?.image?.length === 15) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 12) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 16) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 12) {
+        sliderRef?.current?.slickNext();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 17) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 12) {
+        sliderRef?.current?.slickNext();
+      }
     }
-    if (active === 12) {
-      sliderRef?.current?.slickNext();
+    if (post?.post?.post?.image?.length === 18) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 12) {
+        sliderRef?.current?.slickNext();
+      }
     }
-    if (active === 18) {
-      sliderRef?.current?.slickNext();
+    if (post?.post?.post?.image?.length === 19) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 12) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 17) {
+        sliderRef?.current?.slickNext();
+      }
+    }
+    if (post?.post?.post?.image?.length === 20) {
+      if (active === 6) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 12) {
+        sliderRef?.current?.slickNext();
+      }
+      if (active === 17) {
+        sliderRef?.current?.slickNext();
+      }
     }
     if (active === post?.post?.post?.image?.length) {
       setActive(1);
@@ -118,9 +210,137 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       setHoveredImageSrc(post?.post?.post?.image[newIndex - 1]?.img);
       return newIndex;
     });
-    if (active === 7 || active === 13) {
-      sliderRef?.current?.slickPrev();
+    console.log(currentSlideNumber);
+
+    if (post?.post?.post?.image?.length === 7) {
+      if (active === 2) {
+        sliderRef?.current?.slickGoTo(0);
+      }
+    } //
+    if (post?.post?.post?.image?.length === 8) {
+      if (active === 3) {
+        sliderRef?.current?.slickGoTo(0);
+      }
+    } //
+    if (post?.post?.post?.image?.length === 9) {
+      if (active === 4) {
+        sliderRef?.current?.slickGoTo(0);
+      }
+    } //
+    if (post?.post?.post?.image?.length === 10) {
+      if (active === 5) {
+        sliderRef?.current?.slickGoTo(0);
+      }
+    } //
+    if (post?.post?.post?.image?.length === 11) {
+      if (active === 6) {
+        sliderRef?.current?.slickGoTo(0);
+      }
+    } //
+    if (post?.post?.post?.image?.length === 12) {
+      if (active === 7) {
+        sliderRef?.current?.slickGoTo(0);
+      }
+    } //
+    if (post?.post?.post?.image?.length === 13) {
+      if (currentSlideNumber === 7) {
+        if (active === 8) {
+          sliderRef?.current?.slickPrev();
+        }
+      }
+
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
     }
+    if (post?.post?.post?.image?.length === 14) {
+      if (currentSlideNumber === 8) {
+        if (active === 9) {
+          sliderRef?.current?.slickPrev();
+        }
+      }
+      if (active === 13) {
+        sliderRef?.current?.slickGoTo(6);
+      }
+
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 15) {
+      if (currentSlideNumber === 9) {
+        if (active === 10) {
+          sliderRef?.current?.slickPrev();
+        }
+      }
+      if (active === 13) {
+        sliderRef?.current?.slickGoTo(6);
+      }
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
+    } //
+    if (post?.post?.post?.image?.length === 16) {
+      if (currentSlideNumber === 10) {
+        if (active === 11) {
+          sliderRef?.current?.slickPrev();
+        }
+      }
+      if (active === 13) {
+        sliderRef?.current?.slickGoTo(6);
+      }
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
+    }
+    if (post?.post?.post?.image?.length === 17) {
+      if (active === 13) {
+        sliderRef?.current?.slickGoTo(6);
+      }
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
+      if (currentSlideNumber === 11) {
+        if (active === 12) {
+          sliderRef?.current?.slickPrev();
+        }
+      }
+    }
+    if (post?.post?.post?.image?.length === 18) {
+      if (active === 13) {
+        sliderRef?.current?.slickPrev();
+      }
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
+    }
+    if (post?.post?.post?.image?.length === 19) {
+      if (currentSlideNumber === 13) {
+        if (active === 14) {
+          sliderRef?.current?.slickPrev();
+        }
+      }
+      if (active === 13) {
+        sliderRef?.current?.slickGoTo(6);
+      }
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
+    }
+    if (post?.post?.post?.image?.length === 20) {
+      if (currentSlideNumber === 14) {
+        if (active === 15) {
+          sliderRef?.current?.slickPrev();
+        }
+      }
+      if (active === 13) {
+        sliderRef?.current?.slickGoTo(6);
+      }
+      if (active === 7) {
+        sliderRef?.current?.slickPrev();
+      }
+    }
+
     if (active === 1) {
       setActive(post?.post?.post?.image?.length);
       setHoveredImageSrc(post?.post?.post?.image[post?.post?.post?.image?.length - 1]?.img);
@@ -300,7 +520,12 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
               })}
             </div>
           ) : (
-            <Slider {...settings} className="slider" ref={sliderRef}>
+            <Slider
+              {...settings}
+              className="slider"
+              ref={sliderRef}
+              beforeChange={(currentSlide: number, nextSlide: number) => setCurrentSlideNumber(nextSlide)}
+            >
               {post?.post?.post?.image.map((item: any, index: number) => {
                 return (
                   <Image

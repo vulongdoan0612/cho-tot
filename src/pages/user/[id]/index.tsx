@@ -93,8 +93,8 @@ const DetailUser = () => {
     const token = localStorage.getItem("access_token");
     const response = await updateAvatar(String(token), { avatar: info.file.originFileObj as RcFile });
     if (response?.data?.status === "SUCCESS") {
-      dispatch(fetchDataUserProfile({ userId: router.query.id }));
-      dispatch(fetchDataUser({ setSpin }));
+      dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
+      dispatch(fetchDataUser({ setSke: setSpin }));
     }
   };
   const handleChangeBanner: UploadProps["onChange"] = async (info) => {
@@ -105,8 +105,8 @@ const DetailUser = () => {
     const token = localStorage.getItem("access_token");
     const response = await updateBanner(String(token), { banner: info.file.originFileObj as RcFile });
     if (response?.data?.status === "SUCCESS") {
-      dispatch(fetchDataUserProfile({ userId: router.query.id }));
-      dispatch(fetchDataUser({ setSpin }));
+      dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
+      dispatch(fetchDataUser({ setSke: setSpin }));
     }
   };
   const beforeUpload = (file: any) => {

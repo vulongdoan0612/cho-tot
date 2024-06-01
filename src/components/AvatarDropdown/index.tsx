@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 const AvatarDropdown = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { account, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { account } = useSelector((state: RootState) => state.auth);
   if (account.message === "User not found" && account.status === "ERROR") {
     router.push("/");
     logout(dispatch);
@@ -21,17 +21,16 @@ const AvatarDropdown = () => {
       label: <DropdownList></DropdownList>,
     },
   ];
-  
   return (
     <div className="avatar-dropdown">
       <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
         <a onClick={(e) => e.preventDefault()}>
-          {isAuthenticated && account?.user?.avatar !== null ? (
+          {account?.user && account?.user?.avatar !== null ? (
             <Image src={account?.user?.avatar} width={24} height={24} style={{ objectFit: "cover" }} preview={false} alt=""></Image>
           ) : (
             <UserAvatarIcon></UserAvatarIcon>
           )}
-          {isAuthenticated ? <span className="fullname">{account?.user?.fullname}</span> : <span className="fullname">Tài khoản</span>}
+          {account?.user ? <span className="fullname">{account?.user?.fullname}</span> : <span className="fullname">Tài khoản</span>}
           <ArrowIcon></ArrowIcon>
         </a>
       </Dropdown>

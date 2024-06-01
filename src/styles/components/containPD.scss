@@ -5,7 +5,6 @@
       margin-bottom: 12px;
       .image-main-slide {
         border-radius: 8px;
- 
       }
       position: relative;
       .add-fav {
@@ -84,19 +83,14 @@
     }
     .slider {
       .slick-next {
-        right: 15px;
-        z-index: 1;
+        opacity: 0;
+        pointer-events: none;
       }
       .slick-prev {
-        z-index: 1;
-        left: 5px;
+        opacity: 0;
+        pointer-events: none;
       }
-      .slick-next::before,
-      .slick-prev::before {
-        color: rgba(24, 24, 24);
-        opacity: 0.8;
-        font-size: 28px;
-      }
+
       .slick-list {
         .slick-slide {
           .active {

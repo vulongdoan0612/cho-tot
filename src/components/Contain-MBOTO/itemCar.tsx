@@ -83,7 +83,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                             {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
                               <div className="contain-prioritize">
                                 <Skeleton.Button block active></Skeleton.Button>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
                                     // onClick={() => handleRouter(item)}
@@ -131,7 +131,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                 <div className="right-contain-tab">
                                   <Skeleton active />
                                   <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="header"
                                         // onClick={() => handleRouter(item)}
@@ -149,7 +149,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         )}
                                       </div>
                                     </Link>
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <span
                                         className="description"
                                         // onClick={() => handleRouter(item)}
@@ -169,7 +169,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         {item?.post?.numberBox}
                                       </span>
                                     </Link>
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="middle"
                                         // onClick={() => handleRouter(item)}
@@ -206,7 +206,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     </Link>
                                     <div className="footer">
                                       <div className="user">
-                                        <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                        <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                           <div
                                             className="user-left"
                                             // onClick={() => handleRouter(item)}
@@ -247,7 +247,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                   className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}
                                   // onClick={() => handleRouter(item)}
                                 >
-                                  <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                  <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                     <Image
                                       className={"left-contain-tab"}
                                       src={item?.post?.image[0]?.img}
@@ -260,7 +260,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                 <div className="right-contain-tab">
                                   <Skeleton active />
                                   <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="header"
                                         // onClick={() => handleRouter(item)}
@@ -278,7 +278,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         )}
                                       </div>
                                     </Link>
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <span
                                         className="description"
                                         // onClick={() => handleRouter(item)}
@@ -298,7 +298,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         {item?.post?.numberBox}
                                       </span>
                                     </Link>
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="middle"
                                         // onClick={() => handleRouter(item)}
@@ -335,7 +335,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     </Link>
                                     <div className="footer">
                                       <div className="user">
-                                        <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                        <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                           <div
                                             className="user-left"
                                             // onClick={() => handleRouter(item)}
@@ -409,7 +409,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
                           <div className="contain-prioritize">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                            <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                               <div
                                 className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
                                 // onClick={() => handleRouter(item)}
@@ -457,7 +457,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="header"
                                     // onClick={() => handleRouter(item)}
@@ -475,7 +475,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     )}
                                   </div>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <span
                                     className="description"
                                     // onClick={() => handleRouter(item)}
@@ -495,7 +495,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     {item?.post?.numberBox}
                                   </span>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="middle"
                                     // onClick={() => handleRouter(item)}
@@ -526,7 +526,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                 </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="user-left"
                                         // onClick={() => handleRouter(item)}
@@ -567,7 +567,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                               className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}
                               // onClick={() => handleRouter(item)}
                             >
-                              <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                              <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                 <Image
                                   className={"left-contain-tab"}
                                   src={item?.post?.image[0]?.img}
@@ -580,7 +580,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="header"
                                     // onClick={() => handleRouter(item)}
@@ -598,7 +598,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     )}
                                   </div>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <span
                                     className="description"
                                     // onClick={() => handleRouter(item)}
@@ -618,7 +618,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     {item?.post?.numberBox}
                                   </span>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="middle"
                                     // onClick={() => handleRouter(item)}
@@ -649,7 +649,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                 </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="user-left"
                                         // onClick={() => handleRouter(item)}
@@ -721,7 +721,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                         {item?.prioritize === "15.71" || item?.prioritize === "26.51" ? (
                           <div className="contain-prioritize">
                             <Skeleton.Button block active></Skeleton.Button>
-                            <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                            <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                               <div
                                 className={`${spin ? "unhidden" : "hidden"} skeleton-custom image-gallery`}
                                 // onClick={() => handleRouter(item)}
@@ -769,7 +769,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="header"
                                     // onClick={() => handleRouter(item)}
@@ -787,7 +787,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     )}
                                   </div>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <span
                                     className="description"
                                     // onClick={() => handleRouter(item)}
@@ -807,7 +807,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     {item?.post?.numberBox}
                                   </span>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="middle"
                                     // onClick={() => handleRouter(item)}
@@ -838,7 +838,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                 </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="user-left"
                                         // onClick={() => handleRouter(item)}
@@ -879,7 +879,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                               className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}
                               // onClick={() => handleRouter(item)}
                             >
-                              <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                              <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                 <Image
                                   className={"left-contain-tab"}
                                   src={item?.post?.image[0]?.img}
@@ -892,7 +892,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                             <div className="right-contain-tab">
                               <Skeleton active />
                               <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom-right`}>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="header"
                                     // onClick={() => handleRouter(item)}
@@ -910,7 +910,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     )}
                                   </div>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <span
                                     className="description"
                                     // onClick={() => handleRouter(item)}
@@ -930,7 +930,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     {item?.post?.numberBox}
                                   </span>
                                 </Link>
-                                <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                   <div
                                     className="middle"
                                     // onClick={() => handleRouter(item)}
@@ -961,7 +961,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                 </Link>
                                 <div className="footer">
                                   <div className="user">
-                                    <Link href={`/${item?.post?.slug}/${item?.postId}`}>
+                                    <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div
                                         className="user-left"
                                         // onClick={() => handleRouter(item)}

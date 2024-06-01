@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 const DropdownList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isAuthenticated, account } = useSelector((state: RootState) => state.auth);
+  const { account } = useSelector((state: RootState) => state.auth);
 
   const handleLogOut = () => {
     router.push("/");
@@ -15,13 +15,13 @@ const DropdownList = () => {
   };
   return (
     <div className="avatar-dropdown-header">
-      {isAuthenticated ? (
+      {account?.user ? (
         <Link href={`/user/${account?.user?._id}`}>
           <div className="user-info">
             <div className="avatar">
               <Avatar
                 src={
-                  isAuthenticated && account?.user?.avatar !== null ? (
+                  account?.user && account?.user?.avatar !== null ? (
                     <Image src={account?.user?.avatar} width={50} height={50} preview={false} alt=""></Image>
                   ) : (
                     <Image src="/images/empty-avatar.jpg" width={50} height={50} preview={false} alt=""></Image>

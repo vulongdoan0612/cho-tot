@@ -145,7 +145,7 @@ const PostSell = () => {
   };
   return (
     <Page style={{ backgroundColor: "#f4f4f4" }}>
-      {(account?.user !== undefined && dataPost?.userId === account?.user?._id) || router.query.id !== undefined ? (
+      {(account?.user !== undefined && dataPost?.userId === account?.user?._id) || router.query.id === undefined ? (
         <div className="post-sell-wrapper">
           <div className="left">
             <h5>Hình ảnh và Video sản phẩm</h5>

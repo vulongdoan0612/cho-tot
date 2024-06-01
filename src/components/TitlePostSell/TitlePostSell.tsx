@@ -205,7 +205,7 @@ const TitlePostSell = ({
 
   const handleChangeTitle = (event: any) => {
     const newValue = limitInputCharacters(event?.target?.value, 100);
-
+    console.log(event.target.value);
     setStatePost((prevState) => ({
       ...prevState,
       title: newValue,
