@@ -346,7 +346,7 @@ const DetailUser = () => {
                   {spin ? (
                     <Skeleton.Button style={{ height: "16.09px", width: "160px" }} block={true} active size="large"></Skeleton.Button>
                   ) : (
-                    <>&nbsp;{formatISOToCustomDate(account?.user?.dateJoin)}</>
+                    <>&nbsp;{formatISOToCustomDate(detailProfileUser?.user?.dateJoin)}</>
                   )}
                 </span>
               </div>{" "}
