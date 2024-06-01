@@ -16,7 +16,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       {" "}
       <PayPalScriptProvider
-        options={{ clientId: "AV2d102_lOS646majeFw5LvidmeY_GQhIGQ7jSsTfl8P2I7x3eRRtB9WlhtoqWlZCkz9z5Ql8iDM1vKJ", currency: "USD" }}
+        options={{
+          clientId: "AV2d102_lOS646majeFw5LvidmeY_GQhIGQ7jSsTfl8P2I7x3eRRtB9WlhtoqWlZCkz9z5Ql8iDM1vKJ",
+          currency: "USD",
+          disableFunding: "card",
+        }}
       >
         <ToastContainer />
         <QueryParamProvider adapter={NextAdapterPages}>
