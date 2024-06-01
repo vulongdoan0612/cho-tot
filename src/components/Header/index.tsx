@@ -33,9 +33,7 @@ const Header = () => {
 
   useEffect(() => {
     if (lastJsonMessage?.userId === account?.user?._id && lastJsonMessage?.action === "annouce") {
-      if (lastJsonMessage?.action === "annouce") {
-        fetchAnnounce();
-      }
+      fetchAnnounce();
     }
   }, [lastJsonMessage]);
 

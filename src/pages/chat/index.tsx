@@ -424,6 +424,7 @@ const Chat = () => {
                                 ? conversation?.userSendInfo?.avatar || "images/empty-avatar.jpg"
                                 : conversation?.userSendInfo?.avatar || "images/empty-avatar.jpg"
                             }
+                            style={{ objectFit: "cover" }}
                             alt=""
                             width={30}
                             height={30}
@@ -494,6 +495,7 @@ const Chat = () => {
                       })}
                       {skeletonChat ? (
                         <Skeleton.Input
+                          style={{ height: "52.19px" }}
                           // style={{ height: "52.19px", width: "281px", borderRadius: "8px" }}
                           className="send"
                           active={true}
