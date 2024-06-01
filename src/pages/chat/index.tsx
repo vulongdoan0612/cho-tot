@@ -25,7 +25,7 @@ import Link from "next/link";
 const { TextArea } = Input;
 
 const Chat = () => {
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { allConversation, conversation, allConversationSummary } = useSelector((state: RootState) => state.chat);
@@ -55,7 +55,7 @@ const Chat = () => {
     if (router?.query?.currentRoom && allConversationSummary.length > 0 && !conversationFetched) {
       const currentChat = allConversationSummary.find((item: any) => item.postId === router.query.currentRoom);
       if (currentChat && token) {
-        dispatch(fetchConversation({ idRoom: currentChat.idRoom, setSkeletonChat, setSkeleton2 }));
+        dispatch(fetchConversation({ idRoom: currentChat.idRoom, setSkeletonChat }));
         setConversationFetched(true);
       } else {
         window.location.href = "/login";
@@ -65,7 +65,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (lastJsonMessage?.idRoom === conversation.idRoom && lastJsonMessage?.action === "post-message") {
-      dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat, setSkeleton2 }));
+      dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat }));
       dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
       combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
     }
@@ -77,7 +77,7 @@ const Chat = () => {
 
     if (lastJsonMessage?.action === "create-room") {
       if (lastJsonMessage?.userSend === account?.user?._id || lastJsonMessage?.userReceive === account?.user?._id) {
-        dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat, setSkeleton2 }));
+        dispatch(fetchConversation({ idRoom: conversation.idRoom, setSkeletonChat }));
         dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
         combineConversationSummary(allConversation?.filteredUpdatedPosts, allConversationSummary, account);
         dispatch(fetchAllConversation({ search: search, typeChat: typeChat }));
@@ -147,9 +147,13 @@ const Chat = () => {
   };
 
   const handleSelectRoom = (item: any) => {
-    dispatch(fetchConversation({ idRoom: item.idRoom, setSkeletonChat, setSkeleton2 }));
+    setSkeleton2(true);
+    dispatch(fetchConversation({ idRoom: item.idRoom, setSkeletonChat }));
     dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
     router.push(`/chat?currentRoom=${item.postId}`);
+    setTimeout(() => {
+      setSkeleton2(false);
+    }, 1500);
   };
 
   const handleSendRec = async (e: any) => {
@@ -482,7 +486,7 @@ const Chat = () => {
                               ""
                             )}
                             <span key={index} className={`text-message ${item?.userId === account?.user?._id ? "send" : "receive"}`}>
-                              <span>{item.text}</span>
+                              <div className="text-wrap">{item.text}</div>
                               <span className="time">{formatISOToTime(item.time)}</span>
                             </span>
                           </>
@@ -490,7 +494,7 @@ const Chat = () => {
                       })}
                       {skeletonChat ? (
                         <Skeleton.Input
-                          style={{ height: "52.19px", width: "281px", borderRadius: "8px" }}
+                          // style={{ height: "52.19px", width: "281px", borderRadius: "8px" }}
                           className="send"
                           active={true}
                         ></Skeleton.Input>

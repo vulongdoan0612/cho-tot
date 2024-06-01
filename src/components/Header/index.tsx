@@ -17,7 +17,7 @@ const Header = () => {
   const router = useRouter();
   const brandRef: any = useRef(null);
   const { account } = useSelector((state: RootState) => state.auth);
-  const { lastJsonMessage }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage }: any = useWebSocket("ws://localhost:443");
   const dispatch = useDispatch<AppDispatch>();
   const [ske, setSke] = useState(true);
   const [badge, setBadge] = useState(false);

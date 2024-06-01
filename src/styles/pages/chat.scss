@@ -236,6 +236,11 @@
       }
       .text-message {
         gap: 8px;
+        .text-wrap {
+          word-wrap: break-word;
+
+          text-align: left;
+        }
         padding: 6px 12px;
         border-radius: 8px;
         width: fit-content;
@@ -246,6 +251,9 @@
         background-color: #fff4d6;
         text-align: right;
         margin-left: auto;
+        // height: 52.19px;
+        width: 281px;
+        border-radius: 8px;
       }
       .receive {
         background-color: #f4f4f4;
