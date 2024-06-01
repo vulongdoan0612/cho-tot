@@ -28,8 +28,8 @@ import SkeletonAvatar from "antd/es/skeleton/Avatar";
 const MyAds = () => {
   const { account } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
-  const { lastJsonMessage: lastMessage8082 }: any = useWebSocket("ws://localhost:443");
-  const { lastJsonMessage: lastMessage8083 }: any = useWebSocket("ws://localhost:443");
+  const { lastJsonMessage: lastMessage8082 }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
+  const { lastJsonMessage: lastMessage8083 }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
   const [spin, setSpin] = useState(false);
   const [data, setData] = useState<any>([]);
   const [totalPage, setTotalPage] = useState<any>(0);
