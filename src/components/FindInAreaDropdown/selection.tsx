@@ -54,7 +54,7 @@ const Selection = ({
         !openFind &&
         openSearchDistrict &&
         event?.target?.id !== "button-toan-quoc" &&
-        event?.target?.id !== "svg-toan-quoc" // Check if
+        event?.target?.id !== "svg-toan-quoc"
       ) {
         setState((prevState: any) => ({
           ...prevState,

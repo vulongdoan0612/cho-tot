@@ -29,7 +29,7 @@ const Register = () => {
             setSpin(false);
             toast(response?.data?.message, { autoClose: 500 });
             localStorage.setItem("access_token", response?.data?.token);
-            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); //
+            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); 
             setTimeout(() => {
               router.push("/login");
             }, 1500);

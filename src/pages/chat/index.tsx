@@ -120,8 +120,6 @@ const Chat = () => {
         const token = localStorage.getItem("access_token");
         const data = { text: trimmedText, idRoom: conversation.idRoom };
         await postMessage(String(token), data);
-
-        // setSkeletonChat(false);
       }
     }
   };

@@ -185,7 +185,6 @@ const PriceDropdown = ({ openPrice, setState, inputValueMin, inputValueMax, setF
           range
           value={[inputValueMin, inputValueMax]}
           max={2000000000}
-          // step={1000000}
           onChange={onChange}
           tooltip={{ formatter: null }}
         />

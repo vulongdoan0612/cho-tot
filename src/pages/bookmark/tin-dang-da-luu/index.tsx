@@ -20,6 +20,7 @@ const FavPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const [favList, setFavList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [spin, setSpin] = useState(false);
 
   useFetchFavList({ setLoading });
 
@@ -49,6 +50,7 @@ const FavPage = () => {
   };
 
   const handleChat = async (item: any) => {
+    setSpin(true);
     const accessToken: any = localStorage.getItem("access_token");
     const data = {
       postId: item?.postId,
@@ -56,6 +58,7 @@ const FavPage = () => {
     const res = await createConversation(accessToken, data);
 
     if (res.status === 200) {
+      setSpin(false);
       router.push(`/chat?currentRoom=${item?.postId}`);
     }
   };
@@ -145,6 +148,7 @@ const FavPage = () => {
           </div>
         )}
       </div>
+      <Spin spinning={spin} fullscreen></Spin>
     </Page>
   );
 };

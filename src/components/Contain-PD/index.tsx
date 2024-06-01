@@ -35,7 +35,7 @@ const ContainPD = () => {
   const [lessDetail, setLessDetail] = useState(false);
   const [spin, setSpin] = useState(true);
   const [author, setAuthor] = useState(false);
-
+  const [spinFull, setSpinFull] = useState(false);
   useFetchPost({ setSpin, body: router });
 
   useFetchCheckFavPost({
@@ -88,6 +88,7 @@ const ContainPD = () => {
   };
 
   const handleChat = async () => {
+    setSpinFull(true);
     const accessToken: any = localStorage.getItem("access_token");
     const data = {
       postId: post?.post?.postId,
@@ -96,7 +97,7 @@ const ContainPD = () => {
       const res = await createConversation(accessToken, data);
 
       if (res.status === 200) {
-        setSpin(false);
+        setSpinFull(false);
         router.push(`/chat?currentRoom=${post?.post?.postId}`);
       }
     } else {
@@ -600,8 +601,8 @@ const ContainPD = () => {
             )}
           </div>
         </>
-      )}
-      <Spin spinning={spin} fullscreen={true}></Spin>{" "}
+      )}{" "}
+      <Spin spinning={spinFull} fullscreen></Spin> <Spin spinning={spin} fullscreen></Spin>{" "}
       <Alert message="Bạn cần phải đăng nhập để nhắn tin với người mua!" type="success" className={author ? "show-alert" : ""} />
     </div>
   );

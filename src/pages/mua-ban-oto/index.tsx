@@ -552,7 +552,7 @@ const SellingPage = () => {
     setCurrent(page);
     window.scrollTo({
       top: 258,
-      behavior: "smooth", // Cuộn mượt mà, có thể bỏ dòng này nếu không cần
+      behavior: "smooth",
     });
   };
 

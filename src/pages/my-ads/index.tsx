@@ -123,7 +123,6 @@ const MyAds = () => {
       }
     }
   };
-  console.log(account.user);
   const getDataListCensorship = async () => {
     const token = localStorage.getItem("access_token");
     if (token) {

@@ -80,8 +80,6 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
         : post?.post?.post?.image?.length === 20
         ? 6
         : 2,
-    // nextArrow: <SampleNextArrow />,
-    // prevArrow: <SamplePrevArrow />,
   };
   const handleHoverImage = (src: string, index: number) => {
     setHoveredImageSrc(src);
@@ -94,37 +92,36 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       setHoveredImageSrc(post?.post?.post?.image[newIndex - 1]?.img);
       return newIndex;
     });
-    console.log(currentSlideNumber);
     if (post?.post?.post?.image?.length === 7) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 8) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 9) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 10) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 11) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 12) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 13) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
@@ -132,7 +129,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       if (active === 12) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 14) {
       if (active === 6 || active === 12) {
         sliderRef?.current?.slickNext();
@@ -142,7 +139,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
           sliderRef?.current?.slickNext();
         }
       }
-    } //
+    } 
 
     if (post?.post?.post?.image?.length === 15) {
       if (active === 6) {
@@ -151,7 +148,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       if (active === 12) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 16) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
@@ -159,7 +156,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       if (active === 12) {
         sliderRef?.current?.slickNext();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 17) {
       if (active === 6) {
         sliderRef?.current?.slickNext();
@@ -210,38 +207,37 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       setHoveredImageSrc(post?.post?.post?.image[newIndex - 1]?.img);
       return newIndex;
     });
-    console.log(currentSlideNumber);
 
     if (post?.post?.post?.image?.length === 7) {
       if (active === 2) {
         sliderRef?.current?.slickGoTo(0);
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 8) {
       if (active === 3) {
         sliderRef?.current?.slickGoTo(0);
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 9) {
       if (active === 4) {
         sliderRef?.current?.slickGoTo(0);
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 10) {
       if (active === 5) {
         sliderRef?.current?.slickGoTo(0);
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 11) {
       if (active === 6) {
         sliderRef?.current?.slickGoTo(0);
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 12) {
       if (active === 7) {
         sliderRef?.current?.slickGoTo(0);
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 13) {
       if (currentSlideNumber === 7) {
         if (active === 8) {
@@ -266,7 +262,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       if (active === 7) {
         sliderRef?.current?.slickPrev();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 15) {
       if (currentSlideNumber === 9) {
         if (active === 10) {
@@ -279,7 +275,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
       if (active === 7) {
         sliderRef?.current?.slickPrev();
       }
-    } //
+    } 
     if (post?.post?.post?.image?.length === 16) {
       if (currentSlideNumber === 10) {
         if (active === 11) {
@@ -505,7 +501,7 @@ const ProductSlide = ({ post, checkFavPost, spin }: any) => {
                 return (
                   <div className="slider-item" key={index}>
                     <Image
-                      // style={{ width: 110 }}
+                       style={{ width: 110 }}
                       key={index}
                       className={active2 === index + 1 ? "active" : ""}
                       preview={false}

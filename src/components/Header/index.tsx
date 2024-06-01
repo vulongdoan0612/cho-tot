@@ -60,34 +60,7 @@ const Header = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <Link href="/" target="_blank" rel="noopener noreferrer">
-          1st menu item
-        </Link>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <Link href="/" target="_blank" rel="noopener noreferrer">
-          2nd menu item (disabled)
-        </Link>
-      ),
-      disabled: true,
-    },
-    {
-      key: "3",
-      label: (
-        <Link href="/" target="_blank" rel="noopener noreferrer">
-          3rd menu item (disabled)
-        </Link>
-      ),
-      disabled: true,
-    },
-    {
-      key: "4",
-      danger: true,
-      label: "a danger item",
+      label: <div style={{ paddingTop: "8.5px" }}>Tính năng đang phát triển</div>,
     },
   ];
 

@@ -19,7 +19,6 @@ const PostSell = () => {
   const { id } = router.query;
   const [alertAvatar, setAlertAvatar] = useState("");
   const { account } = useSelector((state: RootState) => state.auth);
-  // const { loading } = useSelector((state: RootState) => state.countDownLoading);
   const [loading, setLoading] = useState(true);
   const { dataPost } = useSelector((state: RootState) => state.postSell);
   const dispatch = useDispatch<AppDispatch>();
