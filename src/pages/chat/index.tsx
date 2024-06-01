@@ -149,10 +149,10 @@ const Chat = () => {
   const handleSelectRoom = (item: any) => {
     setSkeleton2(true);
     dispatch(fetchConversation({ idRoom: item.idRoom, setSkeletonChat }));
-    dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
     router.push(`/chat?currentRoom=${item.postId}`);
     setTimeout(() => {
       setSkeleton2(false);
+      dispatch(fetchAllConversationSummary({ typeChat: typeChat }));
     }, 1500);
   };
 
