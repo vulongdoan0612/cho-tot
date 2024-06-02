@@ -50,11 +50,9 @@ const Setting = (props: PropsPage) => {
               <Link href="/user/settings/profile">
                 <li className={`${active === "1" ? "bold" : ""}`}>Thông tin cá nhân</li>
               </Link>
-              <li>Liên kết mạng xã hội</li>
               <Link href="/user/settings/account">
                 <li className={`${active === "3" ? "bold" : ""}`}>Cài đặt tài khoản</li>
               </Link>
-              <li>Quản lý lịch sử đăng nhập</li>
             </ul>
           </div>
         </div>

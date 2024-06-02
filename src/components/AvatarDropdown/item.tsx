@@ -76,17 +76,7 @@ const DropdownList = () => {
           <span>Dịch vụ trả phí</span>
         </div>
         <div className="container">
-          {/* <span className="dongtot">
-            {" "}
-            <Image
-              preview={false}
-              src="https://static.chotot.com/storage/chotot-icons/svg/ct-coin.svg"
-              alt=""
-              width={24}
-              height={24}
-            ></Image>
-            <span>Đồng tốt</span>{" "}
-          </span> */}
+
           <Link href="/history" style={{ paddingTop: "8px", paddingBottom: "8px" }}>
             <span className="history">
               {" "}
