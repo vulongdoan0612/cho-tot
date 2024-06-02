@@ -71,9 +71,9 @@
         flex-direction: column;
         .top {
           .title {
+            width: 100%;
             font-size: 15px;
             line-height: 1.33;
-            white-space: nowrap;
             text-overflow: ellipsis;
             color: #222;
             font-weight: 400;

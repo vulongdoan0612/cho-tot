@@ -4,9 +4,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface IState {
   paymentHistory: any;
 }
-export const fetchHistory = createAsyncThunk("/history", async () => {
+export const fetchHistory = createAsyncThunk("/history", async (arg: any) => {
+  const { setSke } = arg;
   const token = localStorage.getItem("access_token");
   const res = await historyPayment(String(token));
+  if (res.status === 200) {
+    setSke(false);
+  }
   return res?.data;
 });
 

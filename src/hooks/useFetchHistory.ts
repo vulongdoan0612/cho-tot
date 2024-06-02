@@ -3,7 +3,7 @@ import { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export const useFetchHistory = () => {
+export const useFetchHistory = ({ setSke }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export const useFetchHistory = () => {
 
   const handleFetchHistory = () => {
     try {
-      dispatch(fetchHistory());
+      dispatch(fetchHistory({setSke}));
     } catch (error) {
       console.log(error);
     }
