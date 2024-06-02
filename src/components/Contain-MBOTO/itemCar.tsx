@@ -201,6 +201,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                           <div className="user-left">
                                             <Image
+                                              preview={false}
                                               src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
                                               alt=""
                                               width={24}
@@ -235,6 +236,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                 <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}>
                                   <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                     <Image
+                                      preview={false}
                                       className={"left-contain-tab"}
                                       src={item?.post?.image[0]?.img}
                                       alt=""
@@ -315,6 +317,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                         <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                           <div className="user-left">
                                             <Image
+                                              preview={false}
                                               src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
                                               alt=""
                                               width={24}
@@ -491,6 +494,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div className="user-left">
                                         <Image
+                                          preview={false}
                                           src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
                                           alt=""
                                           width={24}
@@ -525,6 +529,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                             <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}>
                               <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                 <Image
+                                  preview={false}
                                   className={"left-contain-tab"}
                                   src={item?.post?.image[0]?.img}
                                   alt=""
@@ -599,6 +604,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div className="user-left">
                                         <Image
+                                          preview={false}
                                           src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
                                           alt=""
                                           width={24}
@@ -773,6 +779,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div className="user-left">
                                         <Image
+                                          preview={false}
                                           src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
                                           alt=""
                                           width={24}
@@ -807,6 +814,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                             <div className={`${spin ? "unhidden" : "hidden"} skeleton-custom`}>
                               <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                 <Image
+                                  preview={false}
                                   className={"left-contain-tab"}
                                   src={item?.post?.image[0]?.img}
                                   alt=""
@@ -881,6 +889,7 @@ const ItemCar = ({ posts, spin, handleChangeTab, postBy, activeKey }: any) => {
                                     <Link target="_blank" href={`/${item?.post?.slug}/${item?.postId}`}>
                                       <div className="user-left">
                                         <Image
+                                          preview={false}
                                           src={item?.userInfo?.avatar === null ? "/images/empty-avatar.jpg" : item?.userInfo?.avatar}
                                           alt=""
                                           width={24}
