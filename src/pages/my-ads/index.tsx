@@ -455,7 +455,7 @@ const MyAds = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="service">
+                            {/* <div className="service">
                               <div className="top">
                                 <span className="current">Dịch vụ gần đây</span>
                                 <span className="detail">Xem chi tiết</span>
@@ -464,7 +464,7 @@ const MyAds = () => {
                                 <LetterIIcon></LetterIIcon>
                                 <span>Chưa sử dụng dịch vụ nào</span>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
