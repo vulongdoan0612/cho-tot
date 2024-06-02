@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import cookie from "cookie";
 
 const Login = () => {
   const router = useRouter();
@@ -24,12 +25,8 @@ const Login = () => {
       const response = await requestLogin(dataLogin);
       if (response?.status === 200) {
         if (response?.data?.status) {
-          setTimeout(() => {
-            setSpin(false);
-          }, 1000);
-          setTimeout(() => {
-            toast(response?.data?.message, { autoClose: 500 });
-          }, 1001);
+          setSpin(false);
+          toast(response?.data?.message, { autoClose: 500 });
 
           if (response?.data?.status === "SUCCESS") {
             localStorage.setItem("access_token", response?.data?.token);
@@ -117,5 +114,23 @@ const Login = () => {
       <Alert message={alertAvatar} type="success" className={alertAvatar !== "" ? "show-alert" : ""} />
     </div>
   );
+};
+export const getServerSideProps = async (context: any) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
+
+  if (token) {
+    return {
+      redirect: {
+        destination: `/`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 export default Login;

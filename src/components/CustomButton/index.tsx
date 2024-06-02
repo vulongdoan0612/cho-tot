@@ -1,4 +1,3 @@
-import { omit } from "lodash";
 
 interface ICustomButton {
   children?: any;

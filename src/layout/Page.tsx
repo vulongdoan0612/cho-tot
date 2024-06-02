@@ -4,7 +4,6 @@ import React, { useMemo } from "react";
 import { ToastContainer } from "react-toastify";
 
 interface PropsPage {
-  loadingData?: boolean;
   children: React.ReactNode;
   style?: any;
 }

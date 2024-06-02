@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 import Slider from "react-slick";
 
 const HomePage = () => {
-  const router = useRouter();
   const [showMore, setShowMore] = useState(false);
   const { currentPosts } = useSelector((state: RootState) => state.postsData);
   const settings = {

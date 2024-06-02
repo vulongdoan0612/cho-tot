@@ -8,6 +8,7 @@ import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import cookie from "cookie";
 
 const Register = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const Register = () => {
             setSpin(false);
             toast(response?.data?.message, { autoClose: 500 });
             localStorage.setItem("access_token", response?.data?.token);
-            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" }); 
+            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" });
             setTimeout(() => {
               router.push("/login");
             }, 1500);
@@ -142,5 +143,23 @@ const Register = () => {
       <Alert message={alertAvatar} type="success" className={alertAvatar !== "" ? "show-alert" : ""} />
     </div>
   );
+};
+export const getServerSideProps = async (context: any) => {
+  const cookies = context.req.headers.cookie;
+  const parsedCookies = cookies ? cookie.parse(cookies) : {};
+  const token = parsedCookies["access_token"];
+
+  if (token) {
+    return {
+      redirect: {
+        destination: `/`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 export default Register;
