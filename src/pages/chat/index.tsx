@@ -263,7 +263,7 @@ const Chat = () => {
     setHiddenChatList([]);
   };
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page style={{ backgroundColor: "#f4f4f4" }} title="Chợ Tốt Chat">
       {allConversation?.filteredUpdatedPosts?.length > 0 || typeChat === "hidden" || typeChat === "all" ? (
         <div className="chat-wrapper">
           <div className="left">

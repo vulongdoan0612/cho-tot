@@ -4,9 +4,9 @@ import { useFetchPostService } from "@/hooks/useFetchPostService";
 import Page from "@/layout/Page";
 import { RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
-import { Alert, Checkbox,  Image, Spin } from "antd";
+import { Alert, Checkbox, Image, Spin } from "antd";
 import { useRouter } from "next/router";
-import {useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import cookie from "cookie";
 import NotFound from "@/components/404";
@@ -40,7 +40,7 @@ const ServicesPost = () => {
   };
 
   return (
-    <Page style={{ backgroundColor: "#f4f4f4", position: "relative" }}>
+    <Page style={{ backgroundColor: "#f4f4f4", position: "relative" }} title="Bán nhanh hơn - Chợ Tốt">
       {postService?.post?.userId !== account?.user?._id ? (
         <NotFound></NotFound>
       ) : (
@@ -202,8 +202,7 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {
-    },
+    props: {},
   };
 };
 export default ServicesPost;

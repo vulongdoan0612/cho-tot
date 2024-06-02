@@ -35,6 +35,6 @@ export const changePassword = async (accessToken: string, data: IChangePassword)
 };
 export const logout = (dispatch: any) => {
   localStorage.removeItem("access_token");
-  Cookies.remove("access_token", { path: "/" }); 
+  Cookies.remove("access_token");
   dispatch(setAuthenticate({ isAuthenticated: false, account: {}, loading: false }));
 };

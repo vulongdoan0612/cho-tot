@@ -62,11 +62,12 @@ export const fetchDataPosts = createAsyncThunk("/get-posts", async (arg: any) =>
 export const fetchDataPost = createAsyncThunk("/get-post", async (arg: any) => {
   const accessToken: any = localStorage.getItem("access_token");
 
-  const { setSpin, postId } = arg;
+  const { setSpin, postId, setTitle } = arg;
   const getPostId = { postId: postId };
   const res = await getPost(accessToken, getPostId);
   if (res.status === 200) {
     setSpin(false);
+    setTitle(res?.data?.post?.post?.title);
   }
   return res?.data;
 });

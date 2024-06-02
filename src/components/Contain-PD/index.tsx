@@ -27,7 +27,7 @@ import { createConversation } from "@/services/chat";
 import timeAgo from "@/utils/timeAgo";
 import Link from "next/link";
 
-const ContainPD = () => {
+const ContainPD = ({ setTitle }: any) => {
   const { account } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const { post, checkFavPost } = useSelector((state: RootState) => state.postsData);
@@ -36,7 +36,7 @@ const ContainPD = () => {
   const [spin, setSpin] = useState(true);
   const [author, setAuthor] = useState(false);
   const [spinFull, setSpinFull] = useState(false);
-  useFetchPost({ setSpin, body: router });
+  useFetchPost({ setSpin, body: router, setTitle });
 
   useFetchCheckFavPost({
     body: router,

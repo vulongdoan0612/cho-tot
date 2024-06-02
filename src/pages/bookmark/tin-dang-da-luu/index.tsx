@@ -64,7 +64,7 @@ const FavPage = () => {
   };
 
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page style={{ backgroundColor: "#f4f4f4" }} title="Tin đăng đã lưu">
       <div className="fav-wrapper">
         <Breadcrumb
           className="breadcrumb-fav"

@@ -61,7 +61,7 @@ const HomePage = () => {
     setShowMore((prev) => !prev);
   };
   return (
-    <Page>
+    <Page title="Chợ Tốt Xe: Mua Bán Xe Cũ Mới Cập Nhật Tháng 06/24">
       <div className="home-page-wrapper">
         <div className="main-home">
           <div className="carousel">

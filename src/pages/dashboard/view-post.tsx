@@ -37,7 +37,7 @@ const ViewPostCensor = () => {
   const datePlus30Days = add30DaysAndFormat(data?.date);
 
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page style={{ backgroundColor: "#f4f4f4" }} title="Chợ Tốt - Dashboard">
       <div className="view-post-wrapper">
         <div className="top-part">
           <div className="annoucement">

@@ -19,7 +19,7 @@ const History = () => {
   useFetchHistory();
 
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page style={{ backgroundColor: "#f4f4f4" }} title="Chợ Tốt - Lịch sử giao dịch">
       <div className="fav-wrapper">
         <Breadcrumb
           className="breadcrumb-fav"

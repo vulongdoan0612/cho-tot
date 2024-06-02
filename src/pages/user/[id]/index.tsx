@@ -229,7 +229,10 @@ const DetailUser = () => {
     }, 2000);
   };
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page
+      style={{ backgroundColor: "#f4f4f4" }}
+      title="Chợ Tốt Xe Official Mall - Chợ Tốt - Website Mua Bán, Rao Vặt Trực Tuyến Hàng Đầu Của Người Việt"
+    >
       <div className="wrapper-detail-user">
         <Breadcrumb
           className="breadcrumb-detail-user"

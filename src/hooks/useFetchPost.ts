@@ -3,7 +3,7 @@ import { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export const useFetchPost = ({ setSpin, body }: any) => {
+export const useFetchPost = ({ setSpin, body, setTitle }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export const useFetchPost = ({ setSpin, body }: any) => {
         fetchDataPost({
           setSpin,
           postId: body.query.postId,
+          setTitle,
         })
       );
     } catch (error) {

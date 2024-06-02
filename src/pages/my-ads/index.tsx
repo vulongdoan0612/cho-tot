@@ -589,7 +589,7 @@ const MyAds = () => {
   ];
 
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page style={{ backgroundColor: "#f4f4f4" }} title="Chợ Tốt - Website Mua Bán, Rao Vặt Trực Tuyến Hàng Đầu Của Người Việt">
       <div className="my-ads">
         <Breadcrumb
           className="breadcrumb-my-ads-page"

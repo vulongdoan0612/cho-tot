@@ -143,7 +143,7 @@ const PostSell = () => {
     return isPNG || isJPGE || isGIF || isJPG || isWEBP || Upload.LIST_IGNORE;
   };
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page style={{ backgroundColor: "#f4f4f4" }} title="Chợ Tốt - Đăng tin">
       {(account?.user !== undefined && dataPost?.userId === account?.user?._id) || router.query.id === undefined ? (
         <div className="post-sell-wrapper">
           <div className="left">
