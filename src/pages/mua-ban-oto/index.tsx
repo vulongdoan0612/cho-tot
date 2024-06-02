@@ -1,4 +1,3 @@
-"use-client";
 import { ArrowInputIcon, FilterIcon, TickIcon } from "@/components/CustomIcons";
 import FindInAreaDropdown from "@/components/FindInAreaDropdown/item";
 import Selection from "@/components/FindInAreaDropdown/selection";

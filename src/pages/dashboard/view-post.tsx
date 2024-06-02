@@ -1,6 +1,5 @@
 import CustomButton from "@/components/CustomButton";
 import Page from "@/layout/Page";
-import { RootState } from "@/redux/store";
 import { getPostCheck } from "@/services/formPost";
 import { add30DaysAndFormat } from "@/utils/addDay2";
 import formatISOToCustomDate from "@/utils/convertDate";
@@ -9,7 +8,6 @@ import numberWithCommas from "@/utils/numberWithCommas";
 import { Image, Skeleton } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import cookie from "cookie";
 import Link from "next/link";
 

@@ -35,7 +35,7 @@ const Setting = (props: PropsPage) => {
             },
           },
           {
-            title: `Trang cá nhân của ${account?.user?.fullname}`,
+            title: `Trang cá nhân của ${account?.user?.fullname !== undefined ? account?.user?.fullname : "..."}`,
           },
           {
             title: "Thông tin cá nhân",

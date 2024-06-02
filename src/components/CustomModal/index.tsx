@@ -1,4 +1,3 @@
-"use client";
 
 import { Modal, ModalProps } from "antd";
 import { omit } from "lodash";

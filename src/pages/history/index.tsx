@@ -1,6 +1,6 @@
 import CustomButton from "@/components/CustomButton";
 import Page from "@/layout/Page";
-import { AppDispatch, RootState } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { Breadcrumb, Image } from "antd";
 import Link from "next/link";

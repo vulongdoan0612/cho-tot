@@ -1,6 +1,5 @@
 import { Image } from "antd";
 import CustomModal from "../CustomModal";
-import CustomButtonGreen from "../CustomButton/green";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";

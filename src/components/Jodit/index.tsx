@@ -1,4 +1,4 @@
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import JoditEditor from "jodit-react";
 
 const Jodit = ({ content, setContent }: any) => {

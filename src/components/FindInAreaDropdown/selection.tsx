@@ -1,6 +1,6 @@
 import { Input, Radio, RadioChangeEvent } from "antd";
 import { ArrowBackIcon, SearchIcon } from "../CustomIcons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const Selection = ({
   openFind,

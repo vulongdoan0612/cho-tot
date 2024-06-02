@@ -2,13 +2,12 @@ import CustomButton from "@/components/CustomButton";
 import ModalSuccessChangePassword from "@/components/Modal/ModalSuccessChangePassword";
 import Page from "@/layout/Page";
 import Setting from "@/layout/Setting";
-import { RootState } from "@/redux/store";
 import { changePassword, logout } from "@/services/authentication";
 import { TextField } from "@mui/material";
 import { Skeleton } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import cookie from "cookie";
 

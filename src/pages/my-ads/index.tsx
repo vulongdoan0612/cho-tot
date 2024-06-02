@@ -1,8 +1,8 @@
 import CustomButton from "@/components/CustomButton";
 import CustomButtonGreen from "@/components/CustomButton/green";
-import { ChangePostIcon, FasterSellIcon, HiddenEyeIcon, LetterIIcon, PlusManageIcon } from "@/components/CustomIcons";
+import { ChangePostIcon, FasterSellIcon, HiddenEyeIcon, LetterIIcon } from "@/components/CustomIcons";
 import Page from "@/layout/Page";
-import { AppDispatch, RootState } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import {
   getPostCensorshipList,
   getPostCheckList,
@@ -11,19 +11,17 @@ import {
   hiddenPost,
   unhiddenPost,
 } from "@/services/formPost";
-import { getProfile } from "@/services/getProfile";
 import addDay from "@/utils/addDay";
 import formatISOToCustomDate from "@/utils/convertDate";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import getWardDistrict from "@/utils/getWardDistrict";
-import { Breadcrumb, Checkbox, CheckboxProps, Image, InputNumberProps, Skeleton, Slider, Spin, Tabs, TabsProps } from "antd";
+import { Breadcrumb, Image, InputNumberProps, Skeleton, Slider, Spin, Tabs, TabsProps } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 import cookie from "cookie";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import SkeletonAvatar from "antd/es/skeleton/Avatar";
 
 const MyAds = () => {
   const { account } = useSelector((state: RootState) => state.auth);
@@ -52,9 +50,6 @@ const MyAds = () => {
 
   useEffect(() => {
     if (lastMessage8082 && account?.user?._id === lastMessage8082?.userId) {
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
       if (lastMessage8082?.action === "refuse" && account?.user?._id === lastMessage8082?.userId) {
         getDataListRefuse();
         getDataListPost();
@@ -82,11 +77,9 @@ const MyAds = () => {
     // setInputValue(15);
   };
 
-  const onChangeCheckBox: CheckboxProps["onChange"] = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
-
   const getDataListPost = async () => {
+    setSpin(true);
+
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostCheckList(String(token));
@@ -96,11 +89,13 @@ const MyAds = () => {
         setTotalPage(response?.data?.totalPage);
         setSkeleton(false);
         setSke(false);
+        setSpin(false);
       }
     }
   };
 
   const getDataListHidden = async () => {
+    setSpin(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostHiddenList(String(token));
@@ -108,11 +103,13 @@ const MyAds = () => {
       if (response.status === 200 && response.data.status === "SUCCESS") {
         setDataHidden(response?.data?.data);
         setSke2(false);
+        setSpin(false);
       }
     }
   };
 
   const getDataListRefuse = async () => {
+    setSpin(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostRefuseList(String(token));
@@ -120,10 +117,12 @@ const MyAds = () => {
       if (response.status === 200 && response.data.status === "SUCCESS") {
         setDataRefuse(response?.data?.data);
         setSke3(false);
+        setSpin(false);
       }
     }
   };
   const getDataListCensorship = async () => {
+    setSpin(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostCensorshipList(String(token));
@@ -131,21 +130,21 @@ const MyAds = () => {
       if (response.status === 200 && response.data.status === "SUCCESS") {
         setDataCensorship(response?.data?.data);
         setSke4(false);
+        setSpin(false);
       }
     }
   };
 
   const handleHidden = async (postId: string) => {
     const token = localStorage.getItem("access_token");
+    setSpin(true);
     if (token) {
       const updateField = {
         postId: postId,
       };
       const response = await hiddenPost(String(token), updateField);
       if (response?.data?.status === "SUCCESS") {
-        setSpin(true);
         setTimeout(() => {
-          setSpin(false);
           getDataListPost();
           getDataListHidden();
         }, 1000);
@@ -154,6 +153,7 @@ const MyAds = () => {
   };
 
   const updatePostHidden = async (postId: string) => {
+    setSpin(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const updateField = {
@@ -161,9 +161,7 @@ const MyAds = () => {
       };
       const response = await unhiddenPost(String(token), updateField);
       if (response?.data?.status === "SUCCESS") {
-        setSpin(true);
         setTimeout(() => {
-          setSpin(false);
           getDataListPost();
           getDataListHidden();
         }, 1000);
@@ -210,10 +208,7 @@ const MyAds = () => {
                             </div>
                           </div>
                           <div className="buttons-left">
-                            <div>
-                              {" "}
-                              <Checkbox onChange={onChangeCheckBox}>Chọn tin</Checkbox>
-                            </div>
+                            <div> {/* <Checkbox onChange={onChangeCheckBox}>Chọn tin</Checkbox> */}</div>
                             <div className="buttons">
                               <a href={`dang-tin?category=0&id=${item.postId}`}>
                                 <button>

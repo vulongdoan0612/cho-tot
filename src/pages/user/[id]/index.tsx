@@ -19,8 +19,8 @@ import formatISOToCustomDate from "@/utils/convertDate";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import timeAgo from "@/utils/timeAgo";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import { Alert, Breadcrumb, Image, InputNumberProps, Skeleton, Spin, Tabs, TabsProps, Upload } from "antd";
+import type { RcFile, UploadProps } from "antd/es/upload/interface";
+import { Alert, Breadcrumb, Image, Skeleton, Spin, Tabs, TabsProps, Upload } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -245,7 +245,7 @@ const DetailUser = () => {
               },
             },
             {
-              title: `Trang cá nhân ${detailProfileUser?.user?.fullname}`,
+              title: `Trang cá nhân ${detailProfileUser?.user?.fullname !== undefined ? detailProfileUser?.user?.fullname : "..."}`,
               onClick: () => {
                 router.push(`/user/${router.query.id}`);
               },

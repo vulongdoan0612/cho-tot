@@ -1,9 +1,8 @@
 import { TextField } from "@mui/material";
 import CustomModal from "../CustomModal";
 import CustomButton from "../CustomButton";
-import { DatePicker, Skeleton } from "antd";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { DatePicker } from "antd";
+
 const ModalCCCCD = ({
   modalConfirmSwitchCCCD,
   handleCancleModalCCCD,

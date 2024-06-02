@@ -13,7 +13,7 @@ import {
 } from "../CustomIcons";
 import CustomButtonGreen from "../CustomButton/green";
 import ProductSlide from "./productSlide";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFetchPost } from "@/hooks/useFetchPost";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -130,19 +130,23 @@ const ContainPD = ({ setTitle }: any) => {
                 },
               },
               {
-                title: `${post?.post?.post?.cityValueName}`,
+                title: `${post?.post?.post?.cityValueName !== undefined ? post?.post?.post?.cityValueName : "..."}`,
                 onClick: () => {
                   router.push(`/mua-ban-oto?city=${post?.post?.post?.cityValue}`);
                 },
               },
               {
-                title: `${post?.post?.post?.districtValueName}`,
+                title: `${post?.post?.post?.districtValueName !== undefined ? post?.post?.post?.districtValueName : "..."}`,
                 onClick: () => {
                   router.push(`/mua-ban-oto?city=${post?.post?.post?.cityValue}&district=${post?.post?.post?.districtValue}`);
                 },
               },
               {
-                title: `${post?.post?.post?.value} ${post?.post?.post?.color}, ${post?.post?.post?.model}, ${post?.post?.post?.form}`,
+                title: `${post?.post?.post?.value !== undefined ? post?.post?.post?.value : "..."} ${
+                  post?.post?.post?.color !== undefined ? post?.post?.post?.color : "..."
+                }, ${post?.post?.post?.model !== undefined ? post?.post?.post?.model : "..."}, ${
+                  post?.post?.post?.form !== undefined ? post?.post?.post?.form : "..."
+                }`,
               },
             ]}
           />

@@ -1,7 +1,6 @@
 import { Radio } from "antd";
 import { ArrowDownIcon, ArrowRightIcon } from "../CustomIcons";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 const ItemModalFilterSits = ({
   value,
