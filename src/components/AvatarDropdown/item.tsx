@@ -44,7 +44,13 @@ const DropdownList = ({ setSpin, spin }: any) => {
         <div className="sign-in">
           <span className="avatar"></span>
           <span className="text">
-            <Link href="/login">Đăng nhập</Link> / <Link href="/register">Đăng ký</Link>
+            <span onClick={() => handleRouterChat("/login")} style={{ cursor: "pointer" }}>
+              Đăng nhập
+            </span>{" "}
+            /{" "}
+            <span onClick={() => handleRouterChat("/register")} style={{ cursor: "pointer" }}>
+              Đăng ký
+            </span>
           </span>
         </div>
       )}
