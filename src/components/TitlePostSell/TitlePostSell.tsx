@@ -893,7 +893,6 @@ const TitlePostSell = ({
         )}
       </div>
       <div className="finish">
-        <CustomButton className="preview">Xem trước</CustomButton>
         <CustomButton className="post" onClick={postSell}>
           {id ? "Sửa tin" : "Đăng tin"}
         </CustomButton>
