@@ -412,7 +412,7 @@ const ContainPD = ({ setTitle }: any) => {
                       <> {post?.post?.post?.title}</>
                     )}
                   </h1>
-                  <div className="infor">
+                  <div className="infor" style={{ whiteSpace: "nowrap" }}>
                     {spin ? (
                       <Skeleton.Button block={true} style={{ height: "16.094px" }} active size="large"></Skeleton.Button>
                     ) : (
