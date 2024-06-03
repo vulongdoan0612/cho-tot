@@ -225,14 +225,14 @@ const Header = () => {
         ) : (
           <>
             <div className="chat">
-              <Link href="/chat">
+              <Link href="/chat" prefetch={false}>
                 <Badge dot={badge}>
                   <ChatIcon />
                 </Badge>
               </Link>
             </div>
             <div className="mangeShop">
-              <Link href="/my-ads">
+              <Link href="/my-ads" prefetch={false}>
                 <MangeShopIcon />
               </Link>
             </div>

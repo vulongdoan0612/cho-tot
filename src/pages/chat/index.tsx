@@ -623,8 +623,12 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  return {
-    props: {},
-  };
+  return {};
 };
+export async function getStaticProps() {
+  // Tương tự, đảm bảo không gọi API `my-ads.json`
+  return {
+    props: {}, // Trả về props cho component
+  };
+}
 export default Chat;
