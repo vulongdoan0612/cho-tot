@@ -27,11 +27,9 @@ const Register = () => {
       const response = await requestSignUp(dataSignUp);
       if (response?.status === 201) {
         if (response?.data?.status) {
+          setSpin(false);
+          toast(response?.data?.message, { autoClose: 1500 });
           if (response?.data?.status === "SUCCESS") {
-            setSpin(false);
-            toast(response?.data?.message, { autoClose: 500 });
-            localStorage.setItem("access_token", response?.data?.token);
-            Cookies.set("access_token", response?.data?.token, { expires: 3650, secure: true, sameSite: "strict" });
             setTimeout(() => {
               router.push("/login");
             }, 1500);
