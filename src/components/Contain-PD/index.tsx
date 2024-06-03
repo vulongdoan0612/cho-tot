@@ -34,6 +34,8 @@ const ContainPD = ({ setTitle }: any) => {
   const [hiddenPhone, setHiddenPhone] = useState(true);
   const [lessDetail, setLessDetail] = useState(false);
   const [spin, setSpin] = useState(true);
+  const [spinRoute, setSpinRoute] = useState(false);
+
   const [author, setAuthor] = useState(false);
   const [spinFull, setSpinFull] = useState(false);
   useFetchPost({ setSpin, body: router, setTitle });
@@ -107,6 +109,14 @@ const ContainPD = ({ setTitle }: any) => {
       }, 2000);
     }
   };
+
+  const handleRouterChat = (pathname: string) => {
+    if (router?.pathname !== pathname) {
+      setSpinRoute(true);
+    }
+    router.push(pathname);
+  };
+
   return (
     <div className="wrapper-contain">
       {post?.status === "404" ? (
@@ -488,18 +498,21 @@ const ContainPD = ({ setTitle }: any) => {
                           <hr></hr>
                           <span className="selling">{post?.post?.userInfo?.selling} đang bán</span>
                         </div>
-                        <div className="title-bottom-2">
-                        </div>
+                        <div className="title-bottom-2"></div>
                       </div>
                     </div>
                     {account?.user?._id === post?.post?.userId ? (
                       <div className="contact">
-                        <Link href="/my-ads">
+                        <div onClick={() => handleRouterChat("/my-ads")} style={{ cursor: "pointer" }}>
+                          {" "}
                           <CustomButtonGreen className="phone">
                             <HiddenEyeIcon></HiddenEyeIcon> Đã bán/ Ẩn tin
                           </CustomButtonGreen>
-                        </Link>
-                        <Link href={`/dang-tin?category=0&id=${post?.post?.postId}`}>
+                        </div>
+                        <div
+                          onClick={() => handleRouterChat(`/dang-tin?category=0&id=${post?.post?.postId}`)}
+                          style={{ cursor: "pointer" }}
+                        >
                           <CustomButtonGreen className="chat">
                             <Image
                               src="https://static.chotot.com/storage/chotot-icons/svg/edit-ad.svg"
@@ -510,7 +523,7 @@ const ContainPD = ({ setTitle }: any) => {
                             ></Image>
                             Sửa tin
                           </CustomButtonGreen>
-                        </Link>
+                        </div>
                       </div>
                     ) : (
                       <div className="contact">
@@ -596,7 +609,9 @@ const ContainPD = ({ setTitle }: any) => {
           </div>
         </>
       )}{" "}
-      <Spin spinning={spinFull} fullscreen></Spin> <Spin spinning={spin} fullscreen></Spin>{" "}
+      <Spin spinning={spinRoute} fullscreen></Spin>
+      <Spin spinning={spinFull} fullscreen></Spin>
+      <Spin spinning={spin} fullscreen></Spin>{" "}
       <Alert message="Bạn cần phải đăng nhập để nhắn tin với người mua!" type="success" className={author ? "show-alert" : ""} />
     </div>
   );
