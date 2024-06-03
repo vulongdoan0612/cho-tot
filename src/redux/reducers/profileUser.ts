@@ -6,10 +6,11 @@ interface IState {
 }
 
 export const fetchDataUserProfile = createAsyncThunk("/get-posts", async (arg: any) => {
-  const { userId, setSpin } = arg;
+  const { userId, setSpin, setSpinFull } = arg;
   const postData = { userId: userId };
   const res = await getDetailProfileUser(postData);
   if (res.status === 200) {
+    setSpinFull(false);
     setSpin(false);
   }
   return res?.data;

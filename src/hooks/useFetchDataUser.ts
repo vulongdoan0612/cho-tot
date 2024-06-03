@@ -3,11 +3,10 @@ import { AppDispatch } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export const useFetchDataUser = ({ body, setSpin }: any) => {
+export const useFetchDataUser = ({ body, setSpin, setSpinFull }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-
     handleFetchDataUser();
   }, [body]);
 
@@ -16,7 +15,7 @@ export const useFetchDataUser = ({ body, setSpin }: any) => {
       if (!body.isReady) {
         return;
       }
-      dispatch(fetchDataUserProfile({ userId: body.query.id, setSpin }));
+      dispatch(fetchDataUserProfile({ userId: body.query.id, setSpin, setSpinFull }));
     } catch (error) {
       console.log(error);
     }

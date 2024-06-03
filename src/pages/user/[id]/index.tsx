@@ -42,22 +42,20 @@ const DetailUser = () => {
   const [developing, setDeveloping] = useState(false);
   const [spinFull, setSpinFull] = useState<any>(false);
 
-  useFetchDataUser({ body: router, setSpin });
+  useFetchDataUser({ body: router, setSpin, setSpinFull });
 
   useEffect(() => {
+    setSpinFull(true);
+    setSpin(true);
     if (lastJsonMessage && account?.user?._id === lastJsonMessage?.userId) {
-      setSpin(true);
-      setTimeout(() => {
-        setSpin(false);
-      }, 500);
       if (lastJsonMessage.action === "refuse" && account?.user?._id === lastJsonMessage?.userId) {
-        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
+        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin, setSpinFull }));
       }
       if (lastJsonMessage.action === "delete" && account?.user?._id === lastJsonMessage?.userId) {
-        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
+        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin, setSpinFull }));
       }
       if (lastJsonMessage.action === "accept" && account?.user?._id === lastJsonMessage?.userId) {
-        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
+        dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin, setSpinFull }));
       }
     }
   }, [lastJsonMessage]);
@@ -75,6 +73,7 @@ const DetailUser = () => {
   };
 
   const handleChange: UploadProps["onChange"] = async (info) => {
+    setSpinFull(true);
     setAlertAvatar(true);
     setTimeout(() => {
       setAlertAvatar(false);
@@ -82,11 +81,12 @@ const DetailUser = () => {
     const token = localStorage.getItem("access_token");
     const response = await updateAvatar(String(token), { avatar: info.file.originFileObj as RcFile });
     if (response?.data?.status === "SUCCESS") {
-      dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
+      dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin, setSpinFull }));
       dispatch(fetchDataUser({ setSke: setSpin }));
     }
   };
   const handleChangeBanner: UploadProps["onChange"] = async (info) => {
+    setSpinFull(true);
     setAlertAvatar(true);
     setTimeout(() => {
       setAlertAvatar(false);
@@ -94,7 +94,7 @@ const DetailUser = () => {
     const token = localStorage.getItem("access_token");
     const response = await updateBanner(String(token), { banner: info.file.originFileObj as RcFile });
     if (response?.data?.status === "SUCCESS") {
-      dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin }));
+      dispatch(fetchDataUserProfile({ userId: router.query.id, setSpin, setSpinFull }));
       dispatch(fetchDataUser({ setSke: setSpin }));
     }
   };
