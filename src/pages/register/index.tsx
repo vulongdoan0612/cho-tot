@@ -128,10 +128,7 @@ const Register = () => {
           </button>
         </div>
         <p className="register-account">
-          Đã có tài khoản?{" "}
-          <Link href="/login" prefetch={false}>
-            Đăng nhập ngay
-          </Link>
+          Đã có tài khoản? <Link href="/login">Đăng nhập ngay</Link>
         </p>
       </div>
       <div className="produce-by">

@@ -49,13 +49,7 @@ const DropdownList = () => {
         <div className="sign-in">
           <span className="avatar"></span>
           <span className="text">
-            <Link href="/login" prefetch={false}>
-              Đăng nhập
-            </Link>{" "}
-            /{" "}
-            <Link href="/register" prefetch={false}>
-              Đăng ký
-            </Link>
+            <Link href="/login">Đăng nhập</Link> / <Link href="/register">Đăng ký</Link>
           </span>
         </div>
       )}
@@ -65,7 +59,7 @@ const DropdownList = () => {
           <span>Tiện ích</span>
         </div>
         <div className="container">
-          <Link href="/bookmark/tin-dang-da-luu" prefetch={false}>
+          <Link href="/bookmark/tin-dang-da-luu">
             <span className="post-save">
               <Image preview={false} src="/icons/menu-saved-ad.svg" alt="" width={24} height={24}></Image>
               <span>Tin đăng đã lưu</span>{" "}
@@ -82,7 +76,7 @@ const DropdownList = () => {
           <span>Dịch vụ trả phí</span>
         </div>
         <div className="container">
-          <Link href="/history" style={{ paddingTop: "8px", paddingBottom: "8px" }} prefetch={false}>
+          <Link href="/history" style={{ paddingTop: "8px", paddingBottom: "8px" }}>
             <span className="history">
               {" "}
               <Image
@@ -103,7 +97,7 @@ const DropdownList = () => {
           <span>Khác</span>
         </div>
         <div className="container">
-          <Link href="/user/settings/profile" style={{ paddingTop: "8px", paddingBottom: "8px" }} prefetch={false}>
+          <Link href="/user/settings/profile" style={{ paddingTop: "8px", paddingBottom: "8px" }}>
             <span className="dongtot">
               {" "}
               <Image preview={false} src="https://static.chotot.com/storage/icons/svg/setting.svg" alt="" width={24} height={24}></Image>

@@ -103,7 +103,7 @@ const History = () => {
               ) : (
                 <div className="null-fav-list">
                   <span className="top">Bạn chưa thực hiện giao dịch nào!</span>
-                  <Link href="/my-ads" prefetch={false}>
+                  <Link href="/my-ads">
                     <CustomButton>Bắt đầu thực hiện giao dịch</CustomButton>
                   </Link>
                 </div>

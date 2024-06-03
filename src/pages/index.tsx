@@ -138,7 +138,7 @@ const HomePage = () => {
             <div className="slide">
               <div className="wrap-item">
                 <div className="item">
-                  <Link href="/mua-ban-oto" prefetch={false}>
+                  <Link href="/mua-ban-oto">
                     <Image
                       src="https://static.chotot.com/storage/new-logos/VEH/2010.svg"
                       alt=""
@@ -228,7 +228,7 @@ const HomePage = () => {
             {" "}
             <div className="top">
               <span>Tin đăng mới nhất</span>
-              <Link href="/mua-ban-oto" prefetch={false}>
+              <Link href="/mua-ban-oto">
                 <div className="see-all">
                   Xem tất cả <Image src="/icons/right_arrow_blue.svg" alt="" preview={false} width={15} height={15}></Image>
                 </div>

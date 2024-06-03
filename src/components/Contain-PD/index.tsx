@@ -504,7 +504,7 @@ const ContainPD = ({ setTitle }: any) => {
                     </div>
                     {account?.user?._id === post?.post?.userId ? (
                       <div className="contact">
-                        <Link href="/my-ads" prefetch={false}>
+                        <Link href="/my-ads">
                           <CustomButtonGreen className="phone">
                             <HiddenEyeIcon></HiddenEyeIcon> Đã bán/ Ẩn tin
                           </CustomButtonGreen>

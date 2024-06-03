@@ -166,7 +166,7 @@ const DetailUser = () => {
                 <>
                   <NullContentIcon></NullContentIcon>
                   <h5>Bạn chưa có tin đăng nào</h5>
-                  <Link href="/dang-tin" prefetch={false}>
+                  <Link href="/dang-tin">
                     <CustomButton>ĐĂNG TIN NGAY</CustomButton>
                   </Link>
                 </>
@@ -174,7 +174,7 @@ const DetailUser = () => {
                 <>
                   <NullContent2Icon></NullContent2Icon>
                   <h5>Bạn chưa có tin đăng nào</h5>
-                  <Link href="/dang-tin" prefetch={false}>
+                  <Link href="/dang-tin">
                     <CustomButton>ĐĂNG TIN NGAY</CustomButton>
                   </Link>
                 </>
@@ -213,7 +213,7 @@ const DetailUser = () => {
             <div className="null-content">
               <NullContentIcon></NullContentIcon>
               <h5>Bạn chưa có tin đăng nào</h5>
-              <Link href="/dang-tin" prefetch={false}>
+              <Link href="/dang-tin">
                 <CustomButton>ĐĂNG TIN NGAY</CustomButton>
               </Link>
             </div>

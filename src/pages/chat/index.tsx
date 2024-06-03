@@ -600,7 +600,7 @@ const Chat = () => {
           </Image>
           <h5>Bạn chưa có cuộc trò chuyện nào!</h5>
           <p>Trải nghiệm chat để làm rõ thông tin về mặt hàng trước khi bắt đầu thực hiện mua bán</p>
-          <Link href="/" prefetch={false}>
+          <Link href="/">
             <CustomButton>Về trang chủ</CustomButton>
           </Link>
         </div>
@@ -624,8 +624,7 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {
-    },
+    props: {},
   };
 };
 export default Chat;

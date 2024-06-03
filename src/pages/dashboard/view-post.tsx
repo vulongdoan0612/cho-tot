@@ -121,9 +121,7 @@ const ViewPostCensor = () => {
         <div className="third-part">
           {/* <CustomButton className="sell-button">Bán</CustomButton> */}
           <CustomButton className="manage-button">
-            <Link href="/my-ads" prefetch={false}>
-              Quản lý tin
-            </Link>
+            <Link href="/my-ads">Quản lý tin</Link>
           </CustomButton>
         </div>
       </div>
