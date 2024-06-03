@@ -99,7 +99,10 @@ const Login = () => {
           </button>
         </div>
         <p className="register-account">
-          Chưa có tài khoản? <Link href="/register">Đăng ký tài khoản mới</Link>
+          Chưa có tài khoản?{" "}
+          <Link href="/register" prefetch={false}>
+            Đăng ký tài khoản mới
+          </Link>
         </p>
       </div>
       <div className="produce-by">

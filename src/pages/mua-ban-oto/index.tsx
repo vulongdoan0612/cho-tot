@@ -556,7 +556,7 @@ const SellingPage = () => {
   };
 
   return (
-    <Page style={{ backgroundColor: "#f4f4f4" }}>
+    <Page style={{ backgroundColor: "#f4f4f4" }} title="Chợ Tốt - Mua bán ô tô cũ">
       <div className="selling-wrapper">
         <div className="header">
           <div className="filter" onClick={handleFilterModal}>

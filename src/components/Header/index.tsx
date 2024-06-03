@@ -166,7 +166,7 @@ const Header = () => {
           {ske ? (
             <Skeleton.Button block={true} active size="large"></Skeleton.Button>
           ) : (
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <Image src="/images/chotot-logo.png" alt="" width={100} height={35}></Image>
             </Link>
           )}
@@ -225,14 +225,14 @@ const Header = () => {
         ) : (
           <>
             <div className="chat">
-              <Link href="/chat">
+              <Link href="/chat" prefetch={false}>
                 <Badge dot={badge}>
                   <ChatIcon />
                 </Badge>
               </Link>
             </div>
             <div className="mangeShop">
-              <Link href="/my-ads">
+              <Link href="/my-ads" prefetch={false}>
                 <MangeShopIcon />
               </Link>
             </div>
@@ -249,7 +249,7 @@ const Header = () => {
           {ske ? (
             <Skeleton.Button block={true} active size="large" style={{ minWidth: "123px" }}></Skeleton.Button>
           ) : (
-            <Link href="/dang-tin">
+            <Link href="/dang-tin" prefetch={false}>
               <Button style={{ display: "flex", gap: "3px", alignItems: "center" }}>
                 <UploadNewIcon></UploadNewIcon>
                 <span className="text">ĐĂNG TIN</span>

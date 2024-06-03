@@ -47,10 +47,10 @@ const Setting = (props: PropsPage) => {
         <div className="left">
           <div className="left-content">
             <ul>
-              <Link href="/user/settings/profile">
+              <Link href="/user/settings/profile" prefetch={false}>
                 <li className={`${active === "1" ? "bold" : ""}`}>Thông tin cá nhân</li>
               </Link>
-              <Link href="/user/settings/account">
+              <Link href="/user/settings/account" prefetch={false}>
                 <li className={`${active === "3" ? "bold" : ""}`}>Cài đặt tài khoản</li>
               </Link>
             </ul>
