@@ -1,4 +1,4 @@
-import { Badge, Button, Dropdown, Input, MenuProps, Skeleton, Space } from "antd";
+import { Badge, Button, Dropdown, Input, MenuProps, Skeleton, Space, Spin } from "antd";
 import Image from "next/image";
 import { BarIcon, ChatIcon, ArrowIcon, MangeShopIcon, UploadNewIcon, SearchIcon } from "../CustomIcons";
 import AvatarDropdown from "../AvatarDropdown";
@@ -24,6 +24,7 @@ const Header = () => {
   const [listSearch, setListSearch] = useState([]);
   const [openListSearch, setOpenListSearch] = useState(false);
   const [value, setValue] = useState<any>("");
+  const [spin, setSpin] = useState<any>(false);
 
   const fetchAnnounce = async () => {
     const token = localStorage.getItem("access_token");
@@ -158,6 +159,12 @@ const Header = () => {
     updateURL({ keySearch: item });
     setOpenListSearch(false);
   };
+  const handleRouterChat = (pathname: string) => {
+    if (router?.pathname !== pathname) {
+      setSpin(true);
+    }
+    router.push(pathname);
+  };
 
   return (
     <header className="header">
@@ -166,9 +173,9 @@ const Header = () => {
           {ske ? (
             <Skeleton.Button block={true} active size="large"></Skeleton.Button>
           ) : (
-            <Link href="/">
+            <div onClick={() => handleRouterChat("/")} style={{ cursor: "pointer" }}>
               <Image src="/images/chotot-logo.png" alt="" width={100} height={35}></Image>
-            </Link>
+            </div>
           )}
         </div>
         <div className="dropdown-category">
@@ -225,16 +232,16 @@ const Header = () => {
         ) : (
           <>
             <div className="chat">
-              <Link href="/chat" prefetch={false}>
+              <div onClick={() => handleRouterChat("/chat")} style={{ cursor: "pointer" }}>
                 <Badge dot={badge}>
                   <ChatIcon />
                 </Badge>
-              </Link>
+              </div>
             </div>
             <div className="mangeShop">
-              <Link href="/my-ads" prefetch={false}>
+              <div onClick={() => handleRouterChat("/my-ads")} style={{ cursor: "pointer" }}>
                 <MangeShopIcon />
-              </Link>
+              </div>
             </div>
           </>
         )}
@@ -249,15 +256,16 @@ const Header = () => {
           {ske ? (
             <Skeleton.Button block={true} active size="large" style={{ minWidth: "123px" }}></Skeleton.Button>
           ) : (
-            <Link href="/dang-tin">
+            <div onClick={() => handleRouterChat("/dang-tin")} style={{ cursor: "pointer" }}>
               <Button style={{ display: "flex", gap: "3px", alignItems: "center" }}>
                 <UploadNewIcon></UploadNewIcon>
                 <span className="text">ĐĂNG TIN</span>
               </Button>
-            </Link>
+            </div>
           )}
         </div>
       </div>
+      <Spin spinning={spin} fullscreen></Spin>
     </header>
   );
 };

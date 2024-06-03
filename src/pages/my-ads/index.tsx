@@ -28,7 +28,6 @@ const MyAds = () => {
   const router = useRouter();
   const { lastJsonMessage: lastMessage8082 }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
   const { lastJsonMessage: lastMessage8083 }: any = useWebSocket("wss://cho-tot-be.onrender.com:443");
-  const [spin, setSpin] = useState(false);
   const [data, setData] = useState<any>([]);
   const [totalPage, setTotalPage] = useState<any>(0);
   const [dataHidden, setDataHidden] = useState<any>([]);
@@ -78,8 +77,7 @@ const MyAds = () => {
   };
 
   const getDataListPost = async () => {
-    setSpin(true);
-
+    setSke(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostCheckList(String(token));
@@ -89,13 +87,11 @@ const MyAds = () => {
         setTotalPage(response?.data?.totalPage);
         setSkeleton(false);
         setSke(false);
-        setSpin(false);
       }
     }
   };
 
   const getDataListHidden = async () => {
-    setSpin(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostHiddenList(String(token));
@@ -103,13 +99,12 @@ const MyAds = () => {
       if (response.status === 200 && response.data.status === "SUCCESS") {
         setDataHidden(response?.data?.data);
         setSke2(false);
-        setSpin(false);
       }
     }
   };
 
   const getDataListRefuse = async () => {
-    setSpin(true);
+    setSke3(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostRefuseList(String(token));
@@ -117,12 +112,11 @@ const MyAds = () => {
       if (response.status === 200 && response.data.status === "SUCCESS") {
         setDataRefuse(response?.data?.data);
         setSke3(false);
-        setSpin(false);
       }
     }
   };
   const getDataListCensorship = async () => {
-    setSpin(true);
+    setSke4(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const response = await getPostCensorshipList(String(token));
@@ -130,30 +124,27 @@ const MyAds = () => {
       if (response.status === 200 && response.data.status === "SUCCESS") {
         setDataCensorship(response?.data?.data);
         setSke4(false);
-        setSpin(false);
       }
     }
   };
 
   const handleHidden = async (postId: string) => {
     const token = localStorage.getItem("access_token");
-    setSpin(true);
+    setSke(true);
     if (token) {
       const updateField = {
         postId: postId,
       };
       const response = await hiddenPost(String(token), updateField);
       if (response?.data?.status === "SUCCESS") {
-        setTimeout(() => {
-          getDataListPost();
-          getDataListHidden();
-        }, 1000);
+        getDataListPost();
+        getDataListHidden();
       }
     }
   };
 
   const updatePostHidden = async (postId: string) => {
-    setSpin(true);
+    setSke2(true);
     const token = localStorage.getItem("access_token");
     if (token) {
       const updateField = {
@@ -161,10 +152,8 @@ const MyAds = () => {
       };
       const response = await unhiddenPost(String(token), updateField);
       if (response?.data?.status === "SUCCESS") {
-        setTimeout(() => {
-          getDataListPost();
-          getDataListHidden();
-        }, 1000);
+        getDataListPost();
+        getDataListHidden();
       }
     }
   };
@@ -366,7 +355,6 @@ const MyAds = () => {
                             <div className="service">
                               <div className="top">
                                 <span className="current">Dịch vụ gần đây</span>
-                                <span className="detail">Xem chi tiết</span>
                               </div>
                               <div className="bottom">
                                 <LetterIIcon></LetterIIcon>
@@ -457,12 +445,22 @@ const MyAds = () => {
                             </div>
                             <div className="service">
                               <div className="top">
-                                <span className="current">Dịch vụ gần đây</span>
-                                <span className="detail">Xem chi tiết</span>
+                                <span className="current">Dịch vụ đang sử dụng</span>
                               </div>
                               <div className="bottom">
-                                <LetterIIcon></LetterIIcon>
-                                <span>Chưa sử dụng dịch vụ nào</span>
+                                {item?.prioritize === "26.51" ? (
+                                  <span style={{ fontWeight: "600" }}>Tin nổi bật + Đẩy tin</span>
+                                ) : item?.prioritize === "14.73" ? (
+                                  <span style={{ fontWeight: "600" }}>Đẩy tin thường</span>
+                                ) : item?.prioritize === "15.71" ? (
+                                  <span style={{ fontWeight: "600" }}>Tin nổi bật - Nhiều hình ảnh</span>
+                                ) : (
+                                  <>
+                                    {" "}
+                                    <LetterIIcon></LetterIIcon>
+                                    <span>Chưa sử dụng dịch vụ nào</span>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -543,12 +541,22 @@ const MyAds = () => {
                             </div>
                             <div className="service">
                               <div className="top">
-                                <span className="current">Dịch vụ gần đây</span>
-                                <span className="detail">Xem chi tiết</span>
+                                <span className="current">Dịch vụ đang sử dụng</span>
                               </div>
                               <div className="bottom">
-                                <LetterIIcon></LetterIIcon>
-                                <span>Chưa sử dụng dịch vụ nào</span>
+                                {item?.prioritize === "26.51" ? (
+                                  <span style={{ fontWeight: "600" }}>Tin nổi bật + Đẩy tin</span>
+                                ) : item?.prioritize === "14.73" ? (
+                                  <span style={{ fontWeight: "600" }}>Đẩy tin thường</span>
+                                ) : item?.prioritize === "15.71" ? (
+                                  <span style={{ fontWeight: "600" }}>Tin nổi bật - Nhiều hình ảnh</span>
+                                ) : (
+                                  <>
+                                    {" "}
+                                    <LetterIIcon></LetterIIcon>
+                                    <span>Chưa sử dụng dịch vụ nào</span>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -638,7 +646,7 @@ const MyAds = () => {
         </div>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} className="tab-ads" />
       </div>
-      <Spin spinning={spin} fullscreen />
+      {/* <Spin spinning={spin} fullscreen /> */}
     </Page>
   );
 };

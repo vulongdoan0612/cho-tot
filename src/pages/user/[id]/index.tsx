@@ -35,21 +35,14 @@ const DetailUser = () => {
   const dispatch: AppDispatch = useDispatch();
   const { account } = useSelector((state: RootState) => state.auth);
   const [spin, setSpin] = useState(true);
-  const [skeleton, setSkeleton] = useState(true);
   const [alertShare, setAlertShare] = useState(false);
   const [alertAvatar, setAlertAvatar] = useState(false);
   const [alertAvatar2, setAlertAvatar2] = useState(false);
   const [alertAvatar4, setAlertAvatar4] = useState(false);
   const [developing, setDeveloping] = useState(false);
+  const [spinFull, setSpinFull] = useState<any>(false);
 
   useFetchDataUser({ body: router, setSpin });
-
-  useEffect(() => {
-    setSkeleton(true);
-    setTimeout(() => {
-      setSkeleton(false);
-    }, 500);
-  }, [router]);
 
   useEffect(() => {
     if (lastJsonMessage && account?.user?._id === lastJsonMessage?.userId) {
@@ -75,10 +68,6 @@ const DetailUser = () => {
     setTimeout(() => {
       setAlertShare(false);
     }, 2000);
-  };
-
-  const handleEdit = () => {
-    router.push("/user/settings/profile");
   };
 
   const handleRouterPost = (slug: string, postId: string) => {
@@ -228,6 +217,12 @@ const DetailUser = () => {
       setDeveloping(false);
     }, 2000);
   };
+  const handleRouterChat = (pathname: string) => {
+    if (router?.pathname !== pathname) {
+      setSpinFull(true);
+    }
+    router.push(pathname);
+  };
   return (
     <Page
       style={{ backgroundColor: "#f4f4f4" }}
@@ -323,7 +318,11 @@ const DetailUser = () => {
                       <CustomButton onClick={handleShare}>
                         <ShareIcon></ShareIcon>Chia sẻ trang của bạn
                       </CustomButton>{" "}
-                      <CustomButton className="edit" onClick={handleEdit}>
+                      <CustomButton
+                        className="edit"
+                        onClick={() => handleRouterChat("/user/settings/profile")}
+                        style={{ cursor: "pointer" }}
+                      >
                         Chỉnh sửa trang cá nhân
                       </CustomButton>
                     </>
@@ -383,6 +382,7 @@ const DetailUser = () => {
           )}
         </div>
       </div>
+      <Spin spinning={spinFull} fullscreen></Spin>
       <Alert message="Đã sao chép liên kết đến trang cá nhân" type="success" className={alertShare ? "show-alert" : ""} />
       <Alert message="Tính năng đang phát triển" type="success" className={developing ? "show-alert" : ""} />{" "}
       <Alert message="Bạn chỉ có thể tải lên tệp PNG, JPEG, hoặc GIF!" type="success" className={alertAvatar2 ? "show-alert" : ""} />

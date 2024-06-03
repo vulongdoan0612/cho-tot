@@ -1,15 +1,17 @@
-import { Dropdown, Image, MenuProps } from "antd";
+import { Dropdown, Image, MenuProps, Spin } from "antd";
 import { ArrowIcon, UserAvatarIcon } from "../CustomIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import DropdownList from "./item";
 import { logout } from "@/services/authentication";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const AvatarDropdown = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { account } = useSelector((state: RootState) => state.auth);
+  const [spin, setSpin] = useState<any>(false);
   if (account.message === "User not found" && account.status === "ERROR") {
     router.push("/");
     logout(dispatch);
@@ -18,7 +20,7 @@ const AvatarDropdown = () => {
     {
       key: "1",
       className: "avatar-dropdown-header-wrapper",
-      label: <DropdownList></DropdownList>,
+      label: <DropdownList setSpin={setSpin} spin={spin}></DropdownList>,
     },
   ];
   return (
@@ -34,6 +36,7 @@ const AvatarDropdown = () => {
           <ArrowIcon></ArrowIcon>
         </a>
       </Dropdown>
+      <Spin spinning={spin} fullscreen></Spin>
     </div>
   );
 };

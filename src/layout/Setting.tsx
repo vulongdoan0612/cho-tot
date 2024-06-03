@@ -1,7 +1,7 @@
-import { Breadcrumb } from "antd";
+import { Breadcrumb, Spin } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 interface PropsPage {
@@ -15,12 +15,18 @@ interface PropsPage {
 const Setting = (props: PropsPage) => {
   const { children, title, active, removeAccount } = props;
   const router = useRouter();
+  const [spin, setSpin] = useState<any>(false);
+  const { account } = useSelector((state: RootState) => state.auth);
 
   const page = useMemo(() => {
     return <>{children}</>;
   }, [children]);
-  const { account } = useSelector((state: RootState) => state.auth);
-
+  const handleRouterChat = (pathname: string) => {
+    if (router?.pathname !== pathname) {
+      setSpin(true);
+    }
+    router.push(pathname);
+  };
   return (
     <div className="user-wrapper">
       {" "}
@@ -47,12 +53,12 @@ const Setting = (props: PropsPage) => {
         <div className="left">
           <div className="left-content">
             <ul>
-              <Link href="/user/settings/profile">
+              <div onClick={() => handleRouterChat("/user/settings/profile")} style={{ cursor: "pointer" }}>
                 <li className={`${active === "1" ? "bold" : ""}`}>Thông tin cá nhân</li>
-              </Link>
-              <Link href="/user/settings/account">
+              </div>
+              <div onClick={() => handleRouterChat("/user/settings/account")} style={{ cursor: "pointer" }}>
                 <li className={`${active === "3" ? "bold" : ""}`}>Cài đặt tài khoản</li>
-              </Link>
+              </div>
             </ul>
           </div>
         </div>
@@ -61,6 +67,7 @@ const Setting = (props: PropsPage) => {
           {/* {removeAccount ? <span>Yêu cầu chấm dứt tài khoản</span> : <></>} */}
         </div>
       </div>
+      <Spin spinning={spin} fullscreen></Spin>
     </div>
   );
 };
