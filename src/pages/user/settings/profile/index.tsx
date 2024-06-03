@@ -694,7 +694,6 @@ const User = () => {
                       variant="filled"
                       defaultValue={account?.user?.phone}
                     />
-                    {/* {account?.user?.phone ? <span className="change-phone">Thay đổi</span> : <></>} */}
                   </>
                 )}
               </div>
@@ -721,16 +720,6 @@ const User = () => {
               <Skeleton.Input block={true} active size="large" style={{ height: "155px" }}></Skeleton.Input>
             ) : (
               <div className="introducing">
-                {/* <TextField
-                  id="filled-multiline-flexible"
-                  label="Giới thiệu"
-                  className={`text-area ${fillIntro ? "warn-border" : ""}`}
-                  multiline
-                  value={stateUser.introducing}
-                  onChange={handleChangeIntroducing}
-                  maxRows={4}
-                  variant="filled"
-                /> */}
                 <div className={`text-area ${fillIntro ? "warn-border" : ""}`}>
                   <JoditEditor
                     config={config2}

@@ -64,7 +64,6 @@ const Setting = (props: PropsPage) => {
         </div>
         <div className="right">
           <div className="right-content">{page}</div>
-          {/* {removeAccount ? <span>Yêu cầu chấm dứt tài khoản</span> : <></>} */}
         </div>
       </div>
       <Spin spinning={spin} fullscreen></Spin>

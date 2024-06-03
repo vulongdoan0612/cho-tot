@@ -92,9 +92,6 @@ const ViewPostCensor = () => {
                 <span className="name">Đẩy tin thường</span>
                 <span className="price">375.000 đ</span>
               </div>
-              {/* <Link href={`/services/${data?.postId}`}>
-                <div className="add">+ Chọn</div>
-              </Link> */}
             </div>
             <div className="mid">
               {" "}
@@ -102,9 +99,6 @@ const ViewPostCensor = () => {
                 <span className="name">Tin nhiều hình ảnh</span>
                 <span className="price">400.000 đ</span>
               </div>
-              {/* <Link href={`/services/${data?.postId}`}>
-                <div className="add">+ Chọn</div>
-              </Link>{" "} */}
             </div>{" "}
             <div className="right">
               {" "}
@@ -112,14 +106,10 @@ const ViewPostCensor = () => {
                 <span className="name">Tin nổi bật - Nhiều hình ảnh</span>
                 <span className="price">675.000 đ</span>
               </div>
-              {/* <Link href={`/services/${data?.postId}`}>
-                <div className="add">+ Chọn</div>
-              </Link>{" "} */}
             </div>
           </div>
         </div>
         <div className="third-part">
-          {/* <CustomButton className="sell-button">Bán</CustomButton> */}
           <CustomButton className="manage-button">
             <Link href="/my-ads">Quản lý tin</Link>
           </CustomButton>

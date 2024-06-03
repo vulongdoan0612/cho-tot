@@ -634,19 +634,10 @@ const MyAds = () => {
               </>
             )}
           </div>
-          <div className="right-wrapper">
-            {/* <div className="right">
-              <Image src="https://static.chotot.com/storage/react-common/dongTot.svg" alt="alt" width={16} height={16}></Image>
-              <span className="balance">Số dư: 0</span>
-              <button>
-                <PlusManageIcon></PlusManageIcon>
-              </button>
-            </div> */}
-          </div>
+          <div className="right-wrapper"></div>
         </div>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} className="tab-ads" />
       </div>
-      {/* <Spin spinning={spin} fullscreen /> */}
     </Page>
   );
 };

@@ -5,7 +5,7 @@ import { RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import timeAgo from "@/utils/timeAgo";
-import { Image } from "antd";
+import { Image, Skeleton } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -235,39 +235,43 @@ const HomePage = () => {
               </Link>
             </div>
             <div className="slide-rec">
-              <Slider {...setting2s}>
-                {currentPosts?.latestPosts?.map((item: any, index: number) => {
-                  return (
-                    <Link key={index} href={`/${item?.post?.slug}/${item.postId}`}>
-                      <div className="rec-item" style={{ width: 200 }}>
-                        <div>
-                          <Image src={item?.post?.image[0]?.img} alt="" preview={false} height={175} width={175}></Image>
-                          <span className="title-rec">{limitTextTitle(item?.post?.title)}</span>
-                          <div className="infor-rec">
-                            <span>
-                              {limitTextDescription(
-                                `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${formatNumberWithCommas(item?.post?.km)} km`} ${
-                                  item?.post?.activeButton
-                                } - ${item?.post?.numberBox} `
-                              )}
-                            </span>
+              {currentPosts?.latestPosts ? (
+                <Slider {...setting2s}>
+                  {currentPosts?.latestPosts?.map((item: any, index: number) => {
+                    return (
+                      <Link key={index} href={`/${item?.post?.slug}/${item.postId}`}>
+                        <div className="rec-item" style={{ width: 200 }}>
+                          <div>
+                            <Image src={item?.post?.image[0]?.img} alt="" preview={false} height={175} width={175}></Image>
+                            <span className="title-rec">{limitTextTitle(item?.post?.title)}</span>
+                            <div className="infor-rec">
+                              <span>
+                                {limitTextDescription(
+                                  `${item?.post?.dateCar} - ${item?.post?.km === 0 ? "" : `${formatNumberWithCommas(item?.post?.km)} km`} ${
+                                    item?.post?.activeButton
+                                  } - ${item?.post?.numberBox} `
+                                )}
+                              </span>
+                            </div>
+                            <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
                           </div>
-                          <span className="price">{formatNumberWithCommas(item?.post?.price)} đ</span>
-                        </div>
-                        <div className="bottom-rec">
-                          <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
-                          <div className="ellipsis">
-                            <div className="dot"></div>
-                            <span>{timeAgo(item.date)}</span>
-                            <div className="dot"></div>
-                            <span>{item?.post?.districtValueName}</span>
+                          <div className="bottom-rec">
+                            <Image src="/icons/pro.svg" alt="" width={16} height={15}></Image>
+                            <div className="ellipsis">
+                              <div className="dot"></div>
+                              <span>{timeAgo(item.date)}</span>
+                              <div className="dot"></div>
+                              <span>{item?.post?.districtValueName}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </Slider>
+                      </Link>
+                    );
+                  })}
+                </Slider>
+              ) : (
+                <Skeleton.Input style={{ height: "337px" }} block={true} active size="large"></Skeleton.Input>
+              )}
             </div>
           </div>
           <div className="intro">

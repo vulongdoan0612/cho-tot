@@ -484,21 +484,11 @@ const ContainPD = ({ setTitle }: any) => {
                           {post?.post?.userInfo?.fullName}
                         </span>
                         <div className="title-bottom">
-                          {/* <div className="rate">
-                            <StarIcon></StarIcon>{" "}
-                            <div className="flex">
-                              <span className="star">5</span> <span className="count">(1)</span>
-                            </div>
-                          </div> */}
-                          {/* <hr></hr> */}
                           <span className="selled">{post?.post?.userInfo?.selled} đã bán</span>
                           <hr></hr>
                           <span className="selling">{post?.post?.userInfo?.selling} đang bán</span>
                         </div>
                         <div className="title-bottom-2">
-                          {/* <span className="online">Đang hoạt động</span> */}
-                          {/* <hr></hr> */}
-                          {/* <span className="response">Phản hồi: 78%</span> */}
                         </div>
                       </div>
                     </div>

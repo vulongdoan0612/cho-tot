@@ -301,7 +301,6 @@ const DetailUser = () => {
               ) : (
                 <span className="username">{detailProfileUser?.user?.fullname}</span>
               )}
-              {/* <span className="rate">Chưa có đánh giá</span> */}
               {spin ? (
                 <Skeleton.Button
                   block={true}

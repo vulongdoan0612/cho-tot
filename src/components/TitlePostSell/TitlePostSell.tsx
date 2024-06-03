@@ -850,16 +850,6 @@ const TitlePostSell = ({
         {stateFill.fillTitle && <div className="warning-fill"> Vui lòng nhập Tiêu đề tin đăng</div>}
       </div>
       <div className="introducing" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-        {/* <TextField
-          id="filled-multiline-flexible"
-          label="Giới thiệu"
-          className={`text-area ${stateFill.fillIntro ? "warn-border" : ""}`}
-          multiline
-          value={statePost?.introducing}
-          onChange={handleChangeIntroducing}
-          maxRows={4}
-          variant="filled"
-        />{" "} */}
         <div className={`text-area ${stateFill.fillIntro ? "warn-border" : ""}`}>
           <JoditEditor
             config={config2}

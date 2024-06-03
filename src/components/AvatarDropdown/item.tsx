@@ -37,17 +37,6 @@ const DropdownList = ({ setSpin, spin }: any) => {
             </div>
             <div className="right">
               <div className="name">{account?.user?.fullname}</div>
-              {/* <div className="rate">
-                <span className="rate-number">2</span>
-                <Rate disabled defaultValue={2} character={<StarIcon></StarIcon>} />
-                <span className="text">Chưa có người đánh giá</span>
-              </div>
-              <hr></hr>
-              <div className="follower">
-                <span>0 Người theo dõi</span>
-                <span className="line"></span>
-                <span>0 Đang theo dõi</span>
-              </div> */}
             </div>
           </div>
         </Link>
@@ -72,10 +61,6 @@ const DropdownList = ({ setSpin, spin }: any) => {
                   <span>Tin đăng đã lưu</span>{" "}
                 </span>
               </div>
-              {/* <span className="search-save">
-              <Image preview={false} src="/icons/menu-saved-search.svg" alt="" width={24} height={24}></Image>
-              <span>Tìm kiếm đã lưu</span>{" "}
-            </span> */}
             </div>
           </div>
           <div className="service-fee">
