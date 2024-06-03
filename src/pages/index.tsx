@@ -5,7 +5,7 @@ import { RootState } from "@/redux/store";
 import formatNumberWithCommas from "@/utils/formatMoneyWithDot";
 import { limitTextDescription, limitTextTitle } from "@/utils/limitText";
 import timeAgo from "@/utils/timeAgo";
-import { Image, Skeleton } from "antd";
+import { Alert, Image, Skeleton } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import Slider from "react-slick";
 const HomePage = () => {
   const [showMore, setShowMore] = useState(false);
   const { currentPosts } = useSelector((state: RootState) => state.postsData);
+  const [alertAvatar, setAlertAvatar] = useState("");
   const settings = {
     dots: true,
     infinite: true,
@@ -59,6 +60,14 @@ const HomePage = () => {
   const handleShow = () => {
     setShowMore((prev) => !prev);
   };
+
+  const handleUpgrade = () => {
+    setAlertAvatar("Chức năng đang phát triển !");
+    setTimeout(() => {
+      setAlertAvatar("");
+    }, 3000);
+  };
+
   return (
     <Page title="Chợ Tốt Xe: Mua Bán Xe Cũ Mới Cập Nhật Tháng 06/24">
       <div className="home-page-wrapper">
@@ -150,7 +159,7 @@ const HomePage = () => {
                 </div>
                 <span>Ô tô</span>
               </div>
-              <div className="wrap-item">
+              <div className="wrap-item" onClick={handleUpgrade}>
                 <div className="item">
                   <Image
                     src="https://static.chotot.com/storage/new-logos/VEH/2020.svg"
@@ -162,7 +171,7 @@ const HomePage = () => {
                 </div>{" "}
                 <span>Xe máy</span>
               </div>
-              <div className="wrap-item">
+              <div className="wrap-item" onClick={handleUpgrade}>
                 <div className="item">
                   <Image
                     src="https://static.chotot.com/storage/new-logos/VEH/2050.svg"
@@ -174,7 +183,7 @@ const HomePage = () => {
                 </div>{" "}
                 <span>Xe tải, xe ben</span>
               </div>
-              <div className="wrap-item">
+              <div className="wrap-item" onClick={handleUpgrade}>
                 <div className="item">
                   <Image
                     src="https://static.chotot.com/storage/new-logos/VEH/2090.svg"
@@ -186,7 +195,7 @@ const HomePage = () => {
                 </div>{" "}
                 <span>Xe điện</span>
               </div>
-              <div className="wrap-item">
+              <div className="wrap-item" onClick={handleUpgrade}>
                 <div className="item">
                   <Image
                     src="https://static.chotot.com/storage/new-logos/VEH/2060.svg"
@@ -198,7 +207,7 @@ const HomePage = () => {
                 </div>{" "}
                 <span>Xe đạp</span>
               </div>
-              <div className="wrap-item">
+              <div className="wrap-item" onClick={handleUpgrade}>
                 <div className="item">
                   <Image
                     src="https://static.chotot.com/storage/new-logos/VEH/2080.svg"
@@ -210,7 +219,7 @@ const HomePage = () => {
                 </div>{" "}
                 <span>Phương tiện khác</span>
               </div>
-              <div className="wrap-item">
+              <div className="wrap-item" onClick={handleUpgrade}>
                 <div className="item">
                   <Image
                     src="https://static.chotot.com/storage/new-logos/VEH/2030.svg"
@@ -420,6 +429,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+      <Alert message={alertAvatar} type="success" className={alertAvatar !== "" ? "show-alert" : ""} />
     </Page>
   );
 };
