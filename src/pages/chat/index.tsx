@@ -609,7 +609,7 @@ const Chat = () => {
   );
 };
 
-export const getServerSideProps = async (context: any) => {
+export const getStaticProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -625,10 +625,5 @@ export const getServerSideProps = async (context: any) => {
 
   return {};
 };
-export async function getStaticProps() {
-  // Tương tự, đảm bảo không gọi API `my-ads.json`
-  return {
-    props: {}, // Trả về props cho component
-  };
-}
+
 export default Chat;
