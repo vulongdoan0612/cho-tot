@@ -609,7 +609,7 @@ const Chat = () => {
   );
 };
 
-export const getStaticProps = async (context: any) => {
+export const getServerSideProps = async (context: any) => {
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies ? cookie.parse(cookies) : {};
   const token = parsedCookies["access_token"];
@@ -623,7 +623,8 @@ export const getStaticProps = async (context: any) => {
     };
   }
 
-  return {};
+  return {
+    props: {},
+  };
 };
-
 export default Chat;
