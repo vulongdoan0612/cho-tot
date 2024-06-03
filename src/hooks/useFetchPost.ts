@@ -7,6 +7,7 @@ export const useFetchPost = ({ setSpin, body, setTitle }: any) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
+    setSpin(true);
     handleFetchPost();
   }, [body]);
 
