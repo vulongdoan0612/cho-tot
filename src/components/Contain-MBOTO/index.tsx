@@ -114,7 +114,17 @@ const ContainMBOTO = ({
           {!spin && (
             <>
               {" "}
-              {posts.total > 0 ? <Pagination current={reCurrent} pageSize={pageSize} onChange={onChangePage} total={posts.total} /> : <></>}
+              {posts.total > 0 ? (
+                <Pagination
+                  current={reCurrent}
+                  pageSize={pageSize}
+                  onChange={onChangePage}
+                  total={posts.total}
+                  style={{ paddingBottom: "30px" }}
+                />
+              ) : (
+                <></>
+              )}
             </>
           )}
         </div>
