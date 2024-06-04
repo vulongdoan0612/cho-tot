@@ -172,7 +172,7 @@ const ContainPD = ({ setTitle }: any) => {
                     <>
                       <span className="desc" dangerouslySetInnerHTML={{ __html: post?.post?.post?.introducing }}></span>
                       <span className={` ${hiddenPhone ? "switch-phone" : "unhidden-phone"}`} onClick={handleSwitchPhone}>
-                        Nhấn để hiện số: {hiddenPhone ? "***" : <b>{post?.post?.userInfo?.phone}</b>}
+                        Nhấn để hiện số điện thoại: {hiddenPhone ? "***" : <b>{post?.post?.userInfo?.phone}</b>}
                       </span>
                     </>
                   )}
